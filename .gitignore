@@ -36,3 +36,6 @@ config/settings_local.py
 docker-compose.yml
 
 .pylintrc
+
+static/deps/img/*
+!static/deps/img/.gitkeep

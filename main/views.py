@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 def index(request):
     context = {
-        'title': "home",
+        'title': 'Реабилитация зависимых | "Моё море"',
         'content': 'Main page',
         }
 
@@ -13,4 +13,9 @@ def index(request):
 
 
 def contacts(request):
-    return HttpResponse('contacts page')
+    context = {
+        'title': 'Реабилитация зависимых | Контакты',
+        
+        }
+
+    return render(request, 'main/contacts.html', context )
