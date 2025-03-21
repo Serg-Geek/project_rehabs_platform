@@ -1,0 +1,38 @@
+hon
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+*.swo
+
+# Virtual environment
+venv/
+.env
+
+# Django
+db.sqlite3
+*.log
+staticfiles/
+media/
+
+# Secret files
+/**/secret.py
+secret
+config/settings_local.py
+
+# Migrations
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# IDE/Editor
+.vscode/
+.idea/
+*.iml
+
+# Docker
+*.dockerfile
+.dockerignore
+docker-compose.yml
+
+.pylintrc
