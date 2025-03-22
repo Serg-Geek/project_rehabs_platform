@@ -1,0 +1,712 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">
+                <a href="clinics_catalog_page.html">clinics catalog</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Клиника «Здоровье+»
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="detail clinic-detail rehab-help">
+    <div class="container">
+        <div class="detail__content rehab-help__content">
+            <div
+                class="clinic-detail__content detail__content-item--img rehab-help__content-item rehab-help__image"
+            >
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTohueysEWLLd8S5sGGirkURD6m42TbMNThvA&s     "
+                    alt=""
+                />
+            </div>
+            <div
+                class="detail__content-wrapper rehab-help__content-item"
+            >
+                <h2 class="title__h2 detail__title">
+                    Клиника «Здоровье+»
+                </h2>
+                <div class="detail__text clinic-detail__text">
+                    <div
+                        itemscope
+                        itemtype="https://schema.org/PostalAddress"
+                    >
+                        <span itemprop="addressRegion"
+                            >Московская обл.</span
+                        >,
+
+                        <span itemprop="addressCountry">Россия</span>
+                    </div>
+                    <p>
+                        В нашей клинике созданы условия для безопасного
+                        и эффективного лечения зависимости.
+                        Индивидуальные программы, квалифицированные
+                        специалисты и комфортная атмосфера помогают
+                        сделать первый шаг к новой жизни.
+                    </p>
+                </div>
+                <div
+                    class="detail__text clinic-detail__text rehab-help__text"
+                >
+                    <h3 class="title__h3 detail__title">
+                        Оказывает услуги
+                    </h3>
+                    <ul
+                        class="detail__services-list clinic-detail__services-list"
+                    >
+                        <li>Реабилитация</li>
+                        <li>Детоксикация</li>
+                        <li>Вывод из запоя</li>
+                        <li>Амбулаторное лечение</li>
+                        <li>Кодирование</li>
+                        <li>Лечение в стационаре</li>
+                        <li>Амбулаторное лечение</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail__info clinic-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <h3 class="title__h3 detail__title">Условия поступления</h3>
+            <div class="clinic-detail__text">
+                <p>
+                    Пребывание в клинике включает все необходимое для
+                    комфортного лечения и реабилитации. В стоимость
+                    пребывания в клинике входит:
+                </p>
+                <ul>
+                    <li>
+                        Трехразовое питание, приготовленное с учетом
+                        потребностей пациентов
+                    </li>
+                    <li>
+                        Индивидуальная кровать с комплектом сменного
+                        постельного белья
+                    </li>
+                    <li>
+                        Одноразовые туалетные принадлежности (зубная
+                        щетка, зубная паста, бритвенный станок, шампунь)
+                    </li>
+                    <li>
+                        Бытовые принадлежности, необходимые для
+                        комфортного проживания
+                    </li>
+                    <li>
+                        Канцелярские принадлежности (ручки, тетради,
+                        блокноты)
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="detail-content__wrapper detail-content__wrapper-second"
+        >
+            <h3 class="title__h3 detail__title">Курс лечения</h3>
+            <div class="clinic-detail__text">
+                <p>
+                    Центр предлагает индивидуальные программы
+                    реабилитации продолжительностью от 3 до 12 месяцев.
+                    Продолжительность курса определяется исходя из
+                    состояния и потребностей пациента. Оплата за лечение
+                    осуществляется ежемесячно, наличным или безналичным
+                    способом.
+                </p>
+                <p>
+                    Сопровождение пациента в клинику возможно как
+                    сотрудниками Клиники, так и самостоятельно, при
+                    предварительной договоренности. После подписания
+                    договора ответственность за пациента полностью берет
+                    на себя Клиника.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail__specialists clinic-detail-specialists specialists"        >
+    <div class="container">
+        <h3 class="title__h3 detail__title">Специалисты центра</h3>
+        <div class="section__content">
+            <div class="specialists__cards">
+                <div class="card card--specialist">
+                    <a href="spec-detail.html">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmNuPGdyCPH7afbOVnB5_hjwnbz_hZB24jQw&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Иван Петров
+                            </h3>
+                            <p class="card__description">
+                                Врач-реабилитолог, стаж 15 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 15 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9dmg6da8RnLmwnZ-_421HL0C_mBeh5-7BZQ&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Анна Смирнова
+                            </h3>
+                            <p class="card__description">
+                                Психолог, стаж 10 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 10 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4hlj56Jf0eZq6BEHYIpI3ReJIjdAGnHNL8g&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Сергей Волков
+                            </h3>
+                            <p class="card__description">
+                                Физиотерапевт, стаж 12 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 12 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcTblR7VnrF1BxGWiMFr_BrCqz-IrmDoFotg&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Екатерина Васильева
+                            </h3>
+                            <p class="card__description">
+                                Невролог, стаж 8 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 8 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmNuPGdyCPH7afbOVnB5_hjwnbz_hZB24jQw&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Иван Петров
+                            </h3>
+                            <p class="card__description">
+                                Врач-реабилитолог, стаж 15 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 15 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9dmg6da8RnLmwnZ-_421HL0C_mBeh5-7BZQ&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Анна Смирнова
+                            </h3>
+                            <p class="card__description">
+                                Психолог, стаж 10 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 10 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4hlj56Jf0eZq6BEHYIpI3ReJIjdAGnHNL8g&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Сергей Волков
+                            </h3>
+                            <p class="card__description">
+                                Физиотерапевт, стаж 12 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 12 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcTblR7VnrF1BxGWiMFr_BrCqz-IrmDoFotg&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Екатерина Васильева
+                            </h3>
+                            <p class="card__description">
+                                Невролог, стаж 8 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 8 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmNuPGdyCPH7afbOVnB5_hjwnbz_hZB24jQw&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Иван Петров
+                            </h3>
+                            <p class="card__description">
+                                Врач-реабилитолог, стаж 15 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 15 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9dmg6da8RnLmwnZ-_421HL0C_mBeh5-7BZQ&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Анна Смирнова
+                            </h3>
+                            <p class="card__description">
+                                Психолог, стаж 10 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 10 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4hlj56Jf0eZq6BEHYIpI3ReJIjdAGnHNL8g&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Сергей Волков
+                            </h3>
+                            <p class="card__description">
+                                Физиотерапевт, стаж 12 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 12 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card card--specialist">
+                    <a href="#">
+                        <div class="card__image">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcTblR7VnrF1BxGWiMFr_BrCqz-IrmDoFotg&s"
+                                alt="Фото специалиста"
+                            />
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                Екатерина Васильева
+                            </h3>
+                            <p class="card__description">
+                                Невролог, стаж 8 лет
+                            </p>
+                            <div class="card__specialist--location">
+                                <span
+                                    class="card__specialist--location-value"
+                                    >Опыт работы: 8 лет</span
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-docs clinic-detail__docs">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Лицензии и документы»</h3>
+        <div class="detail-doc__images">
+            <div class="detail-docs__slider">
+                <div
+                    class="detail-docs__image spec-detail__docs--image"
+                >
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+                <div class="detail-docs__image">
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+                <div class="detail-docs__image">
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+                <div
+                    class="detail-docs__image spec-detail__docs--image"
+                >
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+                <div class="detail-docs__image">
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+                <div class="detail-docs__image">
+                    <img src="img/notImage.svg" alt="rehab center" />
+                </div>
+            </div>
+            <!-- * при необходимости добавить кастомные кнопки и стили   -->
+            <!-- <button class="custom-prev-docs">Назад</button>
+            <button class="custom-next-docs">Вперед</button> -->
+        </div>
+    </div>
+</section>
+
+<section class="detail__reviews">
+    <div class="container">
+        <h3 class="title__h3 detail__title">
+            Отзывы пациентов о центре
+        </h3>
+        <div class="detail__reviews-slider">
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Александр М., 35 лет
+                </h4>
+                <p>
+                    Я благодарен центру «Волна» за шанс на новую жизнь.
+                    Благодаря врачам и поддержке я осознал, что можно
+                    жить без зависимости.
+                </p>
+            </div>
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Екатерина М., 42 лет
+                </h4>
+                <p>
+                    Я привезла сюда сына, когда уже не знала, что
+                    делать. Сегодня он живет без зависимости, вернулся к
+                    нормальной жизни. Центр дал нам не просто лечение, а
+                    надежду и поддержку.
+                </p>
+            </div>
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Мария Л., 31 год
+                </h4>
+                <p>
+                    В «Волне» я заново научилась жить. Благодаря
+                    индивидуальному подходу и внимательным специалистам
+                    я прошла путь от отчаяния к осознанному
+                    выздоровлению. Теперь верю в себя и свое будущее.
+                </p>
+            </div>
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Александр М., 35 лет
+                </h4>
+                <p>
+                    Я благодарен центру «Волна» за шанс на новую жизнь.
+                    Благодаря врачам и поддержке я осознал, что можно
+                    жить без зависимости.
+                </p>
+            </div>
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Екатерина М., 42 лет
+                </h4>
+                <p>
+                    Я привезла сюда сына, когда уже не знала, что
+                    делать. Сегодня он живет без зависимости, вернулся к
+                    нормальной жизни. Центр дал нам не просто лечение, а
+                    надежду и поддержку.
+                </p>
+            </div>
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    Мария Л., 31 год
+                </h4>
+                <p>
+                    В «Волне» я заново научилась жить. Благодаря
+                    индивидуальному подходу и внимательным специалистам
+                    я прошла путь от отчаяния к осознанному
+                    выздоровлению. Теперь верю в себя и свое будущее.
+                </p>
+            </div>
+        </div>
+        <!-- * при необходимости добавить кастомные кнопки и стили   -->
+        <!-- <div class="custom-prev-reviews">Назад</div>
+        <div class="custom-next-reviews">Вперед</div> -->
+    </div>
+</section>
+
+<section class="detail-rehabs rehabs">
+    <div class="container">
+        <h3 class="title__h3 detail-rehabs__title">
+            Другие клиники в вашем регионе
+        </h3>
+        <div class="section__content">
+            <div class="clinics__cards">
+                <div class="card card--clinic">
+                    <div class="card__image">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTohueysEWLLd8S5sGGirkURD6m42TbMNThvA&s"
+                            alt="Изображение клиники"
+                        />
+                    </div>
+                    <div class="card__content">
+                        <h3 class="card__title title__h4">
+                            Клиника «Здоровье+»
+                        </h3>
+                        <p class="card__description">
+                            Москва, ул. Ленина, 10
+                        </p>
+                        <div class="card__price">
+                            <span class="card__price-value"
+                                >от 30 000 P / месяц</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card--clinic">
+                    <div class="card__image">
+                        <img
+                            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/c6/8d/9a/best-guests.jpg?w=600&h=-1&s=1"
+                            alt="Изображение клиники"
+                        />
+                    </div>
+                    <div class="card__content">
+                        <h3 class="card__title title__h4">
+                            Клиника «Новый путь»
+                        </h3>
+                        <p class="card__description">
+                            Санкт-Петербург, пр. Невский, 50
+                        </p>
+                        <div class="card__price">
+                            <span class="card__price-value"
+                                >от 40 000 P / месяц</span
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="card card--clinic">
+                    <div class="card__image">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj7ysaYkDniOFXK1ltT_QuT9HqYTtNTn9yhA&s"
+                            alt="Изображение клиники"
+                        />
+                    </div>
+                    <div class="card__content">
+                        <h3 class="card__title title__h4">
+                            Клиника «Здоровье+»
+                        </h3>
+                        <p class="card__description">
+                            Москва, ул. Ленина, 10
+                        </p>
+                        <div class="card__price">
+                            <span class="card__price-value"
+                                >от 30 000 P / месяц</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card--clinic">
+                    <div class="card__image">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP8zmn2ZjITcwoRfINSi1py4Hxcu7O-V-NQA&s"
+                            alt="Изображение клиники"
+                        />
+                    </div>
+                    <div class="card__content">
+                        <h3 class="card__title title__h4">
+                            Клиника «Новый путь»
+                        </h3>
+                        <p class="card__description">
+                            Санкт-Петербург, пр. Невский, 50
+                        </p>
+                        <div class="card__price">
+                            <span class="card__price-value"
+                                >от 40 000 P / месяц</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="consultation">
+    <div class="container">
+        <div class="consultation__flex-wrapper">
+            <div class="consultation__image">
+                <img
+                    src="https://masterpiecer-images.s3.yandex.net/96dc7822659511ee9a32ceda526c50ab:upscaled"
+                    alt="Изображение консультации"
+                    class="consultation__img"
+                />
+            </div>
+
+            <div class="consultation__content">
+                <h3
+                    class="title__h3 consultation__title detail-rehabs__title"
+                >
+                    Запишитесь на бесплатную консультацию
+                </h3>
+                <p class="section__text consultation__text">
+                    Зависимость разрушает жизнь, но помощь рядом.
+                    Оставьте заявку, и наш сотрудник запишет вас на
+                    бесплатную консультацию в течение 15 минут.
+                </p>
+                <form class="section-form">
+                    <div class="section-form__form-group">
+                        <select
+                            id="service-type"
+                            name="service-type"
+                            class="section-form__select"
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Выберите услугу
+                            </option>
+                            <option value="consultation">
+                                Консультация
+                            </option>
+                            <option value="therapy">Терапия</option>
+                            <option value="support">Поддержка</option>
+                        </select>
+                    </div>
+                    <div class="section-form__form-group">
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            class="section-form__input"
+                            required
+                            placeholder="+7 (XXX) XXX-XX-XX"
+                        />
+                    </div>
+                    <button type="submit" class="rehab-btn">
+                        Оставить заявку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -346,18 +346,24 @@ template {
   color: #256472;
   background-color: #9bdff6;
 }
+header .header__full-width {
+  width: 100%;
+  background-color: #f4fbfd;
+  border-radius: 20px;
+}
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 1rem;
+  padding: 10px;
   background-color: #f4fbfd;
   border-radius: 20px;
-  margin: 10px;
+  margin-bottom: 10px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   will-change: transform, opacity;
   position: sticky;
+  overflow: hidden;
   top: 0;
   width: 100%;
   z-index: 1000;
@@ -436,7 +442,7 @@ template {
   background-color: #f4fbfd;
   padding: 10px;
   border-radius: 20px;
-  margin: 10px;
+  margin: -2px;
   transition: all 0.3s ease;
   position: sticky;
   top: 0;
@@ -1299,6 +1305,7 @@ template {
 }
 .breadcrumb {
   margin-top: 60px;
+  padding: 0 20px;
 }
 .breadcrumb-item {
   font-size: 20px;
@@ -1308,10 +1315,6 @@ template {
 }
 .breadcrumb-item a {
   color: #4d5974;
-}
-.contacts-page .container {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 .contacts-page__content {
   display: flex;

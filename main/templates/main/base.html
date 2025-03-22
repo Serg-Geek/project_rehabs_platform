@@ -15,119 +15,122 @@
 
   <body>
     <header class="header" id="top">
-      <div class="container">
-        <nav class="navbar">
-          <a href="{% url 'main:index' %}">
-            <div class="navbar__brand">
-              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
-              <span class="navbar__brand-text">Центр помощи зависимым</span>
+      <div class="header__full-width">
+        <div class="container">
+          <nav class="navbar">
+            <a href="{% url 'main:index' %}">
+              <div class="navbar__brand">
+                <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+                <span class="navbar__brand-text">Центр помощи зависимым</span>
+              </div>
+            </a>
+
+            <div class="navbar__location">
+              <i class="fas fa-map-marker-alt navbar__icon"></i>
+              <span class="navbar__location-text">Анапа</span>
             </div>
-          </a>
 
-          <div class="navbar__location">
-            <i class="fas fa-map-marker-alt navbar__icon"></i>
-            <span class="navbar__location-text">Анапа</span>
-          </div>
+            <div class="navbar__phone">
+              <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
+              <a href="tel:+78000000000" class="navbar__phone-link">8 800 000-00-00</a>
+            </div>
 
-          <div class="navbar__phone">
-            <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
-            <a href="tel:+78000000000" class="navbar__phone-link">8 800 000-00-00</a>
-          </div>
+            <div class="navbar__social">
+              <a href="#" class="navbar__social-link navbar__social-link--telegram"><i class="fab fa-telegram"></i></a>
+              <a href="#" class="navbar__social-link navbar__social-link--whatsapp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="header__full-width">
+        <div class="container">
+          <nav class="menu">
+            <ul class="menu__list">
+              <li class="menu__item">
+                <a href="recovery-stories_catalog.html" class="menu__link">Алкоголизм</a>
+              </li>
+              <li class="menu__item">
+                <a href="#" class="menu__link">Наркомания</a>
+              </li>
+              <li class="menu__item">
+                <a href="specialists_catalog.html" class="menu__link">Игромания</a>
+              </li>
+              <li class="menu__item">
+                <a href="rehab_catalog_page.html" class="menu__link">Центры</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'facilities:clinics_catalog' %}" class="menu__link">Клиники</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'main:contacts' %}" class="menu__link">Контакты</a>
+              </li>
+              <li class="menu__item">
+                <a href="useful_info_catalog.html" class="menu__link">Полезная информация</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
 
-          <div class="navbar__social">
-            <a href="#" class="navbar__social-link navbar__social-link--telegram"><i class="fab fa-telegram"></i></a>
-            <a href="#" class="navbar__social-link navbar__social-link--whatsapp"><i class="fab fa-whatsapp"></i></a>
-          </div>
-        </nav>
-
-        <nav class="menu">
-          <ul class="menu__list">
-            <li class="menu__item">
-              <a href="recovery-stories_catalog.html" class="menu__link">Алкоголизм</a>
-            </li>
-            <li class="menu__item">
-              <a href="#" class="menu__link">Наркомания</a>
-            </li>
-            <li class="menu__item">
-              <a href="specialists_catalog.html" class="menu__link">Игромания</a>
-            </li>
-            <li class="menu__item">
-              <a href="rehab_catalog_page.html" class="menu__link">Центры</a>
-            </li>
-            <li class="menu__item">
-              <a href="clinics_catalog_page.html" class="menu__link">Клиники</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url "main:contacts" %}" class="menu__link">Контакты</a>
-            </li>
-            <li class="menu__item">
-              <a href="useful_info_catalog.html" class="menu__link">Полезная информация</a>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Мобильная версия хедера -->
-        <div class="navbar__mobile">
-          <div class="navbar__brand">
-            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
-            <span class="navbar__brand-text">Центр помощи зависимым</span>
-          </div>
-
-          <!-- Бургер-меню -->
-          <button class="burger-menu" id="burgerMenu">
-            <span class="burger-menu__line"></span>
-            <span class="burger-menu__line"></span>
-            <span class="burger-menu__line"></span>
-          </button>
+      <!-- Мобильная версия хедера -->
+      <div class="navbar__mobile">
+        <div class="navbar__brand">
+          <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+          <span class="navbar__brand-text">Центр помощи зависимым</span>
         </div>
 
-        <!-- Мобильное меню -->
-        <nav class="dropdown-menu" id="dropdownMenu">
-          <ul>
-            <li>
-              <a href="recovery-stories_catalog.html">Алкоголизм</a>
-            </li>
-            <li>
-              <a href="#">Наркомания</a>
-            </li>
-            <li>
-              <a href="#">Игромания</a>
-            </li>
-            <li>
-              <a href="rehab_catalog_page.html">Центры</a>
-            </li>
-            <li>
-              <a href="clinics_catalog_page.html">Клиники</a>
-            </li>
-            <li>
-              <a href="contacts.html">Контакты</a>
-            </li>
-            <li>
-              <a href="useful_info_catalog.html">Полезная информация</a>
-            </li>
-          </ul>
-          <div class="footer__contacts-address-phone">
-            <div class="footer__contacts-address-phone-description">Анонимная помощь 24/7:</div>
-            <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
-          </div>
-
-          <div class="footer__contacts-social">
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
-              <i class="fab fa-telegram"></i>
-              <span>@moemorerehab</span>
-            </a>
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
-              <i class="fab fa-whatsapp"></i>
-              <span>+7 918 0542585</span>
-            </a>
-          </div>
-        </nav>
+        <!-- Бургер-меню -->
+        <button class="burger-menu" id="burgerMenu">
+          <span class="burger-menu__line"></span>
+          <span class="burger-menu__line"></span>
+          <span class="burger-menu__line"></span>
+        </button>
       </div>
+
+      <!-- Мобильное меню -->
+      <nav class="dropdown-menu" id="dropdownMenu">
+        <ul>
+          <li>
+            <a href="recovery-stories_catalog.html">Алкоголизм</a>
+          </li>
+          <li>
+            <a href="#">Наркомания</a>
+          </li>
+          <li>
+            <a href="#">Игромания</a>
+          </li>
+          <li>
+            <a href="rehab_catalog_page.html">Центры</a>
+          </li>
+          <li>
+            <a href="clinics_catalog_page.html">Клиники</a>
+          </li>
+          <li>
+            <a href="{% url 'main:contacts' %}">Контакты</a>
+          </li>
+          <li>
+            <a href="useful_info_catalog.html">Полезная информация</a>
+          </li>
+        </ul>
+        <div class="footer__contacts-address-phone">
+          <div class="footer__contacts-address-phone-description">Анонимная помощь 24/7:</div>
+          <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
+        </div>
+
+        <div class="footer__contacts-social">
+          <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
+            <i class="fab fa-telegram"></i>
+            <span>@moemorerehab</span>
+          </a>
+          <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span>+7 918 0542585</span>
+          </a>
+        </div>
+      </nav>
     </header>
 
     {% block content %} {% endblock content %}
-
-
 
     <footer>
       <div class="footer">
@@ -204,7 +207,7 @@
                     <a href="#" class="footer__navigation-link">Тесты</a>
                   </li>
                   <li class="footer__navigation-item">
-                    <a href="#" class="footer__navigation-link">Контакты</a>
+                    <a href="{% url 'main:contacts' %}" class="footer__navigation-link">Контакты</a>
                   </li>
                   <li class="footer__navigation-item">
                     <a href="#" class="footer__navigation-link">Консультация нарколога</a>
