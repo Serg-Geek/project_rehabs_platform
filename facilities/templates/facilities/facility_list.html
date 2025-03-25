@@ -1,0 +1,105 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'main:index' %}">Главная</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Каталог клиник</li>
+      </ol>
+    </div>
+  </nav>
+
+  <section class="catalog catalog-clinics">
+    <div class="container">
+      <h2 class="title__h2 catalog__title">Клиники</h2>
+      <div class="section__content">
+        <div class="section__content-text catalog__content-text">
+          <p>Независимо от того, где вы находитесь, мы поможем вам найти клинику с квалифицированными специалистами, которая подберет именно тот курс лечения, который вам нужен.</p>
+        </div>
+        <div class="search-filter">
+          <form method="get" class="header__search">
+            <input type="text" name="search" class="header__search-input" placeholder="Поиск..." value="{{ request.GET.search }}" />
+            <button type="submit" class="header__search-button">
+              <img src="{% static 'icons/search.svg' %}" alt="Поиск" class="header__search-icon" />
+            </button>
+          </form>
+          <form id="filter-form" class="filter-section" method="get">
+            <label for="category">Сортировать по</label>
+            <select id="category" name="sort" onchange="this.form.submit()">
+              <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
+              <option value="specialty" {% if request.GET.sort == 'specialty' %}selected{% endif %}>профилю</option>
+              <option value="program" {% if request.GET.sort == 'program' %}selected{% endif %}>программам</option>
+            </select>
+          </form>
+        </div>
+        <div class="rehabs__cards">
+          {% for facility in facilities %}
+          <div class="card">
+            <a href="{% if facility.slug %}{% url 'facilities:institution_detail' slug=facility.slug %}{% else %}#{% endif %}">
+              <div class="card__image">
+                {% with facility.main_image as image %}
+                  {% if image %}
+                    <img src="{{ image.image.url }}" 
+                         alt="Изображение клиники {{ facility.name }}"
+                         loading="lazy"
+                         width="300"
+                         height="200">
+                  {% else %}
+                    <img src="{% static 'images/2025/03/1.webp' %}" 
+                         alt="Изображение клиники по умолчанию"
+                         loading="lazy"
+                         width="300"
+                         height="200">
+                  {% endif %}
+                {% endwith %}
+              </div>
+              <div class="card__content">
+                <h3 class="card__title title__h4">{{ facility.name }}</h3>
+                {% if facility.city %}
+                <p class="card__description">
+                  {{ facility.city.name }}{% if facility.city.region %}, {{ facility.city.region.name }}{% endif %}
+                  {% if facility.address %}<br>{{ facility.address }}{% endif %}
+                </p>
+                {% endif %}
+                {% if facility.short_description %}
+                <p class="card__description">{{ facility.short_description|truncatechars:100 }}</p>
+                {% endif %}
+                {% if facility.min_price %}
+                <div class="card__price">
+                  <span class="card__price-value">от {{ facility.min_price }} ₽ / месяц</span>
+                </div>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+          {% empty %}
+          <div class="no-results">
+            <p>Клиники не найдены. Попробуйте изменить параметры поиска.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% if is_paginated %}
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+           class="pagination__link">Назад</a>
+        {% endif %}
+        
+        <span class="pagination__current">
+          Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+           class="pagination__link">Вперед</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
