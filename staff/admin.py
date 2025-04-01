@@ -1,167 +1,98 @@
 from django.contrib import admin
 from .models import (
-    Employee,
-    Department,
-    Position,
+    MedicalSpecialist,
+    FacilitySpecialist,
+    PrivateSpecialist,
     Specialization,
-    Education,
-    WorkExperience,
-    Achievement,
-    Schedule
+    SpecialistDocument
 )
-
-class EducationInline(admin.TabularInline):
-    model = Education
-    extra = 1
-
-class WorkExperienceInline(admin.TabularInline):
-    model = WorkExperience
-    extra = 1
-
-class AchievementInline(admin.TabularInline):
-    model = Achievement
-    extra = 1
-
-class ScheduleInline(admin.TabularInline):
-    model = Schedule
-    extra = 1
-
-@admin.register(Employee)
-class EmployeeAdmin(admin.ModelAdmin):
-    list_display = [
-        'full_name',
-        'position',
-        'department',
-        'phone',
-        'email',
-        'is_active'
-    ]
-    list_filter = [
-        'is_active',
-        'department',
-        'position',
-        'specializations',
-        'employment_date'
-    ]
-    search_fields = [
-        'last_name',
-        'first_name',
-        'middle_name',
-        'phone',
-        'email'
-    ]
-    filter_horizontal = ['specializations']
-    inlines = [
-        EducationInline,
-        WorkExperienceInline,
-        AchievementInline,
-        ScheduleInline
-    ]
-    fieldsets = (
-        ('Основная информация', {
-            'fields': (
-                ('last_name', 'first_name', 'middle_name'),
-                'birth_date',
-                'gender',
-                'photo',
-            )
-        }),
-        ('Контактная информация', {
-            'fields': (
-                'phone',
-                'email',
-                'address',
-            )
-        }),
-        ('Работа', {
-            'fields': (
-                'department',
-                'position',
-                'specializations',
-                'employment_date',
-                'dismissal_date',
-                'is_active',
-            )
-        }),
-        ('Профессиональная информация', {
-            'fields': (
-                'bio',
-                'professional_interests',
-                'certificates',
-            )
-        }),
-    )
-
-@admin.register(Department)
-class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'head', 'is_active']
-    list_filter = ['is_active']
-    search_fields = ['name', 'description']
-
-@admin.register(Position)
-class PositionAdmin(admin.ModelAdmin):
-    list_display = ['name', 'is_medical']
-    list_filter = ['is_medical']
-    search_fields = ['name', 'description']
 
 @admin.register(Specialization)
 class SpecializationAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ['name', 'description']
 
-@admin.register(Education)
-class EducationAdmin(admin.ModelAdmin):
+@admin.register(MedicalSpecialist)
+class MedicalSpecialistAdmin(admin.ModelAdmin):
     list_display = [
-        'employee',
-        'institution',
-        'degree',
-        'field_of_study',
-        'graduation_year'
+        'get_full_name',
+        'experience_years',
+        'is_active'
     ]
-    list_filter = ['degree', 'graduation_year']
+    list_filter = [
+        'is_active',
+        'specializations',
+        'experience_years'
+    ]
     search_fields = [
-        'employee__last_name',
-        'institution',
-        'field_of_study'
+        'last_name',
+        'first_name',
+        'middle_name',
+        'biography'
     ]
+    filter_horizontal = ['specializations']
 
-@admin.register(WorkExperience)
-class WorkExperienceAdmin(admin.ModelAdmin):
+@admin.register(FacilitySpecialist)
+class FacilitySpecialistAdmin(admin.ModelAdmin):
     list_display = [
-        'employee',
-        'organization',
+        'get_full_name',
+        'facility',
         'position',
-        'start_date',
-        'end_date'
+        'is_active'
     ]
-    list_filter = ['start_date', 'end_date']
+    list_filter = [
+        'is_active',
+        'facility',
+        'position'
+    ]
     search_fields = [
-        'employee__last_name',
-        'organization',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'facility__name',
         'position'
     ]
 
-@admin.register(Achievement)
-class AchievementAdmin(admin.ModelAdmin):
+@admin.register(PrivateSpecialist)
+class PrivateSpecialistAdmin(admin.ModelAdmin):
     list_display = [
-        'employee',
-        'title',
-        'date'
+        'get_full_name',
+        'consultation_price',
+        'available_online',
+        'is_active'
     ]
-    list_filter = ['date']
+    list_filter = [
+        'is_active',
+        'available_online',
+        'regions_of_work'
+    ]
     search_fields = [
-        'employee__last_name',
-        'title',
-        'description'
+        'last_name',
+        'first_name',
+        'middle_name',
+        'consultation_address',
+        'license_number'
     ]
+    filter_horizontal = ['regions_of_work']
 
-@admin.register(Schedule)
-class ScheduleAdmin(admin.ModelAdmin):
+@admin.register(SpecialistDocument)
+class SpecialistDocumentAdmin(admin.ModelAdmin):
     list_display = [
-        'employee',
-        'day_of_week',
-        'start_time',
-        'end_time'
+        'specialist',
+        'document_type',
+        'title',
+        'issue_date',
+        'is_active'
     ]
-    list_filter = ['day_of_week']
-    search_fields = ['employee__last_name']
+    list_filter = [
+        'is_active',
+        'document_type',
+        'issue_date',
+        'expiry_date'
+    ]
+    search_fields = [
+        'specialist__last_name',
+        'specialist__first_name',
+        'title',
+        'number'
+    ]

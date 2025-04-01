@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, UserProfile, PatientProfile
+from .models import User, UserProfile, PatientProfile
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -12,7 +12,7 @@ class PatientProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Профиль пациента'
 
-@admin.register(CustomUser)
+@admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = [
         'email',
@@ -46,6 +46,8 @@ class CustomUserAdmin(UserAdmin):
                 'username',
                 'first_name',
                 'last_name',
+                'phone',
+                'avatar',
             )
         }),
         ('Разрешения', {
@@ -79,16 +81,17 @@ class CustomUserAdmin(UserAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
-        'phone',
         'birth_date',
-        'gender'
+        'gender',
+        'created_at'
     ]
-    list_filter = ['gender']
+    list_filter = ['gender', 'created_at']
     search_fields = [
         'user__email',
         'user__username',
-        'phone'
+        'address'
     ]
+    readonly_fields = ['created_at', 'updated_at']
 
 @admin.register(PatientProfile)
 class PatientProfileAdmin(admin.ModelAdmin):
@@ -97,12 +100,13 @@ class PatientProfileAdmin(admin.ModelAdmin):
         'medical_record_number',
         'blood_type',
         'emergency_contact_name',
-        'emergency_contact_phone'
+        'created_at'
     ]
-    list_filter = ['blood_type']
+    list_filter = ['blood_type', 'created_at']
     search_fields = [
         'user__email',
         'user__username',
         'medical_record_number',
         'emergency_contact_name'
     ]
+    readonly_fields = ['created_at', 'updated_at']

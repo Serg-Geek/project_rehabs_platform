@@ -1,0 +1,129 @@
+{% extends "facilities/base.html" %}
+
+{% block facilities_content %}
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+    {% if facility.image %}
+    <div class="relative h-96">
+        <img src="{{ facility.image.url }}" alt="{{ facility.name }}" class="w-full h-full object-cover">
+    </div>
+    {% endif %}
+
+    <div class="p-6">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h1 class="text-3xl font-bold mb-2">{{ facility.name }}</h1>
+                <p class="text-gray-600">{{ facility.address }}</p>
+            </div>
+            {% if facility.rating %}
+            <div class="flex items-center bg-blue-50 px-4 py-2 rounded">
+                <span class="text-yellow-400 text-xl">★</span>
+                <span class="ml-2 text-lg font-semibold">{{ facility.rating }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Описание</h2>
+                <div class="prose max-w-none">
+                    {{ facility.description|safe }}
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Контактная информация</h2>
+                <div class="space-y-3">
+                    {% if facility.phone %}
+                    <p class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        <a href="tel:{{ facility.phone }}" class="text-blue-600 hover:text-blue-800">{{ facility.phone
+                            }}</a>
+                    </p>
+                    {% endif %}
+
+                    {% if facility.email %}
+                    <p class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <a href="mailto:{{ facility.email }}" class="text-blue-600 hover:text-blue-800">{{
+                            facility.email }}</a>
+                    </p>
+                    {% endif %}
+
+                    {% if facility.website %}
+                    <p class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                        <a href="{{ facility.website }}" target="_blank" class="text-blue-600 hover:text-blue-800">{{
+                            facility.website }}</a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if facility.services.exists %}
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Услуги</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for service in facility.services.all %}
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">{{ service.name }}</h3>
+                    <p class="text-gray-600 text-sm">{{ service.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if facility.specialists.exists %}
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Специалисты</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for specialist in facility.specialists.all %}
+                <div class="bg-white border rounded-lg p-4">
+                    {% if specialist.photo %}
+                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.name }}"
+                        class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    {% endif %}
+                    <h3 class="font-semibold text-center mb-2">{{ specialist.name }}</h3>
+                    <p class="text-gray-600 text-sm text-center">{{ specialist.specialization }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if facility.reviews.exists %}
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Отзывы</h2>
+            <div class="space-y-4">
+                {% for review in facility.reviews.all %}
+                <div class="border-b pb-4">
+                    <div class="flex items-center mb-2">
+                        <div class="flex items-center">
+                            {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= review.rating %} <span class="text-yellow-400">★</span>
+                                {% else %}
+                                <span class="text-gray-300">★</span>
+                                {% endif %}
+                                {% endfor %}
+                        </div>
+                        <span class="ml-2 text-gray-600">{{ review.created_at|date:"d.m.Y" }}</span>
+                    </div>
+                    <p class="text-gray-700">{{ review.text }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

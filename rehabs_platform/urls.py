@@ -25,10 +25,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls', namespace='main')),
-    path('facilities/', include('facilities.urls', namespace='facilities')),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', include('core.urls')),  # Добавляем URL-маршруты для главной страницы
+    path('facilities/', include('facilities.urls')),  # Добавляем URL-маршруты для учреждений
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

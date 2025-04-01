@@ -1,24 +1,12 @@
-# facilities/urls.py
 from django.urls import path
-from facilities.views import (
-    FacilityListView,
-    MedicalInstitutionDetailView,
-    PrivateDoctorDetailView
-)
+from . import views
 
 app_name = 'facilities'
 
 urlpatterns = [
-    # Список учреждений/врачей по типу
-    path('<str:facility_type>/', FacilityListView.as_view(), name='facility_list'),
-    
-    # Детальная страница медицинского учреждения
-    path('institutions/<slug:slug>/', 
-        MedicalInstitutionDetailView.as_view(), 
-        name='institution_detail'),
-    
-    # Детальная страница частного врача
-    path('doctors/<slug:slug>/', 
-        PrivateDoctorDetailView.as_view(), 
-        name='doctor_detail'),
-]
+    path('', views.FacilityListView.as_view(), name='list'),
+    path('clinic/', views.ClinicListView.as_view(), name='clinic_list'),
+    path('rehabilitation/', views.RehabilitationCenterListView.as_view(), name='rehabilitation_list'),
+    path('sanatorium/', views.SanatoriumListView.as_view(), name='sanatorium_list'),
+    path('<slug:slug>/', views.FacilityDetailView.as_view(), name='detail'),
+] 

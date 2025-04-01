@@ -39,10 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'main',
-    'facilities',
-    'common',
+    # Third party apps
+    'django_cleanup.apps.CleanupConfig',
     
+    # Local apps
+    'core.apps.CoreConfig',
+    'facilities.apps.FacilitiesConfig',
+    'staff.apps.StaffConfig',
+    'medical_services.apps.MedicalServicesConfig',
+    'requests.apps.RequestsConfig',
+    'content.apps.ContentConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +67,7 @@ ROOT_URLCONF = 'rehabs_platform.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
