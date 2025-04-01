@@ -25,7 +25,7 @@
                 <nav class="navbar">
                     <a href="/">
                         <div class="navbar__brand">
-                            <img src="icons/main/logo.svg" alt="Логотип" class="navbar__logo" />
+                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo"/>
                             <span class="navbar__brand-text">Центр помощи зависимым</span>
                         </div>
                     </a>
@@ -134,9 +134,9 @@
         </div>
     </header>
 
-    <main>
+    
         {% block content %}{% endblock %}
-    </main>
+    
 
     <footer>
         <div class="footer">
@@ -144,7 +144,7 @@
                 <div class="footer__grid-wrapper">
                     <div class="footer__contacts">
                         <div class="footer__logo footer__contacts-logo">
-                            <img src="icons/main/logo.svg" alt="Логотип" class="footer__logo-img" />
+                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="footer__logo-img" />
                             <span class="footer__logo-text">Центр помощи зависимым</span>
                             <span class="footer__logo-text">«Мое море»</span>
                         </div>

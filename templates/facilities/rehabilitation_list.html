@@ -1,80 +1,120 @@
-{% extends "facilities/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block facilities_content %}
-<div class="bg-white rounded-lg shadow-md p-6">
-    <h1 class="text-2xl font-bold mb-6">Реабилитационные центры</h1>
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Rehabs catalog
+            </li>
+        </ol>
+    </div>
+</nav>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for center in rehabilitation_centers %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            {% if center.image %}
-            <img src="{{ center.image.url }}" alt="{{ center.name }}" class="w-full h-48 object-cover">
-            {% endif %}
-            <div class="p-4">
-                <h2 class="text-xl font-semibold mb-2">{{ center.name }}</h2>
-                <p class="text-gray-600 mb-4">{{ center.address }}</p>
-                <div class="flex justify-between items-center">
-                    <a href="{% url 'facilities:detail' center.slug %}"
-                        class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        Подробнее
+<section class="catalog catalog-rehabs">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">
+            Реабилитационные центры
+        </h2>
+        <div class="section__content">
+            <div class="section__content-text catalog__content-text">
+                <p>
+                    Мы проконсультируем вас по широкому спектру услуг —
+                    от медикаментозной терапии и детоксикации
+                    до реабилитации и ресоциализации.
+                </p>
+            </div>
+            <div class="search-filter">
+                <form action="{% url 'facilities:rehabilitation_list' %}" method="get" class="header__search">
+                    <input type="text" name="search" class="header__search-input" placeholder="Поиск..."
+                        value="{{ request.GET.search }}" />
+                    <button type="submit" class="header__search-button">
+                        <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
+                    </button>
+                </form>
+                <form id="filter-form" class="filter-section" method="get"
+                    action="{% url 'facilities:rehabilitation_list' %}">
+                    <label for="category">Сортировать по</label>
+                    <select id="category" name="sort" onchange="this.form.submit()">
+                        <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
+                        <option value="profile" {% if request.GET.sort == 'profile' %}selected{% endif %}>профилю</option>
+                        <option value="programs" {% if request.GET.sort == 'programs' %}selected{% endif %}>программам
+                        </option>
+                    </select>
+                </form>
+            </div>
+            <div class="rehabs__cards">
+                {% for center in rehabilitation_centers %}
+                <div class="card">
+                    <a href="{% url 'facilities:detail' center.slug %}">
+                        <div class="card__image">
+                            {% if center.image %}
+                            <img src="{{ center.image.url }}" alt="{{ center.name }}" />
+                            {% else %}
+                            <img src="{% static 'images/default-facility.jpg' %}" alt="Изображение учреждения" />
+                            {% endif %}
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">{{ center.name }}</h3>
+                            <p class="card__description">{{ center.address }}</p>
+                            <div class="card__price">
+                                <span class="card__price-value">от {{ center.min_price }} P / месяц</span>
+                            </div>
+                        </div>
                     </a>
-                    {% if center.rating %}
-                    <div class="flex items-center">
-                        <span class="text-yellow-400">★</span>
-                        <span class="ml-1">{{ center.rating }}</span>
-                    </div>
-                    {% endif %}
                 </div>
+                {% empty %}
+                <div class="col-span-full text-center py-8">
+                    <p class="text-gray-600">Реабилитационные центры не найдены</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% empty %}
-        <div class="col-span-full text-center py-8">
-            <p class="text-gray-600">Реабилитационные центры не найдены</p>
-        </div>
-        {% endfor %}
-    </div>
-
-    {% if is_paginated %}
-    <div class="mt-8 flex justify-center">
-        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}"
-                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                <span class="sr-only">Предыдущая</span>
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                </svg>
-            </a>
-            {% endif %}
-
-            {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-            <span
-                class="relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 text-sm font-medium text-blue-700">
-                {{ num }}
-            </span>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a href="?page={{ num }}"
-                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                {{ num }}
-                </a>
-                {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}"
-                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span class="sr-only">Следующая</span>
+        {% if is_paginated %}
+        <div class="mt-8 flex justify-center">
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
+                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Предыдущая</span>
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                             clip-rule="evenodd" />
                     </svg>
                 </a>
                 {% endif %}
-        </nav>
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span
+                    class="relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 text-sm font-medium text-blue-700">
+                    {{ num }}
+                </span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
+                    href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    {{ num }}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
+                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">Следующая</span>
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    {% endif %}
+            </nav>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
+</section>
 {% endblock %}
