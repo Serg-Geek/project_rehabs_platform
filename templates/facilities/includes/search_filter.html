@@ -1,0 +1,19 @@
+{% load static %}
+
+<div class="search-filter">
+    <form action="{% url 'facilities:rehabilitation_list' %}" method="get" class="header__search">
+        <input type="text" name="search" class="header__search-input" placeholder="Поиск..."
+            value="{{ request.GET.search }}" />
+        <button type="submit" class="header__search-button">
+            <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
+        </button>
+    </form>
+    <form id="filter-form" class="filter-section" method="get" action="{% url 'facilities:rehabilitation_list' %}">
+        <label for="category">Сортировать по</label>
+        <select id="category" name="sort" onchange="this.form.submit()">
+            <option value="region" {% if request.GET.sort=='region' %}selected{% endif %}>региону</option>
+            <option value="profile" {% if request.GET.sort=='profile' %}selected{% endif %}>профилю</option>
+            <option value="programs" {% if request.GET.sort=='programs' %}selected{% endif %}>программам</option>
+        </select>
+    </form>
+</div>
