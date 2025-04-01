@@ -1,0 +1,60 @@
+{% load static %}
+
+<section class="consultation">
+    <div class="container">
+        <div class="consultation__flex-wrapper">
+            <div class="consultation__image">
+                <img
+                    src="https://masterpiecer-images.s3.yandex.net/96dc7822659511ee9a32ceda526c50ab:upscaled"
+                    alt="Изображение консультации"
+                    class="consultation__img"
+                />
+            </div>
+
+            <div class="consultation__content">
+                <h3
+                    class="title__h3 consultation__title detail-rehabs__title"
+                >
+                    Запишитесь на бесплатную консультацию
+                </h3>
+                <p class="section__text consultation__text">
+                    Зависимость разрушает жизнь, но помощь рядом.
+                    Оставьте заявку, и наш сотрудник запишет вас на
+                    бесплатную консультацию в течение 15 минут.
+                </p>
+                <form class="section-form">
+                    <div class="section-form__form-group">
+                        <select
+                            id="service-type"
+                            name="service-type"
+                            class="section-form__select"
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Выберите услугу
+                            </option>
+                            <option value="consultation">
+                                Консультация
+                            </option>
+                            <option value="therapy">Терапия</option>
+                            <option value="support">Поддержка</option>
+                        </select>
+                    </div>
+                    <div class="section-form__form-group">
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            class="section-form__input"
+                            required
+                            placeholder="+7 (XXX) XXX-XX-XX"
+                        />
+                    </div>
+                    <button type="submit" class="rehab-btn">
+                        Оставить заявку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
