@@ -67,7 +67,11 @@
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Курс реабилитации</h3>
             <div class="rehab-detail__text detail__text--width-limiter">
-                <p>{{ facility.program_duration }}</p>
+                {% if facility.rehabcenter %}
+                <p>{{ facility.rehabcenter.program_duration }} дней</p>
+                {% else %}
+                <p>Длительность курса не указана</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -79,25 +83,7 @@
         <div class="section__content">
             <div class="specialists__cards">
                 {% for specialist in facility.specialists.all %}
-                <div class="card card--specialist">
-                    <a href="{% url 'specialist_detail' specialist.slug %}">
-                        <div class="card__image">
-                            {% if specialist.image %}
-                            <img src="{{ specialist.image.url }}" alt="Фото специалиста" />
-                            {% else %}
-                            <img src="{% static 'img/notImage.svg' %}" alt="Фото специалиста" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h3 class="card__title title__h4">{{ specialist.name }}</h3>
-                            <p class="card__description">{{ specialist.specialization }}</p>
-                            <div class="card__specialist--location">
-                                <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience }}
-                                    лет</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                {% include "includes/cards/specialist_card.html" with specialist=specialist %}
                 {% endfor %}
             </div>
         </div>
@@ -114,7 +100,7 @@
                     {% if doc.file %}
                     <img src="{{ doc.file.url }}" alt="{{ doc.title }}" />
                     {% else %}
-                    <img src="{% static 'img/notImage.svg' %}" alt="{{ doc.title }}" />
+                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -143,24 +129,7 @@
         <div class="section__content">
             <div class="rehabs__cards">
                 {% for related_facility in related_facilities %}
-                <div class="card">
-                    <a href="{% url 'facilities:facility_detail' related_facility.slug %}">
-                        <div class="card__image">
-                            {% if related_facility.image %}
-                            <img src="{{ related_facility.image.url }}" alt="{{ related_facility.name }}" />
-                            {% else %}
-                            <img src="{% static 'img/notImage.svg' %}" alt="{{ related_facility.name }}" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h4 class="card__title title__h4">{{ related_facility.name }}</h4>
-                            <p class="card__description">{{ related_facility.address }}</p>
-                            <div class="card__price">
-                                <span class="card__price-value">от {{ related_facility.price }} P / месяц</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                {% include "includes/cards/rehab_card.html" with facility=related_facility %}
                 {% endfor %}
             </div>
         </div>

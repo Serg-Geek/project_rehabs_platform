@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="card">
+    <a href="{% url 'facilities:facility_detail' facility.slug %}">
+        <div class="card__image">
+            {% with main_image=facility.images.filter.first %}
+            {% if main_image %}
+            <img src="{{ main_image.image.url }}" alt="{{ facility.name }}" />
+            {% else %}
+            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ facility.name }}" />
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class="card__content">
+            <h4 class="card__title title__h4">{{ facility.name }}</h4>
+            <p class="card__description">{{ facility.address }}</p>
+            {% if facility.clinic.emergency_support %}
+            <div class="card__features">
+                <span class="card__feature">Экстренная помощь</span>
+            </div>
+            {% endif %}
+        </div>
+    </a>
+</div>
