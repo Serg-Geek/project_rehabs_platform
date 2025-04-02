@@ -1,0 +1,146 @@
+[
+    {
+        "model": "core.city",
+        "pk": 1,
+        "fields": {
+            "region": 1,
+            "name": "Химки",
+            "slug": "himki",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 2,
+        "fields": {
+            "region": 1,
+            "name": "Подольск",
+            "slug": "podolsk",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 3,
+        "fields": {
+            "region": 2,
+            "name": "Пушкин",
+            "slug": "pushkin",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 4,
+        "fields": {
+            "region": 2,
+            "name": "Петергоф",
+            "slug": "peterhof",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 5,
+        "fields": {
+            "region": 3,
+            "name": "Новосибирск",
+            "slug": "novosibirsk",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 6,
+        "fields": {
+            "region": 3,
+            "name": "Бердск",
+            "slug": "berdsk",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 7,
+        "fields": {
+            "region": 4,
+            "name": "Екатеринбург",
+            "slug": "ekaterinburg",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 8,
+        "fields": {
+            "region": 4,
+            "name": "Нижний Тагил",
+            "slug": "nizhniy-tagil",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 9,
+        "fields": {
+            "region": 5,
+            "name": "Сочи",
+            "slug": "sochi",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 10,
+        "fields": {
+            "region": 5,
+            "name": "Анапа",
+            "slug": "anapa",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 11,
+        "fields": {
+            "region": 6,
+            "name": "Казань",
+            "slug": "kazan",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.city",
+        "pk": 12,
+        "fields": {
+            "region": 6,
+            "name": "Набережные Челны",
+            "slug": "naberezhnye-chelny",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    }
+]

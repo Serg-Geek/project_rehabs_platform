@@ -121,6 +121,32 @@ class RehabCenter(MedicalFacility):
         verbose_name = _('Реабилитационный центр')
         verbose_name_plural = _('Реабилитационные центры')
 
+class Review(TimeStampedModel):
+    """
+    Модель отзыва о медицинском учреждении
+    """
+    facility = models.ForeignKey(
+        MedicalFacility,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name=_('Учреждение')
+    )
+    rating = models.PositiveIntegerField(
+        choices=[(i, i) for i in range(1, 6)],
+        verbose_name=_('Оценка')
+    )
+    content = models.TextField(
+        verbose_name=_('Содержание отзыва')
+    )
+
+    class Meta:
+        verbose_name = _('Отзыв')
+        verbose_name_plural = _('Отзывы')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Отзыв о {self.facility.name} ({self.rating} звезд)"
+
 class FacilityImage(TimeStampedModel):
     """
     Фотографии медицинских учреждений

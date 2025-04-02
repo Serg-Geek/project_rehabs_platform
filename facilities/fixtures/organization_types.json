@@ -1,0 +1,14 @@
+[
+    {
+        "model": "facilities.organizationtype",
+        "pk": 1,
+        "fields": {
+            "name": "Реабилитационный центр",
+            "slug": "rehabilitation",
+            "description": "Центр реабилитации и восстановления",
+            "competencies": "Реабилитация, восстановление, лечение",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    }
+]

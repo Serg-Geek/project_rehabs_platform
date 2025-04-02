@@ -1,0 +1,156 @@
+[
+    {
+        "model": "facilities.review",
+        "pk": 1,
+        "fields": {
+            "facility": 1,
+            "rating": 5,
+            "content": "Отличный центр реабилитации! Персонал внимательный, условия проживания комфортные. Программа восстановления эффективная.",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 2,
+        "fields": {
+            "facility": 1,
+            "rating": 4,
+            "content": "Хороший центр, но цены немного высокие. В целом остался доволен результатами.",
+            "created_at": "2024-01-02T00:00:00Z",
+            "updated_at": "2024-01-02T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 3,
+        "fields": {
+            "facility": 2,
+            "rating": 5,
+            "content": "Прекрасный центр! Очень доволен результатами реабилитации. Персонал профессиональный.",
+            "created_at": "2024-01-03T00:00:00Z",
+            "updated_at": "2024-01-03T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 4,
+        "fields": {
+            "facility": 3,
+            "rating": 3,
+            "content": "Центр неплохой, но есть проблемы с организацией питания. Персонал вежливый.",
+            "created_at": "2024-01-04T00:00:00Z",
+            "updated_at": "2024-01-04T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 5,
+        "fields": {
+            "facility": 4,
+            "rating": 4,
+            "content": "Хороший центр реабилитации. Программа восстановления эффективная.",
+            "created_at": "2024-01-05T00:00:00Z",
+            "updated_at": "2024-01-05T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 6,
+        "fields": {
+            "facility": 5,
+            "rating": 5,
+            "content": "Отличный центр! Современное оборудование, квалифицированный персонал.",
+            "created_at": "2024-01-06T00:00:00Z",
+            "updated_at": "2024-01-06T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 7,
+        "fields": {
+            "facility": 6,
+            "rating": 2,
+            "content": "Не понравилось отношение персонала. Условия проживания оставляют желать лучшего.",
+            "created_at": "2024-01-07T00:00:00Z",
+            "updated_at": "2024-01-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 8,
+        "fields": {
+            "facility": 7,
+            "rating": 4,
+            "content": "Хороший центр реабилитации. Программа восстановления эффективная.",
+            "created_at": "2024-01-08T00:00:00Z",
+            "updated_at": "2024-01-08T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 9,
+        "fields": {
+            "facility": 8,
+            "rating": 5,
+            "content": "Отличный центр! Персонал внимательный, условия проживания комфортные.",
+            "created_at": "2024-01-09T00:00:00Z",
+            "updated_at": "2024-01-09T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 10,
+        "fields": {
+            "facility": 9,
+            "rating": 4,
+            "content": "Хороший центр реабилитации. Программа восстановления эффективная.",
+            "created_at": "2024-01-10T00:00:00Z",
+            "updated_at": "2024-01-10T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 11,
+        "fields": {
+            "facility": 10,
+            "rating": 3,
+            "content": "Центр неплохой, но есть проблемы с организацией питания. Персонал вежливый.",
+            "created_at": "2024-01-11T00:00:00Z",
+            "updated_at": "2024-01-11T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 12,
+        "fields": {
+            "facility": 11,
+            "rating": 5,
+            "content": "Отличный центр! Современное оборудование, квалифицированный персонал.",
+            "created_at": "2024-01-12T00:00:00Z",
+            "updated_at": "2024-01-12T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 13,
+        "fields": {
+            "facility": 12,
+            "rating": 4,
+            "content": "Хороший центр реабилитации. Программа восстановления эффективная.",
+            "created_at": "2024-01-13T00:00:00Z",
+            "updated_at": "2024-01-13T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.review",
+        "pk": 14,
+        "fields": {
+            "facility": 12,
+            "rating": 2,
+            "content": "Не понравилось отношение персонала. Условия проживания оставляют желать лучшего.",
+            "created_at": "2024-01-14T00:00:00Z",
+            "updated_at": "2024-01-14T00:00:00Z"
+        }
+    }
+]

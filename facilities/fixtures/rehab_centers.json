@@ -1,0 +1,350 @@
+[
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 1,
+        "fields": {
+            "name": "Центр реабилитации 'Восстановление'",
+            "slug": "vosstanovlenie",
+            "organization_type": 1,
+            "description": "Современный центр реабилитации с квалифицированным персоналом",
+            "address": "г. Химки, ул. Ленина, 10",
+            "phone": "+7 (495) 123-45-67",
+            "email": "info@vosstanovlenie.ru",
+            "website": "https://vosstanovlenie.ru",
+            "license_number": "ЛО-77-01-012345",
+            "is_active": true,
+            "city": 1,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 1,
+        "fields": {
+            "medicalfacility_ptr": 1,
+            "capacity": 50,
+            "program_duration": 30,
+            "accommodation_conditions": "Комфортабельные палаты, питание, медицинский уход"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 2,
+        "fields": {
+            "name": "Реабилитационный центр 'Здоровье'",
+            "slug": "zdorovie",
+            "organization_type": 1,
+            "description": "Центр реабилитации с современным оборудованием",
+            "address": "г. Подольск, ул. Советская, 15",
+            "phone": "+7 (495) 234-56-78",
+            "email": "info@zdorovie.ru",
+            "website": "https://zdorovie.ru",
+            "license_number": "ЛО-77-01-023456",
+            "is_active": true,
+            "city": 2,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 2,
+        "fields": {
+            "medicalfacility_ptr": 2,
+            "capacity": 40,
+            "program_duration": 45,
+            "accommodation_conditions": "Одноместные и двухместные палаты, диетическое питание"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 3,
+        "fields": {
+            "name": "Центр восстановления 'Надежда'",
+            "slug": "nadezhda",
+            "organization_type": 1,
+            "description": "Специализированный центр реабилитации",
+            "address": "г. Пушкин, ул. Московская, 20",
+            "phone": "+7 (812) 345-67-89",
+            "email": "info@nadezhda.ru",
+            "website": "https://nadezhda.ru",
+            "license_number": "ЛО-78-01-034567",
+            "is_active": true,
+            "city": 3,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 3,
+        "fields": {
+            "medicalfacility_ptr": 3,
+            "capacity": 35,
+            "program_duration": 60,
+            "accommodation_conditions": "Люкс-палаты, индивидуальное меню"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 4,
+        "fields": {
+            "name": "Реабилитационный центр 'Меридиан'",
+            "slug": "meridian",
+            "organization_type": 1,
+            "description": "Центр реабилитации с опытными специалистами",
+            "address": "г. Петергоф, ул. Петергофская, 25",
+            "phone": "+7 (812) 456-78-90",
+            "email": "info@meridian.ru",
+            "website": "https://meridian.ru",
+            "license_number": "ЛО-78-01-045678",
+            "is_active": true,
+            "city": 4,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 4,
+        "fields": {
+            "medicalfacility_ptr": 4,
+            "capacity": 45,
+            "program_duration": 30,
+            "accommodation_conditions": "Стандартные и улучшенные палаты"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 5,
+        "fields": {
+            "name": "Центр реабилитации 'Сибирь'",
+            "slug": "sibir",
+            "organization_type": 1,
+            "description": "Крупный центр реабилитации в Сибири",
+            "address": "г. Новосибирск, ул. Красный проспект, 100",
+            "phone": "+7 (383) 567-89-01",
+            "email": "info@sibir.ru",
+            "website": "https://sibir.ru",
+            "license_number": "ЛО-54-01-056789",
+            "is_active": true,
+            "city": 5,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 5,
+        "fields": {
+            "medicalfacility_ptr": 5,
+            "capacity": 60,
+            "program_duration": 45,
+            "accommodation_conditions": "Различные типы палат, питание по выбору"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 6,
+        "fields": {
+            "name": "Реабилитационный центр 'Бердск'",
+            "slug": "berdsk-rehab",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Бердске",
+            "address": "г. Бердск, ул. Ленина, 30",
+            "phone": "+7 (383) 678-90-12",
+            "email": "info@berdsk-rehab.ru",
+            "website": "https://berdsk-rehab.ru",
+            "license_number": "ЛО-54-01-067890",
+            "is_active": true,
+            "city": 6,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 6,
+        "fields": {
+            "medicalfacility_ptr": 6,
+            "capacity": 30,
+            "program_duration": 30,
+            "accommodation_conditions": "Стандартные палаты, общее питание"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 7,
+        "fields": {
+            "name": "Центр восстановления 'Урал'",
+            "slug": "ural",
+            "organization_type": 1,
+            "description": "Центр реабилитации на Урале",
+            "address": "г. Екатеринбург, ул. Ленина, 40",
+            "phone": "+7 (343) 789-01-23",
+            "email": "info@ural.ru",
+            "website": "https://ural.ru",
+            "license_number": "ЛО-66-01-078901",
+            "is_active": true,
+            "city": 7,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 7,
+        "fields": {
+            "medicalfacility_ptr": 7,
+            "capacity": 50,
+            "program_duration": 45,
+            "accommodation_conditions": "Комфортабельные палаты, диетическое питание"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 8,
+        "fields": {
+            "name": "Реабилитационный центр 'Тагил'",
+            "slug": "tagil",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Нижнем Тагиле",
+            "address": "г. Нижний Тагил, ул. Октябрьская, 50",
+            "phone": "+7 (343) 890-12-34",
+            "email": "info@tagil.ru",
+            "website": "https://tagil.ru",
+            "license_number": "ЛО-66-01-089012",
+            "is_active": true,
+            "city": 8,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 8,
+        "fields": {
+            "medicalfacility_ptr": 8,
+            "capacity": 35,
+            "program_duration": 30,
+            "accommodation_conditions": "Стандартные палаты, общее питание"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 9,
+        "fields": {
+            "name": "Центр реабилитации 'Сочи'",
+            "slug": "sochi-rehab",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Сочи",
+            "address": "г. Сочи, ул. Приморская, 100",
+            "phone": "+7 (862) 901-23-45",
+            "email": "info@sochi-rehab.ru",
+            "website": "https://sochi-rehab.ru",
+            "license_number": "ЛО-23-01-090123",
+            "is_active": true,
+            "city": 9,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 9,
+        "fields": {
+            "medicalfacility_ptr": 9,
+            "capacity": 40,
+            "program_duration": 60,
+            "accommodation_conditions": "Люкс-палаты, индивидуальное меню"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 10,
+        "fields": {
+            "name": "Реабилитационный центр 'Анапа'",
+            "slug": "anapa-rehab",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Анапе",
+            "address": "г. Анапа, ул. Пушкина, 15",
+            "phone": "+7 (861) 012-34-56",
+            "email": "info@anapa-rehab.ru",
+            "website": "https://anapa-rehab.ru",
+            "license_number": "ЛО-23-01-001234",
+            "is_active": true,
+            "city": 10,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 10,
+        "fields": {
+            "medicalfacility_ptr": 10,
+            "capacity": 30,
+            "program_duration": 45,
+            "accommodation_conditions": "Стандартные палаты, диетическое питание"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 11,
+        "fields": {
+            "name": "Центр восстановления 'Казань'",
+            "slug": "kazan-rehab",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Казани",
+            "address": "г. Казань, ул. Баумана, 30",
+            "phone": "+7 (843) 123-45-67",
+            "email": "info@kazan-rehab.ru",
+            "website": "https://kazan-rehab.ru",
+            "license_number": "ЛО-16-01-012345",
+            "is_active": true,
+            "city": 11,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 11,
+        "fields": {
+            "medicalfacility_ptr": 11,
+            "capacity": 45,
+            "program_duration": 30,
+            "accommodation_conditions": "Комфортабельные палаты, питание по выбору"
+        }
+    },
+    {
+        "model": "facilities.medicalfacility",
+        "pk": 12,
+        "fields": {
+            "name": "Реабилитационный центр 'Челны'",
+            "slug": "chelny-rehab",
+            "organization_type": 1,
+            "description": "Центр реабилитации в Набережных Челнах",
+            "address": "г. Набережные Челны, ул. Х. Туфана, 20",
+            "phone": "+7 (855) 234-56-78",
+            "email": "info@chelny-rehab.ru",
+            "website": "https://chelny-rehab.ru",
+            "license_number": "ЛО-16-01-023456",
+            "is_active": true,
+            "city": 12,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 12,
+        "fields": {
+            "medicalfacility_ptr": 12,
+            "capacity": 35,
+            "program_duration": 45,
+            "accommodation_conditions": "Стандартные палаты, общее питание"
+        }
+    }
+]

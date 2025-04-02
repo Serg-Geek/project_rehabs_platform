@@ -35,3 +35,14 @@ class FacilityDetailView(DetailView):
     model = MedicalFacility
     template_name = 'facilities/facility_detail.html'
     context_object_name = 'facility'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем связанные учреждения того же типа в том же регионе
+        context['related_facilities'] = MedicalFacility.objects.filter(
+            organization_type=self.object.organization_type,
+            city__region=self.object.city.region
+        ).exclude(
+            pk=self.object.pk
+        )[:3]  # Ограничиваем до 3 связанных учреждений
+        return context
