@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ name }} - {{ specialist.position }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="specialist-detail">
+        <div class="specialist-detail__header">
+            <div class="specialist-detail__photo">
+                {% if specialist.photo %}
+                <img src="{{ specialist.photo.url }}" alt="Фото специалиста" />
+                {% else %}
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото специалиста" />
+                {% endif %}
+            </div>
+            <div class="specialist-detail__info">
+                <h1 class="specialist-detail__name">{{ name }}</h1>
+                <p class="specialist-detail__position">{{ specialist.position }}</p>
+                <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p>
+                <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p>
+            </div>
+        </div>
+
+        <div class="specialist-detail__content">
+            <div class="specialist-detail__section">
+                <h2>Образование</h2>
+                <p>{{ specialist.education }}</p>
+            </div>
+
+            <div class="specialist-detail__section">
+                <h2>Биография</h2>
+                <p>{{ specialist.biography }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

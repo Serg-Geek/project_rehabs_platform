@@ -27,4 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),  # Добавляем URL-маршруты для главной страницы
     path('facilities/', include('facilities.urls')),  # Добавляем URL-маршруты для учреждений
+    path('staff/', include('staff.urls')),  # Добавляем URL-маршруты для специалистов
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

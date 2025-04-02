@@ -1,19 +1,20 @@
 {% load static %}
 
 <div class="card card--specialist">
-    <a href="{% url 'specialist_detail' specialist.slug %}">
+    <a href="{% url 'staff:specialist_detail' specialist.slug %}">
         <div class="card__image">
-            {% if specialist.image %}
-            <img src="{{ specialist.image.url }}" alt="Фото специалиста" />
+            {% if specialist.photo %}
+            <img src="{{ specialist.photo.url }}" alt="Фото специалиста" />
             {% else %}
             <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото специалиста" />
             {% endif %}
         </div>
         <div class="card__content">
-            <h3 class="card__title title__h4">{{ specialist.name }}</h3>
-            <p class="card__description">{{ specialist.specialization }}</p>
+            <h3 class="card__title title__h4">{{ specialist.last_name }} {{ specialist.first_name }} {{
+                specialist.middle_name }}</h3>
+            <p class="card__description">{{ specialist.position }}</p>
             <div class="card__specialist--location">
-                <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience }} лет</span>
+                <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience_years }} лет</span>
             </div>
         </div>
     </a>
