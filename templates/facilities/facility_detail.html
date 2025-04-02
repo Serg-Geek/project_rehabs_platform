@@ -20,11 +20,13 @@
     <div class="container">
         <div class="detail__content rehab-help__content">
             <div class="rehab-detail__content rehab-help__content-item rehab-help__image detail__content-item--img">
-                {% if facility.image %}
-                <img src="{{ facility.image.url }}" alt="{{ facility.name }}" />
+                {% with main_image=facility.images.filter.first %}
+                {% if main_image %}
+                <img src="{{ main_image.image.url }}" alt="{{ facility.name }}" />
                 {% else %}
-                <img src="{% static 'img/notImage.svg' %}" alt="{{ facility.name }}" />
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ facility.name }}" />
                 {% endif %}
+                {% endwith %}
             </div>
             <div class="detail__content-wrapper rehab-help__content-item">
                 <h2 class="title__h2 detail__title">
@@ -32,7 +34,7 @@
                 </h2>
                 <div class="detail__text rehab-detail__text">
                     <div itemscope itemtype="https://schema.org/PostalAddress">
-                        <span itemprop="addressRegion">{{ facility.region }}</span>,
+                        <span itemprop="addressRegion">{{ facility.city.region.name }}</span>,
                         <span itemprop="addressCountry">Россия</span>
                     </div>
                     <p>{{ facility.description }}</p>
@@ -40,8 +42,8 @@
                 <div class="detail__text rehab-detail__text rehab-help__text">
                     <h3 class="title__h3 detail__title">Оказывает услуги</h3>
                     <ul class="detail__services-list rehab-detail__services-list">
-                        {% for service in facility.services.all %}
-                        <li>{{ service.name }}</li>
+                        {% for facility_service in facility.services.all %}
+                        <li>{{ facility_service.service.name }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -55,7 +57,11 @@
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">Условия поступления</h3>
             <div class="rehab-detail__text detail__text--width-limiter">
-                <p>{{ facility.accommodation_conditions }}</p>
+                {% if facility.rehabcenter %}
+                <p>{{ facility.rehabcenter.accommodation_conditions }}</p>
+                {% else %}
+                <p>Условия проживания не указаны</p>
+                {% endif %}
             </div>
         </div>
         <div class="detail-content__wrapper detail-content__wrapper-second">

@@ -11,9 +11,9 @@
     <form id="filter-form" class="filter-section" method="get" action="{% url 'facilities:rehabilitation_list' %}">
         <label for="category">Сортировать по</label>
         <select id="category" name="sort" onchange="this.form.submit()">
-            <option value="region" {% if request.GET.sort=='region' %}selected{% endif %}>региону</option>
-            <option value="profile" {% if request.GET.sort=='profile' %}selected{% endif %}>профилю</option>
-            <option value="programs" {% if request.GET.sort=='programs' %}selected{% endif %}>программам</option>
+            <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
+            <option value="profile" {% if request.GET.sort == 'profile' %}selected{% endif %}>профилю</option>
+            <option value="programs" {% if request.GET.sort == 'programs' %}selected{% endif %}>программам</option>
         </select>
     </form>
 </div>
