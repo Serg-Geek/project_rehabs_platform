@@ -10,3 +10,6 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         # Здесь можно добавить дополнительные данные для контекста
         return context
+
+class ContactsView(TemplateView):
+    template_name = 'contacts.html'
