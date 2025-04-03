@@ -1,23 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
-from .models import BlogPost, BlogCategory
+from django.db.models import Q
+from .models import BlogPost, BlogCategory, Tag
 
 # Create your views here.
 
-class BlogPostListView(ListView):
+class PostListView(ListView):
     model = BlogPost
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    paginate_by = 10
+    paginate_by = 9
 
     def get_queryset(self):
-        return BlogPost.objects.filter(is_published=True).select_related('category')
+        queryset = BlogPost.objects.filter(is_published=True).select_related('category')
+        
+        # Фильтрация по тегу
+        tag_slug = self.request.GET.get('tag')
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug, is_active=True)
+            queryset = queryset.filter(tags=tag)
+        
+        # Поиск
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(content__icontains=search_query) |
+                Q(preview_text__icontains=search_query)
+            )
+        
+        return queryset.order_by('-publish_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = BlogCategory.objects.all()
+        context['categories'] = BlogCategory.objects.filter(parent=None)
+        context['active_tag'] = self.request.GET.get('tag')
+        context['search_query'] = self.request.GET.get('search', '')
         return context
 
+class PostDetailView(DetailView):
+    model = BlogPost
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        return BlogPost.objects.filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = BlogCategory.objects.filter(parent=None)
+        return context
 
 class BlogPostListByCategoryView(ListView):
     model = BlogPost

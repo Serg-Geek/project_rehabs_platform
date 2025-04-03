@@ -102,6 +102,7 @@ class BlogPost(TimeStampedModel):
         default=0,
         verbose_name=_('Количество просмотров')
     )
+    tags = models.ManyToManyField('Tag', through='BlogPostTag', verbose_name='Теги')
 
     class Meta:
         verbose_name = _('Пост блога')
@@ -167,6 +168,26 @@ class Tag(TimeStampedModel):
         unique=True,
         verbose_name=_('Slug')
     )
+    icon = models.CharField(
+        max_length=100,
+        verbose_name=_('Иконка')
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name=_('Описание')
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Активен')
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Создан')
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Обновлен')
+    )
 
     class Meta:
         verbose_name = _('Тег')
@@ -175,6 +196,11 @@ class Tag(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class BlogPostTag(TimeStampedModel):
     """
