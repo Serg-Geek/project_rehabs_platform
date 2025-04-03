@@ -111,7 +111,7 @@
                         {% for category in categories %}
                         <option value="{{ category.slug }}" 
                         {% if request.GET.category == category.slug %} 
-                        selected 
+                        selected
                         {% endif %}>{{ category.name }}</option>
                         {% endfor %}
                     </select>

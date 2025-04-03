@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:post_list' %}">Полезная информация</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ post.title }}
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="detail rehab-help useful-info-detail">
+    <div class="container">
+        <div class="detail__content">
+            <div
+                class="detail__content-wrapper detail__content-item rehab-help__content-item detail__text--width-limiter">
+                <h2 class="title__h2 detail__title">{{ post.title }}</h2>
+                <div class="detail__text spec-detail__text">
+                    <p>{{ post.preview_text }}</p>
+                </div>
+            </div>
+            {% if post.image %}
+            <div
+                class="detail__content-item detail__content-item--img rehab-help__content-item useful-info__detail--image detail__text--width-limiter">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" />
+            </div>
+            {% endif %}
+            {% if post.stages %}
+            <div class="useful-info-detail__stages-list">
+                <ol>
+                    {% for stage in post.stages %}
+                    <li>{{ stage.title }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="detail__info useful-info-detail__stages">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <div class="rehab-detail__text detail__text--width-limiter">
+                <p class="useful-info-detail__stages-text">
+                    {{ post.intro_text }}
+                </p>
+                {% if post.stages %}
+                <ol class="useful-info-list">
+                    {% for stage in post.stages %}
+                    <li class="useful-info-detail--stage">
+                        <h4 class="title__h4">{{ stage.title }}</h4>
+                        <p>{{ stage.description }}</p>
+                    </li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+                <p class="useful-info-detail__stages-text">
+                    <strong>{{ post.conclusion_text }}</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

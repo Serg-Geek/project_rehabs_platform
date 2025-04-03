@@ -11,7 +11,7 @@ class BlogPostListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return BlogPost.objects.filter(status='published').select_related('category', 'author')
+        return BlogPost.objects.filter(is_published=True).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,9 +28,9 @@ class BlogPostListByCategoryView(ListView):
     def get_queryset(self):
         category_slug = self.kwargs.get('slug')
         return BlogPost.objects.filter(
-            status='published',
+            is_published=True,
             category__slug=category_slug
-        ).select_related('category', 'author')
+        ).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,7 +47,7 @@ class BlogPostDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_queryset(self):
-        return BlogPost.objects.filter(status='published').select_related('category', 'author')
+        return BlogPost.objects.filter(is_published=True).select_related('category').prefetch_related('images', 'post_tags__tag')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
