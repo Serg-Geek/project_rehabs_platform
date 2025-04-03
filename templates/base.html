@@ -5,10 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> {%block title %}
-
-        {% endblock %}
-    </title>
+    <title> {%block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
@@ -23,9 +20,9 @@
         <div class="header__full-width">
             <div class="container">
                 <nav class="navbar">
-                    <a href="/">
+                    <a href="{% url 'core:home' %}">
                         <div class="navbar__brand">
-                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo"/>
+                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
                             <span class="navbar__brand-text">Центр помощи зависимым</span>
                         </div>
                     </a>
@@ -58,25 +55,25 @@
                 <nav class="menu">
                     <ul class="menu__list">
                         <li class="menu__item">
-                            <a href="recovery-stories_catalog.html" class="menu__link">Алкоголизм</a>
+                            <a href="{% url 'core:home' %}" class="menu__link">Алкоголизм</a>
                         </li>
                         <li class="menu__item">
-                            <a href="#" class="menu__link">Наркомания</a>
+                            <a href="{% url 'core:home' %}" class="menu__link">Наркомания</a>
                         </li>
                         <li class="menu__item">
-                            <a href="specialists_catalog.html" class="menu__link">Игромания</a>
+                            <a href="{% url 'core:home' %}" class="menu__link">Игромания</a>
                         </li>
                         <li class="menu__item">
                             <a href="{% url 'facilities:rehabilitation_list' %}" class="menu__link">Центры</a>
                         </li>
                         <li class="menu__item">
-                            <a href="clinics_catalog_page.html" class="menu__link">Клиники</a>
+                            <a href="{% url 'facilities:clinic_list' %}" class="menu__link">Клиники</a>
                         </li>
                         <li class="menu__item">
-                            <a href="contacts.html" class="menu__link">Контакты</a>
+                            <a href="{% url 'core:home' %}" class="menu__link">Контакты</a>
                         </li>
                         <li class="menu__item">
-                            <a href="useful_info_catalog.html" class="menu__link">Полезная информация</a>
+                            <a href="{% url 'core:home' %}" class="menu__link">Полезная информация</a>
                         </li>
                     </ul>
                 </nav>
@@ -84,7 +81,7 @@
                 <!-- Мобильная версия хедера -->
                 <div class="navbar__mobile">
                     <div class="navbar__brand">
-                        <img src="icons/main/logo.svg" alt="Логотип" class="navbar__logo" />
+                        <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
                         <span class="navbar__brand-text">Центр помощи зависимым</span>
                     </div>
 
@@ -100,15 +97,15 @@
                 <nav class="dropdown-menu" id="dropdownMenu">
                     <ul>
                         <li>
-                            <a href="recovery-stories_catalog.html">Алкоголизм</a>
+                            <a href="{% url 'core:home' %}">Алкоголизм</a>
                         </li>
-                        <li><a href="#">Наркомания</a></li>
-                        <li><a href="#">Игромания</a></li>
+                        <li><a href="{% url 'core:home' %}">Наркомания</a></li>
+                        <li><a href="{% url 'core:home' %}">Игромания</a></li>
                         <li><a href="{% url 'facilities:rehabilitation_list' %}">Центры</a></li>
-                        <li><a href="clinics_catalog_page.html">Клиники</a></li>
-                        <li><a href="contacts.html">Контакты</a></li>
+                        <li><a href="{% url 'facilities:clinic_list' %}">Клиники</a></li>
+                        <li><a href="{% url 'core:home' %}">Контакты</a></li>
                         <li>
-                            <a href="useful_info_catalog.html">Полезная информация</a>
+                            <a href="{% url 'core:home' %}">Полезная информация</a>
                         </li>
                     </ul>
                     <div class="footer__contacts-address-phone">
@@ -134,9 +131,7 @@
         </div>
     </header>
 
-    
-        {% block content %}{% endblock %}
-    
+    {% block content %}{% endblock %}
 
     <footer>
         <div class="footer">
@@ -209,28 +204,32 @@
                             </h4>
                             <ul class="footer__column footer__navigation-list">
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Центры</a>
+                                    <a href="{% url 'facilities:rehabilitation_list' %}"
+                                        class="footer__navigation-link">Центры</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Клиники</a>
+                                    <a href="{% url 'facilities:clinic_list' %}"
+                                        class="footer__navigation-link">Клиники</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Специалисты</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Специалисты</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Тесты</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Тесты</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Контакты</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Контакты</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Консультация нарколога</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Консультация
+                                        нарколога</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Полезная информация</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Полезная
+                                        информация</a>
                                 </li>
                                 <li class="footer__navigation-item">
-                                    <a href="#" class="footer__navigation-link">Для партнеров</a>
+                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Для партнеров</a>
                                 </li>
                             </ul>
                         </div>
@@ -241,165 +240,26 @@
                             </h4>
                             <ul class="footer__column footer__info-nav-list">
                                 <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Алкоголизм</a>
+                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Алкоголизм</a>
                                 </li>
                                 <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Наркомания</a>
+                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Наркомания</a>
                                 </li>
                                 <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Зависимости</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Лечение</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Родственникам</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Ресоциализация</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Психология</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Психиатрия</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Юридическая консультация</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="#" class="footer__info-nav-link">Профилактика и предупреждение</a>
+                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Зависимости</a>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="return-up">
-                            <div class="return-up__wrapper">
-                                <a href="#top" class="return-up__link">
-                                    <i class="fas fa-arrow-up return-up__icon"></i>
-                                </a>
-                            </div>
-
-                            <a href="#top" class="return-up__link-text">Вернуться вверх</a>
-                        </div>
-                    </div>
-
-                    <div class="footer__services">
-                        <h4 class="title__h4 footer__title">Услуги:</h4>
-                        <div class="footer__columns">
-                            <div class="footer__column">
-                                <h4 class="title__h4 footer__column-title">Алкоголизм:</h4>
-                                <ul class="footer__list">
-                                    <li class="footer__item">
-                                        <a href="#">Реабилитация</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Детоксикация</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Вывод из запоя</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Кодирование</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение в стационаре</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Амбулаторное лечение</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Программы лечения</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение пивного алкоголизма</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение женского алкоголизма</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer__column">
-                                <h4 class="title__h4 footer__column-title">Наркомания:</h4>
-                                <ul class="footer__list">
-                                    <li class="footer__item">
-                                        <a href="#">Реабилитация</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Детоксикация</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Снятие ломки</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Кодирование</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">УБОД</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Нарколог на дом</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение в клинике</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Амбулаторное лечение</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Программы лечения</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение солевой зависимости</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение спайсовой зависимости</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение героиновой зависимости</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer__column">
-                                <h4 class="title__h4 footer__column-title">Другие услуги:</h4>
-                                <ul class="footer__list">
-                                    <li class="footer__item">
-                                        <a href="#">Интернет зависимость</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Игровая зависимость</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Адвокатская помощь</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Ресоциализация</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Лечение за границей</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Нарколог на дом</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Психологическая помощь</a>
-                                    </li>
-                                    <li class="footer__item">
-                                        <a href="#">Психиатрическая помощь</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <script src="{% static 'deps/js/script.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'deps/js/main.js' %}"></script>
 </body>
 
 </html>

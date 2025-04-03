@@ -1,16 +1,19 @@
 from django.contrib import admin
-from .models import Article, ContentCategory, Tag, ArticleTag, ArticleImage
+from .models import BlogCategory, BlogPost, BlogImage, Tag, BlogPostTag
 
-class ArticleImageInline(admin.TabularInline):
-    model = ArticleImage
+
+class BlogImageInline(admin.TabularInline):
+    model = BlogImage
     extra = 1
 
-class ArticleTagInline(admin.TabularInline):
-    model = ArticleTag
+
+class BlogPostTagInline(admin.TabularInline):
+    model = BlogPostTag
     extra = 1
 
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
     list_display = [
         'title',
         'category',
@@ -30,7 +33,7 @@ class ArticleAdmin(admin.ModelAdmin):
     ]
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ['created_at', 'updated_at', 'views_count']
-    inlines = [ArticleImageInline, ArticleTagInline]
+    inlines = [BlogImageInline, BlogPostTagInline]
     fieldsets = (
         ('Основная информация', {
             'fields': (
@@ -64,12 +67,14 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
     )
 
-@admin.register(ContentCategory)
-class ContentCategoryAdmin(admin.ModelAdmin):
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'parent', 'order']
     list_filter = ['parent']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
+
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -77,25 +82,27 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
 
-@admin.register(ArticleImage)
-class ArticleImageAdmin(admin.ModelAdmin):
+
+@admin.register(BlogImage)
+class BlogImageAdmin(admin.ModelAdmin):
     list_display = [
-        'article',
+        'post',
         'title',
         'order',
         'created_at'
     ]
     list_filter = ['created_at']
-    search_fields = ['title', 'description', 'article__title']
+    search_fields = ['title', 'description', 'post__title']
     readonly_fields = ['created_at']
 
-@admin.register(ArticleTag)
-class ArticleTagAdmin(admin.ModelAdmin):
+
+@admin.register(BlogPostTag)
+class BlogPostTagAdmin(admin.ModelAdmin):
     list_display = [
-        'article',
+        'post',
         'tag',
         'created_at'
     ]
     list_filter = ['tag', 'created_at']
-    search_fields = ['article__title', 'tag__name']
+    search_fields = ['post__title', 'tag__name']
     readonly_fields = ['created_at']

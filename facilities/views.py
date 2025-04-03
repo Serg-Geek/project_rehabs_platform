@@ -14,8 +14,14 @@ class ClinicListView(ListView):
     model = MedicalFacility
     template_name = 'facilities/clinic_list.html'
     context_object_name = 'clinics'
-    queryset = MedicalFacility.objects.filter(organization_type__slug='clinic')
     paginate_by = 12
+
+    def get_queryset(self):
+        queryset = MedicalFacility.objects.filter(organization_type__slug='clinic')
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
+        return queryset
 
 class RehabilitationCenterListView(ListView):
     model = MedicalFacility

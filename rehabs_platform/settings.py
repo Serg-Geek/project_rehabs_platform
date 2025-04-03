@@ -46,10 +46,8 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'facilities.apps.FacilitiesConfig',
     'staff.apps.StaffConfig',
-    'medical_services.apps.MedicalServicesConfig',
-    'requests.apps.RequestsConfig',
-    'content.apps.ContentConfig',
     'users.apps.UsersConfig',
+    'blog.apps.BlogConfig',
 ]
 
 MIDDLEWARE = [

@@ -28,4 +28,6 @@ urlpatterns = [
     path('', include('core.urls')),  # Добавляем URL-маршруты для главной страницы
     path('facilities/', include('facilities.urls')),  # Добавляем URL-маршруты для учреждений
     path('staff/', include('staff.urls')),  # Добавляем URL-маршруты для специалистов
+    path('users/', include('users.urls')),
+    path('blog/', include('blog.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
