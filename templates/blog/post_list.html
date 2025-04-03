@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if current_category %}{{ current_category.name }} - {% endif %}Полезная информация{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Полезная информация
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="catalog useful-info-catalog">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">Полезная информация</h2>
+        <div class="section__content useful-info-catalog__content">
+            <div class="section__content-text catalog__content-text useful-info-catalog">
+                <p>
+                    В нашем информационном центре вы найдете актуальную
+                    информацию по разным темам: о разных зависимостях,
+                    о том, как начать путь к выздоровлению и др. Здесь
+                    вы получите поддержку и знания для первого шага к
+                    новой жизни.
+                </p>
+            </div>
+            <div class="useful-info-catalog__tags">
+                <ul class="useful-info-catalog__list">
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'alcoholism' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/alcohol-icon.svg' %}"
+                                alt="Алкоголизм" />
+                            <span>Алкоголизм</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'drug-addiction' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/medicine-icon.svg' %}"
+                                alt="Наркомания" />
+                            <span>Наркомания</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'addictions' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/broken-heart-icon.svg' %}"
+                                alt="Зависимости" />
+                            <span>Зависимости</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'relatives' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/heart-icon.svg' %}"
+                                alt="Родственникам" />
+                            <span>Родственникам</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'resocialization' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/clients-icon.svg' %}"
+                                alt="Ресоциализация" />
+                            <span>Ресоциализация</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'psychology' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/psychologist-icon.svg' %}"
+                                alt="Психология" />
+                            <span>Психология</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'psychiatry' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/psychiatrist-icon.svg' %}"
+                                alt="Психиатрия" />
+                            <span>Психиатрия</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'legal' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/justice-hammer-icon.svg' %}"
+                                alt="Юридическая консультация" />
+                            <span>Юридическая консультация</span>
+                        </a>
+                    </li>
+                    <li class="useful-info-catalog__list-item">
+                        <a href="{% url 'blog:post_list_by_category' 'prevention' %}">
+                            <img src="{% static 'deps/icons/articles_tags_icons/hand-stop-icon.svg' %}"
+                                alt="Профилактика и предупреждение" />
+                            <span>Профилактика и предупреждение</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-filter">
+                <form action="{% url 'blog:post_list' %}" class="header__search" method="get">
+                    <input type="text" name="search" class="header__search-input" placeholder="Поиск..."
+                        value="{{ request.GET.search }}" />
+                    <button type="submit" class="header__search-button">
+                        <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
+                    </button>
+                </form>
+                <form id="filter-form" class="filter-section" method="get">
+                    <label for="category">Сортировать по</label>
+                    <select id="category" name="category" onchange="this.form.submit()">
+                        <option value="all" {% if not request.GET.category %}selected{% endif %}>всем категориям
+                        </option>
+                        {% for category in categories %}
+                        <option value="{{ category.slug }}" 
+                        {% if request.GET.category == category.slug %} 
+                        selected 
+                        {% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            <div class="useful-info__cards">
+                {% for post in posts %}
+                <div class="card card--info">
+                    <a href="{% url 'blog:post_detail' post.slug %}">
+                        <div class="card__image">
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" />
+                            {% else %}
+                            <img src="{% static 'deps/images/default-post.jpg' %}" alt="{{ post.title }}" />
+                            {% endif %}
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">{{ post.title }}</h3>
+                            <p class="card__description useful-info__card-description">
+                                {{ post.preview_text|truncatewords:30 }}
+                            </p>
+                            <div class="useful-info__tags">
+                                {% for post_tag in post.post_tags.all %}
+                                <a href="{% url 'blog:post_list_by_category' post_tag.tag.slug %}"
+                                    class="useful-info__tag">
+                                    {{ post_tag.tag.name }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="alert alert-info">
+                    Посты не найдены.
+                </div>
+                {% endfor %}
+            </div>
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">&laquo;</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="pagination__link pagination__link--active">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">&raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
