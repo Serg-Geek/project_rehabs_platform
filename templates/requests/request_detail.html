@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Заявка #{{ request.id }}{% endblock %}
+
+{% block content %}
+<section class="request-detail">
+    <div class="container">
+        <div class="request-header">
+            <h1 class="section-title">Заявка #{{ request.id }}</h1>
+            <div class="request-actions">
+                <a href="{% url 'requests:request_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+                <a href="{% url 'requests:request_edit' request.id %}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Редактировать
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Основная информация -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Основная информация</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Имя:</strong> {{ request.name }}</p>
+                                <p class="mb-1"><strong>Телефон:</strong> {{ request.phone }}</p>
+                                {% if request.email %}
+                                <p class="mb-1"><strong>Email:</strong> {{ request.email }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1">
+                                    <strong>Статус:</strong>
+                                    <span class="badge bg-{{ request.status|status_color }}">
+                                        {{ request.get_status_display }}
+                                    </span>
+                                </p>
+                                <p class="mb-1">
+                                    <strong>Приоритет:</strong>
+                                    <span class="badge bg-{{ request.priority|priority_color }}">
+                                        {{ request.get_priority_display }}
+                                    </span>
+                                </p>
+                                <p class="mb-1"><strong>Тип заявки:</strong> {{ request.get_request_type_display }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Предпочтительная услуга:</strong> {{ request.preferred_service
+                                    }}</p>
+                                <p class="mb-1"><strong>Предпочтительное учреждение:</strong> {{
+                                    request.preferred_facility }}</p>
+                                {% if request.preferred_contact_time %}
+                                <p class="mb-1"><strong>Предпочтительное время для связи:</strong> {{
+                                    request.preferred_contact_time }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {% if request.patient_name %}
+                                <p class="mb-1"><strong>Имя пациента:</strong> {{ request.patient_name }}</p>
+                                {% endif %}
+                                {% if request.patient_age %}
+                                <p class="mb-1"><strong>Возраст пациента:</strong> {{ request.patient_age }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if request.message %}
+                        <div class="mb-3">
+                            <strong>Сообщение:</strong>
+                            <p class="message-text">{{ request.message }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Создано:</strong> {{ request.created_at|date:"d.m.Y H:i" }}</p>
+                                <p class="mb-1"><strong>Обновлено:</strong> {{ request.updated_at|date:"d.m.Y H:i" }}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                {% if request.assigned_to %}
+                                <p class="mb-1"><strong>Назначено:</strong> {{
+                                    request.assigned_to.get_full_name|default:request.assigned_to.username }}</p>
+                                {% endif %}
+                                <p class="mb-1"><strong>Источник:</strong> {{ request.source }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Комиссия -->
+                {% if request.commission_amount or request.commission_received_date or request.commission_document %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Информация о комиссии</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% if request.commission_amount %}
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Сумма комиссии:</strong> {{ request.commission_amount }} ₽</p>
+                            </div>
+                            {% endif %}
+
+                            {% if request.commission_received_date %}
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Дата получения:</strong> {{
+                                    request.commission_received_date|date:"d.m.Y" }}</p>
+                            </div>
+                            {% endif %}
+
+                            {% if request.commission_document %}
+                            <div class="col-md-4">
+                                <p class="mb-1">
+                                    <strong>Документ:</strong>
+                                    <a href="{{ request.commission_document.url }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-download"></i> Скачать
+                                    </a>
+                                </p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Заметки -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h2 class="card-title">Заметки</h2>
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addNoteModal">
+                            <i class="fas fa-plus"></i> Добавить заметку
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        {% if notes %}
+                        <div class="notes-list">
+                            {% for note in notes %}
+                            <div class="note-item">
+                                <div class="note-header">
+                                    <span class="note-author">{{ note.author.get_full_name|default:note.author.username
+                                        }}</span>
+                                    <span class="note-date">{{ note.created_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                                <div class="note-content">
+                                    {{ note.content|linebreaks }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-center text-muted">Заметок пока нет</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Боковая панель -->
+            <div class="col-md-4">
+                <!-- История статусов -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">История статусов</h2>
+                    </div>
+                    <div class="card-body">
+                        {% if status_history %}
+                        <div class="timeline">
+                            {% for history in status_history %}
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="badge bg-{{ history.status|status_color }}">
+                                            {{ history.get_status_display }}
+                                        </span>
+                                        <span class="timeline-date">{{ history.changed_at|date:"d.m.Y H:i" }}</span>
+                                    </div>
+                                    {% if history.changed_by %}
+                                    <div class="timeline-author">
+                                        Изменено: {{
+                                        history.changed_by.get_full_name|default:history.changed_by.username }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-center text-muted">История статусов пуста</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Изменение статуса -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Изменить статус</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'requests:change_status' request.id %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Новый статус</label>
+                                <select name="status" id="status" class="form-select" required>
+                                    {% for status_value, status_label in status_choices %}
+                                    <option value="{{ status_value }}" {% if request.status==status_value %}selected{%
+                                        endif %}>
+                                        {{ status_label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Модальное окно для добавления заметки -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'requests:add_note' request.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNoteModalLabel">Добавить заметку</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Текст заметки</label>
+                        <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .request-detail {
+        padding: 40px 0;
+    }
+
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .request-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        padding: 15px 20px;
+    }
+
+    .card-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .message-text {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        white-space: pre-line;
+    }
+
+    .notes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .note-item {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+    }
+
+    .note-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .note-author {
+        font-weight: 500;
+    }
+
+    .note-date {
+        color: #6c757d;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #e9ecef;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -30px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #007bff;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px #007bff;
+    }
+
+    .timeline-content {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 4px;
+    }
+
+    .timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .timeline-date {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .timeline-author {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}

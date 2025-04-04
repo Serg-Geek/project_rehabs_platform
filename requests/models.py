@@ -3,103 +3,97 @@ from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
 from facilities.models import MedicalFacility
 from medical_services.models import Service
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 class AnonymousRequest(TimeStampedModel):
     """
     Анонимные заявки от пользователей
     """
     class RequestType(models.TextChoices):
-        CONSULTATION = 'consultation', _('Консультация')
-        TREATMENT = 'treatment', _('Лечение')
-        REHABILITATION = 'rehabilitation', _('Реабилитация')
-        QUESTION = 'question', _('Вопрос')
-        OTHER = 'other', _('Другое')
+        CONSULTATION = 'consultation', 'Консультация'
+        TREATMENT = 'treatment', 'Лечение'
+        REHABILITATION = 'rehabilitation', 'Реабилитация'
+        OTHER = 'other', 'Другое'
 
     class Status(models.TextChoices):
-        NEW = 'new', _('Новая')
-        IN_PROGRESS = 'in_progress', _('В обработке')
-        WAITING = 'waiting', _('Ожидает ответа')
-        COMPLETED = 'completed', _('Завершена')
-        CANCELLED = 'cancelled', _('Отменена')
+        NEW = 'new', 'Новая'
+        IN_PROGRESS = 'in_progress', 'В обработке'
+        WAITING_COMMISSION = 'waiting_commission', 'Ожидание комиссии'
+        COMMISSION_RECEIVED = 'commission_received', 'Комиссия получена'
+        TREATMENT_STARTED = 'treatment_started', 'Лечение начато (опционально)'
+        TREATMENT_COMPLETED = 'treatment_completed', 'Лечение завершено (опционально)'
+        CANCELLED = 'cancelled', 'Отменена'
+        CLOSED = 'closed', 'Закрыта'
 
-    request_type = models.CharField(
-        max_length=20,
-        choices=RequestType.choices,
-        verbose_name=_('Тип обращения')
-    )
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_('Имя')
-    )
-    phone = models.CharField(
-        max_length=20,
-        verbose_name=_('Телефон')
-    )
-    email = models.EmailField(
-        blank=True,
-        null=True,
-        verbose_name=_('Email')
-    )
-    message = models.TextField(
-        verbose_name=_('Сообщение')
-    )
-    patient_name = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Имя пациента')
-    )
-    patient_age = models.PositiveIntegerField(
-        blank=True,
-        null=True,
-        verbose_name=_('Возраст пациента')
-    )
-    preferred_contact_time = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Предпочтительное время для связи')
-    )
-    preferred_facility = models.ForeignKey(
-        MedicalFacility,
+    class Priority(models.TextChoices):
+        LOW = 'low', 'Низкий'
+        MEDIUM = 'medium', 'Средний'
+        HIGH = 'high', 'Высокий'
+        URGENT = 'urgent', 'Срочный'
+
+    request_type = models.CharField('Тип заявки', max_length=20, choices=RequestType.choices)
+    name = models.CharField('Имя', max_length=100)
+    phone = models.CharField('Телефон', max_length=20)
+    email = models.EmailField('Email', blank=True, null=True)
+    message = models.TextField('Сообщение')
+    patient_name = models.CharField('Имя пациента', max_length=100, blank=True, null=True)
+    patient_age = models.IntegerField('Возраст пациента', blank=True, null=True)
+    preferred_contact_time = models.CharField('Предпочтительное время для связи', max_length=100, blank=True, null=True)
+    preferred_facility = models.CharField('Предпочтительное учреждение', max_length=200, blank=True, null=True)
+    preferred_service = models.CharField('Предпочтительная услуга', max_length=200, blank=True, null=True)
+    status = models.CharField('Статус', max_length=20, choices=Status.choices, default=Status.NEW)
+    created_at = models.DateTimeField('Создано', auto_now_add=True)
+    updated_at = models.DateTimeField('Обновлено', auto_now=True)
+
+    # Новые поля для комиссии
+    commission_amount = models.DecimalField('Сумма комиссии', max_digits=10, decimal_places=2, blank=True, null=True)
+    commission_received_date = models.DateField('Дата получения комиссии', blank=True, null=True)
+    commission_document = models.FileField('Документ комиссии', upload_to='commissions/', blank=True, null=True)
+
+    # Поля для отслеживания пользователей
+    created_by = models.ForeignKey(
+        'auth.User',
+        verbose_name='Создано пользователем',
         on_delete=models.SET_NULL,
-        blank=True,
         null=True,
-        related_name='requests',
-        verbose_name=_('Предпочтительное учреждение')
+        related_name='created_requests'
     )
-    preferred_service = models.ForeignKey(
-        Service,
+    updated_by = models.ForeignKey(
+        'auth.User',
+        verbose_name='Обновлено пользователем',
         on_delete=models.SET_NULL,
-        blank=True,
         null=True,
-        related_name='requests',
-        verbose_name=_('Предпочтительная услуга')
+        related_name='updated_requests'
     )
-    status = models.CharField(
+    assigned_to = models.ForeignKey(
+        'auth.User',
+        verbose_name='Назначено',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_requests'
+    )
+
+    # Поле приоритета
+    priority = models.CharField(
+        'Приоритет',
         max_length=20,
-        choices=Status.choices,
-        default=Status.NEW,
-        verbose_name=_('Статус')
+        choices=Priority.choices,
+        default=Priority.MEDIUM
     )
 
     class Meta:
-        verbose_name = _('Анонимная заявка')
-        verbose_name_plural = _('Анонимные заявки')
+        verbose_name = 'Анонимная заявка'
+        verbose_name_plural = 'Анонимные заявки'
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name} - {self.get_request_type_display()}"
+        return f'Заявка #{self.id} - {self.name} - {self.get_request_type_display()} ({self.get_status_display()})'
 
     def save(self, *args, **kwargs):
-        if self.id:
-            old_instance = AnonymousRequest.objects.get(id=self.id)
-            if old_instance.status != self.status:
-                RequestStatusHistory.objects.create(
-                    request=self,
-                    old_status=old_instance.status,
-                    new_status=self.status
-                )
+        if self.status == self.Status.COMMISSION_RECEIVED and not self.commission_received_date:
+            self.commission_received_date = timezone.now().date()
         super().save(*args, **kwargs)
 
 class RequestNote(TimeStampedModel):
@@ -119,6 +113,13 @@ class RequestNote(TimeStampedModel):
         default=False,
         verbose_name=_('Важное')
     )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='request_notes',
+        verbose_name=_('Создано пользователем')
+    )
 
     class Meta:
         verbose_name = _('Заметка к заявке')
@@ -126,9 +127,9 @@ class RequestNote(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Заметка к заявке {self.request.name}"
+        return f"Заметка к заявке #{self.request.id} - {self.request.name}"
 
-class RequestStatusHistory(TimeStampedModel):
+class RequestStatusHistory(models.Model):
     """
     История изменений статуса заявки
     """
@@ -136,28 +137,62 @@ class RequestStatusHistory(TimeStampedModel):
         AnonymousRequest,
         on_delete=models.CASCADE,
         related_name='status_history',
-        verbose_name=_('Заявка')
+        verbose_name='Заявка'
     )
-    old_status = models.CharField(
-        max_length=20,
-        choices=AnonymousRequest.Status.choices,
-        verbose_name=_('Старый статус')
-    )
-    new_status = models.CharField(
-        max_length=20,
-        choices=AnonymousRequest.Status.choices,
-        verbose_name=_('Новый статус')
-    )
-    comment = models.TextField(
-        blank=True,
+    old_status = models.CharField('Старый статус', max_length=20, choices=AnonymousRequest.Status.choices)
+    new_status = models.CharField('Новый статус', max_length=20, choices=AnonymousRequest.Status.choices)
+    comment = models.TextField('Комментарий', blank=True, null=True)
+    changed_at = models.DateTimeField('Дата изменения', auto_now_add=True)
+    changed_by = models.ForeignKey(
+        'auth.User',
+        verbose_name='Изменено пользователем',
+        on_delete=models.SET_NULL,
         null=True,
-        verbose_name=_('Комментарий')
+        related_name='status_changes'
     )
 
     class Meta:
-        verbose_name = _('История статуса')
-        verbose_name_plural = _('История статусов')
+        verbose_name = 'История статусов'
+        verbose_name_plural = 'История статусов'
+        ordering = ['-changed_at']
+
+    def __str__(self):
+        return f'{self.request.name} - {self.old_status} -> {self.new_status}'
+
+class RequestActionLog(TimeStampedModel):
+    class Action(models.TextChoices):
+        CREATE = 'create', _('Создание')
+        UPDATE = 'update', _('Обновление')
+        STATUS_CHANGE = 'status_change', _('Изменение статуса')
+        COMMISSION = 'commission', _('Работа с комиссией')
+        NOTE = 'note', _('Добавление заметки')
+        ASSIGN = 'assign', _('Назначение')
+        OTHER = 'other', _('Другое')
+
+    request = models.ForeignKey(
+        AnonymousRequest,
+        on_delete=models.CASCADE,
+        related_name='action_logs',
+        verbose_name=_('Заявка')
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='request_actions',
+        verbose_name=_('Пользователь')
+    )
+    action = models.CharField(
+        max_length=20,
+        choices=Action.choices,
+        verbose_name=_('Действие')
+    )
+    details = models.TextField(verbose_name=_('Детали'))
+
+    class Meta:
+        verbose_name = _('Лог действий')
+        verbose_name_plural = _('Логи действий')
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.request.name} - {self.get_old_status_display()} -> {self.get_new_status_display()}"
+        return f"{self.get_action_display()} - {self.request.name}"

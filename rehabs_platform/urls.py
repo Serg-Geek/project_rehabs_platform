@@ -30,4 +30,5 @@ urlpatterns = [
     path('staff/', include('staff.urls')),  # Добавляем URL-маршруты для специалистов
     path('users/', include('users.urls')),
     path('blog/', include('blog.urls')),
+    path('requests/', include('requests.urls')),  # Добавляем URL-маршруты для заявок
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

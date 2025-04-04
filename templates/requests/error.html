@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ошибка отправки заявки{% endblock %}
+
+{% block content %}
+<section class="error-page">
+    <div class="container">
+        <div class="error-page__content">
+            <div class="error-page__icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h1 class="error-page__title">Произошла ошибка</h1>
+            <p class="error-page__text">
+                К сожалению, при отправке заявки произошла ошибка. Пожалуйста, попробуйте отправить заявку еще раз или
+                свяжитесь с нами по телефону.
+            </p>
+            {% if error_message %}
+            <div class="error-page__details">
+                <p class="error-page__error">{{ error_message }}</p>
+            </div>
+            {% endif %}
+            <div class="error-page__actions">
+                <a href="javascript:history.back()" class="rehab-btn">Вернуться назад</a>
+                <a href="tel:+78000000000" class="rehab-btn rehab-btn--outline">Позвонить нам</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .error-page {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .error-page__content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .error-page__icon {
+        font-size: 80px;
+        color: #dc3545;
+        margin-bottom: 30px;
+    }
+
+    .error-page__title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .error-page__text {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .error-page__details {
+        background: #fff3f3;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+    }
+
+    .error-page__error {
+        color: #dc3545;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .error-page__actions {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .rehab-btn--outline {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .rehab-btn--outline:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+</style>
+{% endblock %}

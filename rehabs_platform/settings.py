@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'staff.apps.StaffConfig',
     'users.apps.UsersConfig',
     'blog.apps.BlogConfig',
+    'requests.apps.RequestsConfig',
+    'medical_services.apps.MedicalServicesConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Заявка отправлена{% endblock %}
+
+{% block content %}
+<section class="success-page">
+    <div class="container">
+        <div class="success-page__content">
+            <div class="success-page__icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="success-page__title">Спасибо за вашу заявку!</h1>
+            <p class="success-page__text">
+                Ваша заявка успешно отправлена. Наш специалист свяжется с вами в ближайшее время для уточнения деталей.
+            </p>
+            <div class="success-page__actions">
+                <a href="{% url 'core:home' %}" class="rehab-btn">Вернуться на главную</a>
+                <a href="{% url 'facilities:rehabilitation_list' %}" class="rehab-btn rehab-btn--outline">Посмотреть
+                    центры реабилитации</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .success-page {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .success-page__content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .success-page__icon {
+        font-size: 80px;
+        color: #28a745;
+        margin-bottom: 30px;
+    }
+
+    .success-page__title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .success-page__text {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+
+    .success-page__actions {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .rehab-btn--outline {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .rehab-btn--outline:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+</style>
+{% endblock %}
