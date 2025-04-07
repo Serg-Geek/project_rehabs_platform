@@ -3,6 +3,7 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
 from .models import AnonymousRequest
 
 # Create your views here.
@@ -38,10 +39,29 @@ class ConsultationRequestView(CreateView):
             else:
                 form.instance.preferred_service = 'Консультация'  # Значение по умолчанию
             
+            # Сохраняем форму
             response = super().form_valid(form)
+            
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'request_number': form.instance.id,
+                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу успеха
             messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
             return redirect('requests:success')
         except Exception as e:
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
             messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
             return redirect('requests:error', error_message=str(e))
 
@@ -50,6 +70,15 @@ class ConsultationRequestView(CreateView):
         for field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(f'Ошибка в поле {field}: {error}')
+        
+        # Проверяем, является ли запрос AJAX-запросом
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'error': '\n'.join(error_messages)
+            })
+        
+        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
         return redirect('requests:error', error_message='\n'.join(error_messages))
 
 def success_view(request):

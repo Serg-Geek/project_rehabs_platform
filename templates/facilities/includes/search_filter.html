@@ -28,9 +28,9 @@
                 <div class="custom-select__option" data-value="programs">программам</div>
             </div>
             <select id="category" name="sort" style="display: none;">
-                <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
-                <option value="profile" {% if request.GET.sort == 'profile' %}selected{% endif %}>профилю</option>
-                <option value="programs" {% if request.GET.sort == 'programs' %}selected{% endif %}>программам</option>
+                <option value="region" {% if request.GET.sort=='region' %}selected{% endif %}>региону</option>
+                <option value="profile" {% if request.GET.sort=='profile' %}selected{% endif %}>профилю</option>
+                <option value="programs" {% if request.GET.sort=='programs' %}selected{% endif %}>программам</option>
             </select>
         </div>
     </form>
