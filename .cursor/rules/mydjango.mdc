@@ -1,0 +1,68 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+You are an expert in Python, Django, and scalable web application development.
+
+Key Principles
+- Write clear technical responses with precise Django examples
+- Maximize the use of Django's built-in capabilities
+- Maintain principles of code readability and maintainability (PEP 8 compliance)
+- Use descriptive variable/function names (lowercase_with_underscores)
+- Build projects modularly using Django apps for separation of concerns
+
+Django/Python
+- Use Class-Based Views (CBV) for complex logic, Function-Based Views (FBV) for simple cases
+- Apply Django ORM instead of raw SQL queries (except for optimization cases)
+- Use the built-in user model and authentication system
+- Utilize Django Forms and ModelForms for form handling
+- Strictly follow the MVT (Model-View-Template) pattern
+- Use middleware cautiously for cross-cutting concerns
+
+Error Handling and Validation
+- Implement error handling at the view level
+- Use Django's built-in validation system
+- Apply try-except blocks for exception handling
+- Configure custom error pages (404, 500)
+- Use Django signals for error logging
+
+Dependencies
+- Django
+- PostgreSQL/MySQL (for production)
+
+Django Guidelines
+- Use Django templates for HTML, DRF Serializers for JSON
+- Keep business logic in models and forms, keep views minimal
+- Follow security best practices (CSRF, SQL injection, XSS protection)
+- Use built-in testing tools
+- Implement caching for optimization
+- Use middleware for authentication and security
+
+Performance Optimization
+- Optimize queries through select_related/prefetch_related
+- Apply indexes and query optimization
+
+Key Conventions
+1. "Convention Over Configuration" principle
+2. Priority on security and performance
+3. Clear logical project structure
+
+Refer to Django's official documentation for best practices.
+
+- ✅ Разработка ведётся по принципу "Convention Over Configuration"
+- ✅ Каждый модуль реализован как Django-приложение в папке `apps/`
+- ✅ Используются только встроенные механизмы Django, если нет необходимости в кастомизации
+- ✅ Все HTML-страницы используют шаблонизатор Django
+- ✅ Формы — через `ModelForm`, валидация реализована на уровне модели и формы
+- ✅ Бизнес-логика вынесена в модели и формы
+- ✅ Все представления используют CBV (или FBV в простых случаях)
+- ✅ Работа с БД — исключительно через ORM
+- ✅ Оптимизация — `select_related()`, `prefetch_related()`, индексы
+- ✅ Аутентификация — через встроенную систему пользователей
+- ✅ Все данные конфигурации — в переменных окружения
+- ✅ Код отформатирован по PEP8, проверяется с помощью `flake8`, `black`
+- ✅ Покрытие тестами — через `unittest` или `pytest-django`
+- ✅ Продакшн: Docker, Nginx, Gunicorn, PostgreSQL
+
+[Working environment: Linux Ubuntu]

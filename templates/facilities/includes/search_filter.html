@@ -10,10 +10,28 @@
     </form>
     <form id="filter-form" class="filter-section" method="get" action="{% url 'facilities:rehabilitation_list' %}">
         <label for="category">Сортировать по</label>
-        <select id="category" name="sort" onchange="this.form.submit()">
-            <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
-            <option value="profile" {% if request.GET.sort == 'profile' %}selected{% endif %}>профилю</option>
-            <option value="programs" {% if request.GET.sort == 'programs' %}selected{% endif %}>программам</option>
-        </select>
+        <div class="custom-select">
+            <div class="custom-select__selected">
+                {% if request.GET.sort == 'region' %}
+                региону
+                {% elif request.GET.sort == 'profile' %}
+                профилю
+                {% elif request.GET.sort == 'programs' %}
+                программам
+                {% else %}
+                региону
+                {% endif %}
+            </div>
+            <div class="custom-select__options">
+                <div class="custom-select__option" data-value="region">региону</div>
+                <div class="custom-select__option" data-value="profile">профилю</div>
+                <div class="custom-select__option" data-value="programs">программам</div>
+            </div>
+            <select id="category" name="sort" style="display: none;">
+                <option value="region" {% if request.GET.sort == 'region' %}selected{% endif %}>региону</option>
+                <option value="profile" {% if request.GET.sort == 'profile' %}selected{% endif %}>профилю</option>
+                <option value="programs" {% if request.GET.sort == 'programs' %}selected{% endif %}>программам</option>
+            </select>
+        </div>
     </form>
 </div>

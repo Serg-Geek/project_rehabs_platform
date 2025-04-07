@@ -8,11 +8,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const categorySelect = document.getElementById("category");
 
     let lastScrollTop = 0;
+    let isScrolling = false;
 
-    // Скрытие навбара при скролле вниз
-    window.addEventListener("scroll", () => {
-        const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
+    // Функция debounce для оптимизации обработчика скролла
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Функция переключения мобильной версии
+    function toggleMobileVersion() {
+        const isMobile = window.innerWidth <= 841;
+        if (navbar) {
+            navbar.style.display = isMobile ? 'none' : 'flex';
+        }
+        if (navbarMobile) {
+            navbarMobile.style.display = isMobile ? 'block' : 'none';
+        }
+        if (menu) {
+            menu.style.display = isMobile ? 'none' : 'flex';
+        }
+    }
+
+    // Обработчик скролла
+    const handleScroll = debounce(() => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         // Управление фиксированным состоянием .navbar__mobile
         if (navbarMobile) {
@@ -25,10 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Управление скрытием/показом основного навбара
         if (navbar) {
-            navbar.style.transform =
-                scrollTop > lastScrollTop
-                    ? "translateY(-100%)"
-                    : "translateY(0)";
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.style.transform = "translateY(-100%)";
+                navbar.style.opacity = "0";
+            } else {
+                navbar.style.transform = "translateY(0)";
+                navbar.style.opacity = "1";
+            }
         }
 
         // Фиксация меню при скроле вниз
@@ -41,28 +71,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         lastScrollTop = Math.max(0, scrollTop);
-    });
+    }, 100);
 
     // Функция закрытия меню
     function closeMenu() {
-        burgerMenu.classList.remove("active");
-        dropdownMenu.classList.remove("active");
+        if (burgerMenu && dropdownMenu) {
+            burgerMenu.classList.remove("active");
+            dropdownMenu.classList.remove("active");
+            document.body.style.overflow = "";
+        }
     }
 
     // Открытие/закрытие бургер-меню
-    burgerMenu.addEventListener("click", (event) => {
-        burgerMenu.classList.toggle("active");
-        dropdownMenu.classList.toggle("active");
-        event.stopPropagation(); // Остановить всплытие, чтобы не закрывать меню сразу
-    });
+    if (burgerMenu && dropdownMenu) {
+        burgerMenu.addEventListener("click", (event) => {
+            burgerMenu.classList.toggle("active");
+            dropdownMenu.classList.toggle("active");
+            document.body.style.overflow = dropdownMenu.classList.contains("active") ? "hidden" : "";
+            event.stopPropagation();
+        });
+    }
 
     // Закрытие при клике на пустое место
     document.addEventListener("click", (event) => {
-        if (
-            !dropdownMenu.contains(event.target) &&
-            !burgerMenu.contains(event.target)
-        ) {
-            closeMenu();
+        if (dropdownMenu && burgerMenu) {
+            if (!dropdownMenu.contains(event.target) && !burgerMenu.contains(event.target)) {
+                closeMenu();
+            }
         }
     });
 
@@ -72,6 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
             closeMenu();
         }
     });
+
+    // Инициализация при загрузке
+    toggleMobileVersion();
+    window.addEventListener("resize", toggleMobileVersion);
+    window.addEventListener("scroll", handleScroll);
+    initCustomSelect();
 
     // Отслеживаем изменение значения в <select>
     if (categorySelect) {
@@ -158,4 +199,73 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
         }
     );
+
+    // Функция инициализации кастомного селекта
+    function initCustomSelect() {
+        console.log('Инициализация кастомного селекта');
+        const customSelect = document.querySelector('.custom-select');
+        if (!customSelect) {
+            console.log('Кастомный селект не найден');
+            return;
+        }
+        console.log('Кастомный селект найден');
+
+        const selected = customSelect.querySelector('.custom-select__selected');
+        const options = customSelect.querySelector('.custom-select__options');
+        const select = document.querySelector('#category');
+
+        if (!selected || !options || !select) {
+            console.log('Не найдены необходимые элементы селекта');
+            return;
+        }
+        console.log('Все элементы селекта найдены');
+
+        // Открытие/закрытие выпадающего списка
+        selected.addEventListener('click', function (e) {
+            console.log('Клик по выбранному элементу');
+            e.stopPropagation();
+            customSelect.classList.toggle('active');
+            options.classList.toggle('active');
+        });
+
+        // Выбор опции
+        options.querySelectorAll('.custom-select__option').forEach(option => {
+            option.addEventListener('click', function (e) {
+                console.log('Клик по опции');
+                e.stopPropagation();
+                const value = this.dataset.value;
+                const text = this.textContent;
+
+                // Обновляем текст выбранной опции
+                selected.textContent = text;
+
+                // Обновляем значение скрытого select
+                select.value = value;
+
+                // Закрываем выпадающий список
+                customSelect.classList.remove('active');
+                options.classList.remove('active');
+
+                // Отправляем форму
+                filterForm.submit();
+            });
+        });
+
+        // Закрытие при клике вне селекта
+        document.addEventListener('click', function (e) {
+            if (!customSelect.contains(e.target)) {
+                customSelect.classList.remove('active');
+                options.classList.remove('active');
+            }
+        });
+
+        // Установка начального значения
+        if (select.value) {
+            const option = options.querySelector(`[data-value="${select.value}"]`);
+            if (option) {
+                selected.textContent = option.textContent;
+            }
+        }
+    }
 });
+
