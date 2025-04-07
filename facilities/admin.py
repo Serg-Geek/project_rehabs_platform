@@ -7,6 +7,7 @@ from .models import (
     FacilityImage,
     FacilityDocument
 )
+from staff.models import FacilitySpecialist
 from django.utils.translation import gettext_lazy as _
 
 class FacilityImageInline(GenericTabularInline):
@@ -27,9 +28,12 @@ class FacilityDocumentInline(GenericTabularInline):
     verbose_name = _('Документ')
     verbose_name_plural = _('Документы')
 
-class RehabCenterSpecialistInline(admin.TabularInline):
-    model = RehabCenter.specialists.through
+class FacilitySpecialistInline(GenericTabularInline):
+    model = FacilitySpecialist
+    ct_field = 'content_type'
+    ct_fk_field = 'object_id'
     extra = 1
+    fields = ['first_name', 'last_name', 'middle_name', 'position', 'schedule', 'specializations', 'experience_years', 'is_active']
     verbose_name = _('Специалист')
     verbose_name_plural = _('Специалисты')
 
@@ -51,7 +55,7 @@ class BaseFacilityAdmin(admin.ModelAdmin):
     list_filter = ['organization_type', 'city__region', 'city', 'is_active']
     search_fields = ['name', 'description', 'address']
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [FacilityImageInline, FacilityDocumentInline]
+    inlines = [FacilityImageInline, FacilityDocumentInline, FacilitySpecialistInline]
 
 @admin.register(Clinic)
 class ClinicAdmin(BaseFacilityAdmin):
@@ -62,8 +66,6 @@ class ClinicAdmin(BaseFacilityAdmin):
 class RehabCenterAdmin(BaseFacilityAdmin):
     list_display = BaseFacilityAdmin.list_display + ['capacity', 'program_duration']
     list_filter = BaseFacilityAdmin.list_filter
-    inlines = BaseFacilityAdmin.inlines + [RehabCenterSpecialistInline]
-    exclude = ['specialists']  # Исключаем поле specialists, так как оно будет управляться через вложенную модель
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):

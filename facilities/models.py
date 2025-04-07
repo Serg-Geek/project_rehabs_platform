@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel, City
 from django.urls import reverse
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.db.models import Q
@@ -135,11 +135,12 @@ class Clinic(AbstractMedicalFacility):
         default=False,
         verbose_name=_('Стационар')
     )
-    specialists = models.ManyToManyField(
+    specialists = GenericRelation(
         'staff.FacilitySpecialist',
-        related_name='clinic_facilities',
-        verbose_name=_('Специалисты'),
-        blank=True
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='clinic',
+        verbose_name=_('Специалисты')
     )
 
     class Meta:
@@ -164,11 +165,12 @@ class RehabCenter(AbstractMedicalFacility):
         blank=True,
         null=True
     )
-    specialists = models.ManyToManyField(
+    specialists = GenericRelation(
         'staff.FacilitySpecialist',
-        related_name='rehab_facilities',
-        verbose_name=_('Специалисты'),
-        blank=True
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='rehab_center',
+        verbose_name=_('Специалисты')
     )
     address = models.TextField(
         verbose_name=_('Адрес'),

@@ -153,35 +153,6 @@ class FacilitySpecialist(MedicalSpecialist):
         verbose_name = _('Специалист учреждения')
         verbose_name_plural = _('Специалисты учреждений')
 
-class PrivateSpecialist(MedicalSpecialist):
-    """
-    Частнопрактикующий специалист
-    """
-    consultation_address = models.TextField(
-        verbose_name=_('Адрес приёма')
-    )
-    consultation_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name=_('Стоимость консультации')
-    )
-    available_online = models.BooleanField(
-        default=False,
-        verbose_name=_('Доступны онлайн-консультации')
-    )
-    license_number = models.CharField(
-        max_length=50,
-        verbose_name=_('Номер лицензии')
-    )
-    regions_of_work = models.ManyToManyField(
-        'core.Region',
-        verbose_name=_('Регионы работы')
-    )
-
-    class Meta:
-        verbose_name = _('Частный специалист')
-        verbose_name_plural = _('Частные специалисты')
-
 class SpecialistDocument(TimeStampedModel):
     """
     Документы специалистов

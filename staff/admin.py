@@ -1,8 +1,8 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import (
-    MedicalSpecialist,
     FacilitySpecialist,
-    PrivateSpecialist,
     Specialization,
     SpecialistDocument
 )
@@ -12,69 +12,31 @@ class SpecializationAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ['name', 'description']
 
-@admin.register(MedicalSpecialist)
-class MedicalSpecialistAdmin(admin.ModelAdmin):
-    list_display = [
-        'get_full_name',
-        'experience_years',
-        'is_active'
-    ]
-    list_filter = [
-        'is_active',
-        'specializations',
-        'experience_years'
-    ]
-    search_fields = [
-        'last_name',
-        'first_name',
-        'middle_name',
-        'biography'
-    ]
-    filter_horizontal = ['specializations']
-    exclude = ['slug']
-
 @admin.register(FacilitySpecialist)
 class FacilitySpecialistAdmin(admin.ModelAdmin):
     list_display = [
         'get_full_name',
-        'facility',
         'position',
+        'get_facility_name',
         'is_active'
     ]
     list_filter = [
         'is_active',
-        'facility',
-        'position'
+        'position',
+        'content_type'
     ]
     search_fields = [
         'last_name',
         'first_name',
         'middle_name',
-        'facility__name',
         'position'
     ]
-
-@admin.register(PrivateSpecialist)
-class PrivateSpecialistAdmin(admin.ModelAdmin):
-    list_display = [
-        'get_full_name',
-        'consultation_price',
-        'available_online',
-        'is_active'
-    ]
-    list_filter = [
-        'is_active',
-        'available_online',
-        'regions_of_work'
-    ]
-    search_fields = [
-        'last_name',
-        'first_name',
-        'middle_name',
-        'consultation_address',
-        'license_number'
-    ]
-    filter_horizontal = ['regions_of_work']
+    filter_horizontal = ['specializations']
+    exclude = ['slug']
+    
+    def get_facility_name(self, obj):
+        return str(obj.facility) if obj.facility else '-'
+    get_facility_name.short_description = 'Учреждение'
 
 @admin.register(SpecialistDocument)
 class SpecialistDocumentAdmin(admin.ModelAdmin):
