@@ -1,0 +1,51 @@
+[
+    {
+        "model": "medical_services.facilityservice",
+        "pk": 1,
+        "fields": {
+            "content_type": 1,
+            "object_id": 1,
+            "service": 1,
+            "specialists": [
+                1,
+                2
+            ],
+            "price": "2000.00",
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.facilityservice",
+        "pk": 2,
+        "fields": {
+            "content_type": 1,
+            "object_id": 1,
+            "service": 2,
+            "specialists": [
+                1
+            ],
+            "price": "1500.00",
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.facilityservice",
+        "pk": 3,
+        "fields": {
+            "content_type": 2,
+            "object_id": 1,
+            "service": 3,
+            "specialists": [
+                3
+            ],
+            "price": "1000.00",
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    }
+]
