@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -262,6 +263,22 @@ class ContentCategory(TimeStampedModel):
 
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Формируем базовый слаг из названия
+            base_slug = slugify(self.name)
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while ContentCategory.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
 
 class Article(TimeStampedModel):
     """
@@ -325,6 +342,22 @@ class Article(TimeStampedModel):
 
     def __str__(self):
         return self.title
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Формируем базовый слаг из заголовка
+            base_slug = slugify(self.title)
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while Article.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
 
 class ArticleImage(TimeStampedModel):
     """

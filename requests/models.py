@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
-from facilities.models import MedicalFacility
 from medical_services.models import Service
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class AnonymousRequest(TimeStampedModel):
     """
@@ -40,7 +41,22 @@ class AnonymousRequest(TimeStampedModel):
     patient_name = models.CharField('Имя пациента', max_length=100, blank=True, null=True)
     patient_age = models.IntegerField('Возраст пациента', blank=True, null=True)
     preferred_contact_time = models.CharField('Предпочтительное время для связи', max_length=100, blank=True, null=True)
-    preferred_facility = models.CharField('Предпочтительное учреждение', max_length=200, blank=True, null=True)
+    
+    # Изменяем поле preferred_facility на GenericForeignKey для поддержки разных типов учреждений
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('Тип контента')
+    )
+    object_id = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('ID объекта')
+    )
+    preferred_facility = GenericForeignKey('content_type', 'object_id')
+    
     preferred_service = models.CharField('Предпочтительная услуга', max_length=200, blank=True, null=True)
     status = models.CharField('Статус', max_length=20, choices=Status.choices, default=Status.NEW)
     created_at = models.DateTimeField('Создано', auto_now_add=True)

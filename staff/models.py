@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.utils.text import slugify
+from django.db.models import Q
 
 class Specialization(TimeStampedModel):
     """
@@ -25,6 +29,22 @@ class Specialization(TimeStampedModel):
 
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Формируем базовый слаг из названия
+            base_slug = slugify(self.name)
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while Specialization.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
 
 class MedicalSpecialist(TimeStampedModel):
     """
@@ -46,7 +66,8 @@ class MedicalSpecialist(TimeStampedModel):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name=_('Slug')
+        verbose_name=_('Slug'),
+        blank=True
     )
     specializations = models.ManyToManyField(
         Specialization,
@@ -89,16 +110,37 @@ class MedicalSpecialist(TimeStampedModel):
         if self.middle_name:
             return f"{self.last_name} {self.first_name} {self.middle_name}"
         return f"{self.last_name} {self.first_name}"
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Формируем базовый слаг из фамилии и имени
+            base_slug = slugify(f"{self.last_name}-{self.first_name}")
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while MedicalSpecialist.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
 
 class FacilitySpecialist(MedicalSpecialist):
     """
     Специалист, работающий в медицинском учреждении
     """
-    facility = models.ForeignKey(
-        'facilities.MedicalFacility',
+    content_type = models.ForeignKey(
+        ContentType,
         on_delete=models.CASCADE,
-        verbose_name=_('Медицинское учреждение')
+        verbose_name=_('Тип контента')
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
+    
     position = models.CharField(
         max_length=100,
         verbose_name=_('Должность')

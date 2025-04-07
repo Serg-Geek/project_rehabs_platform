@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel, City
 from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.utils.text import slugify
+from django.db.models import Q
 
 class OrganizationType(TimeStampedModel):
     """
@@ -30,9 +34,9 @@ class OrganizationType(TimeStampedModel):
     def __str__(self):
         return self.name
 
-class MedicalFacility(TimeStampedModel):
+class AbstractMedicalFacility(TimeStampedModel):
     """
-    Базовая модель для всех медицинских учреждений
+    Абстрактная базовая модель для всех медицинских учреждений
     """
     name = models.CharField(
         max_length=200,
@@ -48,17 +52,23 @@ class MedicalFacility(TimeStampedModel):
         verbose_name=_('Тип организации')
     )
     description = models.TextField(
-        verbose_name=_('Описание')
+        verbose_name=_('Описание'),
+        default=''
     )
     address = models.TextField(
-        verbose_name=_('Адрес')
+        verbose_name=_('Адрес'),
+        default=''
     )
     phone = models.CharField(
         max_length=20,
-        verbose_name=_('Телефон')
+        verbose_name=_('Телефон'),
+        default=''
     )
     email = models.EmailField(
-        verbose_name=_('Email')
+        verbose_name=_('Email'),
+        default='',
+        blank=True,
+        null=True
     )
     website = models.URLField(
         blank=True,
@@ -67,7 +77,10 @@ class MedicalFacility(TimeStampedModel):
     )
     license_number = models.CharField(
         max_length=50,
-        verbose_name=_('Номер лицензии')
+        verbose_name=_('Номер лицензии'),
+        default='',
+        blank=True,
+        null=True
     )
     is_active = models.BooleanField(
         default=True,
@@ -76,15 +89,13 @@ class MedicalFacility(TimeStampedModel):
     city = models.ForeignKey(
         City,
         on_delete=models.PROTECT,
-        verbose_name=_('Город')
-    )
-    specialists = models.ManyToManyField(
-        'staff.FacilitySpecialist',
-        related_name='facilities',
-        verbose_name=_('Специалисты')
+        verbose_name=_('Город'),
+        null=True,
+        blank=True
     )
 
     class Meta:
+        abstract = True
         verbose_name = _('Медицинское учреждение')
         verbose_name_plural = _('Медицинские учреждения')
         ordering = ['name']
@@ -96,7 +107,23 @@ class MedicalFacility(TimeStampedModel):
     def __str__(self):
         return f"{self.name} ({self.organization_type.name})"
 
-class Clinic(MedicalFacility):
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Формируем базовый слаг из названия
+            base_slug = slugify(self.name)
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while self.__class__.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
+
+class Clinic(AbstractMedicalFacility):
     """
     Модель клиники с специфическими полями
     """
@@ -108,24 +135,57 @@ class Clinic(MedicalFacility):
         default=False,
         verbose_name=_('Стационар')
     )
+    specialists = models.ManyToManyField(
+        'staff.FacilitySpecialist',
+        related_name='clinic_facilities',
+        verbose_name=_('Специалисты'),
+        blank=True
+    )
 
     class Meta:
         verbose_name = _('Клиника')
         verbose_name_plural = _('Клиники')
 
-class RehabCenter(MedicalFacility):
+class RehabCenter(AbstractMedicalFacility):
     """
     Модель реабилитационного центра с специфическими полями
     """
     capacity = models.IntegerField(
-        verbose_name=_('Вместимость')
+        verbose_name=_('Вместимость'),
+        default=0
     )
     program_duration = models.IntegerField(
-        verbose_name=_('Длительность программы (дней)')
+        verbose_name=_('Длительность программы (дней)'),
+        default=0
     )
     accommodation_conditions = models.TextField(
-        verbose_name=_('Условия проживания')
+        verbose_name=_('Условия проживания'),
+        default='',
+        blank=True,
+        null=True
     )
+    specialists = models.ManyToManyField(
+        'staff.FacilitySpecialist',
+        related_name='rehab_facilities',
+        verbose_name=_('Специалисты'),
+        blank=True
+    )
+    address = models.TextField(
+        verbose_name=_('Адрес'),
+        default=''
+    )
+    phone = models.CharField(
+        max_length=20,
+        verbose_name=_('Телефон'),
+        default=''
+    )
+    email = models.EmailField(
+        verbose_name=_('Email'),
+        default='',
+        blank=True,
+        null=True
+    )
+    license_number = None  # Переопределяем поле, чтобы оно не отображалось в админке
 
     class Meta:
         verbose_name = _('Реабилитационный центр')
@@ -135,12 +195,16 @@ class Review(TimeStampedModel):
     """
     Модель отзыва о медицинском учреждении
     """
-    facility = models.ForeignKey(
-        MedicalFacility,
+    content_type = models.ForeignKey(
+        'contenttypes.ContentType',
         on_delete=models.CASCADE,
-        related_name='reviews',
-        verbose_name=_('Учреждение')
+        verbose_name=_('Тип контента')
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
+    
     rating = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 6)],
         verbose_name=_('Оценка')
@@ -155,7 +219,7 @@ class Review(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Отзыв о {self.facility.name} ({self.rating} звезд)"
+        return f"Отзыв о {self.facility} ({self.rating} звезд)"
 
 class FacilityImage(TimeStampedModel):
     """
@@ -168,12 +232,16 @@ class FacilityImage(TimeStampedModel):
         EQUIPMENT = 'equipment', _('Оборудование')
         OTHER = 'other', _('Другое')
 
-    facility = models.ForeignKey(
-        MedicalFacility,
+    content_type = models.ForeignKey(
+        'contenttypes.ContentType',
         on_delete=models.CASCADE,
-        related_name='images',
-        verbose_name=_('Учреждение')
+        verbose_name=_('Тип контента')
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
+    
     image = models.ImageField(
         upload_to='facilities/',
         verbose_name=_('Изображение')
@@ -202,12 +270,12 @@ class FacilityImage(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _('Фото учреждения')
-        verbose_name_plural = _('Фото учреждений')
-        ordering = ['order', '-created_at']
+        verbose_name = _('Изображение учреждения')
+        verbose_name_plural = _('Изображения учреждений')
+        ordering = ['order', 'created_at']
 
     def __str__(self):
-        return f"{self.facility.name} - {self.get_image_type_display()}"
+        return f"{self.facility} - {self.title}"
 
 class FacilityDocument(TimeStampedModel):
     """
@@ -220,12 +288,16 @@ class FacilityDocument(TimeStampedModel):
         INSURANCE = 'insurance', _('Страховка')
         OTHER = 'other', _('Другое')
 
-    facility = models.ForeignKey(
-        MedicalFacility,
+    content_type = models.ForeignKey(
+        'contenttypes.ContentType',
         on_delete=models.CASCADE,
-        related_name='documents',
-        verbose_name=_('Учреждение')
+        verbose_name=_('Тип контента')
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
+    
     document_type = models.CharField(
         max_length=20,
         choices=DocumentType.choices,
@@ -264,4 +336,4 @@ class FacilityDocument(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.facility.name} - {self.get_document_type_display()}"
+        return f"{self.facility} - {self.get_document_type_display()}"

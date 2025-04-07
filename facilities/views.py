@@ -1,52 +1,64 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .models import MedicalFacility
+from django.db.models import Q
+from .models import Clinic, RehabCenter
 
 # Create your views here.
 
 class FacilityListView(ListView):
-    model = MedicalFacility
     template_name = 'facilities/facility_list.html'
     context_object_name = 'facilities'
     paginate_by = 12
 
+    def get_queryset(self):
+        # Объединяем клиники и реабилитационные центры
+        clinics = Clinic.objects.all()
+        rehab_centers = RehabCenter.objects.all()
+        return list(clinics) + list(rehab_centers)
+
 class ClinicListView(ListView):
-    model = MedicalFacility
+    model = Clinic
     template_name = 'facilities/clinic_list.html'
     context_object_name = 'clinics'
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = MedicalFacility.objects.filter(organization_type__slug='clinic')
+        queryset = Clinic.objects.all()
         search_query = self.request.GET.get('search')
         if search_query:
             queryset = queryset.filter(name__icontains=search_query)
         return queryset
 
 class RehabilitationCenterListView(ListView):
-    model = MedicalFacility
+    model = RehabCenter
     template_name = 'facilities/rehabilitation_list.html'
     context_object_name = 'rehabilitation_centers'
-    queryset = MedicalFacility.objects.filter(organization_type__slug='rehabilitation')
     paginate_by = 12
 
-class SanatoriumListView(ListView):
-    model = MedicalFacility
-    template_name = 'facilities/sanatorium_list.html'
-    context_object_name = 'sanatoriums'
-    queryset = MedicalFacility.objects.filter(organization_type__slug='sanatorium')
-    paginate_by = 12
+    def get_queryset(self):
+        return RehabCenter.objects.all()
 
 class FacilityDetailView(DetailView):
-    model = MedicalFacility
     template_name = 'facilities/facility_detail.html'
     context_object_name = 'facility'
+
+    def get_model(self):
+        # Определяем модель на основе типа учреждения
+        facility_type = self.kwargs.get('facility_type')
+        if facility_type == 'clinic':
+            return Clinic
+        elif facility_type == 'rehab':
+            return RehabCenter
+        raise ValueError("Invalid facility type")
+
+    def get_queryset(self):
+        return self.get_model().objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Получаем связанные учреждения того же типа в том же регионе
-        context['related_facilities'] = MedicalFacility.objects.filter(
-            organization_type=self.object.organization_type,
+        model = self.get_model()
+        context['related_facilities'] = model.objects.filter(
             city__region=self.object.city.region
         ).exclude(
             pk=self.object.pk

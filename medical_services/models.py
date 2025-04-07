@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
-from facilities.models import MedicalFacility
 from staff.models import MedicalSpecialist
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class ServiceCategory(TimeStampedModel):
     """
@@ -113,12 +114,16 @@ class FacilityService(TimeStampedModel):
     """
     Услуги, предоставляемые учреждением
     """
-    facility = models.ForeignKey(
-        MedicalFacility,
+    content_type = models.ForeignKey(
+        ContentType,
         on_delete=models.CASCADE,
-        related_name='services',
-        verbose_name=_('Учреждение')
+        verbose_name=_('Тип контента')
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
+    
     service = models.ForeignKey(
         Service,
         on_delete=models.CASCADE,
@@ -143,8 +148,8 @@ class FacilityService(TimeStampedModel):
     class Meta:
         verbose_name = _('Услуга учреждения')
         verbose_name_plural = _('Услуги учреждений')
-        unique_together = ['facility', 'service']
-        ordering = ['facility', 'service']
+        unique_together = ['content_type', 'object_id', 'service']
+        ordering = ['service']
 
     def __str__(self):
         return f"{self.facility} - {self.service}"

@@ -1,20 +1,37 @@
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import (
     OrganizationType,
-    MedicalFacility,
     Clinic,
     RehabCenter,
     FacilityImage,
     FacilityDocument
 )
+from django.utils.translation import gettext_lazy as _
 
-class FacilityImageInline(admin.TabularInline):
+class FacilityImageInline(GenericTabularInline):
     model = FacilityImage
+    ct_field = 'content_type'
+    ct_fk_field = 'object_id'
     extra = 1
+    fields = ['image', 'image_type', 'title', 'description', 'is_main', 'order']
+    verbose_name = _('Фото')
+    verbose_name_plural = _('Фотографии')
 
-class FacilityDocumentInline(admin.TabularInline):
+class FacilityDocumentInline(GenericTabularInline):
     model = FacilityDocument
+    ct_field = 'content_type'
+    ct_fk_field = 'object_id'
     extra = 1
+    fields = ['document_type', 'title', 'document', 'number', 'issue_date', 'expiry_date', 'is_active']
+    verbose_name = _('Документ')
+    verbose_name_plural = _('Документы')
+
+class RehabCenterSpecialistInline(admin.TabularInline):
+    model = RehabCenter.specialists.through
+    extra = 1
+    verbose_name = _('Специалист')
+    verbose_name_plural = _('Специалисты')
 
 @admin.register(OrganizationType)
 class OrganizationTypeAdmin(admin.ModelAdmin):
@@ -36,10 +53,6 @@ class BaseFacilityAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     inlines = [FacilityImageInline, FacilityDocumentInline]
 
-@admin.register(MedicalFacility)
-class MedicalFacilityAdmin(BaseFacilityAdmin):
-    pass
-
 @admin.register(Clinic)
 class ClinicAdmin(BaseFacilityAdmin):
     list_display = BaseFacilityAdmin.list_display + ['emergency_support', 'has_hospital']
@@ -49,13 +62,15 @@ class ClinicAdmin(BaseFacilityAdmin):
 class RehabCenterAdmin(BaseFacilityAdmin):
     list_display = BaseFacilityAdmin.list_display + ['capacity', 'program_duration']
     list_filter = BaseFacilityAdmin.list_filter
+    inlines = BaseFacilityAdmin.inlines + [RehabCenterSpecialistInline]
+    exclude = ['specialists']  # Исключаем поле specialists, так как оно будет управляться через вложенную модель
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):
-    list_display = ['facility', 'image_type', 'title', 'is_main', 'order']
-    list_filter = ['image_type', 'is_main']
-    search_fields = ['facility__name', 'title', 'description']
-    ordering = ['facility', 'order']
+    list_display = ['facility', 'image_type', 'title']
+    list_filter = ['image_type']
+    search_fields = ['facility__name', 'title']
+    ordering = ['facility']
 
 @admin.register(FacilityDocument)
 class FacilityDocumentAdmin(admin.ModelAdmin):

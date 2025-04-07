@@ -31,6 +31,7 @@ class MedicalSpecialistAdmin(admin.ModelAdmin):
         'biography'
     ]
     filter_horizontal = ['specializations']
+    exclude = ['slug']
 
 @admin.register(FacilitySpecialist)
 class FacilitySpecialistAdmin(admin.ModelAdmin):
