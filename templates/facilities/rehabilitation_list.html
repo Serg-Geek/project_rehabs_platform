@@ -30,7 +30,7 @@
             <div class="rehabs__cards">
                 {% for center in rehabilitation_centers %}
                 <div class="card">
-                    <a href="{% url 'facilities:detail' center.slug %}">
+                    <a href="{% url 'facilities:rehab_detail' center.slug %}">
                         <div class="card__image">
                             {% if center.image %}
                             <img src="{{ center.image.url }}" alt="{{ center.name }}" />

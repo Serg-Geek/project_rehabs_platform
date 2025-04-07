@@ -20,7 +20,6 @@ class ConsultationRequestView(CreateView):
             form.instance.status = AnonymousRequest.Status.NEW
             form.instance.source = 'consultation_form'
             form.instance.request_type = AnonymousRequest.RequestType.CONSULTATION
-            form.instance.preferred_facility = 'Не указано'  # Устанавливаем значение по умолчанию
             
             # Используем имя пользователя, если оно указано
             user_name = self.request.POST.get('name', '').strip()

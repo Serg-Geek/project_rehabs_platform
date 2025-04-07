@@ -1,0 +1,302 @@
+[
+    {
+        "model": "facilities.clinic",
+        "pk": 1,
+        "fields": {
+            "name": "Медицинский центр 'Здоровье'",
+            "slug": "medicinskiy-centr-zdorove",
+            "organization_type": 1,
+            "description": "Современный медицинский центр с широким спектром услуг",
+            "address": "ул. Ленина, 10",
+            "phone": "+7 (495) 123-45-67",
+            "email": "info@zdorovie.ru",
+            "website": "https://zdorovie.ru",
+            "is_active": true,
+            "city": 1,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 2,
+        "fields": {
+            "name": "Клиника 'Медикал'",
+            "slug": "klinika-medikal",
+            "organization_type": 1,
+            "description": "Многопрофильная клиника с опытными специалистами",
+            "address": "пр. Мира, 25",
+            "phone": "+7 (495) 234-56-78",
+            "email": "info@medikal.ru",
+            "website": "https://medikal.ru",
+            "is_active": true,
+            "city": 1,
+            "emergency_support": true,
+            "has_hospital": false,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 3,
+        "fields": {
+            "name": "Медицинский центр 'Доктор'",
+            "slug": "medicinskiy-centr-doktor",
+            "organization_type": 1,
+            "description": "Семейная клиника с индивидуальным подходом",
+            "address": "ул. Пушкина, 15",
+            "phone": "+7 (812) 345-67-89",
+            "email": "info@doktor.ru",
+            "website": "https://doktor.ru",
+            "is_active": true,
+            "city": 3,
+            "emergency_support": false,
+            "has_hospital": false,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 4,
+        "fields": {
+            "name": "Клиника 'Семейная'",
+            "slug": "klinika-semeynaya",
+            "organization_type": 1,
+            "description": "Клиника для всей семьи с современным оборудованием",
+            "address": "пр. Невский, 100",
+            "phone": "+7 (812) 456-78-90",
+            "email": "info@semeynaya.ru",
+            "website": "https://semeynaya.ru",
+            "is_active": true,
+            "city": 3,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 5,
+        "fields": {
+            "name": "Медицинский центр 'Урал'",
+            "slug": "medicinskiy-centr-ural",
+            "organization_type": 1,
+            "description": "Крупнейший медицинский центр Урала",
+            "address": "ул. Малышева, 50",
+            "phone": "+7 (343) 567-89-01",
+            "email": "info@ural-med.ru",
+            "website": "https://ural-med.ru",
+            "is_active": true,
+            "city": 5,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 6,
+        "fields": {
+            "name": "Клиника 'Сибирь'",
+            "slug": "klinika-sibir",
+            "organization_type": 1,
+            "description": "Многопрофильная клиника с передовыми технологиями",
+            "address": "пр. Карла Маркса, 30",
+            "phone": "+7 (383) 678-90-12",
+            "email": "info@sibir-med.ru",
+            "website": "https://sibir-med.ru",
+            "is_active": true,
+            "city": 7,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 7,
+        "fields": {
+            "name": "Медицинский центр 'Юг'",
+            "slug": "medicinskiy-centr-yug",
+            "organization_type": 1,
+            "description": "Современная клиника с европейскими стандартами",
+            "address": "ул. Красная, 150",
+            "phone": "+7 (861) 789-01-23",
+            "email": "info@yug-med.ru",
+            "website": "https://yug-med.ru",
+            "is_active": true,
+            "city": 9,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 8,
+        "fields": {
+            "name": "Клиника 'Приморье'",
+            "slug": "klinika-primorie",
+            "organization_type": 1,
+            "description": "Медицинский центр с focus на профилактику",
+            "address": "ул. Приморская, 20",
+            "phone": "+7 (861) 890-12-34",
+            "email": "info@primorie-med.ru",
+            "website": "https://primorie-med.ru",
+            "is_active": true,
+            "city": 9,
+            "emergency_support": false,
+            "has_hospital": false,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 9,
+        "fields": {
+            "name": "Медицинский центр 'Север'",
+            "slug": "medicinskiy-centr-sever",
+            "organization_type": 1,
+            "description": "Специализированная клиника с уникальными методиками",
+            "address": "пр. Ленина, 75",
+            "phone": "+7 (343) 901-23-45",
+            "email": "info@sever-med.ru",
+            "website": "https://sever-med.ru",
+            "is_active": true,
+            "city": 5,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 10,
+        "fields": {
+            "name": "Клиника 'Восток'",
+            "slug": "klinika-vostok",
+            "organization_type": 1,
+            "description": "Инновационный медицинский центр",
+            "address": "ул. Советская, 40",
+            "phone": "+7 (383) 012-34-56",
+            "email": "info@vostok-med.ru",
+            "website": "https://vostok-med.ru",
+            "is_active": true,
+            "city": 7,
+            "emergency_support": true,
+            "has_hospital": false,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 11,
+        "fields": {
+            "name": "Медицинский центр 'Запад'",
+            "slug": "medicinskiy-centr-zapad",
+            "organization_type": 1,
+            "description": "Клиника с европейским подходом к лечению",
+            "address": "пр. Победы, 60",
+            "phone": "+7 (812) 123-45-67",
+            "email": "info@zapad-med.ru",
+            "website": "https://zapad-med.ru",
+            "is_active": true,
+            "city": 3,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 12,
+        "fields": {
+            "name": "Клиника 'Центр'",
+            "slug": "klinika-centr",
+            "organization_type": 1,
+            "description": "Центральная клиника с широким спектром услуг",
+            "address": "ул. Центральная, 1",
+            "phone": "+7 (495) 234-56-78",
+            "email": "info@centr-med.ru",
+            "website": "https://centr-med.ru",
+            "is_active": true,
+            "city": 1,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 13,
+        "fields": {
+            "name": "Медицинский центр 'Плюс'",
+            "slug": "medicinskiy-centr-plus",
+            "organization_type": 1,
+            "description": "Клиника с акцентом на профилактическую медицину",
+            "address": "ул. Медицинская, 15",
+            "phone": "+7 (861) 345-67-89",
+            "email": "info@plus-med.ru",
+            "website": "https://plus-med.ru",
+            "is_active": true,
+            "city": 9,
+            "emergency_support": false,
+            "has_hospital": false,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 14,
+        "fields": {
+            "name": "Клиника 'Профи'",
+            "slug": "klinika-profi",
+            "organization_type": 1,
+            "description": "Профессиональная клиника с опытными специалистами",
+            "address": "пр. Профессиональный, 30",
+            "phone": "+7 (343) 456-78-90",
+            "email": "info@profi-med.ru",
+            "website": "https://profi-med.ru",
+            "is_active": true,
+            "city": 5,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 15,
+        "fields": {
+            "name": "Медицинский центр 'Эксперт'",
+            "slug": "medicinskiy-centr-ekspert",
+            "organization_type": 1,
+            "description": "Экспертная клиника с современным оборудованием",
+            "address": "ул. Экспертная, 25",
+            "phone": "+7 (383) 567-89-01",
+            "email": "info@ekspert-med.ru",
+            "website": "https://ekspert-med.ru",
+            "is_active": true,
+            "city": 7,
+            "emergency_support": true,
+            "has_hospital": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    }
+]

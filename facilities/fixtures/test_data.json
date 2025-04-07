@@ -1,0 +1,36 @@
+[
+    {
+        "model": "facilities.rehabcenter",
+        "pk": 1,
+        "fields": {
+            "name": "Центр реабилитации 'Здоровье'",
+            "slug": "rehab-center-zdorovie",
+            "description": "Современный центр реабилитации",
+            "address": "ул. Ленина, 1",
+            "phone": "+7 (999) 123-45-67",
+            "email": "info@zdorovie.ru",
+            "website": "https://zdorovie.ru",
+            "organization_type": 1,
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.clinic",
+        "pk": 1,
+        "fields": {
+            "name": "Клиника 'Медикал'",
+            "slug": "clinic-medical",
+            "description": "Многопрофильная клиника",
+            "address": "ул. Пушкина, 10",
+            "phone": "+7 (999) 765-43-21",
+            "email": "info@medical.ru",
+            "website": "https://medical.ru",
+            "organization_type": 2,
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    }
+]

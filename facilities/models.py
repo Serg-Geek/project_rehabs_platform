@@ -102,7 +102,11 @@ class AbstractMedicalFacility(TimeStampedModel):
 
     def get_absolute_url(self):
         """Получить абсолютный URL учреждения"""
-        return reverse('facilities:detail', kwargs={'slug': self.slug})
+        if isinstance(self, RehabCenter):
+            return reverse('facilities:rehab_detail', kwargs={'slug': self.slug})
+        elif isinstance(self, Clinic):
+            return reverse('facilities:clinic_detail', kwargs={'slug': self.slug})
+        return '#'  # Fallback URL
 
     def __str__(self):
         return f"{self.name} ({self.organization_type.name})"

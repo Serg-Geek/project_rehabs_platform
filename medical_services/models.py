@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from core.models import TimeStampedModel
@@ -38,6 +38,10 @@ class ServiceCategory(TimeStampedModel):
     order = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Порядок')
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Активна')
     )
 
     class Meta:
@@ -175,41 +179,12 @@ class FacilityService(TimeStampedModel):
     def __str__(self):
         return f"{self.facility} - {self.service}"
 
-@receiver(pre_save, sender=FacilityService)
-def update_price_history(sender, instance, **kwargs):
-    """
-    Автоматически обновляет историю цен при изменении цены услуги
-    """
-    if not instance.pk:  # Новый объект
-        if instance.price:
-            ServicePrice.objects.create(
-                facility_service=instance,
-                price=instance.price,
-                start_date=timezone.now().date()
-            )
-    else:  # Существующий объект
-        old_instance = FacilityService.objects.get(pk=instance.pk)
-        if old_instance.price != instance.price:
-            # Закрываем предыдущую запись в истории
-            ServicePrice.objects.filter(
-                facility_service=instance,
-                end_date__isnull=True
-            ).update(end_date=timezone.now().date())
-            
-            # Создаем новую запись, если цена установлена
-            if instance.price:
-                ServicePrice.objects.create(
-                    facility_service=instance,
-                    price=instance.price,
-                    start_date=timezone.now().date()
-                )
-
 class ServicePrice(TimeStampedModel):
     """
     История цен на услуги
     """
     facility_service = models.ForeignKey(
-        FacilityService,
+        'FacilityService',
         on_delete=models.CASCADE,
         related_name='price_history',
         verbose_name=_('Услуга учреждения')
@@ -235,3 +210,34 @@ class ServicePrice(TimeStampedModel):
 
     def __str__(self):
         return f"{self.facility_service} - {self.price} ({self.start_date})"
+
+@receiver(post_save, sender='medical_services.FacilityService')
+def update_price_history(sender, instance, created, **kwargs):
+    """
+    Автоматически обновляет историю цен при изменении цены услуги
+    """
+    if created and instance.price:
+        # Для новой услуги создаем первую запись в истории
+        ServicePrice.objects.create(
+            facility_service=instance,
+            price=instance.price,
+            start_date=timezone.now().date()
+        )
+    elif not created and instance.price:
+        # Для существующей услуги проверяем последнюю цену
+        last_price = ServicePrice.objects.filter(
+            facility_service=instance,
+            end_date__isnull=True
+        ).first()
+
+        if not last_price or last_price.price != instance.price:
+            # Если цена изменилась, закрываем старую запись и создаем новую
+            if last_price:
+                last_price.end_date = timezone.now().date()
+                last_price.save()
+
+            ServicePrice.objects.create(
+                facility_service=instance,
+                price=instance.price,
+                start_date=timezone.now().date()
+            )

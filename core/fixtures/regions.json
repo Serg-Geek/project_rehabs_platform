@@ -1,0 +1,57 @@
+[
+    {
+        "model": "core.region",
+        "pk": 1,
+        "fields": {
+            "name": "Москва и Московская область",
+            "slug": "moskva-i-moskovskaya-oblast",
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "core.region",
+        "pk": 2,
+        "fields": {
+            "name": "Санкт-Петербург и Ленинградская область",
+            "slug": "sankt-peterburg-i-leningradskaya-oblast",
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "core.region",
+        "pk": 3,
+        "fields": {
+            "name": "Свердловская область",
+            "slug": "sverdlovskaya-oblast",
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "core.region",
+        "pk": 4,
+        "fields": {
+            "name": "Новосибирская область",
+            "slug": "novosibirskaya-oblast",
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "core.region",
+        "pk": 5,
+        "fields": {
+            "name": "Краснодарский край",
+            "slug": "krasnodarskiy-kray",
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    }
+]

@@ -1,1 +1,83 @@
- 
+[
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 1,
+        "fields": {
+            "name": "Реабилитация",
+            "slug": "rehabilitation",
+            "description": "Услуги по реабилитации после травм и заболеваний",
+            "parent": null,
+            "order": 1,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 2,
+        "fields": {
+            "name": "Массаж",
+            "slug": "massage",
+            "description": "Различные виды массажа",
+            "parent": 1,
+            "order": 1,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 3,
+        "fields": {
+            "name": "Физиотерапия",
+            "slug": "physiotherapy",
+            "description": "Физиотерапевтические процедуры",
+            "parent": 1,
+            "order": 2,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 1,
+        "fields": {
+            "name": "Общий массаж",
+            "slug": "general-massage",
+            "category": 2,
+            "description": "Классический общий массаж всего тела",
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 2,
+        "fields": {
+            "name": "Массаж спины",
+            "slug": "back-massage",
+            "category": 2,
+            "description": "Специализированный массаж спины",
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 3,
+        "fields": {
+            "name": "Электрофорез",
+            "slug": "electrophoresis",
+            "category": 3,
+            "description": "Процедура электрофореза",
+            "duration": 30,
+            "is_active": true,
+            "created_at": "2024-03-20T10:00:00Z",
+            "updated_at": "2024-03-20T10:00:00Z"
+        }
+    }
+]

@@ -58,9 +58,16 @@ class FacilityDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # Получаем связанные учреждения того же типа в том же регионе
         model = self.get_model()
-        context['related_facilities'] = model.objects.filter(
-            city__region=self.object.city.region
-        ).exclude(
-            pk=self.object.pk
-        )[:3]  # Ограничиваем до 3 связанных учреждений
+        related_facilities = model.objects.all()
+        
+        # Фильтруем по региону только если у учреждения есть город и регион
+        if self.object.city and self.object.city.region:
+            related_facilities = related_facilities.filter(
+                city__region=self.object.city.region
+            )
+        
+        # Исключаем текущее учреждение из списка
+        related_facilities = related_facilities.exclude(pk=self.object.pk)[:4]
+        
+        context['related_facilities'] = related_facilities
         return context

@@ -3,12 +3,24 @@
         "model": "facilities.organizationtype",
         "pk": 1,
         "fields": {
+            "name": "Клиника",
+            "slug": "clinic",
+            "description": "Медицинское учреждение, предоставляющее широкий спектр медицинских услуг",
+            "competencies": "Диагностика, лечение, консультации специалистов",
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "facilities.organizationtype",
+        "pk": 2,
+        "fields": {
             "name": "Реабилитационный центр",
-            "slug": "rehabilitation",
-            "description": "Центр реабилитации и восстановления",
-            "competencies": "Реабилитация, восстановление, лечение",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "slug": "rehabilitation-center",
+            "description": "Специализированное учреждение для реабилитации и восстановления здоровья",
+            "competencies": "Реабилитация, восстановление, психологическая помощь",
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
         }
     }
 ]

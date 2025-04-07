@@ -1,0 +1,142 @@
+[
+    {
+        "model": "medical_services.service",
+        "pk": 1,
+        "fields": {
+            "name": "Консультация врача-реабилитолога",
+            "slug": "konsultaciya-vracha-reabilitologa",
+            "description": "Первичная консультация врача-реабилитолога с составлением индивидуального плана реабилитации",
+            "category": 1,
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 2,
+        "fields": {
+            "name": "Лечебная физкультура",
+            "slug": "lechebnaya-fizkultura",
+            "description": "Индивидуальные занятия лечебной физкультурой под руководством опытного инструктора",
+            "category": 2,
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 3,
+        "fields": {
+            "name": "Массаж",
+            "slug": "massazh",
+            "description": "Лечебный массаж различных отделов позвоночника и конечностей",
+            "category": 3,
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 4,
+        "fields": {
+            "name": "Физиотерапия",
+            "slug": "fizioterapiya",
+            "description": "Комплекс физиотерапевтических процедур для восстановления и укрепления здоровья",
+            "category": 4,
+            "duration": 30,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 5,
+        "fields": {
+            "name": "Рефлексотерапия",
+            "slug": "refleksoterapiya",
+            "description": "Воздействие на биологически активные точки организма для улучшения самочувствия",
+            "category": 3,
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 6,
+        "fields": {
+            "name": "Мануальная терапия",
+            "slug": "manualnaya-terapiya",
+            "description": "Комплексное воздействие на опорно-двигательный аппарат для устранения болевых синдромов",
+            "category": 3,
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 7,
+        "fields": {
+            "name": "Кинезиотерапия",
+            "slug": "kinezioterapiya",
+            "description": "Лечение движением для восстановления функций опорно-двигательного аппарата",
+            "category": 2,
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 8,
+        "fields": {
+            "name": "Эрготерапия",
+            "slug": "ergoterapiya",
+            "description": "Восстановление бытовых навыков и социальной адаптации",
+            "category": 2,
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 9,
+        "fields": {
+            "name": "Логопедическая реабилитация",
+            "slug": "logopedicheskaya-reabilitaciya",
+            "description": "Восстановление речевых функций после инсульта и черепно-мозговых травм",
+            "category": 1,
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.service",
+        "pk": 10,
+        "fields": {
+            "name": "Психологическая реабилитация",
+            "slug": "psihologicheskaya-reabilitaciya",
+            "description": "Индивидуальные консультации психолога для восстановления психологического здоровья",
+            "category": 5,
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    }
+]
