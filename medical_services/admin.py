@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import (
     ServiceCategory,
     TherapyMethod,
@@ -7,17 +9,12 @@ from .models import (
     ServicePrice
 )
 
-class ServicePriceInline(admin.TabularInline):
-    model = ServicePrice
-    extra = 1
-
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'parent', 'order']
     list_filter = ['parent']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
-    ordering = ['order', 'name']
 
 @admin.register(TherapyMethod)
 class TherapyMethodAdmin(admin.ModelAdmin):
@@ -28,39 +25,19 @@ class TherapyMethodAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = [
-        'name',
-        'category',
-        'duration',
-        'is_active'
-    ]
+    list_display = ['name', 'category', 'duration', 'is_active']
     list_filter = ['category', 'is_active']
     search_fields = ['name', 'description']
-    prepopulated_fields = {'slug': ('name',)}
+    exclude = ['slug']
 
 @admin.register(FacilityService)
 class FacilityServiceAdmin(admin.ModelAdmin):
-    list_display = [
-        'facility',
-        'service',
-        'price',
-        'is_active'
-    ]
-    list_filter = ['facility', 'service', 'is_active']
-    search_fields = ['facility__name', 'service__name']
+    list_display = ['get_facility_name', 'service', 'price', 'is_active']
+    list_filter = ['content_type', 'service', 'is_active']
+    search_fields = ['service__name']
     filter_horizontal = ['specialists']
-    inlines = [ServicePriceInline]
+    raw_id_fields = ['content_type']
 
-@admin.register(ServicePrice)
-class ServicePriceAdmin(admin.ModelAdmin):
-    list_display = [
-        'facility_service',
-        'price',
-        'start_date',
-        'end_date'
-    ]
-    list_filter = ['start_date', 'end_date']
-    search_fields = [
-        'facility_service__facility__name',
-        'facility_service__service__name'
-    ]
+    def get_facility_name(self, obj):
+        return str(obj.facility)
+    get_facility_name.short_description = _('Учреждение')
