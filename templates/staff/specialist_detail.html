@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ name }} - {{ specialist.position }}{% endblock %}
+{% block title %}{{ specialist.last_name }} {{ specialist.first_name }} - {{ specialist.position }}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -15,7 +15,7 @@
                 {% endif %}
             </div>
             <div class="specialist-detail__info">
-                <h1 class="specialist-detail__name">{{ name }}</h1>
+                <h1 class="specialist-detail__name">{{ specialist.last_name }} {{ specialist.first_name }}</h1>
                 <p class="specialist-detail__position">{{ specialist.position }}</p>
                 <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p>
                 <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p>

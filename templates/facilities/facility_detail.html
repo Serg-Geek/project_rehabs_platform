@@ -20,7 +20,7 @@
     <div class="container">
         <div class="detail__content rehab-help__content">
             <div class="rehab-detail__content rehab-help__content-item rehab-help__image detail__content-item--img">
-                {% with main_image=facility.images.filter.first %}
+                {% with main_image=facility.images.first %}
                 {% if main_image %}
                 <img src="{{ main_image.image.url }}" alt="{{ facility.name }}" />
                 {% else %}
@@ -55,22 +55,23 @@
 <section class="detail__info rehab-detail__info">
     <div class="container">
         <div class="detail-content__wrapper">
-            <h3 class="title__h3 detail__title">Условия поступления</h3>
+            <h3 class="title__h3 detail__title">Условия проживания</h3>
             <div class="rehab-detail__text detail__text--width-limiter">
-                {% if facility.rehabcenter %}
-                <p>{{ facility.rehabcenter.accommodation_conditions }}</p>
+                {% if facility.accommodation_conditions %}
+                <p>{{ facility.accommodation_conditions }}</p>
                 {% else %}
                 <p>Условия проживания не указаны</p>
                 {% endif %}
             </div>
         </div>
         <div class="detail-content__wrapper detail-content__wrapper-second">
-            <h3 class="title__h3 detail__title">Курс реабилитации</h3>
+            <h3 class="title__h3 detail__title">Условия поступления</h3>
             <div class="rehab-detail__text detail__text--width-limiter">
-                {% if facility.rehabcenter %}
-                <p>{{ facility.rehabcenter.program_duration }} дней</p>
+                {% if facility.program_duration %}
+                <p>Длительность курса реабилитации: {{ facility.program_duration }} дней</p>
+                <p>Вместимость центра: {{ facility.capacity }} человек</p>
                 {% else %}
-                <p>Длительность курса не указана</p>
+                <p>Информация о курсе реабилитации не указана</p>
                 {% endif %}
             </div>
         </div>
@@ -97,8 +98,8 @@
             <div class="detail-docs__slider">
                 {% for doc in facility.documents.all %}
                 <div class="detail-docs__image spec-detail__docs--image">
-                    {% if doc.file %}
-                    <img src="{{ doc.file.url }}" alt="{{ doc.title }}" />
+                    {% if doc.document %}
+                    <img src="{{ doc.document.url }}" alt="{{ doc.title }}" />
                     {% else %}
                     <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
                     {% endif %}

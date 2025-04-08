@@ -6,6 +6,22 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.db.models import Q
 
+def transliterate(text):
+    """Транслитерация кириллицы в латиницу"""
+    translit_dict = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
+        'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+        'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+        'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
+        'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+        'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'E',
+        'Ж': 'Zh', 'З': 'Z', 'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M',
+        'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U',
+        'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sch',
+        'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+    }
+    return ''.join(translit_dict.get(char, char) for char in text)
+
 class Specialization(TimeStampedModel):
     """
     Специализации медицинских работников
@@ -16,7 +32,8 @@ class Specialization(TimeStampedModel):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name=_('Slug')
+        verbose_name=_('Slug'),
+        blank=True
     )
     description = models.TextField(
         verbose_name=_('Описание')
@@ -32,13 +49,14 @@ class Specialization(TimeStampedModel):
         
     def save(self, *args, **kwargs):
         if not self.slug:
-            # Формируем базовый слаг из названия
-            base_slug = slugify(self.name)
+            # Транслитерируем название и формируем слаг
+            transliterated_name = transliterate(self.name)
+            base_slug = slugify(transliterated_name)
             slug = base_slug
             
             # Проверяем, существует ли уже такой слаг
             counter = 1
-            while Specialization.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+            while Specialization.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
                 
@@ -80,7 +98,9 @@ class MedicalSpecialist(TimeStampedModel):
         verbose_name=_('Образование')
     )
     biography = models.TextField(
-        verbose_name=_('Биография')
+        verbose_name=_('Биография'),
+        blank=True,
+        null=True
     )
     achievements = models.TextField(
         blank=True,
@@ -134,19 +154,27 @@ class FacilitySpecialist(MedicalSpecialist):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        verbose_name=_('Тип контента')
+        verbose_name=_('Тип контента'),
+        null=True,
+        blank=True
     )
     object_id = models.PositiveIntegerField(
-        verbose_name=_('ID объекта')
+        verbose_name=_('ID объекта'),
+        null=True,
+        blank=True
     )
     facility = GenericForeignKey('content_type', 'object_id')
     
     position = models.CharField(
         max_length=100,
-        verbose_name=_('Должность')
+        verbose_name=_('Должность'),
+        blank=True,
+        null=True
     )
     schedule = models.TextField(
-        verbose_name=_('График работы')
+        verbose_name=_('График работы'),
+        blank=True,
+        null=True
     )
 
     class Meta:

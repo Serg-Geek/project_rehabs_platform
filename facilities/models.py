@@ -146,6 +146,27 @@ class Clinic(AbstractMedicalFacility):
         related_query_name='clinic',
         verbose_name=_('Специалисты')
     )
+    images = GenericRelation(
+        'FacilityImage',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='clinic',
+        verbose_name=_('Изображения')
+    )
+    documents = GenericRelation(
+        'FacilityDocument',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='clinic',
+        verbose_name=_('Документы')
+    )
+    reviews = GenericRelation(
+        'Review',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='clinic',
+        verbose_name=_('Отзывы')
+    )
 
     class Meta:
         verbose_name = _('Клиника')
@@ -175,6 +196,27 @@ class RehabCenter(AbstractMedicalFacility):
         object_id_field='object_id',
         related_query_name='rehab_center',
         verbose_name=_('Специалисты')
+    )
+    images = GenericRelation(
+        'FacilityImage',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='rehab_center',
+        verbose_name=_('Изображения')
+    )
+    documents = GenericRelation(
+        'FacilityDocument',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='rehab_center',
+        verbose_name=_('Документы')
+    )
+    reviews = GenericRelation(
+        'Review',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='rehab_center',
+        verbose_name=_('Отзывы')
     )
     address = models.TextField(
         verbose_name=_('Адрес'),
