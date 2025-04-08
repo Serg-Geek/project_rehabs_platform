@@ -42,8 +42,10 @@
                 <div class="detail__text rehab-detail__text rehab-help__text">
                     <h3 class="title__h3 detail__title">Оказывает услуги</h3>
                     <ul class="detail__services-list rehab-detail__services-list">
-                        {% for facility_service in facility.services.all %}
+                        {% for facility_service in services %}
                         <li>{{ facility_service.service.name }}</li>
+                        {% empty %}
+                        <li>Услуги не указаны</li>
                         {% endfor %}
                     </ul>
                 </div>

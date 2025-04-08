@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from .models import Clinic, RehabCenter
+from medical_services.models import FacilityService
+from django.contrib.contenttypes.models import ContentType
 
 # Create your views here.
 
@@ -69,5 +71,14 @@ class FacilityDetailView(DetailView):
         # Исключаем текущее учреждение из списка
         related_facilities = related_facilities.exclude(pk=self.object.pk)[:4]
         
+        # Получаем услуги учреждения
+        content_type = ContentType.objects.get_for_model(self.object)
+        services = FacilityService.objects.filter(
+            content_type=content_type,
+            object_id=self.object.pk,
+            is_active=True
+        ).select_related('service')
+        
         context['related_facilities'] = related_facilities
+        context['services'] = services
         return context
