@@ -171,7 +171,9 @@ class Tag(TimeStampedModel):
     )
     icon = models.CharField(
         max_length=100,
-        verbose_name=_('Иконка')
+        verbose_name=_('Иконка'),
+        blank=True,
+        null=True
     )
     description = models.TextField(
         blank=True,
@@ -181,6 +183,11 @@ class Tag(TimeStampedModel):
         default=True,
         verbose_name=_('Активен')
     )
+    is_system = models.BooleanField(
+        default=False,
+        verbose_name=_('Системный тег'),
+        help_text=_('Системные теги отображаются с иконками в интерфейсе')
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Создан')
@@ -189,6 +196,17 @@ class Tag(TimeStampedModel):
         auto_now=True,
         verbose_name=_('Обновлен')
     )
+
+    # Словарь с путями к иконкам для системных тегов
+    SYSTEM_TAG_ICONS = {
+        'profilaktika-i-preduprezhdenie': 'deps/icons/articles_tags_icons/prevention-icon.svg',
+        'yuridicheskaya-konsultatsiya': 'deps/icons/articles_tags_icons/justice-hammer-icon.svg',
+        'psihiatriya': 'deps/icons/articles_tags_icons/psychiatrist-icon.svg',
+        'psihologiya': 'deps/icons/articles_tags_icons/psychologist-icon.svg',
+        'rodstvennikam': 'deps/icons/articles_tags_icons/clients-icon.svg',
+        'narkomaniya': 'deps/icons/articles_tags_icons/medicine-icon.svg',
+        'alkogolizm': 'deps/icons/articles_tags_icons/alcohol-icon.svg',
+    }
 
     class Meta:
         verbose_name = _('Тег')
@@ -202,6 +220,17 @@ class Tag(TimeStampedModel):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_icon_path(self):
+        """
+        Возвращает путь к иконке для системного тега.
+        Если тег не системный или иконка не найдена, возвращает None.
+        """
+        if not self.is_system:
+            return None
+        
+        # Ищем иконку в словаре по слагу
+        return self.SYSTEM_TAG_ICONS.get(self.slug)
 
 class BlogPostTag(TimeStampedModel):
     """
