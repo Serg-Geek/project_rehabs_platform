@@ -93,11 +93,10 @@ class Service(TimeStampedModel):
         unique=True,
         verbose_name=_('Slug')
     )
-    category = models.ForeignKey(
+    categories = models.ManyToManyField(
         ServiceCategory,
-        on_delete=models.CASCADE,
         related_name='services',
-        verbose_name=_('Категория')
+        verbose_name=_('Категории')
     )
     description = models.TextField(
         blank=True,
@@ -115,7 +114,7 @@ class Service(TimeStampedModel):
     class Meta:
         verbose_name = _('Услуга')
         verbose_name_plural = _('Услуги')
-        ordering = ['category', 'name']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
