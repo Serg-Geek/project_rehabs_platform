@@ -45,6 +45,7 @@ class OrganizationTypeAdmin(admin.ModelAdmin):
 
 class BaseFacilityAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'name',
         'organization_type',
         'city',
@@ -56,6 +57,11 @@ class BaseFacilityAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description', 'address']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [FacilityImageInline, FacilityDocumentInline, FacilitySpecialistInline]
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
+        }),
+    )
 
 @admin.register(Clinic)
 class ClinicAdmin(BaseFacilityAdmin):

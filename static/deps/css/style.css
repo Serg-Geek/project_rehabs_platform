@@ -1915,8 +1915,8 @@ template {
 }
 
 .detail__reviews {
-    padding-top: 60px;
-    padding-bottom: 60px
+    padding: 40px 0;
+    background-color: #f8f9fa;
 }
 
 .detail__reviews .detail__title {
@@ -1924,27 +1924,32 @@ template {
 }
 
 .detail__reviews .detail__review {
-    border-radius: 24px;
-    padding: 30px;
-    background: #f4fbfd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-    margin: 10px
+    background: #fff;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.detail__reviews .detail__review p {
-    font-size: 16px;
-    line-height: 120%;
-    letter-spacing: -.02em;
-    color: #4d5974
+.detail__review-rating {
+    color: #ffc107;
+    margin-bottom: 10px;
 }
 
-.detail__review-title {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 100%;
-    letter-spacing: -.02em;
-    color: #143a44;
-    margin-bottom: 16px
+.detail__review-date {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.detail__review-content {
+    color: #212529;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.detail__reviews-slider {
+    margin: 0 -10px;
 }
 
 .detail-rehabs__title {

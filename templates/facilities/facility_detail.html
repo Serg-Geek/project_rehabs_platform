@@ -118,8 +118,22 @@
         <div class="detail__reviews-slider">
             {% for review in facility.reviews.all %}
             <div class="detail__review">
-                <h4 class="title__h4 detail__review-title">{{ review.author_name }}, {{ review.author_age }} лет</h4>
-                <p>{{ review.text }}</p>
+                <div class="detail__review-rating">
+                    {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %} <i class="fas fa-star"></i>
+                        {% else %}
+                        <i class="far fa-star"></i>
+                        {% endif %}
+                        {% endfor %}
+                </div>
+                <div class="detail__review-date">
+                    {{ review.created_at|date:"d.m.Y" }}
+                </div>
+                <p class="detail__review-content">{{ review.content }}</p>
+            </div>
+            {% empty %}
+            <div class="detail__review">
+                <p>Пока нет отзывов</p>
             </div>
             {% endfor %}
         </div>
