@@ -57,7 +57,7 @@
                         </option>
                         {% for category in categories %}
                         <option value="{{ category.slug }}" 
-                        {% if request.GET.category == category.slug %} selected 
+                        {% if request.GET.category == category.slug %} selected
                         {%endif %}>{{ category.name }}</option>
                         {% endfor %}
                     </select>
@@ -69,7 +69,7 @@
                     <a href="{% url 'blog:post_detail' post.slug %}">
                         <div class="card__image">
                             {% if post.image %}
-                            <img src=" {{ post.image.url }}" alt="{{ post.title }}" />
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" />
                             {% else %}
                             <img src="{% static 'deps/images/default-post.jpg' %}" alt="{{ post.title }}" />
                             {% endif %}

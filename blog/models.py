@@ -74,9 +74,7 @@ class BlogPost(TimeStampedModel):
         verbose_name=_('Содержание')
     )
     image = models.ImageField(
-        upload_to='blog/',
-        blank=True,
-        null=True,
+        upload_to='blog/images/',
         verbose_name=_('Изображение')
     )
     is_published = models.BooleanField(

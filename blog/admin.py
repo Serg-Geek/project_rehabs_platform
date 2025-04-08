@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import BlogCategory, BlogPost, BlogImage, Tag, BlogPostTag
-
-
-class BlogImageInline(admin.TabularInline):
-    model = BlogImage
-    extra = 1
+from .models import BlogCategory, BlogPost, Tag, BlogPostTag
 
 
 class BlogPostTagInline(admin.TabularInline):
@@ -33,7 +28,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     ]
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ['created_at', 'updated_at', 'views_count']
-    inlines = [BlogImageInline, BlogPostTagInline]
+    inlines = [BlogPostTagInline]
     fieldsets = (
         ('Основная информация', {
             'fields': (
@@ -83,26 +78,8 @@ class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-@admin.register(BlogImage)
-class BlogImageAdmin(admin.ModelAdmin):
-    list_display = [
-        'post',
-        'title',
-        'order',
-        'created_at'
-    ]
-    list_filter = ['created_at']
-    search_fields = ['title', 'description', 'post__title']
-    readonly_fields = ['created_at']
-
-
 @admin.register(BlogPostTag)
 class BlogPostTagAdmin(admin.ModelAdmin):
-    list_display = [
-        'post',
-        'tag',
-        'created_at'
-    ]
-    list_filter = ['tag', 'created_at']
+    list_display = ['post', 'tag']
+    list_filter = ['tag']
     search_fields = ['post__title', 'tag__name']
-    readonly_fields = ['created_at']
