@@ -42,6 +42,9 @@ class PostListView(ListView):
         context['active_tag'] = self.request.GET.get('tag')
         context['search_query'] = self.request.GET.get('search', '')
         
+        # Добавляем системные теги
+        context['system_tags'] = Tag.objects.filter(is_system=True, is_active=True)
+        
         # Добавляем текущую категорию, если есть
         category_slug = self.kwargs.get('slug')
         if category_slug:

@@ -136,8 +136,9 @@
             "name": "Алкоголизм",
             "slug": "alkogolizm",
             "icon": "fa-wine-bottle",
-            "description": "Теги, связанные с алкоголизмом",
+            "description": "Теги для статей об алкоголизме",
             "is_active": true,
+            "is_system": true,
             "created_at": "2024-03-01T00:00:00Z",
             "updated_at": "2024-03-01T00:00:00Z"
         }
@@ -149,8 +150,9 @@
             "name": "Наркомания",
             "slug": "narkomaniya",
             "icon": "fa-pills",
-            "description": "Теги, связанные с наркоманией",
+            "description": "Теги для статей о наркомании",
             "is_active": true,
+            "is_system": true,
             "created_at": "2024-03-01T00:00:00Z",
             "updated_at": "2024-03-01T00:00:00Z"
         }
@@ -162,8 +164,9 @@
             "name": "Реабилитация",
             "slug": "reabilitaciya",
             "icon": "fa-heartbeat",
-            "description": "Теги, связанные с реабилитацией",
+            "description": "Теги для статей о реабилитации",
             "is_active": true,
+            "is_system": true,
             "created_at": "2024-03-01T00:00:00Z",
             "updated_at": "2024-03-01T00:00:00Z"
         }

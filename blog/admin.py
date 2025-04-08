@@ -37,6 +37,7 @@ class BlogPostAdmin(admin.ModelAdmin):
                 'category',
                 'preview_text',
                 'content',
+                'conclusion_text',
             )
         }),
         ('Медиа', {

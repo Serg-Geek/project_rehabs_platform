@@ -101,6 +101,11 @@ class BlogPost(TimeStampedModel):
         default=0,
         verbose_name=_('Количество просмотров')
     )
+    conclusion_text = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Текст заключения')
+    )
     tags = models.ManyToManyField('Tag', through='BlogPostTag', verbose_name='Теги')
 
     class Meta:
