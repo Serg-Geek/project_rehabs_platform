@@ -1,0 +1,611 @@
+[
+    {
+        "model": "blog.blogcategory",
+        "pk": 1,
+        "fields": {
+            "name": "Алкоголизм",
+            "slug": "alkogolizm",
+            "description": "Статьи о лечении алкоголизма и реабилитации",
+            "parent": null,
+            "order": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 2,
+        "fields": {
+            "name": "Наркомания",
+            "slug": "narkomaniya",
+            "description": "Статьи о лечении наркомании и реабилитации",
+            "parent": null,
+            "order": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 3,
+        "fields": {
+            "name": "Созависимость",
+            "slug": "sozavisimost",
+            "description": "Статьи о созависимости и её лечении",
+            "parent": null,
+            "order": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 4,
+        "fields": {
+            "name": "Психология",
+            "slug": "psihologiya",
+            "description": "Статьи по психологии и психотерапии",
+            "parent": null,
+            "order": 4,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 5,
+        "fields": {
+            "name": "Реабилитация",
+            "slug": "reabilitaciya",
+            "description": "Статьи о процессе реабилитации",
+            "parent": null,
+            "order": 5,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 6,
+        "fields": {
+            "name": "Семейная терапия",
+            "slug": "semeynaya-terapiya",
+            "description": "Статьи о семейной терапии",
+            "parent": null,
+            "order": 6,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 7,
+        "fields": {
+            "name": "Профилактика",
+            "slug": "profilaktika",
+            "description": "Статьи о профилактике зависимостей",
+            "parent": null,
+            "order": 7,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 8,
+        "fields": {
+            "name": "Истории выздоровления",
+            "slug": "istorii-vyzdorovleniya",
+            "description": "Реальные истории выздоровления",
+            "parent": null,
+            "order": 8,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 9,
+        "fields": {
+            "name": "Медикаментозное лечение",
+            "slug": "medikamentoznoe-lechenie",
+            "description": "Статьи о медикаментозном лечении",
+            "parent": null,
+            "order": 9,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogcategory",
+        "pk": 10,
+        "fields": {
+            "name": "Социальная адаптация",
+            "slug": "socialnaya-adaptaciya",
+            "description": "Статьи о социальной адаптации после лечения",
+            "parent": null,
+            "order": 10,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.tag",
+        "pk": 1,
+        "fields": {
+            "name": "Алкоголизм",
+            "slug": "alkogolizm",
+            "icon": "fa-wine-bottle",
+            "description": "Теги, связанные с алкоголизмом",
+            "is_active": true,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.tag",
+        "pk": 2,
+        "fields": {
+            "name": "Наркомания",
+            "slug": "narkomaniya",
+            "icon": "fa-pills",
+            "description": "Теги, связанные с наркоманией",
+            "is_active": true,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.tag",
+        "pk": 3,
+        "fields": {
+            "name": "Реабилитация",
+            "slug": "reabilitaciya",
+            "icon": "fa-heartbeat",
+            "description": "Теги, связанные с реабилитацией",
+            "is_active": true,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 1,
+        "fields": {
+            "title": "Как распознать первые признаки алкоголизма",
+            "slug": "kak-raspoznat-pervye-priznaki-alkogolizma",
+            "category": 1,
+            "preview_text": "Узнайте о ранних признаках алкоголизма и как вовремя распознать проблему",
+            "content": "Подробный анализ ранних признаков алкоголизма, включая поведенческие и физиологические симптомы. Статья поможет вовремя распознать проблему и начать лечение.",
+            "is_published": true,
+            "publish_date": "2024-03-20T10:00:00Z",
+            "meta_title": "Признаки алкоголизма - как распознать проблему",
+            "meta_description": "Узнайте о ранних признаках алкоголизма и как вовремя распознать проблему. Подробный анализ симптомов и рекомендации специалистов.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 2,
+        "fields": {
+            "title": "Эффективные методы лечения наркомании",
+            "slug": "effektivnye-metody-lecheniya-narkomanii",
+            "category": 2,
+            "preview_text": "Обзор современных методов лечения наркомании и их эффективность",
+            "content": "Анализ различных методов лечения наркомании, включая медикаментозную терапию, психотерапию и реабилитационные программы.",
+            "is_published": true,
+            "publish_date": "2024-03-19T10:00:00Z",
+            "meta_title": "Методы лечения наркомании - что работает?",
+            "meta_description": "Обзор современных методов лечения наркомании и их эффективность. Рекомендации специалистов по выбору метода лечения.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 3,
+        "fields": {
+            "title": "Созависимость в семье: как помочь близкому",
+            "slug": "sozavisimost-v-seme-kak-pomoch-blizkomu",
+            "category": 3,
+            "preview_text": "Практические советы по преодолению созависимости и помощи близкому человеку",
+            "content": "Подробный анализ феномена созависимости, его влияния на семью и методы преодоления. Практические рекомендации для родственников.",
+            "is_published": true,
+            "publish_date": "2024-03-18T10:00:00Z",
+            "meta_title": "Созависимость - как помочь близкому человеку",
+            "meta_description": "Практические советы по преодолению созависимости и помощи близкому человеку. Рекомендации специалистов.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 4,
+        "fields": {
+            "title": "Психологические аспекты зависимости",
+            "slug": "psihologicheskie-aspekty-zavisimosti",
+            "category": 4,
+            "preview_text": "Анализ психологических причин формирования зависимостей",
+            "content": "Глубокий анализ психологических механизмов формирования зависимостей, включая личностные и социальные факторы.",
+            "is_published": true,
+            "publish_date": "2024-03-17T10:00:00Z",
+            "meta_title": "Психология зависимости - причины и механизмы",
+            "meta_description": "Анализ психологических причин формирования зависимостей. Рекомендации по профилактике и лечению.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 5,
+        "fields": {
+            "title": "Этапы реабилитации: от детоксикации до социализации",
+            "slug": "etapy-reabilitacii-ot-detoksikacii-do-socializacii",
+            "category": 5,
+            "preview_text": "Подробный обзор этапов реабилитационного процесса",
+            "content": "Детальный разбор каждого этапа реабилитации, от первичной детоксикации до возвращения в общество.",
+            "is_published": true,
+            "publish_date": "2024-03-16T10:00:00Z",
+            "meta_title": "Этапы реабилитации - полное руководство",
+            "meta_description": "Подробный обзор этапов реабилитационного процесса. Рекомендации по прохождению каждого этапа.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 6,
+        "fields": {
+            "title": "Семейная терапия в лечении зависимостей",
+            "slug": "semeynaya-terapiya-v-lechenii-zavisimostey",
+            "category": 6,
+            "preview_text": "Роль семейной терапии в процессе лечения зависимостей",
+            "content": "Анализ эффективности семейной терапии в лечении зависимостей, методики и подходы.",
+            "is_published": true,
+            "publish_date": "2024-03-15T10:00:00Z",
+            "meta_title": "Семейная терапия - ключ к выздоровлению",
+            "meta_description": "Роль семейной терапии в процессе лечения зависимостей. Методики и подходы к семейной терапии.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 7,
+        "fields": {
+            "title": "Профилактика зависимостей у подростков",
+            "slug": "profilaktika-zavisimostey-u-podrostkov",
+            "category": 7,
+            "preview_text": "Эффективные методы профилактики зависимостей в подростковой среде",
+            "content": "Обзор современных методов профилактики зависимостей среди подростков, включая образовательные программы и социальные инициативы.",
+            "is_published": true,
+            "publish_date": "2024-03-14T10:00:00Z",
+            "meta_title": "Профилактика зависимостей у подростков",
+            "meta_description": "Эффективные методы профилактики зависимостей в подростковой среде. Рекомендации для родителей и педагогов.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 8,
+        "fields": {
+            "title": "История выздоровления: путь к новой жизни",
+            "slug": "istoriya-vyzdorovleniya-put-k-novoy-zhizni",
+            "category": 8,
+            "preview_text": "Реальная история выздоровления от зависимости",
+            "content": "Вдохновляющая история человека, преодолевшего зависимость, с подробным описанием пути к выздоровлению.",
+            "is_published": true,
+            "publish_date": "2024-03-13T10:00:00Z",
+            "meta_title": "История выздоровления - путь к новой жизни",
+            "meta_description": "Реальная история выздоровления от зависимости. Вдохновляющий опыт преодоления.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 9,
+        "fields": {
+            "title": "Медикаментозное лечение алкоголизма",
+            "slug": "medikamentoznoe-lechenie-alkogolizma",
+            "category": 9,
+            "preview_text": "Современные подходы к медикаментозному лечению алкоголизма",
+            "content": "Обзор современных лекарственных препаратов и методов медикаментозного лечения алкоголизма.",
+            "is_published": true,
+            "publish_date": "2024-03-12T10:00:00Z",
+            "meta_title": "Медикаментозное лечение алкоголизма",
+            "meta_description": "Современные подходы к медикаментозному лечению алкоголизма. Обзор препаратов и методов.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 10,
+        "fields": {
+            "title": "Социальная адаптация после лечения",
+            "slug": "socialnaya-adaptaciya-posle-lecheniya",
+            "category": 10,
+            "preview_text": "Как вернуться к нормальной жизни после лечения зависимости",
+            "content": "Практические советы по социальной адаптации после лечения зависимости, включая поиск работы и восстановление отношений.",
+            "is_published": true,
+            "publish_date": "2024-03-11T10:00:00Z",
+            "meta_title": "Социальная адаптация после лечения",
+            "meta_description": "Как вернуться к нормальной жизни после лечения зависимости. Практические советы по адаптации.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 11,
+        "fields": {
+            "title": "Групповая терапия в лечении зависимостей",
+            "slug": "gruppovaya-terapiya-v-lechenii-zavisimostey",
+            "category": 4,
+            "preview_text": "Эффективность групповой терапии в процессе лечения",
+            "content": "Анализ эффективности групповой терапии в лечении зависимостей, методики и подходы.",
+            "is_published": true,
+            "publish_date": "2024-03-10T10:00:00Z",
+            "meta_title": "Групповая терапия - эффективный метод лечения",
+            "meta_description": "Эффективность групповой терапии в процессе лечения зависимостей. Методики и подходы.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 12,
+        "fields": {
+            "title": "Рецидивы в лечении зависимостей",
+            "slug": "recidivy-v-lechenii-zavisimostey",
+            "category": 5,
+            "preview_text": "Как предотвратить рецидивы в процессе лечения",
+            "content": "Анализ причин рецидивов и методов их предотвращения в процессе лечения зависимостей.",
+            "is_published": true,
+            "publish_date": "2024-03-09T10:00:00Z",
+            "meta_title": "Рецидивы - как предотвратить срыв",
+            "meta_description": "Как предотвратить рецидивы в процессе лечения зависимостей. Рекомендации специалистов.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 13,
+        "fields": {
+            "title": "Психологические травмы и зависимости",
+            "slug": "psihologicheskie-travmy-i-zavisimosti",
+            "category": 4,
+            "preview_text": "Связь между психологическими травмами и формированием зависимостей",
+            "content": "Анализ связи между психологическими травмами и формированием зависимостей, методы работы с травмами.",
+            "is_published": true,
+            "publish_date": "2024-03-08T10:00:00Z",
+            "meta_title": "Психологические травмы и зависимости",
+            "meta_description": "Связь между психологическими травмами и формированием зависимостей. Методы работы с травмами.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 14,
+        "fields": {
+            "title": "Анонимные алкоголики: принципы работы",
+            "slug": "anonimnye-alkogoliki-principy-raboty",
+            "category": 1,
+            "preview_text": "Как работает программа Анонимных Алкоголиков",
+            "content": "Подробный разбор принципов работы программы Анонимных Алкоголиков, её эффективность и особенности.",
+            "is_published": true,
+            "publish_date": "2024-03-07T10:00:00Z",
+            "meta_title": "Анонимные алкоголики - принципы работы",
+            "meta_description": "Как работает программа Анонимных Алкоголиков. Особенности и эффективность программы.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 15,
+        "fields": {
+            "title": "Трудовая реабилитация: возвращение к работе",
+            "slug": "trudovaya-reabilitaciya-vozvraschenie-k-rabote",
+            "category": 10,
+            "preview_text": "Как вернуться к трудовой деятельности после лечения",
+            "content": "Практические советы по возвращению к трудовой деятельности после лечения зависимости.",
+            "is_published": true,
+            "publish_date": "2024-03-06T10:00:00Z",
+            "meta_title": "Трудовая реабилитация - возвращение к работе",
+            "meta_description": "Как вернуться к трудовой деятельности после лечения зависимости. Практические советы.",
+            "views_count": 0,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 1,
+        "fields": {
+            "post": 1,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 2,
+        "fields": {
+            "post": 1,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 3,
+        "fields": {
+            "post": 2,
+            "tag": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 4,
+        "fields": {
+            "post": 2,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 5,
+        "fields": {
+            "post": 3,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 6,
+        "fields": {
+            "post": 4,
+            "tag": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 7,
+        "fields": {
+            "post": 5,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 8,
+        "fields": {
+            "post": 6,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 9,
+        "fields": {
+            "post": 7,
+            "tag": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 10,
+        "fields": {
+            "post": 8,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 11,
+        "fields": {
+            "post": 9,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 12,
+        "fields": {
+            "post": 10,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 13,
+        "fields": {
+            "post": 11,
+            "tag": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 14,
+        "fields": {
+            "post": 12,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 15,
+        "fields": {
+            "post": 13,
+            "tag": 2,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 16,
+        "fields": {
+            "post": 14,
+            "tag": 1,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "blog.blogposttag",
+        "pk": 17,
+        "fields": {
+            "post": 15,
+            "tag": 3,
+            "created_at": "2024-03-01T00:00:00Z",
+            "updated_at": "2024-03-01T00:00:00Z"
+        }
+    }
+]

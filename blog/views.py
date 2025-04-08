@@ -14,6 +14,11 @@ class PostListView(ListView):
     def get_queryset(self):
         queryset = BlogPost.objects.filter(is_published=True).select_related('category')
         
+        # Фильтрация по категории
+        category_slug = self.kwargs.get('slug')
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        
         # Фильтрация по тегу
         tag_slug = self.request.GET.get('tag')
         if tag_slug:
@@ -36,20 +41,35 @@ class PostListView(ListView):
         context['categories'] = BlogCategory.objects.filter(parent=None)
         context['active_tag'] = self.request.GET.get('tag')
         context['search_query'] = self.request.GET.get('search', '')
+        
+        # Добавляем текущую категорию, если есть
+        category_slug = self.kwargs.get('slug')
+        if category_slug:
+            context['current_category'] = get_object_or_404(BlogCategory, slug=category_slug)
+        
         return context
 
 class PostDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
     def get_queryset(self):
-        return BlogPost.objects.filter(is_published=True)
+        return BlogPost.objects.filter(is_published=True).select_related('category').prefetch_related('images', 'post_tags__tag')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = BlogCategory.objects.filter(parent=None)
         return context
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        # Увеличиваем счетчик просмотров
+        obj.views_count += 1
+        obj.save(update_fields=['views_count'])
+        return obj
 
 class BlogPostListByCategoryView(ListView):
     model = BlogPost
