@@ -149,126 +149,288 @@
 
     <footer>
         <div class="footer">
-            <div class="container">
-                <div class="footer__grid-wrapper">
-                    <div class="footer__contacts">
-                        <div class="footer__logo footer__contacts-logo">
-                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="footer__logo-img" />
-                            <span class="footer__logo-text">Центр помощи зависимым</span>
-                            <span class="footer__logo-text">«Мое море»</span>
-                        </div>
-
-                        <address class="footer__contacts-address">
-                            <div class="footer__contacts-address-phone">
-                                <div class="footer__contacts-address-phone-description">
-                                    Анонимная помощь 24/7:
-                                </div>
-                                <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800
-                                    000-00-00</a>
-                            </div>
-                            <div class="footer__contacts-address-phone">
-                                <h4 class="title__h4">Телефон:</h4>
-                                <a href="tel:+78000000000" class="footer__contacts-address-phone-number">8 800
-                                    000-00-00</a>
-                            </div>
-                            <div class="footer__contacts-location">
-                                <h4 class="title__h4">Адрес:</h4>
-                                <div class="footer__contacts-location-text">
-                                    353440, Краснодарский край, <br />
-                                    г. Анапа, ул. Ленина, д. 1
-                                </div>
-                            </div>
-                        </address>
-
-                        <div class="footer__worktime">
-                            <h4 class="title__h4 footer__worktime-description">
-                                Режим работы:
-                            </h4>
-                            <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
-                            <div class="footer__worktime-text">Сб-Вс: выходной</div>
-                        </div>
-
-                        <div class="footer__contacts-social">
-                            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
-                                <i class="fab fa-telegram"></i>
-                                <span>@moemorerehab </span>
-                            </a>
-                            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>+7 918 0542585 </span>
-                            </a>
-                        </div>
-
-                        <div class="footer__info">
-                            <div class="footer__info-description">
-                                Информация на сайте носит
-                                <br />ознакомительный характер.<br />
-                                Перед принятием медицинских<br />
-                                решений рекомендуется<br />
-                                консультация со специалистом.
-                            </div>
-                            <a href="#" class="footer__info-link">Политика конфиденциальности</a>
-                        </div>
-                    </div>
-
-                    <div class="footer__nav">
-                        <div class="footer__navigation">
-                            <h4 class="title__h4 footer__title footer__navigation-title">
-                                Навигация:
-                            </h4>
-                            <ul class="footer__column footer__navigation-list">
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'facilities:rehabilitation_list' %}"
-                                        class="footer__navigation-link">Центры</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'facilities:clinic_list' %}"
-                                        class="footer__navigation-link">Клиники</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Специалисты</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Тесты</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Контакты</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Консультация
-                                        нарколога</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'blog:post_list' %}" class="footer__navigation-link">Полезная
-                                        информация</a>
-                                </li>
-                                <li class="footer__navigation-item">
-                                    <a href="{% url 'core:home' %}" class="footer__navigation-link">Для партнеров</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="footer__info-nav">
-                            <h4 class="title__h4 footer__title footer__info-nav-title">
-                                Это нужно знать:
-                            </h4>
-                            <ul class="footer__column footer__info-nav-list">
-                                <li class="footer__info-nav-item">
-                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Алкоголизм</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Наркомания</a>
-                                </li>
-                                <li class="footer__info-nav-item">
-                                    <a href="{% url 'core:home' %}" class="footer__info-nav-link">Зависимости</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+          <div class="container">
+            <div class="footer__grid-wrapper">
+              <div class="footer__contacts">
+                <div class="footer__logo footer__contacts-logo">
+                  <img
+                    src="{% static 'deps/icons/main/logo.svg' %}"
+                    alt="Логотип"
+                    class="footer__logo-img"
+                  />
+                  <span class="footer__logo-text">Центр помощи зависимым</span>
+                  <span class="footer__logo-text">«Мое море»</span>
                 </div>
+  
+                <address class="footer__contacts-address">
+                  <div class="footer__contacts-address-phone">
+                    <div class="footer__contacts-address-phone-description">
+                      Анонимная помощь 24/7:
+                    </div>
+                    <a
+                      href="tel:+78000000000"
+                      class="footer__contacts-address-phone-number-main"
+                      >8 800 000-00-00</a
+                    >
+                  </div>
+                  <div class="footer__contacts-address-phone">
+                    <h4 class="title__h4">Телефон:</h4>
+                    <a
+                      href="tel:+78000000000"
+                      class="footer__contacts-address-phone-number"
+                      >8 800 000-00-00</a
+                    >
+                  </div>
+                  <div class="footer__contacts-location">
+                    <h4 class="title__h4">Адрес:</h4>
+                    <div class="footer__contacts-location-text">
+                      353440, Краснодарский край, <br />
+                      г. Анапа, ул. Ленина, д. 1
+                    </div>
+                  </div>
+                </address>
+  
+                <div class="footer__worktime">
+                  <h4 class="title__h4 footer__worktime-description">
+                    Режим работы:
+                  </h4>
+                  <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
+                  <div class="footer__worktime-text">Сб-Вс: выходной</div>
+                </div>
+  
+                <div class="footer__contacts-social">
+                  <a
+                    href="#"
+                    class="footer__contacts-social-link footer__contacts-social-link--telegram"
+                  >
+                    <i class="fab fa-telegram"></i>
+                    <span>@moemorerehab </span>
+                  </a>
+                  <a
+                    href="#"
+                    class="footer__contacts-social-link footer__contacts-social-link--whatsapp"
+                  >
+                    <i class="fab fa-whatsapp"></i>
+                    <span>+7 918 0542585 </span>
+                  </a>
+                </div>
+  
+                <div class="footer__info">
+                  <div class="footer__info-description">
+                    Информация на сайте носит
+                    <br />ознакомительный характер.<br />
+                    Перед принятием медицинских<br />
+                    решений рекомендуется<br />
+                    консультация со специалистом.
+                  </div>
+                  <a href="#" class="footer__info-link"
+                    >Политика конфиденциальности</a
+                  >
+                </div>
+              </div>
+  
+              <div class="footer__nav">
+                <div class="footer__navigation">
+                  <h4 class="title__h4 footer__title footer__navigation-title">
+                    Навигация:
+                  </h4>
+                  <ul class="footer__column footer__navigation-list">
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link">Центры</a>
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link">Клиники</a>
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link">Специалисты</a>
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link">Тесты</a>
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link">Контакты</a>
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link"
+                        >Консультация нарколога</a
+                      >
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link"
+                        >Полезная информация</a
+                      >
+                    </li>
+                    <li class="footer__navigation-item">
+                      <a href="#" class="footer__navigation-link"
+                        >Для партнеров</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+  
+                <div class="footer__info-nav">
+                  <h4 class="title__h4 footer__title footer__info-nav-title">
+                    Это нужно знать:
+                  </h4>
+                  <ul class="footer__column footer__info-nav-list">
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Алкоголизм</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Наркомания</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Зависимости</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Лечение</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Родственникам</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Ресоциализация</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Психология</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link">Психиатрия</a>
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link"
+                        >Юридическая консультация</a
+                      >
+                    </li>
+                    <li class="footer__info-nav-item">
+                      <a href="#" class="footer__info-nav-link"
+                        >Профилактика и предупреждение</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="return-up">
+                  <div class="return-up__wrapper">
+                    <a href="#top" class="return-up__link">
+                      <i class="fas fa-arrow-up return-up__icon"></i>
+                    </a>
+                  </div>
+  
+                  <a href="#top" class="return-up__link-text">Вернуться вверх</a>
+                </div>
+              </div>
+  
+              <div class="footer__services">
+                <h4 class="title__h4 footer__title">Услуги:</h4>
+                <div class="footer__columns">
+                  <div class="footer__column">
+                    <h4 class="title__h4 footer__column-title">Алкоголизм:</h4>
+                    <ul class="footer__list">
+                      <li class="footer__item">
+                        <a href="#">Реабилитация</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Детоксикация</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Вывод из запоя</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Кодирование</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение в стационаре</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Амбулаторное лечение</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Программы лечения</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение пивного алкоголизма</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение женского алкоголизма</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="footer__column">
+                    <h4 class="title__h4 footer__column-title">Наркомания:</h4>
+                    <ul class="footer__list">
+                      <li class="footer__item">
+                        <a href="#">Реабилитация</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Детоксикация</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Снятие ломки</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Кодирование</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">УБОД</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Нарколог на дом</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение в клинике</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Амбулаторное лечение</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Программы лечения</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение солевой зависимости</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение спайсовой зависимости</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение героиновой зависимости</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="footer__column">
+                    <h4 class="title__h4 footer__column-title">Другие услуги:</h4>
+                    <ul class="footer__list">
+                      <li class="footer__item">
+                        <a href="#">Интернет зависимость</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Игровая зависимость</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Адвокатская помощь</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Ресоциализация</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Лечение за границей</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Нарколог на дом</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Психологическая помощь</a>
+                      </li>
+                      <li class="footer__item">
+                        <a href="#">Психиатрическая помощь</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </footer>
+      </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

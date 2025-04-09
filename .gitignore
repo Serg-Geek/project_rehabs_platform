@@ -37,5 +37,5 @@ docker-compose.yml
 
 .pylintrc
 
-static/deps/img/*
-!static/deps/img/.gitkeep
+# static/deps/img/*
+# !static/deps/img/.gitkeep

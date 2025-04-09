@@ -4,12 +4,16 @@
 {% block title %}Главная | Центр помощи зависимым | Анапа{% endblock %}
 
 {% block content %}
+
+{% include "includes/banner.html" %}
+
 <section class="rehab-help">
   <div class="container">
     <div class="rehab-help__content">
       <div class="rehab-help__content-item rehab-help__image">
         <img
-          src="https://www.shutterstock.com/shutterstock/photos/2426853773/display_1500/stock-photo-medellin-colombia-december-police-photo-of-rested-famous-drug-dealer-pablo-escobar-2426853773.jpg"
+          src="{% static 'deps/img/cover-photo.png' %}"
+          src="https://www.shutterstock.com/shutterstock/photos/2426853773/display_1500/colombia-december-police-photo-of-rested-famous-drug-dealer-pablo-escobar-2426853773.jpg"
           alt="Помощь в реабилитации" />
       </div>
       <div class="rehab-help__content-item rehab-help__text">
@@ -49,42 +53,42 @@
       <div class="about-help__content-item about-help__icons">
         <div class="icons-grid">
           <div class="icons-grid__item">
-            <img src="icons/about_icons/heart.svg" alt="Консультации" />
+            <img src="{% static 'deps/icons/about_icons/heart.svg' %}" alt="Консультации" />
             <p>
               Бесплатные и анонимные консультации опытных специалистов по
               разным видам зависимостей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_icons/stop-icon.svg" alt="Терапия" />
+            <img src="{% static 'deps/icons/about_icons/stop-icon.svg' %}" alt="Терапия" />
             <p>
               Безопасная и эффективная терапия: детоксикация, кодировка и
               восстановление здоровья
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_icons/hospital-icon.svg" alt="Центры и клиники" />
+            <img src="{% static 'deps/icons/about_icons/hospital-icon.svg' %}" alt="Центры и клиники" />
             <p>
               Доступ к проверенным реабилитационным центрам и клиникам по
               всей России и за границей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_icons/medicine-box-icon.svg" alt="Лечение зависимостей" />
+            <img src="{% static 'deps/icons/about_icons/medicine-box-icon.svg' %}" alt="Лечение зависимостей" />
             <p>
               Профессиональная помощь в лечении наркомании, алкоголизма и
               других зависимостей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_icons/care-icon.svg" alt="Поддержка" />
+            <img src="{% static 'deps/icons/about_icons/care-icon.svg' %}" alt="Поддержка" />
             <p>
               Поддержка на всех этапах от преодоления зависимости и
               реабилитации до ресоциализации
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_icons/health-care-icon.svg" alt="Индивидуальный подход" />
+            <img src="{% static 'deps/icons/about_icons/health-care-icon.svg' %}" alt="Индивидуальный подход" />
             <p>
               Индивидуальный подход к каждому клиенту: подбираем лечение,
               соответствующее вашим потребностям
@@ -115,7 +119,7 @@
       <div class="our-services__list">
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="icons/our_services_icons/alcohol-icon.svg" alt="Лечение алкоголизма" />
+            <img src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}" alt="Лечение алкоголизма" />
           </div>
           <h3 class="title__h3">Лечение алкоголизма</h3>
           <ul>
@@ -130,7 +134,7 @@
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="icons/our_services_icons/medicine-icon.svg" alt="Лечение наркомании" />
+            <img src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}" alt="Лечение наркомании" />
           </div>
           <h3 class="title__h3">Лечение наркомании</h3>
           <ul>
@@ -146,7 +150,7 @@
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="icons/our_services_icons/hand-help-icon.svg" alt="Другие услуги" />
+            <img src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}" alt="Другие услуги" />
           </div>
           <h3 class="title__h3">Другие услуги</h3>
           <ul>
@@ -325,7 +329,7 @@
           {% endif %}
           {% endwith %}
         </div>
-        {% if rehab_centers|length > 4 %}
+        <!-- {% if rehab_centers|length > 4 %}
         <button class="carousel-control-prev" type="button" data-bs-target="#rehabsCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
@@ -334,7 +338,7 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-        {% endif %}
+        {% endif %} -->
       </div>
       <div class="rehabs__button-wrapper">
         <a href="{% url 'facilities:rehabilitation_list' %}" class="rehab-btn rehabs__button">Показать больше</a>
@@ -478,14 +482,14 @@
           {% endwith %}
         </div>
         {% if clinics|length > 4 %}
-        <button class="carousel-control-prev" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="prev">
+        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
-        </button>
+        </button> -->
         {% endif %}
       </div>
       <div class="clinics__button-wrapper">
@@ -595,7 +599,7 @@
           {% endif %}
           {% endwith %}
         </div>
-        {% if specialists|length > 4 %}
+        <!-- {% if specialists|length > 4 %}
         <button class="carousel-control-prev" type="button" data-bs-target="#specialistsCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
@@ -604,7 +608,7 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-        {% endif %}
+        {% endif %} -->
       </div>
       <div class="specialists__button-wrapper">
         <a href="#" class="rehab-btn specialists__button">Показать больше</a>
@@ -876,35 +880,35 @@
       <div class="for-partners__content-item about-help__content-item about-help__icons">
         <div class="icons-grid">
           <div class="icons-grid__item">
-            <img src="icons/about_partners/clients-icon.svg" alt="клиенты" />
+            <img src="{% static 'deps/icons/about_partners/clients-icon.svg' %}" alt="клиенты" />
             <p>
               Дополнительные клиенты и постоянный поток заявок от пациентов
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_partners/conversation-icon.svg" alt="conversation" />
+            <img src="{% static 'deps/icons/about_partners/conversation-icon.svg' %}" alt="conversation" />
             <p>
               Совместное обсуждение сложных случаев для повышения качества
               услуг
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_partners/expirience-icon.svg" alt="expirience" />
+            <img src="{% static 'deps/icons/about_partners/expirience-icon.svg' %}" alt="expirience" />
             <p>Повышение эффективности лечения через обмен опытом</p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_partners/expansion-icon.svg" alt="expansion" />
+            <img src="{% static 'deps/icons/about_partners/expansion-icon.svg' %}" alt="expansion" />
             <p>
               Расширение спектра возможностей для лечения и реабилитации
               пациентов
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_partners/speedup-icon.svg" alt="speedup" />
+            <img src="{% static 'deps/icons/about_partners/speedup-icon.svg' %}" alt="speedup" />
             <p>Ускоренная обработка запросов и увеличение конверсии</p>
           </div>
           <div class="icons-grid__item">
-            <img src="icons/about_partners/care.svg" alt="care" />
+            <img src="{% static 'deps/icons/about_partners/care.svg' %}" alt="care" />
             <p>Возможность комплексного подхода в лечении и реабилитации</p>
           </div>
         </div>
@@ -948,4 +952,3 @@
   </div>
 </section>
 {% endblock %}
-<!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi aut similique harum repudiandae tempore facere eius accusantium, qui iusto totam fugit, reiciendis beatae, autem ipsum excepturi? Repellendus dolore iste omnis? -->
