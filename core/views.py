@@ -28,23 +28,28 @@ class HomeView(TemplateView):
         )[:6]
 
         # Получаем категории услуг для главной страницы
-        service_categories = {
-            'alcoholism': ServiceCategory.objects.get(slug='lechenie-alkogolizma'),
-            'drug_addiction': ServiceCategory.objects.get(slug='lechenie-narkomanii'),
-            'other': ServiceCategory.objects.get(slug='drugie-uslugi')
+        service_categories = {}
+        categories_mapping = {
+            'alcoholism': 'lechenie-alkogolizma',
+            'drug_addiction': 'lechenie-narkomanii',
+            'other': 'drugie-uslugi'
         }
         
-        # Получаем услуги для каждой категории
-        context['service_categories'] = {}
-        for key, category in service_categories.items():
-            context['service_categories'][key] = {
-                'category': category,
-                'services': Service.objects.filter(
-                    categories=category,
-                    is_active=True
-                ).order_by('name')
-            }
+        # Получаем только активные категории
+        for key, slug in categories_mapping.items():
+            try:
+                category = ServiceCategory.objects.get(slug=slug, is_active=True)
+                service_categories[key] = {
+                    'category': category,
+                    'services': Service.objects.filter(
+                        categories=category,
+                        is_active=True
+                    ).order_by('name')
+                }
+            except ServiceCategory.DoesNotExist:
+                continue
         
+        context['service_categories'] = service_categories
         return context
 
 class ContactsView(TemplateView):
