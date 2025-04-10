@@ -1,0 +1,44 @@
+[
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 1,
+        "fields": {
+            "name": "Лечение алкоголизма",
+            "slug": "lechenie-alkogolizma",
+            "description": "Комплексное лечение алкогольной зависимости",
+            "parent": null,
+            "order": 1,
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 2,
+        "fields": {
+            "name": "Лечение наркомании",
+            "slug": "lechenie-narkomanii",
+            "description": "Комплексное лечение наркотической зависимости",
+            "parent": null,
+            "order": 2,
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 3,
+        "fields": {
+            "name": "Другие услуги",
+            "slug": "drugie-uslugi",
+            "description": "Дополнительные услуги по лечению зависимостей",
+            "parent": null,
+            "order": 3,
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    }
+]

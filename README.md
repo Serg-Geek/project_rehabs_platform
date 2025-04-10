@@ -74,7 +74,18 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-7. Запустите сервер разработки:
+7. Загрузите начальные данные:
+```bash
+python manage.py load_initial_data
+```
+Эта команда создаст:
+- Категории услуг:
+  - Лечение алкоголизма (slug: lechenie-alkogolizma)
+  - Лечение наркомании (slug: lechenie-narkomanii)
+  - Другие услуги (slug: drugie-uslugi)
+- Базовые услуги для каждой категории
+
+8. Запустите сервер разработки:
 ```bash
 python manage.py runserver
 ```

@@ -11,8 +11,7 @@
   <div class="container">
     <div class="rehab-help__content">
       <div class="rehab-help__content-item rehab-help__image">
-        <img
-          src="{% static 'deps/img/cover-photo.png' %}"
+        <img src="{% static 'deps/img/cover-photo.png' %}"
           src="https://www.shutterstock.com/shutterstock/photos/2426853773/display_1500/colombia-december-police-photo-of-rested-famous-drug-dealer-pablo-escobar-2426853773.jpg"
           alt="Помощь в реабилитации" />
       </div>
@@ -121,46 +120,33 @@
           <div class="our-services__icon">
             <img src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}" alt="Лечение алкоголизма" />
           </div>
-          <h3 class="title__h3">Лечение алкоголизма</h3>
+          <h3 class="title__h3">{{ service_categories.alcoholism.category.name }}</h3>
           <ul>
-            <li><a href="#">Реабилитация</a></li>
-            <li><a href="#">Детоксикация</a></li>
-            <li><a href="#">Вывод из запоя</a></li>
-            <li><a href="#">Кодирование</a></li>
-            <li><a href="#">Лечение в стационаре</a></li>
-            <li><a href="#">Амбулаторное лечение</a></li>
-            <li><a href="#">Программы лечения</a></li>
+            {% for service in service_categories.alcoholism.services %}
+            <li><a href="#">{{ service.name }}</a></li>
+            {% endfor %}
           </ul>
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
             <img src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}" alt="Лечение наркомании" />
           </div>
-          <h3 class="title__h3">Лечение наркомании</h3>
+          <h3 class="title__h3">{{ service_categories.drug_addiction.category.name }}</h3>
           <ul>
-            <li><a href="#">Реабилитация</a></li>
-            <li><a href="#">Детоксикация</a></li>
-            <li><a href="#">Снятие ломки</a></li>
-            <li><a href="#">Кодирование</a></li>
-            <li><a href="#">УБОД</a></li>
-            <li><a href="#">Лечение в стационаре</a></li>
-            <li><a href="#">Амбулаторное лечение</a></li>
-            <li><a href="#">Программы лечения</a></li>
+            {% for service in service_categories.drug_addiction.services %}
+            <li><a href="#">{{ service.name }}</a></li>
+            {% endfor %}
           </ul>
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
             <img src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}" alt="Другие услуги" />
           </div>
-          <h3 class="title__h3">Другие услуги</h3>
+          <h3 class="title__h3">{{ service_categories.other.category.name }}</h3>
           <ul>
-            <li><a href="#">Интернет зависимость</a></li>
-            <li><a href="#">Игровая зависимость</a></li>
-            <li><a href="#">Ресоциализация</a></li>
-            <li><a href="#">Адвокатская помощь</a></li>
-            <li><a href="#">Лечение за границей</a></li>
-            <li><a href="#">Психологическая помощь</a></li>
-            <li><a href="#">Психиатрическая помощь</a></li>
+            {% for service in service_categories.other.services %}
+            <li><a href="#">{{ service.name }}</a></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -186,8 +172,7 @@
         <a href="#" class="rehab-btn testing-offer__button">Перейти к тестам</a>
       </div>
       <div class="testing-offer__image">
-        <img src="{% static "deps/img/test-block.png" %}"
-          alt="Изображение test" class="testing-offer__img" />
+        <img src="{% static " deps/img/test-block.png" %}" alt="Изображение test" class="testing-offer__img" />
       </div>
     </div>
   </div>
@@ -917,8 +902,7 @@
 
     <div class="for-partners__flex-wrapper">
       <div class="for-partners__image">
-        <img src="{% static "deps/img/partnership.png" %}"
-          alt="Изображение консультации" class="for-partners__img" />
+        <img src="{% static " deps/img/partnership.png" %}" alt="Изображение консультации" class="for-partners__img" />
       </div>
 
       <div class="for-partners__content">
