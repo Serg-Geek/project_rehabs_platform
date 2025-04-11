@@ -7,7 +7,11 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
             <li class="breadcrumb-item">
+                {% if facility_type == 'clinic' %}
+                <a href="{% url 'facilities:clinic_list' %}">clinics catalog</a>
+                {% else %}
                 <a href="{% url 'facilities:rehabilitation_list' %}">rehab catalog</a>
+                {% endif %}
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 {{ facility.name }}
@@ -146,7 +150,11 @@
         <div class="section__content">
             <div class="rehabs__cards">
                 {% for related_facility in related_facilities %}
+                {% if facility_type == 'clinic' %}
+                {% include "includes/cards/clinic_card.html" with facility=related_facility %}
+                {% else %}
                 {% include "includes/cards/rehab_card.html" with facility=related_facility %}
+                {% endif %}
                 {% endfor %}
             </div>
         </div>

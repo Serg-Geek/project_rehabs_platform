@@ -81,4 +81,5 @@ class FacilityDetailView(DetailView):
         
         context['related_facilities'] = related_facilities
         context['services'] = services
+        context['facility_type'] = self.kwargs.get('facility_type')
         return context
