@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import RecoveryCategory, RecoveryStory, RecoveryTag, RecoveryStoryTag, RecoveryStoryImage
+from django.contrib.contenttypes.admin import GenericStackedInline
+from .models import RecoveryStory, RecoveryCategory, RecoveryTag, RecoveryStoryTag, RecoveryStoryImage
 
 class RecoveryStoryImageInline(admin.TabularInline):
     model = RecoveryStoryImage
@@ -11,74 +12,26 @@ class RecoveryStoryTagInline(admin.TabularInline):
 
 @admin.register(RecoveryStory)
 class RecoveryStoryAdmin(admin.ModelAdmin):
-    list_display = [
-        'title',
-        'category',
-        'author',
-        'is_published',
-        'publish_date',
-        'views'
-    ]
-    list_filter = [
-        'is_published',
-        'category',
-        'publish_date',
-        'rehab_center'
-    ]
-    search_fields = [
-        'title',
-        'content',
-        'excerpt',
-        'meta_description'
-    ]
+    list_display = ('title', 'category', 'author', 'facility', 'is_published', 'publish_date')
+    list_filter = ('category', 'is_published', 'content_type')
+    search_fields = ('title', 'content', 'author')
     prepopulated_fields = {'slug': ('title',)}
-    readonly_fields = ['created_at', 'updated_at', 'views']
     inlines = [RecoveryStoryImageInline, RecoveryStoryTagInline]
-    fieldsets = (
-        ('Основная информация', {
-            'fields': (
-                'title',
-                'slug',
-                'category',
-                'author',
-                'rehab_center',
-                'excerpt',
-                'content',
-                'conclusion_text',
-            )
-        }),
-        ('Медиа', {
-            'fields': (
-                'image',
-            )
-        }),
-        ('SEO', {
-            'fields': (
-                'meta_title',
-                'meta_description',
-            )
-        }),
-        ('Публикация', {
-            'fields': (
-                'is_published',
-                'publish_date',
-            )
-        }),
-    )
+    date_hierarchy = 'publish_date'
 
 @admin.register(RecoveryCategory)
 class RecoveryCategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'parent', 'order']
-    list_filter = ['parent']
-    search_fields = ['name', 'description']
+    list_display = ('name', 'parent', 'order')
+    list_filter = ('parent',)
+    search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(RecoveryTag)
 class RecoveryTagAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'is_active', 'is_system']
-    search_fields = ['name']
+    list_display = ('name', 'is_active', 'is_system')
+    list_filter = ('is_active', 'is_system')
+    search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
-    list_filter = ['is_active', 'is_system']
 
 @admin.register(RecoveryStoryTag)
 class RecoveryStoryTagAdmin(admin.ModelAdmin):

@@ -24,26 +24,31 @@
                         <span itemprop="addressRegion">{{ story.location }}</span>
                     </div>
                 </div>
-                {% if story.clinic %}
+                {% if story.facility %}
                 <div class="card">
-                    <a href="{{ story.clinic.get_absolute_url }}">
+                    <a href="{{ story.facility.get_absolute_url }}">
                         <div class="card__image">
-                            {% if story.clinic.image %}
-                            <img src="{{ story.clinic.image.url }}" alt="{{ story.clinic.name }}" />
+                            {% if story.facility.images.first %}
+                            <img src="{{ story.facility.images.first.image.url }}" alt="{{ story.facility.name }}" />
                             {% else %}
                             <img src="{% static 'deps/img/no-image.jpg' %}" alt="Нет изображения" />
                             {% endif %}
                         </div>
                         <div class="card__content">
                             <h3 class="card__title title__h4">
-                                {{ story.clinic.name }}
+                                {{ story.facility.name }}
                             </h3>
                             <p class="card__description">
-                                {{ story.clinic.address }}
+                                {{ story.facility.address }}
                             </p>
                             <div class="card__price">
                                 <span class="card__price-value">
-                                    от {{ story.clinic.min_price }} P / месяц
+                                    {% if story.facility.content_type.model == 'rehabcenter' %}
+                                    от {{ story.facility.program_duration }} дней
+                                    {% elif story.facility.content_type.model == 'clinic' and
+                                    story.facility.emergency_support %}
+                                    Экстренная помощь
+                                    {% endif %}
                                 </span>
                             </div>
                         </div>
