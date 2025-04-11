@@ -1,61 +1,98 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-{{ story.title }} | Истории выздоровления
-{% endblock %}
+{% block title %}{{ story.title }} - История выздоровления{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="recovery-story">
-        <div class="recovery-story__header">
-            <h1 class="title__h1">{{ story.title }}</h1>
-            <div class="recovery-story__meta">
-                <span class="recovery-story__date">{{ story.publish_date|date:"d.m.Y" }}</span>
-                {% if story.rehab_center %}
-                <span class="recovery-story__center">{{ story.rehab_center.name }}</span>
+<section class="detail spec-detail rehab-help">
+    <div class="container">
+        <div class="detail__content rehab-help__content">
+            <div class="detail__content-item detail__content-item--img rehab-help__content-item rehab-help__image">
+                {% if story.image %}
+                <img src="{{ story.image.url }}" alt="{{ story.title }}" />
+                {% else %}
+                <img src="{% static 'deps/img/no-image.jpg' %}" alt="Нет изображения" />
+                {% endif %}
+            </div>
+            <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
+                <h2 class="title__h2 detail__title">
+                    {{ story.title }}
+                </h2>
+                <div class="detail__text spec-detail__text">
+                    <p>{{ story.excerpt }}</p>
+                    <div itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressRegion">{{ story.location }}</span>
+                    </div>
+                </div>
+                {% if story.clinic %}
+                <div class="card">
+                    <a href="{{ story.clinic.get_absolute_url }}">
+                        <div class="card__image">
+                            {% if story.clinic.image %}
+                            <img src="{{ story.clinic.image.url }}" alt="{{ story.clinic.name }}" />
+                            {% else %}
+                            <img src="{% static 'deps/img/no-image.jpg' %}" alt="Нет изображения" />
+                            {% endif %}
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                {{ story.clinic.name }}
+                            </h3>
+                            <p class="card__description">
+                                {{ story.clinic.address }}
+                            </p>
+                            <div class="card__price">
+                                <span class="card__price-value">
+                                    от {{ story.clinic.min_price }} P / месяц
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 {% endif %}
             </div>
         </div>
+    </div>
+</section>
 
-        {% if story.image %}
-        <div class="recovery-story__image">
-            <img src="{{ story.image.url }}" alt="{{ story.title }}">
-        </div>
-        {% endif %}
-
-        <div class="recovery-story__content">
-            {{ story.content|safe }}
-        </div>
-
-        {% if story.tags.all %}
-        <div class="recovery-story__tags">
-            <h2 class="title__h2">Теги</h2>
-            <div class="recovery-story__tags-list">
-                {% for tag in story.tags.all %}
-                <a href="{% url 'recovery_stories:list' %}?tag={{ tag.slug }}" class="recovery-story__tag">
-                    {% if tag.icon %}
-                    <img src="{% static tag.icon %}" alt="{{ tag.name }}" class="recovery-story__tag-icon">
-                    {% endif %}
-                    {{ tag.name }}
-                </a>
-                {% endfor %}
+<section class="detail__info rehab-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <h3 class="title__h3 detail__title">История выздоровления</h3>
+            <div class="rehab-detail__text detail__text--width-limiter">
+                {{ story.content|safe }}
             </div>
         </div>
-        {% endif %}
+    </div>
+</section>
 
-        <div class="recovery-story__navigation">
-            {% if previous_story %}
-            <a href="{% url 'recovery_stories:detail' previous_story.slug %}" class="recovery-story__nav-link">
-                ← {{ previous_story.title }}
-            </a>
-            {% endif %}
-            {% if next_story %}
-            <a href="{% url 'recovery_stories:detail' next_story.slug %}" class="recovery-story__nav-link">
-                {{ next_story.title }} →
-            </a>
-            {% endif %}
+{% if related_stories %}
+<section class="related-stories">
+    <div class="container">
+        <h3 class="title__h3">Похожие истории</h3>
+        <div class="recovery-stories__grid">
+            {% for story in related_stories %}
+            <div class="recovery-story-card">
+                <a href="{{ story.get_absolute_url }}" class="recovery-story-card__link">
+                    <div class="recovery-story-card__image">
+                        {% if story.image %}
+                        <img src="{{ story.image.url }}" alt="{{ story.title }}" />
+                        {% else %}
+                        <img src="{% static 'deps/img/no-image.jpg' %}" alt="Нет изображения" />
+                        {% endif %}
+                    </div>
+                    <div class="recovery-story-card__content">
+                        <h3 class="recovery-story-card__title">{{ story.title }}</h3>
+                        <p class="recovery-story-card__excerpt">{{ story.excerpt }}</p>
+                        <div class="recovery-story-card__meta">
+                            <span class="recovery-story-card__date">{{ story.published_at|date:"d.m.Y" }}</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</div>
+</section>
+{% endif %}
 {% endblock %}
