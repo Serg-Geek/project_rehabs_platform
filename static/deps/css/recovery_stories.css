@@ -1,4 +1,4 @@
-.recovery-story-card {
+/* .recovery-story-card {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,8 @@
 
 .recovery-story-card__image {
     position: relative;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
     overflow: hidden;
 }
 
@@ -128,8 +129,160 @@
     .recovery-stories__grid {
         grid-template-columns: 1fr;
     }
-    
+
     .recovery-story-card__content {
         padding: 1rem;
     }
-} 
+}
+
+/* Стили для поиска и фильтрации */
+.recovery-stories__search {
+    margin-bottom: 2rem;
+}
+
+.recovery-stories__search-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.recovery-stories__search-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.recovery-stories__search-input:focus {
+    border-color: #4299e1;
+    outline: none;
+}
+
+.recovery-stories__search-button {
+    padding: 0.75rem 1.5rem;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.recovery-stories__search-button:hover {
+    background: #3182ce;
+}
+
+.recovery-stories__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.recovery-stories__filter {
+    padding: 0.5rem 1rem;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.recovery-stories__filter:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.recovery-stories__filter--active {
+    background: #4299e1;
+    color: white;
+    border-color: #4299e1;
+}
+
+/* Стили для пагинации */
+.recovery-stories__pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.recovery-stories__pagination-link {
+    padding: 0.5rem 1rem;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.recovery-stories__pagination-link:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.recovery-stories__pagination-link--active {
+    background: #4299e1;
+    color: white;
+    border-color: #4299e1;
+}
+
+.recovery-stories__pagination-link--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Стили для пустого состояния */
+.recovery-stories__empty {
+    text-align: center;
+    padding: 3rem;
+    background: #f7fafc;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+}
+
+.recovery-stories__empty-title {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.recovery-stories__empty-text {
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+}
+
+.recovery-stories__empty-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #4299e1;
+    color: white;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.recovery-stories__empty-link:hover {
+    background: #3182ce;
+}
+
+@media (max-width: 768px) {
+    .recovery-stories__search-form {
+        flex-direction: column;
+    }
+
+    .recovery-stories__filters {
+        flex-direction: column;
+    }
+
+    .recovery-stories__filter {
+        width: 100%;
+    }
+} */

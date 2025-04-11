@@ -10,95 +10,89 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="recovery-stories">
-        <h1 class="title__h1">
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Истории выздоровления
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="catalog recovery-stories-catalog">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">
             {% if current_category %}
             {{ current_category.name }}
             {% else %}
             Истории выздоровления
             {% endif %}
-        </h1>
+        </h2>
 
-        {% if current_category and current_category.description %}
-        <div class="recovery-stories__description">
-            {{ current_category.description|safe }}
-        </div>
-        {% endif %}
-
-        <div class="recovery-stories__sidebar">
-            <div class="recovery-stories__categories">
-                <h2 class="title__h2">Категории</h2>
-                <ul class="recovery-stories__categories-list">
-                    <li class="recovery-stories__categories-item">
-                        <a href="{% url 'recovery_stories:list' %}"
-                            class="recovery-stories__categories-link {% if not current_category %}active{% endif %}">
-                            Все истории
-                        </a>
-                    </li>
-                    {% for category in categories %}
-                    <li class="recovery-stories__categories-item">
-                        <a href="{% url 'recovery_stories:category_stories' category.slug %}"
-                            class="recovery-stories__categories-link {% if current_category == category %}active{% endif %}">
-                            {{ category.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
+        <div class="section__content recovery-stories-catalog__content">
+            <div class="section__content-text catalog__content-text">
+                <p>
+                    Мы делимся реальными историями тех, кто сумел
+                    вернуть свою жизнь под контроль. Их путь не был
+                    лёгким, но благодаря поддержке специалистов, близких
+                    и собственному желанию они достигли долгожданной
+                    свободы. Возможно, чей-то рассказ поможет вам
+                    поверить в себя и сделать первый шаг к новой жизни.
+                    Выздоровление возможно — и эти истории тому
+                    подтверждение.
+                </p>
             </div>
 
-            {% if system_tags %}
-            <div class="recovery-stories__tags">
-                <h2 class="title__h2">Теги</h2>
-                <div class="recovery-stories__tags-list">
-                    {% for tag in system_tags %}
-                    <a href="?tag={{ tag.slug }}"
-                        class="recovery-stories__tag {% if active_tag == tag.slug %}active{% endif %}">
-                        {% if tag.icon %}
-                        <img src="{% static tag.icon %}" alt="{{ tag.name }}" class="recovery-stories__tag-icon">
-                        {% endif %}
-                        {{ tag.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="recovery-stories__content">
-            <div class="recovery-stories__search">
-                <form method="get" class="recovery-stories__search-form">
-                    <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск историй..."
-                        class="recovery-stories__search-input">
-                    <button type="submit" class="recovery-stories__search-button">
-                        <img src="{% static 'deps/icons/search.svg' %}" alt="Поиск">
+            <div class="search-filter">
+                <form method="get" action="{% url 'recovery_stories:list' %}" class="header__search">
+                    <input type="text" name="search" class="header__search-input" placeholder="Поиск..."
+                        value="{{ search_query }}" />
+                    <button type="submit" class="header__search-button">
+                        <img src="{% static 'deps/icons/search.svg' %}" alt="Поиск" class="header__search-icon" />
                     </button>
+                </form>
+
+                <form method="get" id="filter-form" class="filter-section">
+                    <label for="category">Сортировать по</label>
+                    <select id="category" name="category" onchange="this.form.submit()">
+                        <option value="all" {% if not current_category %}selected{% endif %}>Все истории</option>
+                        {% for category in categories %}
+                        <option value="{{ category.slug }}" 
+                        {% if current_category == category %}selected
+                        {% endif %}>
+                            {{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
                 </form>
             </div>
 
-            {% if stories %}
-            <div class="recovery-stories__grid">
+            <div class="recovery-stories__cards">
                 {% for story in stories %}
-                <div class="recovery-story-card">
-                    <a href="{% url 'recovery_stories:detail' story.slug %}" class="recovery-story-card__link">
-                        <div class="recovery-story-card__image">
+                <div class="card recovery-stories__card">
+                    <a href="{% url 'recovery_stories:detail' story.slug %}">
+                        <div class="card__image">
                             {% if story.image %}
-                            <img src="{{ story.image.url }}" alt="{{ story.title }}">
+                            <img src="{{ story.image.url }}" alt="{{ story.title }}" />
                             {% else %}
-                            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}">
+                            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}" />
                             {% endif %}
                         </div>
-                        <div class="recovery-story-card__content">
-                            <h3 class="title__h3 recovery-story-card__title">{{ story.title }}</h3>
-                            <p class="recovery-story-card__excerpt">{{ story.excerpt }}</p>
-                            <div class="recovery-story-card__meta">
-                                <span class="recovery-story-card__date">{{ story.publish_date|date:"d.m.Y" }}</span>
-                                {% if story.rehab_center %}
-                                <span class="recovery-story-card__center">{{ story.rehab_center.name }}</span>
-                                {% endif %}
-                            </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                {{ story.title }}
+                            </h3>
+                            <p class="card__description useful-info__card-description">
+                                {{ story.excerpt|truncatewords:50 }}
+                            </p>
                         </div>
                     </a>
+                </div>
+                {% empty %}
+                <div class="recovery-stories__empty">
+                    <p>Истории не найдены</p>
                 </div>
                 {% endfor %}
             </div>
@@ -118,12 +112,7 @@
                 {% endif %}
             </div>
             {% endif %}
-            {% else %}
-            <div class="recovery-stories__empty">
-                <p>Истории не найдены</p>
-            </div>
-            {% endif %}
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
