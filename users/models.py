@@ -2,11 +2,17 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
+from django.utils import timezone
 
 class User(AbstractUser):
     """
     Расширенная модель пользователя
     """
+    class Role(models.TextChoices):
+        SUPERUSER = 'superuser', _('Суперпользователь')
+        CONTENT_ADMIN = 'content_admin', _('Администратор контента')
+        REQUESTS_ADMIN = 'requests_admin', _('Администратор заявок')
+
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -26,21 +32,14 @@ class User(AbstractUser):
         related_name='custom_user_set',
         related_query_name='custom_user'
     )
-    email = models.EmailField(
-        _('email address'),
-        unique=True
-    )
-    phone = models.CharField(
+    email = models.EmailField(_('Email'), unique=True)
+    phone = models.CharField(_('Телефон'), max_length=20, blank=True, null=True)
+    avatar = models.ImageField(_('Аватар'), upload_to='avatars/', blank=True, null=True)
+    role = models.CharField(
         max_length=20,
-        blank=True,
-        null=True,
-        verbose_name=_('Телефон')
-    )
-    avatar = models.ImageField(
-        upload_to='users/avatars/',
-        blank=True,
-        null=True,
-        verbose_name=_('Аватар')
+        choices=Role.choices,
+        default=Role.CONTENT_ADMIN,
+        verbose_name=_('Роль')
     )
 
     USERNAME_FIELD = 'email'
@@ -51,7 +50,24 @@ class User(AbstractUser):
         verbose_name_plural = _('Пользователи')
 
     def __str__(self):
-        return self.email
+        return self.get_full_name() or self.username
+
+    def is_superuser(self):
+        return self.role == self.Role.SUPERUSER
+
+    def is_content_admin(self):
+        return self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN]
+
+    def is_requests_admin(self):
+        return self.role in [self.Role.SUPERUSER, self.Role.REQUESTS_ADMIN]
+
+    def is_staff(self):
+        return self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]
+
+    def save(self, *args, **kwargs):
+        if self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
+            self.is_staff = True
+        super().save(*args, **kwargs)
 
 class UserProfile(TimeStampedModel):
     """
@@ -60,7 +76,6 @@ class UserProfile(TimeStampedModel):
     class Gender(models.TextChoices):
         MALE = 'male', _('Мужской')
         FEMALE = 'female', _('Женский')
-        OTHER = 'other', _('Другой')
 
     user = models.OneToOneField(
         User,
@@ -103,74 +118,40 @@ class UserProfile(TimeStampedModel):
     def __str__(self):
         return f"Профиль {self.user.email}"
 
-class PatientProfile(TimeStampedModel):
+class UserActionLog(TimeStampedModel):
     """
-    Профиль пациента с медицинской информацией
+    Модель для логирования действий пользователей
     """
-    class BloodType(models.TextChoices):
-        A_POSITIVE = 'A+', _('A+')
-        A_NEGATIVE = 'A-', _('A-')
-        B_POSITIVE = 'B+', _('B+')
-        B_NEGATIVE = 'B-', _('B-')
-        AB_POSITIVE = 'AB+', _('AB+')
-        AB_NEGATIVE = 'AB-', _('AB-')
-        O_POSITIVE = 'O+', _('O+')
-        O_NEGATIVE = 'O-', _('O-')
-
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='patient_profile',
+        related_name='action_logs',
         verbose_name=_('Пользователь')
     )
-    medical_record_number = models.CharField(
-        max_length=50,
-        unique=True,
-        verbose_name=_('Номер медицинской карты')
-    )
-    blood_type = models.CharField(
-        max_length=3,
-        choices=BloodType.choices,
-        blank=True,
-        null=True,
-        verbose_name=_('Группа крови')
-    )
-    allergies = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('Аллергии')
-    )
-    chronic_diseases = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('Хронические заболевания')
-    )
-    current_medications = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('Текущие медикаменты')
-    )
-    emergency_contact_name = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Контактное лицо для экстренных случаев')
-    )
-    emergency_contact_phone = models.CharField(
+    action = models.CharField(
         max_length=20,
-        blank=True,
-        null=True,
-        verbose_name=_('Телефон для экстренных случаев')
+        choices=[
+            ('create', _('Создание')),
+            ('update', _('Обновление')),
+            ('delete', _('Удаление')),
+        ],
+        verbose_name=_('Действие')
     )
-    insurance_info = models.JSONField(
-        default=dict,
-        blank=True,
-        verbose_name=_('Информация о страховке')
+    model_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Модель')
+    )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    details = models.TextField(
+        verbose_name=_('Детали')
     )
 
     class Meta:
-        verbose_name = _('Профиль пациента')
-        verbose_name_plural = _('Профили пациентов')
+        verbose_name = _('Лог действий пользователя')
+        verbose_name_plural = _('Логи действий пользователей')
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f"Пациент {self.user.email}"
+        return f"{self.user.username} - {self.action} - {self.model_name} #{self.object_id}"

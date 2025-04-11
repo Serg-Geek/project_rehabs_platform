@@ -254,3 +254,57 @@ class RecoveryStoryTag(TimeStampedModel):
 
     def __str__(self):
         return f"{self.story.title} - {self.tag.name}"
+
+class AdminActionLog(TimeStampedModel):
+    """
+    Логи действий администраторов
+    """
+    ACTION_CHOICES = (
+        ('create', _('Создание')),
+        ('update', _('Обновление')),
+        ('delete', _('Удаление')),
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name=_('Администратор')
+    )
+    action = models.CharField(
+        max_length=10,
+        choices=ACTION_CHOICES,
+        verbose_name=_('Действие')
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        verbose_name=_('Тип объекта')
+    )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID объекта')
+    )
+    content_object = GenericForeignKey('content_type', 'object_id')
+    field_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Измененное поле'),
+        null=True,
+        blank=True
+    )
+    old_value = models.TextField(
+        verbose_name=_('Старое значение'),
+        null=True,
+        blank=True
+    )
+    new_value = models.TextField(
+        verbose_name=_('Новое значение'),
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = _('Лог действий администратора')
+        verbose_name_plural = _('Логи действий администраторов')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user} {self.get_action_display()} {self.content_object}"

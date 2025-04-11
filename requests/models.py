@@ -7,6 +7,129 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+class Request(TimeStampedModel):
+    """
+    Заявка на лечение
+    """
+    class Status(models.TextChoices):
+        NEW = 'new', _('Новая')
+        IN_PROGRESS = 'in_progress', _('В обработке')
+        APPROVED = 'approved', _('Одобрена')
+        REJECTED = 'rejected', _('Отклонена')
+        COMPLETED = 'completed', _('Завершена')
+
+    class AddictionType(models.TextChoices):
+        ALCOHOL = 'alcohol', _('Алкоголь')
+        DRUGS = 'drugs', _('Наркотики')
+        GAMBLING = 'gambling', _('Игровая зависимость')
+        OTHER = 'other', _('Другое')
+
+    class ContactType(models.TextChoices):
+        ANONYMOUS = 'anonymous', _('Анонимно')
+        PSEUDONYM = 'pseudonym', _('Под псевдонимом')
+        REAL_NAME = 'real_name', _('Под реальным именем')
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name=_('Статус')
+    )
+    addiction_type = models.CharField(
+        max_length=20,
+        choices=AddictionType.choices,
+        verbose_name=_('Тип зависимости')
+    )
+    contact_type = models.CharField(
+        max_length=20,
+        choices=ContactType.choices,
+        default=ContactType.ANONYMOUS,
+        verbose_name=_('Тип контакта')
+    )
+    first_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Имя')
+    )
+    last_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Фамилия')
+    )
+    email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_('Email')
+    )
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name=_('Телефон')
+    )
+    pseudonym = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Псевдоним')
+    )
+    emergency_contact = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Контактное лицо')
+    )
+    emergency_phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name=_('Телефон контактного лица')
+    )
+    medical_history = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('История болезни')
+    )
+    treatment_plan = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('План лечения')
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Заметки')
+    )
+    responsible_staff = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='requests',
+        verbose_name=_('Ответственный сотрудник')
+    )
+
+    class Meta:
+        verbose_name = _('Заявка')
+        verbose_name_plural = _('Заявки')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        if self.contact_type == self.ContactType.ANONYMOUS:
+            return f"Анонимная заявка #{self.id}"
+        elif self.contact_type == self.ContactType.PSEUDONYM and self.pseudonym:
+            return f"{self.pseudonym} (псевдоним)"
+        elif self.first_name and self.last_name:
+            return f"{self.last_name} {self.first_name}"
+        return f"Заявка #{self.id}"
+
+    def get_full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.last_name} {self.first_name}"
+        return "-"
+
 class AnonymousRequest(TimeStampedModel):
     """
     Анонимные заявки от пользователей
@@ -58,7 +181,6 @@ class AnonymousRequest(TimeStampedModel):
     preferred_facility = GenericForeignKey('content_type', 'object_id')
     
     preferred_service = models.CharField('Предпочтительная услуга', max_length=200, blank=True, null=True)
-    status = models.CharField('Статус', max_length=20, choices=Status.choices, default=Status.NEW)
     created_at = models.DateTimeField('Создано', auto_now_add=True)
     updated_at = models.DateTimeField('Обновлено', auto_now=True)
 
@@ -108,8 +230,11 @@ class AnonymousRequest(TimeStampedModel):
         return f'Заявка #{self.id} - {self.name} - {self.get_request_type_display()} ({self.get_status_display()})'
 
     def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        
         if self.status == self.Status.COMMISSION_RECEIVED and not self.commission_received_date:
             self.commission_received_date = timezone.now().date()
+            
         super().save(*args, **kwargs)
 
 class RequestNote(TimeStampedModel):

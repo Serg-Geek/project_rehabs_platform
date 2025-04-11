@@ -1,0 +1,94 @@
+[
+    {
+        "model": "admin_logs.accesslevel",
+        "pk": 1,
+        "fields": {
+            "name": "Суперюзер",
+            "code": "superuser",
+            "level_type": "superuser",
+            "description": "Полный доступ ко всем функциям",
+            "is_active": true,
+            "created_at": "2024-03-20T00:00:00Z"
+        }
+    },
+    {
+        "model": "admin_logs.accesslevel",
+        "pk": 2,
+        "fields": {
+            "name": "Администратор контента",
+            "code": "content_admin",
+            "level_type": "content_admin",
+            "description": "Управление контентом и заявками",
+            "is_active": true,
+            "created_at": "2024-03-20T00:00:00Z"
+        }
+    },
+    {
+        "model": "admin_logs.accesslevel",
+        "pk": 3,
+        "fields": {
+            "name": "Администратор заявок",
+            "code": "requests_admin",
+            "level_type": "requests_admin",
+            "description": "Управление заявками",
+            "is_active": true,
+            "created_at": "2024-03-20T00:00:00Z"
+        }
+    },
+    {
+        "model": "admin_logs.apppermission",
+        "pk": 1,
+        "fields": {
+            "app_label": "requests",
+            "access_level": 2,
+            "can_view": true,
+            "can_add": true,
+            "can_change": true,
+            "can_delete": false,
+            "can_assign_responsible": true,
+            "can_change_status": true
+        }
+    },
+    {
+        "model": "admin_logs.apppermission",
+        "pk": 2,
+        "fields": {
+            "app_label": "requests",
+            "access_level": 3,
+            "can_view": true,
+            "can_add": true,
+            "can_change": true,
+            "can_delete": false,
+            "can_assign_responsible": false,
+            "can_change_status": true
+        }
+    },
+    {
+        "model": "admin_logs.apppermission",
+        "pk": 3,
+        "fields": {
+            "app_label": "blog",
+            "access_level": 2,
+            "can_view": true,
+            "can_add": true,
+            "can_change": true,
+            "can_delete": true,
+            "can_assign_responsible": false,
+            "can_change_status": false
+        }
+    },
+    {
+        "model": "admin_logs.apppermission",
+        "pk": 4,
+        "fields": {
+            "app_label": "recovery_stories",
+            "access_level": 2,
+            "can_view": true,
+            "can_add": true,
+            "can_change": true,
+            "can_delete": true,
+            "can_assign_responsible": false,
+            "can_change_status": false
+        }
+    }
+]

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'requests.apps.RequestsConfig',
     'medical_services.apps.MedicalServicesConfig',
     'recovery_stories.apps.RecoveryStoriesConfig',
+    'admin_logs.apps.AdminLogsConfig',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,31 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Настройки для системы логирования
+ADMIN_LOGS = {
+    'ENABLE_LOGGING': True,
+    'LOG_IP_ADDRESS': True,
+    'LOG_USER_AGENT': True,
+    'LOG_ACCESS_LEVEL': True,
+    'EXCLUDE_MODELS': [
+        'admin_logs.AdminActionLog',
+        'auth.Group',
+        'auth.Permission',
+    ],
+    'INCLUDE_MODELS': [
+        'blog.*',
+        'recovery_stories.*',
+        'requests.*',
+        'facilities.*',
+        'staff.*',
+    ],
+}
+
+# Настройки для системы доступа
+ACCESS_CONTROL = {
+    'DEFAULT_ACCESS_LEVEL': 'content_admin',
+    'SUPERUSER_ACCESS_LEVEL': 'superuser',
+    'ENABLE_TEMPORARY_ACCESS': True,
+    'DEFAULT_ACCESS_DURATION': 30,  # дней
+}
