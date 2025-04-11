@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from facilities.models import RehabCenter, Clinic
 from staff.models import MedicalSpecialist
 from medical_services.models import ServiceCategory, Service
+from recovery_stories.models import RecoveryStory
 
 # Create your views here.
 
@@ -26,6 +27,11 @@ class HomeView(TemplateView):
         context['specialists'] = MedicalSpecialist.objects.filter(
             is_active=True
         )[:6]
+
+        # Получаем истории выздоровления
+        context['recovery_stories'] = RecoveryStory.objects.filter(
+            is_published=True
+        ).order_by('-created_at')[:3]
 
         # Получаем категории услуг для главной страницы
         service_categories = {}

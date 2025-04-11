@@ -686,88 +686,39 @@
   <div class="container">
     <h2 class="title__h2 recovery-stories__title">Истории выздоровления</h2>
     <div class="section__content">
-      <div class="section__content-text">
+      <div class="section__content-text recovery-stories__content-text">
         <p>
-          Реальные истории людей, которые преодолели зависимость. Эти
-          примеры вдохновляют и показывают, что выздоровление возможно.
-        </p>
-        <p>
-          Каждая история уникальна, и каждая из них подтверждает, что с
-          правильной поддержкой и решимостью можно преодолеть зависимость, и
-          вдохновляет на путь выздоровления, где восстановление отношений с
-          собой и близкими — это реальная цель.
+          Читайте реальные истории людей, которые смогли преодолеть зависимость
+          и вернуться к полноценной жизни. Их опыт может вдохновить и помочь
+          вам на пути к выздоровлению.
         </p>
       </div>
-      <div class="recovery-stories__cards">
-        <div class="card recovery-stories__card">
-          <a href="recovery_story.html ">
-            <div class="card__image">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLiujUSTYBqJjxd5Dn9DeziBKQ8AX3tQYpA&s"
-                alt="Изображение статьи" />
+      <div class="recovery-stories__grid">
+        {% for story in recovery_stories %}
+        <div class="recovery-story-card">
+          <a href="{% url 'recovery_stories:detail' story.slug %}">
+            <div class="recovery-story-card__image">
+              {% if story.image %}
+              <img src="{{ story.image.url }}" alt="{{ story.title }}" />
+              {% else %}
+              <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}" />
+              {% endif %}
             </div>
-            <div class="card__content">
-              <h3 class="card__title title__h4">
-                Дмитрий А.,<br />
-                бывший алкоголик
-              </h3>
-              <p class="card__description useful-info__card-description">
-                Страдал от алкоголизма в течение 7 лет. Прошел курс
-                реабилитации в центре «Здоровье», где ему предложили
-                программу с детоксикацией, когнитивно-поведенческой терапией
-                и работой в группе поддержки. Благодаря этому подходу он
-                смог справиться с зависимостью и восстановить отношения с
-                семьей и коллегами.
-              </p>
+            <div class="recovery-story-card__content">
+              <h3 class="title__h3 recovery-story-card__title">{{ story.title }}</h3>
+              <p class="recovery-story-card__excerpt">{{ story.excerpt }}</p>
+              <div class="recovery-story-card__meta">
+                <span class="recovery-story-card__date">{{ story.created_at|date:"d.m.Y" }}</span>
+              </div>
             </div>
           </a>
         </div>
-        <div class="card recovery-stories__card">
-          <a href="#">
-            <div class="card__image">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLiujUSTYBqJjxd5Dn9DeziBKQ8AX3tQYpA&s"
-                alt="Изображение статьи" />
-            </div>
-            <div class="card__content">
-              <h3 class="card__title title__h4">
-                Дмитрий А.,<br />
-                бывший алкоголик
-              </h3>
-              <p class="card__description useful-info__card-description">
-                Страдал от алкоголизма в течение 7 лет. Прошел курс
-                реабилитации в центре «Здоровье», где ему предложили
-                программу с детоксикацией, когнитивно-поведенческой терапией
-                и работой в группе поддержки. Благодаря этому подходу он
-                смог справиться с зависимостью и восстановить отношения с
-                семьей и коллегами.
-              </p>
-            </div>
-          </a>
-        </div>
-        <div class="card recovery-stories__card">
-          <a href="#">
-            <div class="card__image">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLiujUSTYBqJjxd5Dn9DeziBKQ8AX3tQYpA&s"
-                alt="Изображение статьи" />
-            </div>
-            <div class="card__content">
-              <h3 class="card__title title__h4">
-                Дмитрий А.,<br />
-                бывший алкоголик
-              </h3>
-              <p class="card__description useful-info__card-description">
-                Страдал от алкоголизма в течение 7 лет. Прошел курс
-                реабилитации в центре «Здоровье», где ему предложили
-                программу с детоксикацией, когнитивно-поведенческой терапией
-                и работой в группе поддержки. Благодаря этому подходу он
-                смог справиться с зависимостью и восстановить отношения с
-                семьей и коллегами.
-              </p>
-            </div>
-          </a>
-        </div>
+        {% endfor %}
+      </div>
+      <div class="recovery-stories__more">
+        <a href="{% url 'recovery_stories:list' %}" class="rehab-btn">Все истории</a>
       </div>
     </div>
-    <a href="#" class="rehab-btn recovery-stories__button">Читать истории</a>
   </div>
 </section>
 

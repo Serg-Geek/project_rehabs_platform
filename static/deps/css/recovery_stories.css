@@ -1,0 +1,135 @@
+.recovery-story-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.recovery-story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.recovery-story-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.recovery-story-card__image {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+}
+
+.recovery-story-card__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.recovery-story-card:hover .recovery-story-card__image img {
+    transform: scale(1.05);
+}
+
+.recovery-story-card__content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.recovery-story-card__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2d3748;
+    line-height: 1.4;
+}
+
+.recovery-story-card__excerpt {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.recovery-story-card__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #718096;
+    margin-top: auto;
+}
+
+.recovery-story-card__date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recovery-story-card__center {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recovery-story-card__views {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.recovery-story-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.recovery-story-card__tag {
+    background: #f7fafc;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.recovery-story-card__tag-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Сетка карточек */
+.recovery-stories__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .recovery-stories__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .recovery-story-card__content {
+        padding: 1rem;
+    }
+} 

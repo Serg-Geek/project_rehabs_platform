@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'requests.apps.RequestsConfig',
     'medical_services.apps.MedicalServicesConfig',
+    'recovery_stories.apps.RecoveryStoriesConfig',
 ]
 
 MIDDLEWARE = [

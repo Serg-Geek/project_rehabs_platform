@@ -31,4 +31,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('blog/', include('blog.urls')),
     path('requests/', include('requests.urls')),  # Добавляем URL-маршруты для заявок
+    path('', include('recovery_stories.urls')),  # Добавляем URL-маршруты для историй выздоровления
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

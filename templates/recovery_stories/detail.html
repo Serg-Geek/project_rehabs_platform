@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ story.title }} | Истории выздоровления
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="recovery-story">
+        <div class="recovery-story__header">
+            <h1 class="title__h1">{{ story.title }}</h1>
+            <div class="recovery-story__meta">
+                <span class="recovery-story__date">{{ story.publish_date|date:"d.m.Y" }}</span>
+                {% if story.rehab_center %}
+                <span class="recovery-story__center">{{ story.rehab_center.name }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if story.image %}
+        <div class="recovery-story__image">
+            <img src="{{ story.image.url }}" alt="{{ story.title }}">
+        </div>
+        {% endif %}
+
+        <div class="recovery-story__content">
+            {{ story.content|safe }}
+        </div>
+
+        {% if story.tags.all %}
+        <div class="recovery-story__tags">
+            <h2 class="title__h2">Теги</h2>
+            <div class="recovery-story__tags-list">
+                {% for tag in story.tags.all %}
+                <a href="{% url 'recovery_stories:list' %}?tag={{ tag.slug }}" class="recovery-story__tag">
+                    {% if tag.icon %}
+                    <img src="{% static tag.icon %}" alt="{{ tag.name }}" class="recovery-story__tag-icon">
+                    {% endif %}
+                    {{ tag.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="recovery-story__navigation">
+            {% if previous_story %}
+            <a href="{% url 'recovery_stories:detail' previous_story.slug %}" class="recovery-story__nav-link">
+                ← {{ previous_story.title }}
+            </a>
+            {% endif %}
+            {% if next_story %}
+            <a href="{% url 'recovery_stories:detail' next_story.slug %}" class="recovery-story__nav-link">
+                {{ next_story.title }} →
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

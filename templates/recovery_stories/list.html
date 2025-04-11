@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{% if current_category %}
+{{ current_category.name }} | Истории выздоровления
+{% else %}
+Истории выздоровления
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="recovery-stories">
+        <h1 class="title__h1">
+            {% if current_category %}
+            {{ current_category.name }}
+            {% else %}
+            Истории выздоровления
+            {% endif %}
+        </h1>
+
+        {% if current_category and current_category.description %}
+        <div class="recovery-stories__description">
+            {{ current_category.description|safe }}
+        </div>
+        {% endif %}
+
+        <div class="recovery-stories__sidebar">
+            <div class="recovery-stories__categories">
+                <h2 class="title__h2">Категории</h2>
+                <ul class="recovery-stories__categories-list">
+                    <li class="recovery-stories__categories-item">
+                        <a href="{% url 'recovery_stories:list' %}"
+                            class="recovery-stories__categories-link {% if not current_category %}active{% endif %}">
+                            Все истории
+                        </a>
+                    </li>
+                    {% for category in categories %}
+                    <li class="recovery-stories__categories-item">
+                        <a href="{% url 'recovery_stories:category_stories' category.slug %}"
+                            class="recovery-stories__categories-link {% if current_category == category %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if system_tags %}
+            <div class="recovery-stories__tags">
+                <h2 class="title__h2">Теги</h2>
+                <div class="recovery-stories__tags-list">
+                    {% for tag in system_tags %}
+                    <a href="?tag={{ tag.slug }}"
+                        class="recovery-stories__tag {% if active_tag == tag.slug %}active{% endif %}">
+                        {% if tag.icon %}
+                        <img src="{% static tag.icon %}" alt="{{ tag.name }}" class="recovery-stories__tag-icon">
+                        {% endif %}
+                        {{ tag.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="recovery-stories__content">
+            <div class="recovery-stories__search">
+                <form method="get" class="recovery-stories__search-form">
+                    <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск историй..."
+                        class="recovery-stories__search-input">
+                    <button type="submit" class="recovery-stories__search-button">
+                        <img src="{% static 'deps/icons/search.svg' %}" alt="Поиск">
+                    </button>
+                </form>
+            </div>
+
+            {% if stories %}
+            <div class="recovery-stories__grid">
+                {% for story in stories %}
+                <div class="recovery-story-card">
+                    <a href="{% url 'recovery_stories:detail' story.slug %}" class="recovery-story-card__link">
+                        <div class="recovery-story-card__image">
+                            {% if story.image %}
+                            <img src="{{ story.image.url }}" alt="{{ story.title }}">
+                            {% else %}
+                            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="recovery-story-card__content">
+                            <h3 class="title__h3 recovery-story-card__title">{{ story.title }}</h3>
+                            <p class="recovery-story-card__excerpt">{{ story.excerpt }}</p>
+                            <div class="recovery-story-card__meta">
+                                <span class="recovery-story-card__date">{{ story.publish_date|date:"d.m.Y" }}</span>
+                                {% if story.rehab_center %}
+                                <span class="recovery-story-card__center">{{ story.rehab_center.name }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="pagination__link">Назад</a>
+                {% endif %}
+
+                <span class="pagination__current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="pagination__link">Вперед</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="recovery-stories__empty">
+                <p>Истории не найдены</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
