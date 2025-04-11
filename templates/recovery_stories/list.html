@@ -50,7 +50,7 @@
                     <input type="text" name="search" class="header__search-input" placeholder="Поиск..."
                         value="{{ search_query }}" />
                     <button type="submit" class="header__search-button">
-                        <img src="{% static 'deps/icons/search.svg' %}" alt="Поиск" class="header__search-icon" />
+                        <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
                     </button>
                 </form>
 
@@ -60,7 +60,7 @@
                         <option value="all" {% if not current_category %}selected{% endif %}>Все истории</option>
                         {% for category in categories %}
                         <option value="{{ category.slug }}" 
-                        {% if current_category == category %}selected
+                        {% if current_category == category %}selected 
                         {% endif %}>
                             {{ category.name }}
                         </option>
