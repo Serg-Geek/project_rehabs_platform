@@ -12,7 +12,7 @@ class StoryListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = RecoveryStory.objects.filter(is_published=True).select_related('category', 'rehab_center')
+        queryset = RecoveryStory.objects.filter(is_published=True).select_related('category', 'content_type')
         
         # Фильтрация по категории
         category_slug = self.kwargs.get('slug')
@@ -60,7 +60,7 @@ class StoryDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_queryset(self):
-        return RecoveryStory.objects.filter(is_published=True).select_related('category', 'rehab_center')
+        return RecoveryStory.objects.filter(is_published=True).select_related('category', 'content_type')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

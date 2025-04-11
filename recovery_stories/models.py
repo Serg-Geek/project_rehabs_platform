@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
 from django.db.models import Q
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from facilities.models import RehabCenter
 
 User = get_user_model()
@@ -72,14 +74,20 @@ class RecoveryStory(TimeStampedModel):
         max_length=100,
         verbose_name=_('Автор')
     )
-    rehab_center = models.ForeignKey(
-        RehabCenter,
-        on_delete=models.SET_NULL,
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        verbose_name=_('Тип учреждения'),
+        limit_choices_to={'model__in': ['clinic', 'rehabcenter']},
         null=True,
-        blank=True,
-        related_name='stories',
-        verbose_name=_('Реабилитационный центр')
+        blank=True
     )
+    object_id = models.PositiveIntegerField(
+        verbose_name=_('ID учреждения'),
+        null=True,
+        blank=True
+    )
+    facility = GenericForeignKey('content_type', 'object_id')
     content = models.TextField(
         verbose_name=_('Содержание')
     )
