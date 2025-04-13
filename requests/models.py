@@ -138,6 +138,7 @@ class AnonymousRequest(TimeStampedModel):
         CONSULTATION = 'consultation', 'Консультация'
         TREATMENT = 'treatment', 'Лечение'
         REHABILITATION = 'rehabilitation', 'Реабилитация'
+        PARTNER = 'partner', 'Партнерство'
         OTHER = 'other', 'Другое'
 
     class Status(models.TextChoices):
@@ -160,6 +161,7 @@ class AnonymousRequest(TimeStampedModel):
     name = models.CharField('Имя', max_length=100)
     phone = models.CharField('Телефон', max_length=20)
     email = models.EmailField('Email', blank=True, null=True)
+    organization = models.CharField('Организация', max_length=200, blank=True, null=True)
     message = models.TextField('Сообщение')
     patient_name = models.CharField('Имя пациента', max_length=100, blank=True, null=True)
     patient_age = models.IntegerField('Возраст пациента', blank=True, null=True)
