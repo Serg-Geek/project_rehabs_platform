@@ -158,6 +158,7 @@ class AnonymousRequest(TimeStampedModel):
         URGENT = 'urgent', 'Срочный'
 
     request_type = models.CharField('Тип заявки', max_length=20, choices=RequestType.choices)
+    status = models.CharField('Статус', max_length=20, choices=Status.choices, default=Status.NEW)
     name = models.CharField('Имя', max_length=100)
     phone = models.CharField('Телефон', max_length=20)
     email = models.EmailField('Email', blank=True, null=True)

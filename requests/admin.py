@@ -103,3 +103,32 @@ class RequestActionLogAdmin(admin.ModelAdmin):
         if not change:  # Если это новая запись
             obj.user = request.user
         super().save_model(request, obj, form, change)
+
+@admin.register(AnonymousRequest)
+class AnonymousRequestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'request_type', 'status', 'name', 'phone', 'organization', 'created_at')
+    list_filter = ('request_type', 'status', 'created_at')
+    search_fields = ('name', 'phone', 'email', 'organization', 'message')
+    readonly_fields = ('created_at', 'updated_at')
+    inlines = [RequestNoteInline, RequestStatusHistoryInline, RequestActionLogInline]
+    
+    fieldsets = (
+        (None, {
+            'fields': ('request_type', 'status', 'name', 'phone', 'email', 'organization')
+        }),
+        (_('Сообщение'), {
+            'fields': ('message',)
+        }),
+        (_('Дополнительная информация'), {
+            'fields': ('patient_name', 'patient_age', 'preferred_contact_time', 'preferred_service')
+        }),
+        (_('Метаданные'), {
+            'fields': ('created_at', 'updated_at', 'created_by', 'updated_by', 'assigned_to')
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not change:  # Если это новая запись
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)

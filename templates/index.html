@@ -864,12 +864,8 @@
         <form class="section-form" method="post" action="{% url 'requests:partner_request' %}" id="partnerForm">
           {% csrf_token %}
           <div class="section-form__form-group">
-            <input type="text" id="name" name="name" class="section-form__input"
+            <input type="text" id="first_name" name="first_name" class="section-form__input"
               placeholder="Контактное лицо" required />
-          </div>
-          <div class="section-form__form-group">
-            <input type="text" id="organization" name="organization" class="section-form__input"
-              placeholder="Название организации" required />
           </div>
           <div class="section-form__form-group">
             <input type="tel" id="phone" name="phone" class="section-form__input" required
@@ -878,7 +874,11 @@
             <div class="invalid-feedback" id="phoneError"></div>
           </div>
           <div class="section-form__form-group">
-            <textarea id="message" name="message" class="section-form__input"
+            <input type="email" id="email" name="email" class="section-form__input"
+              placeholder="Email (необязательно)" />
+          </div>
+          <div class="section-form__form-group">
+            <textarea id="notes" name="notes" class="section-form__input"
               placeholder="Расскажите о вашей организации и условиях сотрудничества"></textarea>
           </div>
           <button type="submit" class="rehab-btn" id="partnerSubmitButton">

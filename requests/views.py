@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import JsonResponse
-from .models import AnonymousRequest
+from .models import AnonymousRequest, Request
 
 # Create your views here.
 
@@ -81,17 +81,17 @@ class ConsultationRequestView(CreateView):
         return redirect('requests:error', error_message='\n'.join(error_messages))
 
 class PartnerRequestView(CreateView):
-    model = AnonymousRequest
-    fields = ['phone', 'name', 'organization', 'message']
+    model = Request
+    fields = ['first_name', 'phone', 'email', 'notes']
     template_name = 'index.html'
     success_url = reverse_lazy('requests:success')
 
     def form_valid(self, form):
         try:
             # Set default values
-            form.instance.status = AnonymousRequest.Status.NEW
-            form.instance.source = 'partner_form'
-            form.instance.request_type = AnonymousRequest.RequestType.PARTNER
+            form.instance.status = Request.Status.NEW
+            form.instance.contact_type = Request.ContactType.REAL_NAME
+            form.instance.addiction_type = Request.AddictionType.OTHER
             
             # Сохраняем форму
             response = super().form_valid(form)
@@ -100,24 +100,17 @@ class PartnerRequestView(CreateView):
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': True,
-                    'request_number': form.instance.id,
-                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
+                    'message': 'Заявка успешно отправлена',
+                    'request_number': form.instance.id
                 })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу успеха
-            messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
-            return redirect('requests:success')
+            return response
         except Exception as e:
-            # Проверяем, является ли запрос AJAX-запросом
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': False,
-                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
-                })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-            messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
-            return redirect('requests:error', error_message=str(e))
+                    'message': 'Произошла ошибка при отправке заявки'
+                }, status=500)
+            return super().form_invalid(form)
 
     def form_invalid(self, form):
         error_messages = []
