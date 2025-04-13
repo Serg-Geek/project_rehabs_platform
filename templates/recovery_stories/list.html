@@ -71,25 +71,7 @@
 
             <div class="recovery-stories__cards">
                 {% for story in stories %}
-                <div class="card recovery-stories__card">
-                    <a href="{% url 'recovery_stories:detail' story.slug %}">
-                        <div class="card__image">
-                            {% if story.image %}
-                            <img src="{{ story.image.url }}" alt="{{ story.title }}" />
-                            {% else %}
-                            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h3 class="card__title title__h4">
-                                {{ story.title }}
-                            </h3>
-                            <p class="card__description useful-info__card-description">
-                                {{ story.excerpt|truncatewords:50 }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
+                    {% include "includes/cards/recovery_story_card.html" with story=story %}
                 {% empty %}
                 <div class="recovery-stories__empty">
                     <p>Истории не найдены</p>

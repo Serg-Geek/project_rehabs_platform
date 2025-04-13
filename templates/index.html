@@ -327,7 +327,7 @@
         {% endif %} -->
       </div>
       <div class="rehabs__button-wrapper">
-        <a href="{% url 'facilities:rehabilitation_list' %}" class="rehab-btn rehabs__button">Показать больше</a>
+        <a href="{% url 'facilities:rehabilitation_list' %}" class="rehab-btn rehabs__button">Посмотреть все</a>
       </div>
     </div>
   </div>
@@ -479,7 +479,7 @@
         {% endif %}
       </div>
       <div class="clinics__button-wrapper">
-        <a href="{% url 'facilities:clinic_list' %}" class="rehab-btn clinics__button">Показать больше</a>
+        <a href="{% url 'facilities:clinic_list' %}" class="rehab-btn clinics__button">Посмотреть все</a>
       </div>
     </div>
   </div>
@@ -597,7 +597,7 @@
         {% endif %} -->
       </div>
       <div class="specialists__button-wrapper">
-        <a href="#" class="rehab-btn specialists__button">Показать больше</a>
+        <a href="#" class="rehab-btn specialists__button">Посмотреть всех</a>
       </div>
     </div>
   </div>
@@ -687,38 +687,24 @@
   <div class="container">
     <h2 class="title__h2 recovery-stories__title">Истории выздоровления</h2>
     <div class="section__content">
-      <div class="section__content-text recovery-stories__content-text">
+      <div class="section__content-text">
         <p>
-          Читайте реальные истории людей, которые смогли преодолеть зависимость
-          и вернуться к полноценной жизни. Их опыт может вдохновить и помочь
-          вам на пути к выздоровлению.
+          Реальные истории людей, которые преодолели зависимость. Эти
+          примеры вдохновляют и показывают, что выздоровление возможно.
+        </p>
+        <p>
+          Каждая история уникальна, и каждая из них подтверждает, что с
+          правильной поддержкой и решимостью можно преодолеть зависимость, и
+          вдохновляет на путь выздоровления, где восстановление отношений с
+          собой и близкими — это реальная цель.
         </p>
       </div>
-      <div class="recovery-stories__grid">
+      <div class="recovery-stories__cards">
         {% for story in recovery_stories %}
-        <div class="recovery-story-card">
-          <a href="{% url 'recovery_stories:detail' story.slug %}">
-            <div class="recovery-story-card__image">
-              {% if story.image %}
-              <img src="{{ story.image.url }}" alt="{{ story.title }}" />
-              {% else %}
-              <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}" />
-              {% endif %}
-            </div>
-            <div class="recovery-story-card__content">
-              <h3 class="title__h3 recovery-story-card__title">{{ story.title }}</h3>
-              <p class="recovery-story-card__excerpt">{{ story.excerpt }}</p>
-              <div class="recovery-story-card__meta">
-                <span class="recovery-story-card__date">{{ story.created_at|date:"d.m.Y" }}</span>
-              </div>
-            </div>
-          </a>
-        </div>
+          {% include "includes/cards/recovery_story_card.html" with story=story %}
         {% endfor %}
       </div>
-      <div class="recovery-stories__more">
-        <a href="{% url 'recovery_stories:list' %}" class="rehab-btn">Все истории</a>
-      </div>
+      <a href="{% url 'recovery_stories:list' %}" class="rehab-btn recovery-stories__button">Читать истории</a>
     </div>
   </div>
 </section>
