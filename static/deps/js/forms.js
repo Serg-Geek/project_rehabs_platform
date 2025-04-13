@@ -158,4 +158,10 @@ document.addEventListener('DOMContentLoaded', function () {
     phoneInputId: 'phone',
     phoneErrorId: 'phoneError',
   });
+
+  // Форма партнеров
+  new FormHandler('partnerForm', {
+    phoneInputId: 'phone',
+    phoneErrorId: 'phoneError',
+  });
 });

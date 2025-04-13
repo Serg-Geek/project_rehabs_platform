@@ -80,6 +80,61 @@ class ConsultationRequestView(CreateView):
         # Если это не AJAX-запрос, перенаправляем на страницу ошибки
         return redirect('requests:error', error_message='\n'.join(error_messages))
 
+class PartnerRequestView(CreateView):
+    model = AnonymousRequest
+    fields = ['phone', 'name', 'organization', 'message']
+    template_name = 'index.html'
+    success_url = reverse_lazy('requests:success')
+
+    def form_valid(self, form):
+        try:
+            # Set default values
+            form.instance.status = AnonymousRequest.Status.NEW
+            form.instance.source = 'partner_form'
+            form.instance.request_type = AnonymousRequest.RequestType.PARTNER
+            
+            # Сохраняем форму
+            response = super().form_valid(form)
+            
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'request_number': form.instance.id,
+                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу успеха
+            messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
+            return redirect('requests:success')
+        except Exception as e:
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
+            messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
+            return redirect('requests:error', error_message=str(e))
+
+    def form_invalid(self, form):
+        error_messages = []
+        for field, errors in form.errors.items():
+            for error in errors:
+                error_messages.append(f'Ошибка в поле {field}: {error}')
+        
+        # Проверяем, является ли запрос AJAX-запросом
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'error': '\n'.join(error_messages)
+            })
+        
+        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
+        return redirect('requests:error', error_message='\n'.join(error_messages))
+
 def success_view(request):
     return render(request, 'requests/success.html')
 

@@ -851,7 +851,7 @@
 
     <div class="for-partners__flex-wrapper">
       <div class="for-partners__image">
-        <img src="{% static " deps/img/partnership.png" %}" alt="Изображение консультации" class="for-partners__img" />
+        <img src="{% static "deps/img/partnership.png" %}" alt="Изображение консультации" class="for-partners__img" />
       </div>
 
       <div class="for-partners__content">
@@ -861,27 +861,35 @@
           нашей команды профессионалов и помогите большему количеству людей
           на пути к выздоровлению. Оставьте заявку для сотрудничества!
         </p>
-        <form class="section-form for-partners__form">
-          <div class="section-form__form-group for-partners__form-group">
-            <select id="contact-method" name="contact-method" class="section-form__select" required>
-              <option value="" disabled selected>
-                Предпочтительная форма обратной связи
-              </option>
-              <option value="phone">Телефон</option>
-              <option value="email">E-mail</option>
-            </select>
+        <form class="section-form" method="post" action="{% url 'requests:partner_request' %}" id="partnerForm">
+          {% csrf_token %}
+          <div class="section-form__form-group">
+            <input type="text" id="name" name="name" class="section-form__input"
+              placeholder="Контактное лицо" required />
           </div>
-          <div class="section-form__form-group for-partners__form-group">
-            <input type="tel" id="contact-input" name="phone" class="section-form__input" required
-              placeholder="+7 (XXX) XXX-XX-XX" />
+          <div class="section-form__form-group">
+            <input type="text" id="organization" name="organization" class="section-form__input"
+              placeholder="Название организации" required />
           </div>
-          <div class="section-form__form-group for-partners__form-group">
-            <textarea id="message" name="message" class="section-form__input" placeholder="Ваше сообщение"></textarea>
+          <div class="section-form__form-group">
+            <input type="tel" id="phone" name="phone" class="section-form__input" required
+              placeholder="+7 (XXX) XXX-XX-XX" pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
+              title="Введите номер в формате: +7 (XXX) XXX-XX-XX" />
+            <div class="invalid-feedback" id="phoneError"></div>
           </div>
-          <button type="submit" class="rehab-btn">Оставить заявку</button>
+          <div class="section-form__form-group">
+            <textarea id="message" name="message" class="section-form__input"
+              placeholder="Расскажите о вашей организации и условиях сотрудничества"></textarea>
+          </div>
+          <button type="submit" class="rehab-btn" id="partnerSubmitButton">
+            <span class="button-text">Отправить заявку</span>
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
         </form>
+        {% include "includes/notification_modals.html" %}
       </div>
     </div>
   </div>
 </section>
 {% endblock %}
+
