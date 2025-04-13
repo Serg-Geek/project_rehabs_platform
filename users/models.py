@@ -105,11 +105,6 @@ class UserProfile(TimeStampedModel):
         null=True,
         verbose_name=_('О себе')
     )
-    notification_preferences = models.JSONField(
-        default=dict,
-        blank=True,
-        verbose_name=_('Настройки уведомлений')
-    )
 
     class Meta:
         verbose_name = _('Профиль пользователя')
