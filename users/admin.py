@@ -64,7 +64,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Персональная информация'), {'fields': ('username', 'first_name', 'last_name', 'phone', 'avatar')}),
-        (_('Роли и права'), {'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (_('Роли и права'), {'fields': ('role', 'is_active', 'groups', 'user_permissions')}),
         (_('Важные даты'), {'fields': ('last_login', 'date_joined')}),
     )
     
@@ -105,11 +105,8 @@ class CustomUserAdmin(UserAdmin):
                 raise PermissionError(_('Только суперпользователь может создавать других суперпользователей'))
             obj.is_staff = True
             obj.is_superuser = True
-        elif obj.role in [obj.Role.CONTENT_ADMIN, obj.Role.REQUESTS_ADMIN, obj.Role.STAFF]:
+        elif obj.role in [obj.Role.CONTENT_ADMIN, obj.Role.REQUESTS_ADMIN]:
             obj.is_staff = True
-            obj.is_superuser = False
-        else:  # PATIENT
-            obj.is_staff = False
             obj.is_superuser = False
             
         # Сохраняем текущего пользователя для логирования
@@ -120,7 +117,7 @@ class CustomUserAdmin(UserAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.path.endswith('/staff-users/'):
-            return qs.filter(role__in=[User.Role.SUPERUSER, User.Role.CONTENT_ADMIN, User.Role.REQUESTS_ADMIN, User.Role.STAFF])
+            return qs.filter(role__in=[User.Role.SUPERUSER, User.Role.CONTENT_ADMIN, User.Role.REQUESTS_ADMIN])
         return qs
 
     def get_urls(self):
