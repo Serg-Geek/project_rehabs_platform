@@ -12,7 +12,6 @@
     <div class="rehab-help__content">
       <div class="rehab-help__content-item rehab-help__image">
         <img src="{% static 'deps/img/cover-photo.png' %}"
-          src="https://www.shutterstock.com/shutterstock/photos/2426853773/display_1500/colombia-december-police-photo-of-rested-famous-drug-dealer-pablo-escobar-2426853773.jpg"
           alt="Помощь в реабилитации" />
       </div>
       <div class="rehab-help__content-item rehab-help__text">
@@ -23,11 +22,15 @@
           Комплексная терапия и реабилитация по&nbsp;всей&nbsp;России
           с&nbsp;медицинской и&nbsp;психологической поддержкой
         </p>
-        <a href="#" class="rehab-help__btn rehab-btn">Записаться на консультацию</a>
+        <button type="button" class="rehab-help__btn rehab-btn" data-bs-toggle="modal" data-bs-target="#rehabHelpModal">
+          Записаться на консультацию
+        </button>
       </div>
     </div>
   </div>
 </section>
+
+{% include "rehab_help_modal.html" %}
 
 <section class="about-help">
   <div class="container">
@@ -165,14 +168,14 @@
         </h2>
         <p class="section__text testing-offer__text">
           Не уверены в своем состоянии? Пройдите наш анонимный
-          тест на зависимость, чтобы узнать, есть ли у вас признаки
+          тест&nbsp;на&nbsp;зависимость, чтобы узнать, есть ли у вас признаки
           наркомании или алкоголизма.
         </p>
 
         <a href="#" class="rehab-btn testing-offer__button">Перейти к тестам</a>
       </div>
       <div class="testing-offer__image">
-        <img src="{% static " deps/img/test-block.png" %}" alt="Изображение test" class="testing-offer__img" />
+        <img src="{% static 'deps/img/test-block.png' %}" alt="Изображение test" class="testing-offer__img" />
       </div>
     </div>
   </div>
@@ -184,14 +187,12 @@
     <div class="section__content">
       <div class="section__content-text rehabs__content-text">
         <p>
-          Мы проконсультируем вас по широкому спектру услуг —
-          от медикаментозной терапии и детоксикации до реабилитации
-          и ресоциализации.
+          Мы сотрудничаем с лучшими реабилитационными центрами по всей России,
+          чтобы обеспечить качественное лечение и комфортные условия для каждого пациента.
         </p>
         <p>
-          Наши специалисты помогут вам на всех этапах лечения.
-          Наша цель — помочь вам вернуться к полноценной жизни и научиться
-          управлять своей зависимостью на всех этапах пути.
+          Наши партнеры - это проверенные центры с опытными специалистами,
+          современным оборудованием и эффективными программами реабилитации.
         </p>
       </div>
 

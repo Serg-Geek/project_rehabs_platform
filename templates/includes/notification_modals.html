@@ -1,0 +1,40 @@
+{% load static %}
+
+<!-- Модальное окно при успешной отправке -->
+<div class="modal fade custom-modal success-modal" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Заявка принята!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <p>Спасибо! Наш специалист свяжется с вами в течение 15 минут.</p>
+                <div class="request-number">
+                    <i class="fas fa-file-alt me-2"></i> Номер заявки: <strong id="requestNumber"></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно при ошибке -->
+<div class="modal fade custom-modal error-modal" id="errorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ошибка отправки</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <p id="errorMessage">Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.</p>
+            </div>
+        </div>
+    </div>
+</div>

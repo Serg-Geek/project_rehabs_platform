@@ -3,439 +3,412 @@
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> {%block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> {%block title %}{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="{% static 'deps/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'deps/css/style.css' %}" />
 </head>
 
 <body>
-    <header class="header" id="top">
-        <div class="header__full-width">
-            <div class="container">
-                <nav class="navbar">
-                    <a href="{% url 'core:home' %}">
-                        <div class="navbar__brand">
-                            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
-                            <span class="navbar__brand-text">Центр помощи зависимым</span>
-                        </div>
-                    </a>
-
-                    <div class="navbar__location">
-                        <i class="fas fa-map-marker-alt navbar__icon"></i>
-                        <span class="navbar__location-text">Анапа</span>
-                    </div>
-
-                    <div class="navbar__phone">
-                        <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
-                        <a href="tel:+78000000000" class="navbar__phone-link">
-                            8 800 000-00-00
-                        </a>
-                    </div>
-
-                    <div class="navbar__social">
-                        <a href="#" class="navbar__social-link navbar__social-link--telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="navbar__social-link navbar__social-link--whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </nav>
+  <header class="header" id="top">
+    <div class="header__full-width">
+      <div class="container">
+        <nav class="navbar">
+          <a href="{% url 'core:home' %}">
+            <div class="navbar__brand">
+              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+              <span class="navbar__brand-text">Центр помощи зависимым</span>
             </div>
-        </div>
-        <div class="header__full-width">
-            <div class="container">
-                <nav class="menu">
-                    <ul class="menu__list">
-                        <li class="menu__item">
-                            <a href="{% url 'core:home' %}" class="menu__link">Алкоголизм</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'core:home' %}" class="menu__link">Наркомания</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'core:home' %}" class="menu__link">Игромания</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'facilities:rehabilitation_list' %}" class="menu__link">Центры</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'facilities:clinic_list' %}" class="menu__link">Клиники</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'core:contacts' %}" class="menu__link">Контакты</a>
-                        </li>
-                        <li class="menu__item">
-                            <a href="{% url 'blog:post_list' %}" class="menu__link">Полезная информация</a>
-                        </li>
-                    </ul>
-                </nav>
+          </a>
 
-                <!-- Мобильная версия хедера -->
-                <div class="navbar__mobile">
-                    <div class="navbar__brand">
-                        <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
-                        <span class="navbar__brand-text">Центр помощи зависимым</span>
-                    </div>
+          <div class="navbar__location">
+            <i class="fas fa-map-marker-alt navbar__icon"></i>
+            <span class="navbar__location-text">Анапа</span>
+          </div>
 
-                    <!-- Бургер-меню -->
-                    <button class="burger-menu" id="burgerMenu">
-                        <span class="burger-menu__line"></span>
-                        <span class="burger-menu__line"></span>
-                        <span class="burger-menu__line"></span>
-                    </button>
-                </div>
+          <div class="navbar__phone">
+            <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
+            <a href="tel:+78000000000" class="navbar__phone-link">
+              8 800 000-00-00
+            </a>
+          </div>
 
-                <!-- Мобильное меню -->
-                <nav class="dropdown-menu" id="dropdownMenu">
-                    <ul>
-                        <li>
-                            <a href="{% url 'core:home' %}">Алкоголизм</a>
-                        </li>
-                        <li><a href="{% url 'core:home' %}">Наркомания</a></li>
-                        <li><a href="{% url 'core:home' %}">Игромания</a></li>
-                        <li><a href="{% url 'facilities:rehabilitation_list' %}">Центры</a></li>
-                        <li><a href="{% url 'facilities:clinic_list' %}">Клиники</a></li>
-                        <li><a href="{% url 'core:contacts' %}">Контакты</a></li>
-                        <li>
-                            <a href="{% url 'blog:post_list' %}">Полезная информация</a>
-                        </li>
-                    </ul>
-                    <div class="footer__contacts-address-phone">
-                        <div class="footer__contacts-address-phone-description">
-                            Анонимная помощь 24/7:
-                        </div>
-                        <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800
-                            000-00-00</a>
-                    </div>
-
-                    <div class="footer__contacts-social">
-                        <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
-                            <i class="fab fa-telegram"></i>
-                            <span>@moemorerehab </span>
-                        </a>
-                        <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>+7 918 0542585 </span>
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
+          <div class="navbar__social">
+            <a href="#" class="navbar__social-link navbar__social-link--telegram">
+              <i class="fab fa-telegram"></i>
+            </a>
+            <a href="#" class="navbar__social-link navbar__social-link--whatsapp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
+        </nav>
+      </div>
     </div>
-    {% endif %}
+    <div class="header__full-width">
+      <div class="container">
+        <nav class="menu">
+          <ul class="menu__list">
+            <li class="menu__item">
+              <a href="{% url 'core:home' %}" class="menu__link">Алкоголизм</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'core:home' %}" class="menu__link">Наркомания</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'core:home' %}" class="menu__link">Игромания</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'facilities:rehabilitation_list' %}" class="menu__link">Центры</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'facilities:clinic_list' %}" class="menu__link">Клиники</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'core:contacts' %}" class="menu__link">Контакты</a>
+            </li>
+            <li class="menu__item">
+              <a href="{% url 'blog:post_list' %}" class="menu__link">Полезная информация</a>
+            </li>
+          </ul>
+        </nav>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+        <!-- Мобильная версия хедера -->
+        <div class="navbar__mobile">
+          <div class="navbar__brand">
+            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+            <span class="navbar__brand-text">Центр помощи зависимым</span>
+          </div>
 
-    <footer>
-        <div class="footer">
-          <div class="container">
-            <div class="footer__grid-wrapper">
-              <div class="footer__contacts">
-                <div class="footer__logo footer__contacts-logo">
-                  <img
-                    src="{% static 'deps/icons/main/logo.svg' %}"
-                    alt="Логотип"
-                    class="footer__logo-img"
-                  />
-                  <span class="footer__logo-text">Центр помощи зависимым</span>
-                  <span class="footer__logo-text">«Мое море»</span>
+          <!-- Бургер-меню -->
+          <button class="burger-menu" id="burgerMenu">
+            <span class="burger-menu__line"></span>
+            <span class="burger-menu__line"></span>
+            <span class="burger-menu__line"></span>
+          </button>
+        </div>
+
+        <!-- Мобильное меню -->
+        <nav class="dropdown-menu" id="dropdownMenu">
+          <ul>
+            <li>
+              <a href="{% url 'core:home' %}">Алкоголизм</a>
+            </li>
+            <li><a href="{% url 'core:home' %}">Наркомания</a></li>
+            <li><a href="{% url 'core:home' %}">Игромания</a></li>
+            <li><a href="{% url 'facilities:rehabilitation_list' %}">Центры</a></li>
+            <li><a href="{% url 'facilities:clinic_list' %}">Клиники</a></li>
+            <li><a href="{% url 'core:contacts' %}">Контакты</a></li>
+            <li>
+              <a href="{% url 'blog:post_list' %}">Полезная информация</a>
+            </li>
+          </ul>
+          <div class="footer__contacts-address-phone">
+            <div class="footer__contacts-address-phone-description">
+              Анонимная помощь 24/7:
+            </div>
+            <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800
+              000-00-00</a>
+          </div>
+
+          <div class="footer__contacts-social">
+            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
+              <i class="fab fa-telegram"></i>
+              <span>@moemorerehab </span>
+            </a>
+            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
+              <i class="fab fa-whatsapp"></i>
+              <span>+7 918 0542585 </span>
+            </a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <div class="footer">
+      <div class="container">
+        <div class="footer__grid-wrapper">
+          <div class="footer__contacts">
+            <div class="footer__logo footer__contacts-logo">
+              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="footer__logo-img" />
+              <span class="footer__logo-text">Центр помощи зависимым</span>
+              <span class="footer__logo-text">«Мое море»</span>
+            </div>
+
+            <address class="footer__contacts-address">
+              <div class="footer__contacts-address-phone">
+                <div class="footer__contacts-address-phone-description">
+                  Анонимная помощь 24/7:
                 </div>
-  
-                <address class="footer__contacts-address">
-                  <div class="footer__contacts-address-phone">
-                    <div class="footer__contacts-address-phone-description">
-                      Анонимная помощь 24/7:
-                    </div>
-                    <a
-                      href="tel:+78000000000"
-                      class="footer__contacts-address-phone-number-main"
-                      >8 800 000-00-00</a
-                    >
-                  </div>
-                  <div class="footer__contacts-address-phone">
-                    <h4 class="title__h4">Телефон:</h4>
-                    <a
-                      href="tel:+78000000000"
-                      class="footer__contacts-address-phone-number"
-                      >8 800 000-00-00</a
-                    >
-                  </div>
-                  <div class="footer__contacts-location">
-                    <h4 class="title__h4">Адрес:</h4>
-                    <div class="footer__contacts-location-text">
-                      353440, Краснодарский край, <br />
-                      г. Анапа, ул. Ленина, д. 1
-                    </div>
-                  </div>
-                </address>
-  
-                <div class="footer__worktime">
-                  <h4 class="title__h4 footer__worktime-description">
-                    Режим работы:
-                  </h4>
-                  <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
-                  <div class="footer__worktime-text">Сб-Вс: выходной</div>
-                </div>
-  
-                <div class="footer__contacts-social">
-                  <a
-                    href="#"
-                    class="footer__contacts-social-link footer__contacts-social-link--telegram"
-                  >
-                    <i class="fab fa-telegram"></i>
-                    <span>@moemorerehab </span>
-                  </a>
-                  <a
-                    href="#"
-                    class="footer__contacts-social-link footer__contacts-social-link--whatsapp"
-                  >
-                    <i class="fab fa-whatsapp"></i>
-                    <span>+7 918 0542585 </span>
-                  </a>
-                </div>
-  
-                <div class="footer__info">
-                  <div class="footer__info-description">
-                    Информация на сайте носит
-                    <br />ознакомительный характер.<br />
-                    Перед принятием медицинских<br />
-                    решений рекомендуется<br />
-                    консультация со специалистом.
-                  </div>
-                  <a href="#" class="footer__info-link"
-                    >Политика конфиденциальности</a
-                  >
+                <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
+              </div>
+              <div class="footer__contacts-address-phone">
+                <h4 class="title__h4">Телефон:</h4>
+                <a href="tel:+78000000000" class="footer__contacts-address-phone-number">8 800 000-00-00</a>
+              </div>
+              <div class="footer__contacts-location">
+                <h4 class="title__h4">Адрес:</h4>
+                <div class="footer__contacts-location-text">
+                  353440, Краснодарский край, <br />
+                  г. Анапа, ул. Ленина, д. 1
                 </div>
               </div>
-  
-              <div class="footer__nav">
-                <div class="footer__navigation">
-                  <h4 class="title__h4 footer__title footer__navigation-title">
-                    Навигация:
-                  </h4>
-                  <ul class="footer__column footer__navigation-list">
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link">Центры</a>
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link">Клиники</a>
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link">Специалисты</a>
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link">Тесты</a>
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link">Контакты</a>
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link"
-                        >Консультация нарколога</a
-                      >
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link"
-                        >Полезная информация</a
-                      >
-                    </li>
-                    <li class="footer__navigation-item">
-                      <a href="#" class="footer__navigation-link"
-                        >Для партнеров</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-  
-                <div class="footer__info-nav">
-                  <h4 class="title__h4 footer__title footer__info-nav-title">
-                    Это нужно знать:
-                  </h4>
-                  <ul class="footer__column footer__info-nav-list">
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Алкоголизм</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Наркомания</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Зависимости</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Лечение</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Родственникам</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Ресоциализация</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Психология</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link">Психиатрия</a>
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link"
-                        >Юридическая консультация</a
-                      >
-                    </li>
-                    <li class="footer__info-nav-item">
-                      <a href="#" class="footer__info-nav-link"
-                        >Профилактика и предупреждение</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <div class="return-up">
-                  <div class="return-up__wrapper">
-                    <a href="#top" class="return-up__link">
-                      <i class="fas fa-arrow-up return-up__icon"></i>
-                    </a>
-                  </div>
-  
-                  <a href="#top" class="return-up__link-text">Вернуться вверх</a>
-                </div>
+            </address>
+
+            <div class="footer__worktime">
+              <h4 class="title__h4 footer__worktime-description">
+                Режим работы:
+              </h4>
+              <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
+              <div class="footer__worktime-text">Сб-Вс: выходной</div>
+            </div>
+
+            <div class="footer__contacts-social">
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
+                <i class="fab fa-telegram"></i>
+                <span>@moemorerehab </span>
+              </a>
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>+7 918 0542585 </span>
+              </a>
+            </div>
+
+            <div class="footer__info">
+              <div class="footer__info-description">
+                Информация на сайте носит
+                <br />ознакомительный характер.<br />
+                Перед принятием медицинских<br />
+                решений рекомендуется<br />
+                консультация со специалистом.
               </div>
-  
-              <div class="footer__services">
-                <h4 class="title__h4 footer__title">Услуги:</h4>
-                <div class="footer__columns">
-                  <div class="footer__column">
-                    <h4 class="title__h4 footer__column-title">Алкоголизм:</h4>
-                    <ul class="footer__list">
-                      <li class="footer__item">
-                        <a href="#">Реабилитация</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Детоксикация</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Вывод из запоя</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Кодирование</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение в стационаре</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Амбулаторное лечение</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Программы лечения</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение пивного алкоголизма</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение женского алкоголизма</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="footer__column">
-                    <h4 class="title__h4 footer__column-title">Наркомания:</h4>
-                    <ul class="footer__list">
-                      <li class="footer__item">
-                        <a href="#">Реабилитация</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Детоксикация</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Снятие ломки</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Кодирование</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">УБОД</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Нарколог на дом</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение в клинике</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Амбулаторное лечение</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Программы лечения</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение солевой зависимости</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение спайсовой зависимости</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение героиновой зависимости</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="footer__column">
-                    <h4 class="title__h4 footer__column-title">Другие услуги:</h4>
-                    <ul class="footer__list">
-                      <li class="footer__item">
-                        <a href="#">Интернет зависимость</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Игровая зависимость</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Адвокатская помощь</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Ресоциализация</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Лечение за границей</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Нарколог на дом</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Психологическая помощь</a>
-                      </li>
-                      <li class="footer__item">
-                        <a href="#">Психиатрическая помощь</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              <a href="#" class="footer__info-link">Политика конфиденциальности</a>
+            </div>
+          </div>
+
+          <div class="footer__nav">
+            <div class="footer__navigation">
+              <h4 class="title__h4 footer__title footer__navigation-title">
+                Навигация:
+              </h4>
+              <ul class="footer__column footer__navigation-list">
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Центры</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Клиники</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Специалисты</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Тесты</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Контакты</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Консультация нарколога</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Полезная информация</a>
+                </li>
+                <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Для партнеров</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer__info-nav">
+              <h4 class="title__h4 footer__title footer__info-nav-title">
+                Это нужно знать:
+              </h4>
+              <ul class="footer__column footer__info-nav-list">
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Алкоголизм</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Наркомания</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Зависимости</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Лечение</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Родственникам</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Ресоциализация</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Психология</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Психиатрия</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Юридическая консультация</a>
+                </li>
+                <li class="footer__info-nav-item">
+                  <a href="#" class="footer__info-nav-link">Профилактика и предупреждение</a>
+                </li>
+              </ul>
+            </div>
+            <div class="return-up">
+              <div class="return-up__wrapper">
+                <a href="#top" class="return-up__link">
+                  <i class="fas fa-arrow-up return-up__icon"></i>
+                </a>
+              </div>
+
+              <a href="#top" class="return-up__link-text">Вернуться вверх</a>
+            </div>
+          </div>
+
+          <div class="footer__services">
+            <h4 class="title__h4 footer__title">Услуги:</h4>
+            <div class="footer__columns">
+              <div class="footer__column">
+                <h4 class="title__h4 footer__column-title">Алкоголизм:</h4>
+                <ul class="footer__list">
+                  <li class="footer__item">
+                    <a href="#">Реабилитация</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Детоксикация</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Вывод из запоя</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Кодирование</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение в стационаре</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Амбулаторное лечение</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Программы лечения</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение пивного алкоголизма</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение женского алкоголизма</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="footer__column">
+                <h4 class="title__h4 footer__column-title">Наркомания:</h4>
+                <ul class="footer__list">
+                  <li class="footer__item">
+                    <a href="#">Реабилитация</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Детоксикация</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Снятие ломки</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Кодирование</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">УБОД</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Нарколог на дом</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение в клинике</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Амбулаторное лечение</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Программы лечения</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение солевой зависимости</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение спайсовой зависимости</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение героиновой зависимости</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="footer__column">
+                <h4 class="title__h4 footer__column-title">Другие услуги:</h4>
+                <ul class="footer__list">
+                  <li class="footer__item">
+                    <a href="#">Интернет зависимость</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Игровая зависимость</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Адвокатская помощь</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Ресоциализация</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Лечение за границей</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Нарколог на дом</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Психологическая помощь</a>
+                  </li>
+                  <li class="footer__item">
+                    <a href="#">Психиатрическая помощь</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      </footer>
+      </div>
+    </div>
+  </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'deps/js/script.js' %}"></script>
+  {% include "rehab_help_modal.html" %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="{% static 'deps/js/script.js' %}"></script>
+  <script src="{% static 'deps/js/forms.js' %}"></script>
 </body>
 
 </html>
