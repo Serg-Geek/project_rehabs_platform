@@ -721,7 +721,12 @@
           наш сотрудник запишет вас на бесплатную консультацию в течение 15
           минут.
         </p>
-        <form class="section-form">
+        <form class="section-form" method="post" action="{% url 'requests:consultation_request' %}" id="contactInfoForm">
+          {% csrf_token %}
+          <div class="section-form__form-group">
+            <input type="text" id="name" name="name" class="section-form__input"
+              placeholder="Ваше имя (необязательно)" />
+          </div>
           <div class="section-form__form-group">
             <select id="service-type" name="service-type" class="section-form__select" required>
               <option value="" disabled selected>Выберите услугу</option>
@@ -732,10 +737,16 @@
           </div>
           <div class="section-form__form-group">
             <input type="tel" id="phone" name="phone" class="section-form__input" required
-              placeholder="+7 (XXX) XXX-XX-XX" />
+              placeholder="+7 (XXX) XXX-XX-XX" pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
+              title="Введите номер в формате: +7 (XXX) XXX-XX-XX" />
+            <div class="invalid-feedback" id="phoneError"></div>
           </div>
-          <button type="submit" class="rehab-btn">Оставить заявку</button>
+          <button type="submit" class="rehab-btn" id="submitButton">
+            <span class="button-text">Оставить заявку</span>
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
         </form>
+        {% include "includes/notification_modals.html" %}
       </div>
 
       <address class="contact-info__item" itemscope itemtype="https://schema.org/LocalBusiness">

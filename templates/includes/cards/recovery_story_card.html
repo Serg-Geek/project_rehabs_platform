@@ -4,9 +4,9 @@
     <a href="{% url 'recovery_stories:detail' story.slug %}">
         <div class="card__image">
             {% if story.image %}
-                <img src="{{ story.image.url }}" alt="{{ story.title }}" />
+            <img src="{{ story.image.url }}" alt="{{ story.title }}" />
             {% else %}
-                <img src="{% static 'deps/img/default_story.jpg' %}" alt="{{ story.title }}" />
+            <img src="{% static 'deps/img/default_story.jpg' %}" alt="{{ story.title }}" />
             {% endif %}
         </div>
         <div class="card__content">
@@ -19,4 +19,4 @@
             </p>
         </div>
     </a>
-</div> 
+</div>

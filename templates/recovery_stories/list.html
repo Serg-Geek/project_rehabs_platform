@@ -59,9 +59,7 @@
                     <select id="category" name="category" onchange="this.form.submit()">
                         <option value="all" {% if not current_category %}selected{% endif %}>Все истории</option>
                         {% for category in categories %}
-                        <option value="{{ category.slug }}" 
-                        {% if current_category == category %}selected 
-                        {% endif %}>
+                        <option value="{{ category.slug }}" {% if current_category==category %}selected {% endif %}>
                             {{ category.name }}
                         </option>
                         {% endfor %}
@@ -71,7 +69,7 @@
 
             <div class="recovery-stories__cards">
                 {% for story in stories %}
-                    {% include "includes/cards/recovery_story_card.html" with story=story %}
+                {% include "includes/cards/recovery_story_card.html" with story=story %}
                 {% empty %}
                 <div class="recovery-stories__empty">
                     <p>Истории не найдены</p>

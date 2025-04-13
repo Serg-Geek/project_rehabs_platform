@@ -152,4 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
     phoneInputId: 'rehab-phone',
     phoneErrorId: 'rehabPhoneError',
   });
+
+  // Форма контактной информации
+  new FormHandler('contactInfoForm', {
+    phoneInputId: 'phone',
+    phoneErrorId: 'phoneError',
+  });
 });
