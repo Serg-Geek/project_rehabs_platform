@@ -76,10 +76,10 @@ class RehabCenterAdmin(BaseFacilityAdmin):
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):
-    list_display = ['facility', 'image_type', 'title']
-    list_filter = ['image_type']
-    search_fields = ['facility__name', 'title']
-    ordering = ['facility']
+    list_display = ['content_type', 'object_id', 'image_type', 'title']
+    list_filter = ['image_type', 'content_type']
+    search_fields = ['title', 'description']
+    ordering = ['order', 'created_at']
 
 @admin.register(FacilityDocument)
 class FacilityDocumentAdmin(admin.ModelAdmin):
