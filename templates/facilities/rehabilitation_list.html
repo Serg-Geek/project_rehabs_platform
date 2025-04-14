@@ -29,7 +29,7 @@
             {% include "facilities/includes/search_filter.html" %}
             <div class="rehabs__cards">
                 {% for center in rehabilitation_centers %}
-                    {% include "includes/cards/rehab_card.html" %}
+                    {% include "includes/cards/rehab_card.html" with facility=center %}
                 {% empty %}
                 <div class="col-span-full text-center py-8">
                     <p class="text-gray-600">Реабилитационные центры не найдены</p>

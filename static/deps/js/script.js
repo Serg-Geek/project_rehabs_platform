@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownMenu = document.querySelector("#dropdownMenu");
     const filterForm = document.getElementById("filter-form");
     const categorySelect = document.getElementById("category");
+    const loadMoreRehabsButton = document.getElementById("loadMoreRehabs");
+    const loadMoreClinicsButton = document.getElementById("loadMoreClinics");
 
     let lastScrollTop = 0;
     let isScrolling = false;
@@ -267,5 +269,42 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
+
+    // Функция для загрузки дополнительных карточек
+    function initLoadMore(button, url) {
+        if (button) {
+            button.addEventListener('click', function() {
+                button.disabled = true;
+                const currentCards = document.querySelectorAll('.rehabs__cards .card').length;
+                
+                fetch(url + '?offset=' + currentCards, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cards) {
+                        const cardsContainer = document.querySelector('.rehabs__cards');
+                        cardsContainer.insertAdjacentHTML('beforeend', data.cards);
+                        if (!data.has_more) {
+                            button.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    button.disabled = false;
+                });
+            });
+        }
+    }
+
+    // Инициализация кнопок "Показать еще"
+    initLoadMore(loadMoreRehabsButton, '/facilities/load-more-rehabs/');
+    initLoadMore(loadMoreClinicsButton, '/facilities/load-more-clinics/');
 });
 

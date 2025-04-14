@@ -1,20 +1,17 @@
 {% load static %}
 
 <div class="card">
-    <a href="{% url 'facilities:rehab_detail' facility.slug %}">
+    <a href="{% url 'facilities:rehab_detail' facility.slug|default:center.slug %}">
         <div class="card__image">
-            {% if facility.image %}
-            <img src="{{ facility.image.url }}" alt="{{ facility.name }}" />
+            {% if facility.image|default:center.image %}
+            <img src="{{ facility.image.url|default:center.image.url }}" alt="{{ facility.name|default:center.name }}" />
             {% else %}
             <img src="{% static 'deps/img/notImage.svg' %}" alt="Изображение учреждения" />
             {% endif %}
         </div>
         <div class="card__content">
-            <h3 class="card__title">{{ facility.name }}</h3>
-            <p class="card__description">{{ facility.city.region.name }}, {{ facility.city.name }}</p>
-            <div class="card__price">
-                <span class="card__price-value">от {{ facility.min_price }} P / месяц</span>
-            </div>
+            <h3 class="card__title">{{ facility.name|default:center.name }}</h3>
+            <p class="card__description">{{ facility.city.region.name|default:center.city.region.name }}, {{ facility.city.name|default:center.city.name }}</p>
         </div>
     </a>
 </div>

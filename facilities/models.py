@@ -184,6 +184,12 @@ class RehabCenter(AbstractMedicalFacility):
         verbose_name=_('Длительность программы (дней)'),
         default=0
     )
+    min_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name=_('Минимальная цена'),
+        default=0
+    )
     accommodation_conditions = models.TextField(
         verbose_name=_('Условия проживания'),
         default='',

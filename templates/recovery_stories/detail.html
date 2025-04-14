@@ -11,7 +11,7 @@
                 {% if story.image %}
                 <img src="{{ story.image.url }}" alt="{{ story.title }}" />
                 {% else %}
-                <img src="{% static 'deps/img/no-image.jpg' %}" alt="Нет изображения" />
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="Нет изображения" />
                 {% endif %}
             </div>
             <div class="detail__content-wrapper detail__content-item rehab-help__content-item">

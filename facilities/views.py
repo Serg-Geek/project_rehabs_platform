@@ -6,6 +6,7 @@ from medical_services.models import FacilityService
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.db import models
 
 # Create your views here.
 
@@ -63,7 +64,7 @@ class FacilityDetailView(DetailView):
         if facility_type == 'clinic':
             return 'facilities/clinic_detail.html'
         elif facility_type == 'rehab':
-            return 'facilities/rehab_detail.html'
+            return 'facilities/rehabcenter_detail.html'
         raise ValueError("Invalid facility type")
 
     def get_queryset(self):
@@ -111,7 +112,7 @@ def load_more_rehabs(request):
         for center in rehabs:
             cards_html += render_to_string(
                 'includes/cards/rehab_card.html',
-                {'center': center},
+                {'facility': center},
                 request=request
             )
         

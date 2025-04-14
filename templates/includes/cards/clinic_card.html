@@ -1,19 +1,19 @@
 {% load static %}
 
 <div class="card">
-    <a href="{% url 'facilities:clinic_detail' facility.slug %}">
+    <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
         <div class="card__image">
-            {% if facility.image %}
-            <img src="{{ facility.image.url }}" alt="{{ facility.name }}" />
+            {% if clinic.image %}
+            <img src="{{ clinic.image.url }}" alt="{{ clinic.name }}" />
             {% else %}
             <img src="{% static 'deps/img/notImage.svg' %}" alt="Изображение учреждения" />
             {% endif %}
         </div>
         <div class="card__content">
-            <h3 class="card__title">{{ facility.name }}</h3>
-            <p class="card__description">{{ facility.city.region.name }}, {{ facility.city.name }}</p>
+            <h3 class="card__title">{{ clinic.name }}</h3>
+            <p class="card__description">{{ clinic.city.region.name }}, {{ clinic.city.name }}</p>
             <div class="card__price">
-                <span class="card__price-value">от {{ facility.min_price }} P / месяц</span>
+                <span class="card__price-value">от {{ clinic.min_price }} P / месяц</span>
             </div>
         </div>
     </a>
