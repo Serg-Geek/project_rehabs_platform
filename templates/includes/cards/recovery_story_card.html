@@ -6,16 +6,16 @@
             {% if story.image %}
             <img src="{{ story.image.url }}" alt="{{ story.title }}" />
             {% else %}
-            <img src="{% static 'deps/img/default_story.jpg' %}" alt="{{ story.title }}" />
+            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ story.title }}" />
             {% endif %}
         </div>
         <div class="card__content">
             <h3 class="card__title title__h4">
-                {{ story.name }},<br />
-                {{ story.status }}
+                {{ story.author }},<br />
+                {{ story.title }}
             </h3>
             <p class="card__description useful-info__card-description">
-                {{ story.short_description|truncatewords:50 }}
+                {{ story.excerpt|truncatewords:10 }}
             </p>
         </div>
     </a>

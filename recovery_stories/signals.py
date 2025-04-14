@@ -96,3 +96,4 @@ def log_post_delete(sender, instance, **kwargs):
         object_id=instance.pk,
         old_value=str(instance)
     ) 
+    
