@@ -11,7 +11,7 @@
         </div>
         <div class="card__content">
             <h3 class="card__title">{{ clinic.name }}</h3>
-            <p class="card__description">{{ clinic.address }}</p>
+            <p class="card__description">{{ clinic.city.region.name }}, {{ clinic.city.name }}</p>
             <div class="card__price">
                 <span class="card__price-value">от {{ clinic.min_price }} P / месяц</span>
             </div>
