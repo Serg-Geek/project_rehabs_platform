@@ -38,7 +38,7 @@
             </div>
             {% if rehabilitation_centers|length > 0 %}
             <div class="text-center mt-8">
-                <button class="rehab-btn rehabs__button" id="loadMoreRehabs">Показать еще</button>
+                <button id="loadMoreRehabs" class="rehab-btn rehabs__button">Показать еще</button>
             </div>
             {% endif %}
         </div>
@@ -50,20 +50,34 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const loadMoreButton = document.getElementById('loadMoreRehabs');
+
     if (loadMoreButton) {
         loadMoreButton.addEventListener('click', function() {
+            loadMoreButton.disabled = true;
             const currentCards = document.querySelectorAll('.rehabs__cards .card').length;
-            fetch(`/facilities/load-more-rehabs/?offset=${currentCards}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.cards) {
-                        const cardsContainer = document.querySelector('.rehabs__cards');
-                        cardsContainer.insertAdjacentHTML('beforeend', data.cards);
-                        if (!data.has_more) {
-                            loadMoreButton.style.display = 'none';
-                        }
+            
+            fetch('/facilities/load-more-rehabs/?offset=' + currentCards, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.cards) {
+                    const cardsContainer = document.querySelector('.rehabs__cards');
+                    cardsContainer.insertAdjacentHTML('beforeend', data.cards);
+                    if (!data.has_more) {
+                        loadMoreButton.style.display = 'none';
                     }
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                loadMoreButton.disabled = false;
+            });
         });
     }
 });

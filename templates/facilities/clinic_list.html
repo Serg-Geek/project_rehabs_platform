@@ -37,36 +37,12 @@
                 </div>
                 {% endfor %}
             </div>
-            {% if clinics|length > 0 %}
+            {% if has_more %}
             <div class="text-center mt-8">
-                <button class="rehab-btn rehabs__button" id="loadMoreClinics">Показать еще</button>
+                <button id="loadMoreClinics" class="rehab-btn rehabs__button">Показать еще</button>
             </div>
             {% endif %}
         </div>
     </div>
 </section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loadMoreButton = document.getElementById('loadMoreClinics');
-    if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', function() {
-            const currentCards = document.querySelectorAll('.rehabs__cards .card').length;
-            fetch(`/facilities/load-more-clinics/?offset=${currentCards}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.cards) {
-                        const cardsContainer = document.querySelector('.rehabs__cards');
-                        cardsContainer.insertAdjacentHTML('beforeend', data.cards);
-                        if (!data.has_more) {
-                            loadMoreButton.style.display = 'none';
-                        }
-                    }
-                });
-        });
-    }
-});
-</script>
 {% endblock %}

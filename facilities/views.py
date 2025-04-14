@@ -27,11 +27,16 @@ class ClinicListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = Clinic.objects.all()
+        queryset = Clinic.objects.all().order_by('id')
         search_query = self.request.GET.get('search')
         if search_query:
             queryset = queryset.filter(name__icontains=search_query)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['has_more'] = self.get_queryset().count() > self.paginate_by
+        return context
 
 class RehabilitationCenterListView(ListView):
     model = RehabCenter
@@ -40,7 +45,7 @@ class RehabilitationCenterListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        return RehabCenter.objects.all()
+        return RehabCenter.objects.all().order_by('id')
 
 class FacilityDetailView(DetailView):
     template_name = 'facilities/facility_detail.html'
@@ -87,31 +92,49 @@ class FacilityDetailView(DetailView):
         return context
 
 def load_more_rehabs(request):
-    offset = int(request.GET.get('offset', 0))
-    limit = 12
-    
-    rehabs = RehabCenter.objects.all()[offset:offset + limit]
-    cards_html = ''
-    
-    for center in rehabs:
-        cards_html += render_to_string('includes/cards/rehab_card.html', {'center': center})
-    
-    return JsonResponse({
-        'cards': cards_html,
-        'has_more': len(rehabs) == limit
-    })
+    try:
+        offset = int(request.GET.get('offset', 0))
+        limit = 12
+        
+        rehabs = RehabCenter.objects.all().order_by('id')[offset:offset + limit + 1]
+        has_more = len(rehabs) > limit
+        rehabs = rehabs[:limit]
+        
+        cards_html = ''
+        for center in rehabs:
+            cards_html += render_to_string(
+                'includes/cards/rehab_card.html',
+                {'center': center},
+                request=request
+            )
+        
+        return JsonResponse({
+            'cards': cards_html,
+            'has_more': has_more
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
 
 def load_more_clinics(request):
-    offset = int(request.GET.get('offset', 0))
-    limit = 12
-    
-    clinics = Clinic.objects.all()[offset:offset + limit]
-    cards_html = ''
-    
-    for clinic in clinics:
-        cards_html += render_to_string('includes/cards/clinic_card.html', {'clinic': clinic})
-    
-    return JsonResponse({
-        'cards': cards_html,
-        'has_more': len(clinics) == limit
-    })
+    try:
+        offset = int(request.GET.get('offset', 0))
+        limit = 12
+        
+        clinics = Clinic.objects.all().order_by('id')[offset:offset + limit + 1]
+        has_more = len(clinics) > limit
+        clinics = clinics[:limit]
+        
+        cards_html = ''
+        for clinic in clinics:
+            cards_html += render_to_string(
+                'includes/cards/clinic_card.html',
+                {'clinic': clinic},
+                request=request
+            )
+        
+        return JsonResponse({
+            'cards': cards_html,
+            'has_more': has_more
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
