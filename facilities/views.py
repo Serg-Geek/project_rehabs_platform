@@ -28,7 +28,11 @@ class ClinicListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = Clinic.objects.all().order_by('id')
+        queryset = Clinic.objects.all().prefetch_related(
+            'images',
+            'city',
+            'city__region'
+        ).order_by('id')
         search_query = self.request.GET.get('search')
         if search_query:
             queryset = queryset.filter(name__icontains=search_query)
