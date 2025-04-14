@@ -155,7 +155,7 @@
         <div class="section__content">
             <div class="clinics__cards">
                 {% for related_facility in related_facilities %}
-                {% include "includes/cards/clinic_card.html" with facility=related_facility %}
+                {% include "includes/cards/clinic_card.html" with clinic=related_facility %}
                 {% endfor %}
             </div>
         </div>
@@ -171,4 +171,4 @@
 
 {% block extra_js %}
 <script src="{% static 'js/facility_detail.js' %}"></script>
-{% endblock %} 
+{% endblock %}
