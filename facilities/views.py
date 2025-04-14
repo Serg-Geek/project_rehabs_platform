@@ -50,7 +50,24 @@ class RehabilitationCenterListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        return RehabCenter.objects.all().order_by('id')
+        queryset = RehabCenter.objects.all().prefetch_related(
+            'images',
+            'city',
+            'city__region'
+        ).order_by('id')
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(address__icontains=search_query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['has_more'] = self.get_queryset().count() > self.paginate_by
+        return context
 
 class FacilityDetailView(DetailView):
     context_object_name = 'facility'
@@ -82,9 +99,9 @@ class FacilityDetailView(DetailView):
         if self.object.city and self.object.city.region:
             related_facilities = related_facilities.filter(
                 city__region=self.object.city.region
-            )
+            ).exclude(pk=self.object.pk)
         
-        related_facilities = related_facilities.exclude(pk=self.object.pk)[:4]
+        related_facilities = related_facilities[:4]
         
         content_type = ContentType.objects.get_for_model(self.object)
         services = FacilityService.objects.filter(
