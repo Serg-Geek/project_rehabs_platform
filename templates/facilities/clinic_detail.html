@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'facilities:clinic_list' %}">clinics catalog</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ clinic.name }}
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="detail clinic-detail clinic-help">
+    <div class="container">
+        <div class="detail__content">
+            <div class="detail__image">
+                {% if clinic.image %}
+                <img src="{{ clinic.image.url }}" alt="{{ clinic.name }}" />
+                {% else %}
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
+                {% endif %}
+            </div>
+            <div class="detail__info">
+                <h1 class="detail__title">{{ clinic.name }}</h1>
+                <p class="detail__description">{{ clinic.description }}</p>
+                <div class="detail__contacts">
+                    <p><strong>Адрес:</strong> {{ clinic.city.region.name }}, {{ clinic.city.name }}, {{ clinic.address }}</p>
+                    <p><strong>Телефон:</strong> {{ clinic.phone }}</p>
+                    {% if clinic.email %}
+                    <p><strong>Email:</strong> {{ clinic.email }}</p>
+                    {% endif %}
+                    {% if clinic.website %}
+                    <p><strong>Сайт:</strong> <a href="{{ clinic.website }}" target="_blank">{{ clinic.website }}</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-services">
+    <div class="container">
+        <h2 class="title__h2 detail-services__title">Услуги клиники</h2>
+        <div class="section__content">
+            <div class="services__list">
+                {% for service in services %}
+                <div class="service-card">
+                    <h3 class="service-card__title">{{ service.service.name }}</h3>
+                    <p class="service-card__description">{{ service.service.description }}</p>
+                    <div class="service-card__price">
+                        <span class="service-card__price-value">от {{ service.price }} P</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-clinics clinics">
+    <div class="container">
+        <h3 class="title__h3 detail-clinics__title">Другие клиники в вашем регионе</h3>
+        <div class="section__content">
+            <div class="clinics__cards">
+                {% for related_facility in related_facilities %}
+                    {% include "includes/cards/clinic_card.html" with clinic=related_facility %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "facilities/includes/consultation.html" %}
+{% endblock %} 

@@ -48,11 +48,9 @@ class RehabilitationCenterListView(ListView):
         return RehabCenter.objects.all().order_by('id')
 
 class FacilityDetailView(DetailView):
-    template_name = 'facilities/facility_detail.html'
     context_object_name = 'facility'
 
     def get_model(self):
-        # Определяем модель на основе типа учреждения
         facility_type = self.kwargs.get('facility_type')
         if facility_type == 'clinic':
             return Clinic
@@ -60,31 +58,40 @@ class FacilityDetailView(DetailView):
             return RehabCenter
         raise ValueError("Invalid facility type")
 
+    def get_template_name(self):
+        facility_type = self.kwargs.get('facility_type')
+        if facility_type == 'clinic':
+            return 'facilities/clinic_detail.html'
+        elif facility_type == 'rehab':
+            return 'facilities/rehab_detail.html'
+        raise ValueError("Invalid facility type")
+
     def get_queryset(self):
         return self.get_model().objects.prefetch_related('reviews').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Получаем связанные учреждения того же типа в том же регионе
         model = self.get_model()
         related_facilities = model.objects.all()
         
-        # Фильтруем по региону только если у учреждения есть город и регион
         if self.object.city and self.object.city.region:
             related_facilities = related_facilities.filter(
                 city__region=self.object.city.region
             )
         
-        # Исключаем текущее учреждение из списка
         related_facilities = related_facilities.exclude(pk=self.object.pk)[:4]
         
-        # Получаем услуги учреждения
         content_type = ContentType.objects.get_for_model(self.object)
         services = FacilityService.objects.filter(
             content_type=content_type,
             object_id=self.object.pk,
             is_active=True
         ).select_related('service')
+
+        if isinstance(self.object, Clinic):
+            context['clinic'] = self.object
+        elif isinstance(self.object, RehabCenter):
+            context['center'] = self.object
         
         context['related_facilities'] = related_facilities
         context['services'] = services
