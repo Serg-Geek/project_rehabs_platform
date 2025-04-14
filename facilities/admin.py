@@ -10,6 +10,8 @@ from .models import (
 )
 from staff.models import FacilitySpecialist
 from django.utils.translation import gettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+from .utils import CustomJSONEncoder
 
 class FacilityImageInline(GenericTabularInline):
     model = FacilityImage
@@ -76,15 +78,38 @@ class RehabCenterAdmin(BaseFacilityAdmin):
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):
-    list_display = ['content_type', 'object_id', 'image_type', 'title']
+    list_display = ['get_facility_name', 'image_type', 'title', 'is_main', 'order']
     list_filter = ['image_type', 'content_type']
     search_fields = ['title', 'description']
     ordering = ['order', 'created_at']
+    fields = [
+        'content_type',
+        'object_id',
+        'image',
+        'image_type',
+        'title',
+        'description',
+        'is_main',
+        'order'
+    ]
+    
+    def get_facility_name(self, obj):
+        return str(obj.facility)
+    get_facility_name.short_description = _('Учреждение')
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "content_type":
+            kwargs["queryset"] = ContentType.objects.filter(
+                model__in=['clinic', 'rehabcenter']
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 @admin.register(FacilityDocument)
 class FacilityDocumentAdmin(admin.ModelAdmin):
     list_display = [
-        'facility',
         'document_type',
         'title',
         'number',
@@ -93,8 +118,9 @@ class FacilityDocumentAdmin(admin.ModelAdmin):
         'is_active'
     ]
     list_filter = ['document_type', 'is_active', 'issue_date', 'expiry_date']
-    search_fields = ['facility__name', 'title', 'number']
+    search_fields = ['title', 'number']
     ordering = ['-created_at']
+    exclude = ['content_type', 'object_id']
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):

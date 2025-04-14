@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'medical_services.apps.MedicalServicesConfig',
     'recovery_stories.apps.RecoveryStoriesConfig',
     'admin_logs.apps.AdminLogsConfig',
+    'content.apps.ContentConfig',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'content.context_processors.site_content',
             ],
         },
     },
@@ -174,3 +176,6 @@ ACCESS_CONTROL = {
     'ENABLE_TEMPORARY_ACCESS': True,
     'DEFAULT_ACCESS_DURATION': 30,  # дней
 }
+
+# JSON сериализация
+DEFAULT_JSON_ENCODER = 'facilities.utils.CustomJSONEncoder'

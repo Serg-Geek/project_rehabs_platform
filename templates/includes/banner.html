@@ -1,4 +1,5 @@
 {% load static %}
+{% if banners %}
 <section class="promo-banner">
     <div class="container">
       <!-- <div class="promo-banner__content">
@@ -11,27 +12,21 @@
       <div class="promo-banner__carousel">
         <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM6Om2o5wHS-kWqQ92wXcoLYzVCiRWr4WDUg&s" class="d-block w-100" alt="Акция 1">
-              <div class="carousel-caption promo-banner__caption">
-                <h5>Первая консультация бесплатно</h5>
-                <p>Только до конца месяца</p>
-              </div>
+            {% for banner in banners %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              {% if banner.link %}
+              <a href="{{ banner.link }}">
+              {% endif %}
+                <img src="{{ banner.image.url }}" class="d-block w-100" alt="{{ banner.title }}">
+                <div class="carousel-caption promo-banner__caption">
+                  <h5>{{ banner.title }}</h5>
+                  <p>{{ banner.description }}</p>
+                </div>
+              {% if banner.link %}
+              </a>
+              {% endif %}
             </div>
-            <div class="carousel-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyS4lpvU3GbZ2OeSwI9V8FRdcssQyh83H0lA&s" class="d-block w-100" alt="Акция 2">
-              <div class="carousel-caption promo-banner__caption">
-                <h5>Скидка 20% на курс терапии</h5>
-                <p>При записи до 15 числа</p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img src="https://via.placeholder.com/1200x400?text=Акция+3" class="d-block w-100" alt="Акция 3">
-              <div class="carousel-caption promo-banner__caption">
-                <h5>Семейная консультация в подарок</h5>
-                <p>При покупке полного курса</p>
-              </div>
-            </div>
+            {% endfor %}
           </div>
           <!-- <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -45,3 +40,4 @@
       </div>
     </div>
   </section>
+{% endif %}

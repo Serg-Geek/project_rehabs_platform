@@ -277,7 +277,7 @@ class Review(TimeStampedModel):
 
 class FacilityImage(TimeStampedModel):
     """
-    Фотографии медицинских учреждений
+    Модель для хранения изображений учреждений
     """
     class ImageType(models.TextChoices):
         MAIN = 'main', _('Главное фото')
@@ -287,7 +287,7 @@ class FacilityImage(TimeStampedModel):
         OTHER = 'other', _('Другое')
 
     content_type = models.ForeignKey(
-        'contenttypes.ContentType',
+        ContentType,
         on_delete=models.CASCADE,
         verbose_name=_('Тип контента')
     )
@@ -295,23 +295,23 @@ class FacilityImage(TimeStampedModel):
         verbose_name=_('ID объекта')
     )
     facility = GenericForeignKey('content_type', 'object_id')
-    
     image = models.ImageField(
-        upload_to='facilities/',
+        upload_to='facilities/images/',
         verbose_name=_('Изображение')
     )
     image_type = models.CharField(
-        max_length=20,
+        max_length=50,
         choices=ImageType.choices,
+        default=ImageType.MAIN,
         verbose_name=_('Тип изображения')
     )
     title = models.CharField(
-        max_length=200,
+        max_length=255,
+        blank=True,
         verbose_name=_('Название')
     )
     description = models.TextField(
         blank=True,
-        null=True,
         verbose_name=_('Описание')
     )
     is_main = models.BooleanField(
@@ -329,7 +329,20 @@ class FacilityImage(TimeStampedModel):
         ordering = ['order', 'created_at']
 
     def __str__(self):
-        return f"{self.facility} - {self.title}"
+        return f"{self.title} ({self.image_type})"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'image': self.image.url if self.image else None,
+            'image_type': self.image_type,
+            'title': self.title,
+            'description': self.description,
+            'is_main': self.is_main,
+            'order': self.order,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
 
 class FacilityDocument(TimeStampedModel):
     """
