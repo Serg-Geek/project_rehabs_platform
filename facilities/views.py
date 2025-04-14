@@ -4,6 +4,8 @@ from django.db.models import Q
 from .models import Clinic, RehabCenter
 from medical_services.models import FacilityService
 from django.contrib.contenttypes.models import ContentType
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -83,3 +85,33 @@ class FacilityDetailView(DetailView):
         context['services'] = services
         context['facility_type'] = self.kwargs.get('facility_type')
         return context
+
+def load_more_rehabs(request):
+    offset = int(request.GET.get('offset', 0))
+    limit = 12
+    
+    rehabs = RehabCenter.objects.all()[offset:offset + limit]
+    cards_html = ''
+    
+    for center in rehabs:
+        cards_html += render_to_string('includes/cards/rehab_card.html', {'center': center})
+    
+    return JsonResponse({
+        'cards': cards_html,
+        'has_more': len(rehabs) == limit
+    })
+
+def load_more_clinics(request):
+    offset = int(request.GET.get('offset', 0))
+    limit = 12
+    
+    clinics = Clinic.objects.all()[offset:offset + limit]
+    cards_html = ''
+    
+    for clinic in clinics:
+        cards_html += render_to_string('includes/cards/clinic_card.html', {'clinic': clinic})
+    
+    return JsonResponse({
+        'cards': cards_html,
+        'has_more': len(clinics) == limit
+    })

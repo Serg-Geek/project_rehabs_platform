@@ -29,74 +29,43 @@
             {% include "facilities/includes/search_filter.html" %}
             <div class="rehabs__cards">
                 {% for center in rehabilitation_centers %}
-                <div class="card">
-                    <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                        <div class="card__image">
-                            {% if center.image %}
-                            <img src="{{ center.image.url }}" alt="{{ center.name }}" />
-                            {% else %}
-                            <img src="{% static 'images/default-facility.jpg' %}" alt="Изображение учреждения" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h3 class="card__title">{{ center.name }}</h3>
-                            <p class="card__description">{{ center.address }}</p>
-                            <div class="card__price">
-                                <span class="card__price-value">от 100000 P / месяц</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                    {% include "includes/cards/rehab_card.html" %}
                 {% empty %}
                 <div class="col-span-full text-center py-8">
                     <p class="text-gray-600">Реабилитационные центры не найдены</p>
                 </div>
                 {% endfor %}
             </div>
+            {% if rehabilitation_centers|length > 0 %}
+            <div class="text-center mt-8">
+                <button class="rehab-btn rehabs__button" id="loadMoreRehabs">Показать еще</button>
+            </div>
+            {% endif %}
         </div>
-        {% if is_paginated %}
-        <div class="mt-8 flex justify-center">
-            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
-                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span class="sr-only">Предыдущая</span>
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <span
-                    class="relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 text-sm font-medium text-blue-700">
-                    {{ num }}
-                </span>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                    href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
-                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    {{ num }}
-                    </a>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <span class="sr-only">Следующая</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                    {% endif %}
-            </nav>
-        </div>
-        {% endif %}
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreButton = document.getElementById('loadMoreRehabs');
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', function() {
+            const currentCards = document.querySelectorAll('.rehabs__cards .card').length;
+            fetch(`/facilities/load-more-rehabs/?offset=${currentCards}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cards) {
+                        const cardsContainer = document.querySelector('.rehabs__cards');
+                        cardsContainer.insertAdjacentHTML('beforeend', data.cards);
+                        if (!data.has_more) {
+                            loadMoreButton.style.display = 'none';
+                        }
+                    }
+                });
+        });
+    }
+});
+</script>
 {% endblock %}

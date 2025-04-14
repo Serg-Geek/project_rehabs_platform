@@ -30,51 +30,43 @@
             {% include "facilities/includes/search_filter.html" %}
             <div class="rehabs__cards">
                 {% for clinic in clinics %}
-                <div class="card">
-                    <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                        <div class="card__image">
-                            {% if clinic.image %}
-                            <img src="{{ clinic.image.url }}" alt="{{ clinic.name }}" />
-                            {% else %}
-                            <img src="{% static 'images/default-facility.jpg' %}" alt="Изображение учреждения" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h3 class="card__title">{{ clinic.name }}</h3>
-                            <p class="card__description">{{ clinic.address }}</p>
-                            <div class="card__price">
-                                <span class="card__price-value">от {{ clinic.min_price }} P / месяц</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                    {% include "includes/cards/clinic_card.html" %}
                 {% empty %}
                 <div class="col-12 text-center">
                     <p>Клиники не найдены</p>
                 </div>
                 {% endfor %}
             </div>
-            {% if is_paginated %}
-            <div class="pagination">
-                {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="pagination__link">Предыдущая</a>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <span class="pagination__link pagination__link--active">{{ num }}</span>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a href="?page={{ num }}"
-                    class="pagination__link">{{ num }}</a>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" class="pagination__link">Следующая</a>
-                    {% endif %}
+            {% if clinics|length > 0 %}
+            <div class="text-center mt-8">
+                <button class="rehab-btn rehabs__button" id="loadMoreClinics">Показать еще</button>
             </div>
             {% endif %}
-            <a href="#" class="rehab-btn rehabs__button">Посмотреть все</a>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreButton = document.getElementById('loadMoreClinics');
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', function() {
+            const currentCards = document.querySelectorAll('.rehabs__cards .card').length;
+            fetch(`/facilities/load-more-clinics/?offset=${currentCards}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cards) {
+                        const cardsContainer = document.querySelector('.rehabs__cards');
+                        cardsContainer.insertAdjacentHTML('beforeend', data.cards);
+                        if (!data.has_more) {
+                            loadMoreButton.style.display = 'none';
+                        }
+                    }
+                });
+        });
+    }
+});
+</script>
 {% endblock %}
