@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 from django.conf import settings
+import datetime
 from .models import AdminActionLog, AccessLevel, UserAccess
 
 def get_changed_fields(instance, old_instance=None):
@@ -16,6 +17,13 @@ def get_changed_fields(instance, old_instance=None):
         field_name = field.name
         old_value = getattr(old_instance, field_name)
         new_value = getattr(instance, field_name)
+        
+        # Преобразуем datetime в строку ISO формата
+        if isinstance(old_value, (datetime.datetime, datetime.date)):
+            old_value = old_value.isoformat()
+        if isinstance(new_value, (datetime.datetime, datetime.date)):
+            new_value = new_value.isoformat()
+            
         if old_value != new_value:
             changed_fields[field_name] = {
                 'old': old_value,
