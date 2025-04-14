@@ -7,13 +7,11 @@
 <nav aria-label="breadcrumb">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
             <li class="breadcrumb-item">
-                <a href="{% url 'facilities:clinic_list' %}">clinics catalog</a>
+                <a href="{% url 'facilities:clinic_list' %}">Клиники</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
-                {{ clinic.name }}
-            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ clinic.name }}</li>
         </ol>
     </div>
 </nav>

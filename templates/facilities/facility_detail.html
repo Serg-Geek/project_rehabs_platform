@@ -5,12 +5,12 @@
 <nav aria-label="breadcrumb">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
             <li class="breadcrumb-item">
-                {% if facility_type == 'clinic' %}
-                <a href="{% url 'facilities:clinic_list' %}">clinics catalog</a>
+                {% if facility.organization_type.name == 'clinic' %}
+                <a href="{% url 'facilities:clinic_list' %}">Клиники</a>
                 {% else %}
-                <a href="{% url 'facilities:rehabilitation_list' %}">rehab catalog</a>
+                <a href="{% url 'facilities:rehabilitation_list' %}">Реабилитационные центры</a>
                 {% endif %}
             </li>
             <li class="breadcrumb-item active" aria-current="page">
