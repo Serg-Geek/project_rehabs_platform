@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import Banner, StaticPage, SiteSettings
+from .models import Banner, SiteSettings
 
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
@@ -9,14 +9,6 @@ class BannerAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
     ordering = ['order', '-start_date']
     date_hierarchy = 'start_date'
-
-@admin.register(StaticPage)
-class StaticPageAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'is_active', 'created_at']
-    list_filter = ['is_active', 'created_at']
-    search_fields = ['title', 'content']
-    prepopulated_fields = {'slug': ('title',)}
-    ordering = ['-created_at']
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
