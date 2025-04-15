@@ -16,10 +16,10 @@
     </div>
 </nav>
 
-<section class="detail clinic-detail clinic-help">
+<section class="detail clinic-detail rehab-help">
     <div class="container">
-        <div class="detail__content clinic-help__content">
-            <div class="clinic-detail__content clinic-help__content-item clinic-help__image detail__content-item--img">
+        <div class="detail__content rehab-help__content">
+            <div class="clinic-detail__content detail__content-item--img rehab-help__content-item rehab-help__image">
                 {% with main_image=clinic.images.first %}
                 {% if main_image %}
                 <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
@@ -28,7 +28,7 @@
                 {% endif %}
                 {% endwith %}
             </div>
-            <div class="detail__content-wrapper clinic-help__content-item">
+            <div class="detail__content-wrapper rehab-help__content-item">
                 <h2 class="title__h2 detail__title">
                     {{ clinic.name }}
                 </h2>
@@ -39,7 +39,7 @@
                     </div>
                     <p>{{ clinic.description }}</p>
                 </div>
-                <div class="detail__text clinic-detail__text clinic-help__text">
+                <div class="detail__text clinic-detail__text rehab-help__text">
                     <h3 class="title__h3 detail__title">Оказывает услуги</h3>
                     <ul class="detail__services-list clinic-detail__services-list">
                         {% for facility_service in services %}
@@ -57,30 +57,22 @@
 <section class="detail__info clinic-detail__info">
     <div class="container">
         <div class="detail-content__wrapper">
-            <h3 class="title__h3 detail__title">Отделения</h3>
-            <div class="clinic-detail__text detail__text--width-limiter">
-                {% if clinic.departments.all %}
-                <ul>
-                    {% for department in clinic.departments.all %}
-                    <li>{{ department.name }}</li>
-                    {% endfor %}
-                </ul>
+            <h3 class="title__h3 detail__title">Условия поступления</h3>
+            <div class="clinic-detail__text">
+                {% if clinic.admission_conditions %}
+                {{ clinic.admission_conditions|safe }}
                 {% else %}
-                <p>Отделения не указаны</p>
+                <p>Условия поступления не указаны</p>
                 {% endif %}
             </div>
         </div>
         <div class="detail-content__wrapper detail-content__wrapper-second">
-            <h3 class="title__h3 detail__title">Врачи</h3>
-            <div class="clinic-detail__text detail__text--width-limiter">
-                {% if clinic.doctors.all %}
-                <ul>
-                    {% for doctor in clinic.doctors.all %}
-                    <li>{{ doctor.name }} - {{ doctor.specialization }}</li>
-                    {% endfor %}
-                </ul>
+            <h3 class="title__h3 detail__title">Курс лечения</h3>
+            <div class="clinic-detail__text">
+                {% if clinic.treatment_course %}
+                {{ clinic.treatment_course|safe }}
                 {% else %}
-                <p>Врачи не указаны</p>
+                <p>Информация о курсе лечения не указана</p>
                 {% endif %}
             </div>
         </div>
@@ -89,7 +81,7 @@
 
 <section class="detail__specialists clinic-detail-specialists specialists">
     <div class="container">
-        <h3 class="title__h3 detail__title">Специалисты клиники</h3>
+        <h3 class="title__h3 detail__title">Специалисты центра</h3>
         <div class="section__content">
             <div class="specialists__cards">
                 {% for specialist in clinic.specialists.all %}
@@ -121,22 +113,14 @@
 
 <section class="detail__reviews">
     <div class="container">
-        <h3 class="title__h3 detail__title">Отзывы пациентов о клинике</h3>
+        <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
         <div class="detail__reviews-slider">
             {% for review in clinic.reviews.all %}
             <div class="detail__review">
-                <div class="detail__review-rating">
-                    {% for i in "12345"|make_list %}
-                    {% if forloop.counter <= review.rating %} <i class="fas fa-star"></i>
-                        {% else %}
-                        <i class="far fa-star"></i>
-                        {% endif %}
-                        {% endfor %}
-                </div>
-                <div class="detail__review-date">
-                    {{ review.created_at|date:"d.m.Y" }}
-                </div>
-                <p class="detail__review-content">{{ review.content }}</p>
+                <h4 class="title__h4 detail__review-title">
+                    {{ review.author_name }}, {{ review.author_age }} лет
+                </h4>
+                <p>{{ review.content }}</p>
             </div>
             {% empty %}
             <div class="detail__review">
@@ -147,9 +131,9 @@
     </div>
 </section>
 
-<section class="detail-clinics clinics">
+<section class="detail-rehabs rehabs">
     <div class="container">
-        <h3 class="title__h3 detail-clinics__title">Другие клиники в вашем регионе</h3>
+        <h3 class="title__h3 detail-rehabs__title">Другие клиники в вашем регионе</h3>
         <div class="section__content">
             <div class="clinics__cards">
                 {% for related_facility in related_facilities %}
