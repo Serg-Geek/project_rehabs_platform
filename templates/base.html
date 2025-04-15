@@ -217,25 +217,25 @@
               </h4>
               <ul class="footer__column footer__navigation-list">
                 <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Центры</a>
+                  <a href="{% url 'facilities:rehabilitation_list' %}" class="footer__navigation-link">Центры</a>
                 </li>
                 <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Клиники</a>
+                  <a href="{% url 'facilities:clinic_list' %}" class="footer__navigation-link">Клиники</a>
                 </li>
-                <li class="footer__navigation-item">
+                <!-- <li class="footer__navigation-item">
                   <a href="#" class="footer__navigation-link">Специалисты</a>
-                </li>
-                <li class="footer__navigation-item">
+                </li> -->
+                <!-- <li class="footer__navigation-item">
                   <a href="#" class="footer__navigation-link">Тесты</a>
-                </li>
+                </li> -->
                 <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Контакты</a>
+                  <a href="{% url 'core:contacts' %}" class="footer__navigation-link">Контакты</a>
                 </li>
                 <li class="footer__navigation-item">
                   <a href="#" class="footer__navigation-link">Консультация нарколога</a>
                 </li>
                 <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Полезная информация</a>
+                  <a href="{% url 'blog:post_list' %}" class="footer__navigation-link">Полезная информация</a>
                 </li>
                 <li class="footer__navigation-item">
                   <a href="#" class="footer__navigation-link">Для партнеров</a>

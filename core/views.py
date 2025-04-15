@@ -60,3 +60,9 @@ class HomeView(TemplateView):
 
 class ContactsView(TemplateView):
     template_name = 'contacts.html'
+
+class ConsultationView(TemplateView):
+    template_name = 'consultation.html'
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404)

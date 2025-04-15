@@ -402,7 +402,8 @@ template {
     height: 500px;
     box-shadow: -4px 0 4px 0 rgba(0, 0, 0, .05), 4px 0 4px 0 rgba(0, 0, 0, .05), 0 4px 4px 0 rgba(0, 0, 0, .1);
     background: #f4fbfd;
-    border: none
+    border: none;
+    transition: all .3s ease
 }
 
 .custom-modal .modal-header {
@@ -429,7 +430,12 @@ template {
     opacity: 1;
     background-size: 24px;
     width: 24px;
-    height: 24px
+    height: 24px;
+    transition: opacity .3s ease
+}
+
+.custom-modal .modal-header .btn-close:hover {
+    opacity: .8
 }
 
 .custom-modal .modal-body {
@@ -451,6 +457,13 @@ template {
     margin: 20px auto 0
 }
 
+.custom-modal .section-form__textarea {
+    min-height: 120px;
+    resize: vertical;
+    padding: 15px;
+    line-height: 1.5
+}
+
 .success-modal .modal-icon {
     width: 80px;
     height: 80px;
@@ -460,7 +473,12 @@ template {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 30px
+    margin-bottom: 30px;
+    transition: transform .3s ease
+}
+
+.success-modal .modal-icon:hover {
+    transform: scale(1.05)
 }
 
 .success-modal .modal-icon i {
@@ -475,7 +493,12 @@ template {
     margin-top: 30px;
     background: rgba(255, 255, 255, .7);
     padding: 10px 20px;
-    border-radius: 20px
+    border-radius: 20px;
+    transition: background-color .3s ease
+}
+
+.success-modal .request-number:hover {
+    background: rgba(255, 255, 255, .9)
 }
 
 .error-modal .modal-icon {
@@ -487,7 +510,12 @@ template {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 30px
+    margin-bottom: 30px;
+    transition: transform .3s ease
+}
+
+.error-modal .modal-icon:hover {
+    transform: scale(1.05)
 }
 
 .error-modal .modal-icon i {
@@ -567,6 +595,106 @@ template {
     .success-modal .modal-icon i {
         font-size: 28px
     }
+
+    .partners-modal .modal-dialog {
+        margin: 10px
+    }
+
+    .partners-modal .modal-content {
+        padding: 16px;
+        width: 100%
+    }
+
+    .partners-modal .modal-header {
+        margin-bottom: 16px
+    }
+
+    .partners-modal .modal-header .btn-close {
+        right: 16px;
+        top: 16px
+    }
+
+    .partners-modal .modal-body .modal-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 12px
+    }
+
+    .partners-modal .modal-body .modal-icon i {
+        font-size: 20px
+    }
+
+    .partners-modal .modal-body .modal-title {
+        font-size: 20px;
+        margin-bottom: 6px
+    }
+
+    .partners-modal .modal-body p {
+        font-size: 14px;
+        line-height: 140%
+    }
+}
+
+.partners-modal .modal-dialog {
+    max-width: 500px;
+    height: auto
+}
+
+.partners-modal .modal-content {
+    width: auto;
+    height: auto;
+    padding: 24px
+}
+
+.partners-modal .modal-header {
+    padding: 0;
+    margin-bottom: 24px
+}
+
+.partners-modal .modal-header .btn-close {
+    position: absolute;
+    right: 24px;
+    top: 24px
+}
+
+.partners-modal .modal-body {
+    padding: 0;
+    text-align: left
+}
+
+.partners-modal .modal-body .modal-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    background: 0 0;
+    box-shadow: none
+}
+
+.partners-modal .modal-body .modal-icon i {
+    color: #4caf50;
+    font-size: 24px
+}
+
+.partners-modal .modal-body .modal-title {
+    font-family: Mulish, sans-serif;
+    font-size: 24px;
+    line-height: 120%;
+    font-weight: 600;
+    color: #143a44;
+    margin-bottom: 8px;
+    text-align: left
+}
+
+.partners-modal .modal-body p {
+    font-size: 16px;
+    line-height: 150%;
+    color: #4d5974;
+    margin: 0;
+    text-align: left
+}
+
+.partners-modal.error .modal-icon i {
+    color: #f44336
 }
 
 .rehab-btn {
@@ -2034,6 +2162,68 @@ template {
 
 .useful-info-detail__consultation {
     padding-top: 60px
+}
+
+.error-page {
+    padding: 80px 0;
+    min-height: calc(100vh - 300px);
+    display: flex;
+    align-items: center
+}
+
+.error-page__content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto
+}
+
+.error-page__actions {
+    margin-top: 20px
+}
+
+.error-page__actions .error-page__btn {
+    display: block;
+    width: 100%;
+    text-align: center
+}
+
+@media (max-width:1024px) {
+    .error-page {
+        padding: 60px 0;
+        min-height: calc(100vh - 250px)
+    }
+
+    .error-page__content {
+        max-width: 500px
+    }
+}
+
+@media (max-width:768px) {
+    .error-page {
+        padding: 50px 0;
+        min-height: calc(100vh - 200px)
+    }
+
+    .error-page__content {
+        max-width: 90%
+    }
+}
+
+@media (max-width:480px) {
+    .error-page {
+        padding: 40px 0;
+        min-height: calc(100vh - 150px)
+    }
+
+    .error-page__content {
+        max-width: 100%;
+        padding: 0 15px
+    }
+
+    .error-page__actions .error-page__btn {
+        font-size: 16px;
+        padding: 12px 10px
+    }
 }
 
 .carousel-control-next,

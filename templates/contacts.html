@@ -1,127 +1,171 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Контакты{% endblock %}
-
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Контакты{% endblock%} 
 {% block content %}
 <nav aria-label="breadcrumb">
-    <div class="container">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Контакты</li>
-        </ol>
-    </div>
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Главная</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Контакты</li>
+    </ol>
+  </div>
 </nav>
 
 <section class="contacts-page about-help">
-    <div class="container">
-        <h2 class="title__h2 contacts-page__title">Контакты</h2>
+  <div class="container">
+    <h2 class="title__h2 contacts-page__title">Контакты</h2>
 
-        <div class="section__content">
-            <div class="section__content-text contacts-page__text">
-                <p>
-                    Мы предоставляем помощь и поддержку в анонимном формате.
-                    Вы можете задать вопрос любым удобным способом или оставить
-                    заявку на бесплатную консультацию. Мы всегда рядом, чтобы помочь.
-                </p>
-            </div>
+    <div class="section__content">
+      <div class="section__content-text contacts-page__text">
+        <p>
+          Мы предоставляем помощь и поддержку в анонимном формате. Вы можете
+          задать вопрос любым удобным способом или оставить заявку на бесплатную
+          консультацию. Мы всегда рядом, чтобы помочь.
+        </p>
+      </div>
 
-            <div class="contacts-page__content">
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/phone.svg' %}" alt="Иконка телефона" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">Телефон горячей линии</span>
-                        <a href="tel:+78000000000" class="contacts-page__link">8 800 0000000</a>
-                    </div>
-                </div>
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/phone-mob.svg' %}"
-                            alt="Иконка мобильного телефона" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">Мобильный телефон</span>
-                        <a href="tel:+79180542585" class="contacts-page__link">+7 918 0542585</a>
-                    </div>
-                </div>
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/location-icon.svg' %}"
-                            alt="Иконка местоположения" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">Адрес</span>
-                        <address class="contacts-page__address">г. Москва, ул. Примерная, д. 10</address>
-                    </div>
-                </div>
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/telegram-icon.svg' %}" alt="Иконка Telegram" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">Telegram</span>
-                        <a href="https://t.me/moemorerehab" class="contacts-page__link">@moemorerehab</a>
-                    </div>
-                </div>
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/whatsapp-icon.svg' %}" alt="Иконка WhatsApp" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">WhatsApp</span>
-                        <a href="https://wa.me/79180542585" class="contacts-page__link">+7 918 0542585</a>
-                    </div>
-                </div>
-                <div class="contacts-page__item">
-                    <div class="contacts-page__icon">
-                        <img src="{% static 'deps/icons/contacts_icons/mail-icon.svg' %}"
-                            alt="Иконка электронной почты" />
-                    </div>
-                    <div class="contacts-page__text">
-                        <span class="contacts-page__label">E-mail</span>
-                        <a href="mailto:moemore-rehab@mail.ru" class="contacts-page__link">moemore-rehab@mail.ru</a>
-                    </div>
-                </div>
-            </div>
+      <div class="contacts-page__content">
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/phone.svg' %}"
+              alt="Иконка телефона"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">Телефон горячей линии</span>
+            <a href="tel:+78000000000" class="contacts-page__link"
+              >8 800 0000000</a
+            >
+          </div>
         </div>
-
-        <div class="for-partners__flex-wrapper">
-            <div class="for-partners__image">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0bG26RC4l6DQ2eqTkSYHMPeL1OOWKIbS8LA&s"
-                    alt="Изображение консультации" class="for-partners__img" />
-            </div>
-
-            <div class="for-partners__content">
-                <h2 class="title__h2 consultation__title">
-                    Запишитесь на бесплатную консультацию
-                </h2>
-                <p class="section__text for-partners__text">
-                    Зависимость разрушает жизнь, но помощь рядом.
-                    Оставьте заявку, и наш сотрудник запишет вас на
-                    бесплатную консультацию в течение 15 минут.
-                </p>
-                <form class="section-form for-partners__form">
-                    <div class="section-form__form-group for-partners__form-group">
-                        <select id="contact-method" name="contact-method" class="section-form__select" required>
-                            <option value="" disabled selected>Предпочтительная форма обратной связи</option>
-                            <option value="phone">Телефон</option>
-                            <option value="email">E-mail</option>
-                        </select>
-                    </div>
-                    <div class="section-form__form-group for-partners__form-group">
-                        <input type="tel" id="contact-input" name="phone" class="section-form__input" required
-                            placeholder="+7 (XXX) XXX-XX-XX" />
-                    </div>
-                    <div class="section-form__form-group for-partners__form-group">
-                        <textarea id="message" name="message" class="section-form__input"
-                            placeholder="Ваше сообщение"></textarea>
-                    </div>
-                    <button type="submit" class="rehab-btn">Оставить заявку</button>
-                </form>
-            </div>
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/phone-mob.svg' %}"
+              alt="Иконка мобильного телефона"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">Мобильный телефон</span>
+            <a href="tel:+79180542585" class="contacts-page__link"
+              >+7 918 0542585</a
+            >
+          </div>
         </div>
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/location-icon.svg' %}"
+              alt="Иконка местоположения"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">Адрес</span>
+            <address class="contacts-page__address">
+              г. Москва, ул. Примерная, д. 10
+            </address>
+          </div>
+        </div>
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/telegram-icon.svg' %}"
+              alt="Иконка Telegram"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">Telegram</span>
+            <a href="https://t.me/moemorerehab" class="contacts-page__link"
+              >@moemorerehab</a
+            >
+          </div>
+        </div>
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/whatsapp-icon.svg' %}"
+              alt="Иконка WhatsApp"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">WhatsApp</span>
+            <a href="https://wa.me/79180542585" class="contacts-page__link"
+              >+7 918 0542585</a
+            >
+          </div>
+        </div>
+        <div class="contacts-page__item">
+          <div class="contacts-page__icon">
+            <img
+              src="{% static 'deps/icons/contacts_icons/mail-icon.svg' %}"
+              alt="Иконка электронной почты"
+            />
+          </div>
+          <div class="contacts-page__text">
+            <span class="contacts-page__label">E-mail</span>
+            <a href="mailto:moemore-rehab@mail.ru" class="contacts-page__link"
+              >moemore-rehab@mail.ru</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="for-partners__flex-wrapper">
+      <div class="for-partners__image">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0bG26RC4l6DQ2eqTkSYHMPeL1OOWKIbS8LA&s"
+          alt="Изображение консультации"
+          class="for-partners__img"
+        />
+      </div>
+
+      <div class="for-partners__content">
+        <h2 class="title__h2 consultation__title">
+          Запишитесь на бесплатную консультацию
+        </h2>
+        <p class="section__text for-partners__text">
+          Зависимость разрушает жизнь, но помощь рядом. Оставьте заявку, и наш
+          сотрудник запишет вас на бесплатную консультацию в течение 15 минут.
+        </p>
+        <form class="section-form for-partners__form">
+          <div class="section-form__form-group for-partners__form-group">
+            <select
+              id="contact-method"
+              name="contact-method"
+              class="section-form__select"
+              required
+            >
+              <option value="" disabled selected>
+                Предпочтительная форма обратной связи
+              </option>
+              <option value="phone">Телефон</option>
+              <option value="email">E-mail</option>
+            </select>
+          </div>
+          <div class="section-form__form-group for-partners__form-group">
+            <input
+              type="tel"
+              id="contact-input"
+              name="phone"
+              class="section-form__input"
+              required
+              placeholder="+7 (XXX) XXX-XX-XX"
+            />
+          </div>
+          <div class="section-form__form-group for-partners__form-group">
+            <textarea
+              id="message"
+              name="message"
+              class="section-form__input"
+              placeholder="Ваше сообщение"
+            ></textarea>
+          </div>
+          <button type="submit" class="rehab-btn">Оставить заявку</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}
