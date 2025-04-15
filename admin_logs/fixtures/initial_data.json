@@ -90,5 +90,19 @@
             "can_assign_responsible": false,
             "can_change_status": false
         }
+    },
+    {
+        "model": "admin_logs.apppermission",
+        "pk": 5,
+        "fields": {
+            "app_label": "content",
+            "access_level": 2,
+            "can_view": true,
+            "can_add": true,
+            "can_change": true,
+            "can_delete": true,
+            "can_assign_responsible": false,
+            "can_change_status": false
+        }
     }
 ]

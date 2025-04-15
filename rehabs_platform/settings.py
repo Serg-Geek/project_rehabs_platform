@@ -166,6 +166,7 @@ ADMIN_LOGS = {
         'requests.*',
         'facilities.*',
         'staff.*',
+        'content.*',
     ],
 }
 
