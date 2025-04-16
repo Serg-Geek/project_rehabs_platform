@@ -109,13 +109,25 @@ python manage.py load_regions
 - Административные центры (столицы) каждого региона
 - Уникальные slug'и для каждого региона и города
 
-9. Создайте типы организаций:
+9. Загрузите специализации медицинских работников:
+
+```bash
+python manage.py load_specializations
+```
+
+Эта команда создаст:
+
+- Основные специализации для работы с зависимостями
+- Подробные описания каждой специализации
+- Автоматически сгенерированные slug'и
+
+10. Создайте типы организаций:
 
 ```bash
 python manage.py shell -c "from facilities.models import OrganizationType; OrganizationType.objects.create(name='Клиника', slug='clinic', description='Медицинская клиника', competencies='Лечение пациентов'); OrganizationType.objects.create(name='Реабилитационный центр', slug='rehab', description='Реабилитационный центр', competencies='Реабилитация пациентов'); print('Типы организаций созданы')"
 ```
 
-10. Запустите сервер разработки:
+11. Запустите сервер разработки:
 
 ```bash
 python manage.py runserver
