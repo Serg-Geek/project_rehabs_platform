@@ -181,6 +181,11 @@ class FacilitySpecialist(MedicalSpecialist):
         verbose_name = _('Специалист учреждения')
         verbose_name_plural = _('Специалисты учреждений')
 
+    def save(self, *args, **kwargs):
+        if not self.content_type or not self.object_id:
+            raise ValueError("Facility specialist must be associated with a facility")
+        super().save(*args, **kwargs)
+
 class SpecialistDocument(TimeStampedModel):
     """
     Документы специалистов

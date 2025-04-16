@@ -33,12 +33,6 @@ class RecoveryTagAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
 
-@admin.register(RecoveryStoryTag)
-class RecoveryStoryTagAdmin(admin.ModelAdmin):
-    list_display = ['story', 'tag']
-    list_filter = ['tag']
-    search_fields = ['story__title', 'tag__name']
-
 @admin.register(RecoveryStoryImage)
 class RecoveryStoryImageAdmin(admin.ModelAdmin):
     list_display = ['story', 'title', 'order']

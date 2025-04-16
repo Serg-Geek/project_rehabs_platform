@@ -36,7 +36,7 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
         'position'
     ]
     filter_horizontal = ['specializations']
-    exclude = ['content_type', 'object_id']
+    exclude = ['content_type', 'object_id', 'slug']
     
     def get_facility_name(self, obj):
         return str(obj.facility) if obj.facility else '-'

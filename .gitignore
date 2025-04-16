@@ -36,4 +36,4 @@ config/settings_local.py
 docker-compose.yml
 
 .pylintrc
-
+1README.md

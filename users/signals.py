@@ -89,7 +89,7 @@ def log_post_delete(sender, instance, **kwargs):
 def create_user_profile(sender, instance, created, **kwargs):
     """Создание профиля пользователя при создании пользователя"""
     if created:
-        UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance, profile=instance)
 
 
 @receiver(post_save, sender=User)
