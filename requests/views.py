@@ -81,17 +81,17 @@ class ConsultationRequestView(CreateView):
         return redirect('requests:error', error_message='\n'.join(error_messages))
 
 class PartnerRequestView(CreateView):
-    model = Request
-    fields = ['first_name', 'phone', 'email', 'notes']
+    model = AnonymousRequest
+    fields = ['name', 'phone', 'email', 'message']
     template_name = 'index.html'
     success_url = reverse_lazy('requests:success')
 
     def form_valid(self, form):
         try:
             # Set default values
-            form.instance.status = Request.Status.NEW
-            form.instance.contact_type = Request.ContactType.REAL_NAME
-            form.instance.addiction_type = Request.AddictionType.OTHER
+            form.instance.status = AnonymousRequest.Status.NEW
+            form.instance.request_type = AnonymousRequest.RequestType.PARTNER
+            form.instance.source = 'partner_form'
             
             # Сохраняем форму
             response = super().form_valid(form)
