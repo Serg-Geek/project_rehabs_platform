@@ -38,9 +38,9 @@ def log_pre_save(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def log_post_save(sender, instance, created, **kwargs):
-    """Логирование действий после сохранения"""
-    user = instance
+def handle_user_post_save(sender, instance, created, **kwargs):
+    """Обработка всех действий после сохранения пользователя"""
+    # Логирование
     if hasattr(instance, '_old_instance'):
         old_instance = instance._old_instance
         changed_fields = get_changed_fields(instance, old_instance)
@@ -49,14 +49,19 @@ def log_post_save(sender, instance, created, **kwargs):
     
     if created:
         action = 'create'
-        details = f'Создан новый пользователь: {user.username}'
+        details = f'Создан новый пользователь: {instance.username}'
+        # Создание профиля
+        UserProfile.objects.create(user=instance)
     else:
         action = 'update'
-        details = f'Обновлен пользователь: {user.username}'
+        details = f'Обновлен пользователь: {instance.username}'
         if changed_fields:
             details += f'\nИзмененные поля: {changed_fields}'
+        # Сохранение профиля
+        if hasattr(instance, 'profile'):
+            instance.profile.save()
     
-    # Проверяем, является ли текущий пользователь сотрудником
+    # Логирование действий
     current_user = getattr(instance, '_current_user', None)
     if current_user and current_user.is_staff:
         UserActionLog.objects.create(
@@ -82,18 +87,4 @@ def log_post_delete(sender, instance, **kwargs):
             object_id=instance.pk,
             details=f'Удален пользователь: {instance.username}',
             timestamp=timezone.now()
-        )
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    """Создание профиля пользователя при создании пользователя"""
-    if created:
-        UserProfile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    """Сохранение профиля пользователя"""
-    if hasattr(instance, 'userprofile'):
-        instance.userprofile.save() 
+        ) 
