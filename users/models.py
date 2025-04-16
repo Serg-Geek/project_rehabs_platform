@@ -41,6 +41,19 @@ class User(AbstractUser):
         default=Role.CONTENT_ADMIN,
         verbose_name=_('Роль')
     )
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_superuser = models.BooleanField(
+        _('superuser status'),
+        default=False,
+        help_text=_(
+            'Designates that this user has all permissions without '
+            'explicitly assigning them.'
+        ),
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -52,21 +65,41 @@ class User(AbstractUser):
     def __str__(self):
         return self.get_full_name() or self.username
 
-    def is_superuser(self):
-        return self.role == self.Role.SUPERUSER
+    def has_role(self, role):
+        """Проверка роли пользователя"""
+        return self.role == role
 
     def is_content_admin(self):
+        """Проверка является ли пользователь администратором контента"""
         return self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN]
 
     def is_requests_admin(self):
+        """Проверка является ли пользователь администратором заявок"""
         return self.role in [self.Role.SUPERUSER, self.Role.REQUESTS_ADMIN]
 
-    def is_staff(self):
-        return self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]
-
     def save(self, *args, **kwargs):
-        if self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
-            self.is_staff = True
+        # Если это новый пользователь (еще не сохранен в БД)
+        if not self.pk:
+            # Если роль суперпользователя, устанавливаем все права
+            if self.role == self.Role.SUPERUSER:
+                self.is_staff = True
+                self.is_superuser = True
+            # Для других ролей устанавливаем только staff
+            elif self.role in [self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
+                self.is_staff = True
+                self.is_superuser = False
+        else:
+            # Для существующего пользователя обновляем права в зависимости от роли
+            if self.role == self.Role.SUPERUSER:
+                self.is_staff = True
+                self.is_superuser = True
+            elif self.role in [self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
+                self.is_staff = True
+                self.is_superuser = False
+            else:
+                self.is_staff = False
+                self.is_superuser = False
+
         super().save(*args, **kwargs)
 
 class UserProfile(TimeStampedModel):

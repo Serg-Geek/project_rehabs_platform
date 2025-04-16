@@ -1,18 +1,19 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Главная | Центр помощи зависимым | Анапа{% endblock %}
-
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}
+Главная | Центр помощи зависимым | Анапа
+{% endblock %} 
 {% block content %}
-
 {% include "includes/banner.html" %}
 
 <section class="rehab-help">
   <div class="container">
     <div class="rehab-help__content">
       <div class="rehab-help__content-item rehab-help__image">
-        <img src="{% static 'deps/img/cover-photo.png' %}"
-          alt="Помощь в реабилитации" />
+        <img
+          src="{% static 'deps/img/cover-photo.png' %}"
+          alt="Помощь в реабилитации"
+        />
       </div>
       <div class="rehab-help__content-item rehab-help__text">
         <h2 class="title__h2">
@@ -22,7 +23,12 @@
           Комплексная терапия и реабилитация по&nbsp;всей&nbsp;России
           с&nbsp;медицинской и&nbsp;психологической поддержкой
         </p>
-        <button type="button" class="rehab-help__btn rehab-btn" data-bs-toggle="modal" data-bs-target="#rehabHelpModal">
+        <button
+          type="button"
+          class="rehab-help__btn rehab-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#rehabHelpModal"
+        >
           Записаться на консультацию
         </button>
       </div>
@@ -43,54 +49,72 @@
       <div class="section__content-text about-help__text">
         <p>
           Центр помощи зависимым «Мое море» помогает зависимым найти путь к
-          выздоровлению, оказывает психологическую помощь и направляет в
-          лучшие центры и клиники к проверенным специалистам.
+          выздоровлению, оказывает психологическую помощь и направляет в лучшие
+          центры и клиники к проверенным специалистам.
         </p>
         <p>
           Мы сотрудничаем с профессиональными реабилитационными центрами и
-          клиниками по всей России, чтобы каждый получил нужную поддержку и
-          шанс на новую жизнь.
+          клиниками по всей России, чтобы каждый получил нужную поддержку и шанс
+          на новую жизнь.
         </p>
       </div>
       <div class="about-help__content-item about-help__icons">
         <div class="icons-grid">
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/heart.svg' %}" alt="Консультации" />
+            <img
+              src="{% static 'deps/icons/about_icons/heart.svg' %}"
+              alt="Консультации"
+            />
             <p>
-              Бесплатные и анонимные консультации опытных специалистов по
-              разным видам зависимостей
+              Бесплатные и анонимные консультации опытных специалистов по разным
+              видам зависимостей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/stop-icon.svg' %}" alt="Терапия" />
+            <img
+              src="{% static 'deps/icons/about_icons/stop-icon.svg' %}"
+              alt="Терапия"
+            />
             <p>
               Безопасная и эффективная терапия: детоксикация, кодировка и
               восстановление здоровья
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/hospital-icon.svg' %}" alt="Центры и клиники" />
+            <img
+              src="{% static 'deps/icons/about_icons/hospital-icon.svg' %}"
+              alt="Центры и клиники"
+            />
             <p>
-              Доступ к проверенным реабилитационным центрам и клиникам по
-              всей России и за границей
+              Доступ к проверенным реабилитационным центрам и клиникам по всей
+              России и за границей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/medicine-box-icon.svg' %}" alt="Лечение зависимостей" />
+            <img
+              src="{% static 'deps/icons/about_icons/medicine-box-icon.svg' %}"
+              alt="Лечение зависимостей"
+            />
             <p>
-              Профессиональная помощь в лечении наркомании, алкоголизма и
-              других зависимостей
+              Профессиональная помощь в лечении наркомании, алкоголизма и других
+              зависимостей
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/care-icon.svg' %}" alt="Поддержка" />
+            <img
+              src="{% static 'deps/icons/about_icons/care-icon.svg' %}"
+              alt="Поддержка"
+            />
             <p>
-              Поддержка на всех этапах от преодоления зависимости и
-              реабилитации до ресоциализации
+              Поддержка на всех этапах от преодоления зависимости и реабилитации
+              до ресоциализации
             </p>
           </div>
           <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_icons/health-care-icon.svg' %}" alt="Индивидуальный подход" />
+            <img
+              src="{% static 'deps/icons/about_icons/health-care-icon.svg' %}"
+              alt="Индивидуальный подход"
+            />
             <p>
               Индивидуальный подход к каждому клиенту: подбираем лечение,
               соответствующее вашим потребностям
@@ -108,9 +132,8 @@
     <div class="section__content">
       <div class="section__content-text our-services__content-text">
         <p>
-          Мы проконсультируем вас по широкому спектру услуг —
-          от медикаментозной терапии и детоксикации до реабилитации
-          и ресоциализации.
+          Мы проконсультируем вас по широкому спектру услуг — от медикаментозной
+          терапии и детоксикации до реабилитации и ресоциализации.
         </p>
         <p>
           Наши специалисты помогут вам на всех этапах лечения.
@@ -121,9 +144,14 @@
       <div class="our-services__list">
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}" alt="Лечение алкоголизма" />
+            <img
+              src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}"
+              alt="Лечение алкоголизма"
+            />
           </div>
-          <h3 class="title__h3">{{ service_categories.alcoholism.category.name }}</h3>
+          <h3 class="title__h3">
+            {{ service_categories.alcoholism.category.name }}
+          </h3>
           <ul>
             {% for service in service_categories.alcoholism.services %}
             <li><a href="#">{{ service.name }}</a></li>
@@ -132,9 +160,14 @@
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}" alt="Лечение наркомании" />
+            <img
+              src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}"
+              alt="Лечение наркомании"
+            />
           </div>
-          <h3 class="title__h3">{{ service_categories.drug_addiction.category.name }}</h3>
+          <h3 class="title__h3">
+            {{ service_categories.drug_addiction.category.name }}
+          </h3>
           <ul>
             {% for service in service_categories.drug_addiction.services %}
             <li><a href="#">{{ service.name }}</a></li>
@@ -143,9 +176,14 @@
         </div>
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}" alt="Другие услуги" />
+            <img
+              src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}"
+              alt="Другие услуги"
+            />
           </div>
-          <h3 class="title__h3">{{ service_categories.other.category.name }}</h3>
+          <h3 class="title__h3">
+            {{ service_categories.other.category.name }}
+          </h3>
           <ul>
             {% for service in service_categories.other.services %}
             <li><a href="#">{{ service.name }}</a></li>
@@ -159,737 +197,892 @@
 
 {% include "facilities/includes/consultation.html" %}
 
-<section class="testing-offer">
-  <div class="container">
-    <div class="testing-offer__wrapper">
-      <div class="testing-offer__content">
-        <h2 class="title__h2 testing-offer__title">
-          Пройдите тестирование
-        </h2>
-        <p class="section__text testing-offer__text">
-          Не уверены в своем состоянии? Пройдите наш анонимный
-          тест&nbsp;на&nbsp;зависимость, чтобы узнать, есть ли у вас признаки
-          наркомании или алкоголизма.
-        </p>
+  <section class="testing-offer">
+    <div class="container">
+      <div class="testing-offer__wrapper">
+        <div class="testing-offer__content">
+          <h2 class="title__h2 testing-offer__title">Пройдите тестирование</h2>
+          <p class="section__text testing-offer__text">
+            Не уверены в своем состоянии? Пройдите наш анонимный
+            тест&nbsp;на&nbsp;зависимость, чтобы узнать, есть ли у вас признаки
+            наркомании или алкоголизма.
+          </p>
 
-        <a href="#" class="rehab-btn testing-offer__button">Перейти к тестам</a>
-      </div>
-      <div class="testing-offer__image">
-        <img src="{% static 'deps/img/test-block.png' %}" alt="Изображение test" class="testing-offer__img" />
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="rehabs">
-  <div class="container">
-    <h2 class="title__h2 rehabs__title">Реабилитационные центры</h2>
-    <div class="section__content">
-      <div class="section__content-text rehabs__content-text">
-        <p>
-          Мы сотрудничаем с лучшими реабилитационными центрами по всей России,
-          чтобы обеспечить качественное лечение и комфортные условия для каждого пациента.
-        </p>
-        <p>
-          Наши партнеры - это проверенные центры с опытными специалистами,
-          современным оборудованием и эффективными программами реабилитации.
-        </p>
-      </div>
-
-      <div id="rehabsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          {% with first_slide=rehab_centers|slice:":4" %}
-          {% if first_slide %}
-          <div class="carousel-item active">
-            <div class="rehabs__cards">
-              {% for center in first_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %}
-                      {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=center.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with second_slide=rehab_centers|slice:"4:8" %}
-          {% if second_slide %}
-          <div class="carousel-item">
-            <div class="rehabs__cards">
-              {% for center in second_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %}
-                      {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=center.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with third_slide=rehab_centers|slice:"8:12" %}
-          {% if third_slide %}
-          <div class="carousel-item">
-            <div class="rehabs__cards">
-              {% for center in third_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %}
-                      {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=center.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
+          <a href="#" class="rehab-btn testing-offer__button">Перейти к тестам</a>
         </div>
-        <!-- {% if rehab_centers|length > 4 %}
-        <button class="carousel-control-prev" type="button" data-bs-target="#rehabsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#rehabsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-        {% endif %} -->
-      </div>
-      <div class="rehabs__button-wrapper">
-        <a href="{% url 'facilities:rehabilitation_list' %}" class="rehab-btn rehabs__button">Посмотреть все</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="clinics">
-  <div class="container">
-    <h2 class="title__h2 clinics__title">Клиники</h2>
-    <div class="section__content">
-      <div class="section__content-text clinics__content-text">
-        <p>
-          Мы предоставляем профессиональную медицинскую помощь, направленную
-          на диагностику, лечение и реабилитацию пациентов.
-        </p>
-        <p>
-          Наши специалисты используют современные методы терапии и
-          индивидуальный подход к каждому пациенту.
-        </p>
-      </div>
-
-      <div id="clinicsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          {% with first_slide=clinics|slice:":4" %}
-          {% if first_slide %}
-          <div class="carousel-item active">
-            <div class="clinics__cards">
-              {% for clinic in first_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %}
-                      {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=clinic.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with second_slide=clinics|slice:"4:8" %}
-          {% if second_slide %}
-          <div class="carousel-item">
-            <div class="clinics__cards">
-              {% for clinic in second_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %}
-                      {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=clinic.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with third_slide=clinics|slice:"8:12" %}
-          {% if third_slide %}
-          <div class="carousel-item">
-            <div class="clinics__cards">
-              {% for clinic in third_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %}
-                      {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=clinic.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-        </div>
-        {% if clinics|length > 4 %}
-        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button> -->
-        {% endif %}
-      </div>
-      <div class="clinics__button-wrapper">
-        <a href="{% url 'facilities:clinic_list' %}" class="rehab-btn clinics__button">Посмотреть все</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="specialists">
-  <div class="container">
-    <h2 class="title__h2 specialists__title">Наши специалисты</h2>
-    <div class="section__content">
-      <div class="section__content-text specialists__content-text">
-        <p>
-          Наши специалисты - опытные профессионалы в области лечения зависимостей.
-          Они помогут вам на пути к выздоровлению.
-        </p>
-      </div>
-
-      <div id="specialistsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          {% with first_slide=specialists|slice:":4" %}
-          {% if first_slide %}
-          <div class="carousel-item active">
-            <div class="specialists__cards">
-              {% for specialist in first_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ specialist.get_full_name }}</h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience }} лет</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with second_slide=specialists|slice:"4:8" %}
-          {% if second_slide %}
-          <div class="carousel-item">
-            <div class="specialists__cards">
-              {% for specialist in second_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ specialist.get_full_name }}</h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience }} лет</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-
-          {% with third_slide=specialists|slice:"8:12" %}
-          {% if third_slide %}
-          <div class="carousel-item">
-            <div class="specialists__cards">
-              {% for specialist in third_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ specialist.get_full_name }}</h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience }} лет</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          {% endwith %}
-        </div>
-        <!-- {% if specialists|length > 4 %}
-        <button class="carousel-control-prev" type="button" data-bs-target="#specialistsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#specialistsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-        {% endif %} -->
-      </div>
-      <div class="specialists__button-wrapper">
-        <a href="#" class="rehab-btn specialists__button">Посмотреть всех</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="useful-info">
-  <div class="container">
-    <h2 class="title__h2 useful-info__title">Полезная информация</h2>
-    <div class="section__content">
-      <div class="section__content-text">
-        <p>
-          Здесь вы найдете актуальные статьи, рекомендации и советы по
-          вопросам здоровья, лечения и профилактики.
-        </p>
-        <p>
-          Наши материалы помогут вам лучше разобраться в современных
-          медицинских подходах и возможностях реабилитации.
-        </p>
-      </div>
-      <div class="useful-info__cards">
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpmv1xefUmjyjR1Y81w-eqWWt5_-CAxohNJw&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Как распознать зависимость на ранних стадиях?
-            </h3>
-            <p class="card__description useful-info__card-description">
-              Зависимость не возникает внезапно — её признаки можно заметить
-              ещё на ранних этапах. Важно обратить внимание на изменения в
-              поведении и настроении человека.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Зависимость</a>
-              <a href="#" class="useful-info__tag">Алкоголизм</a>
-            </div>
-          </div>
-        </div>
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROIndQKy5o1SLddOvIA3W7Mn1Xzeuu6zdLYA&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Что делать, когда вы узнали, что вашим близким нужна помощь?
-            </h3>
-            <p class="card__description">
-              В статье мы расскажем, с чего начать и какие шаги помогут не
-              усугубить ситуацию.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Наркомания</a>
-              <a href="#" class="useful-info__tag">Родственникам </a>
-            </div>
-          </div>
-        </div>
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiaQPwk0SQGmowQ7uhaKsQQnQQm5fGhmtw&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Как убедить зависимого начать лечение?
-            </h3>
-            <p class="card__description">
-              Когда близкий человек отказывается признавать проблему, важно
-              найти подход. Разбираем тактику общения и ошибки, которых
-              стоит избегать.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Психология</a>
-              <a href="#" class="useful-info__tag">Зависимости</a>
-            </div>
-          </div>
+        <div class="testing-offer__image">
+          <img
+            src="{% static 'deps/img/test-block.png' %}"
+            alt="Изображение test"
+            class="testing-offer__img"
+          />
         </div>
       </div>
     </div>
-    <a href="#" class="rehab-btn useful-info__button">Перейти в раздел</a>
-  </div>
-</section>
+  </section>
 
-<section class="recovery-stories">
-  <div class="container">
-    <h2 class="title__h2 recovery-stories__title">Истории выздоровления</h2>
-    <div class="section__content">
-      <div class="section__content-text">
-        <p>
-          Реальные истории людей, которые преодолели зависимость. Эти
-          примеры вдохновляют и показывают, что выздоровление возможно.
-        </p>
-        <p>
-          Каждая история уникальна, и каждая из них подтверждает, что с
-          правильной поддержкой и решимостью можно преодолеть зависимость, и
-          вдохновляет на путь выздоровления, где восстановление отношений с
-          собой и близкими — это реальная цель.
-        </p>
-      </div>
-      <div class="recovery-stories__cards">
-        {% for story in recovery_stories %}
-          {% include "includes/cards/recovery_story_card.html" with story=story %}
-        {% endfor %}
-      </div>
-      <a href="{% url 'recovery_stories:list' %}" class="rehab-btn recovery-stories__button">Читать истории</a>
-    </div>
-  </div>
-</section>
+  <section class="rehabs">
+    <div class="container">
+      <h2 class="title__h2 rehabs__title">Реабилитационные центры</h2>
+      <div class="section__content">
+        <div class="section__content-text rehabs__content-text">
+          <p>
+            Мы сотрудничаем с лучшими реабилитационными центрами по всей России,
+            чтобы обеспечить качественное лечение и комфортные условия для каждого
+            пациента.
+          </p>
+          <p>
+            Наши партнеры - это проверенные центры с опытными специалистами,
+            современным оборудованием и эффективными программами реабилитации.
+          </p>
+        </div>
 
-<section class="contact-info">
-  <div class="container">
-    <div class="contact-info__flex-wrapper">
-      <div class="contact-info__item">
-        <h2 class="title__h3 contact-info__title">
-          Запишитесь на бесплатную консультацию
-        </h2>
-        <p class="section__text contact-info__text">
-          Зависимость разрушает жизнь, но помощь рядом. Оставьте заявку, и
-          наш сотрудник запишет вас на бесплатную консультацию в течение 15
-          минут.
-        </p>
-        <form class="section-form" method="post" action="{% url 'requests:consultation_request' %}" id="contactInfoForm">
-          {% csrf_token %}
-          <div class="section-form__form-group">
-            <input type="text" id="name" name="name" class="section-form__input"
-              placeholder="Ваше имя (необязательно)" />
+        <div id="rehabsCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {% with first_slide=rehab_centers|slice:":4" %} {% if first_slide %}
+            <div class="carousel-item active">
+              <div class="rehabs__cards">
+                {% for center in first_slide %}
+                <div class="card">
+                  <a href="{% url 'facilities:rehab_detail' center.slug %}">
+                    <div class="card__image">
+                      {% with main_image=center.images.first %} 
+                      {% if main_image %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ center.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ center.name }}"
+                      />
+                      {% endif %} {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ center.name }}</h4>
+                      <p class="card__description">
+                        {% if center.city %} {{ center.city.name }}{% if
+                        center.city.region %}, {{ center.city.region.name }}{%
+                        endif %} {% endif %}
+                      </p>
+                      {% with service=center.services.first %} {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽ / месяц</span
+                        >
+                      </div>
+                      {% endif %} {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} 
+            {% endwith %} 
+            {% with second_slide=rehab_centers|slice:"4:8" %} {% if second_slide %}
+            <div class="carousel-item">
+              <div class="rehabs__cards">
+                {% for center in second_slide %}
+                <div class="card">
+                  <a href="{% url 'facilities:rehab_detail' center.slug %}">
+                    <div class="card__image">
+                      {% with main_image=center.images.first %} 
+                      {% if main_image  %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ center.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ center.name }}"
+                      />
+                      {% endif %} 
+                      {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ center.name }}</h4>
+                      <p class="card__description">
+                        {% if center.city %} {{ center.city.name }}
+                        {% if center.city.region %}, {{ center.city.region.name }}{% endif %} 
+                        {% endif %}
+                      </p>
+                      {% with service=center.services.first %} 
+                      {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽ / месяц</span
+                        >
+                      </div>
+                      {% endif %} 
+                      {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} 
+            {% endwith %} 
+            {% with third_slide=rehab_centers|slice:"8:12" %} 
+            {% if third_slide %}
+            <div class="carousel-item">
+              <div class="rehabs__cards">
+                {% for center in third_slide %}
+                <div class="card">
+                  <a href="{% url 'facilities:rehab_detail' center.slug %}">
+                    <div class="card__image">
+                      {% with main_image=center.images.first %} {% if main_image %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ center.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ center.name }}"
+                      />
+                      {% endif %} {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ center.name }}</h4>
+                      <p class="card__description">
+                        {% if center.city %} {{ center.city.name }}{% if
+                        center.city.region %}, {{ center.city.region.name }}{%
+                        endif %} {% endif %}
+                      </p>
+                      {% with service=center.services.first %} {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽ / месяц</span
+                        >
+                      </div>
+                      {% endif %} {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %}
           </div>
-          <div class="section-form__form-group">
-            <select id="service-type" name="service-type" class="section-form__select" required>
-              <option value="" disabled selected>Выберите услугу</option>
-              <option value="consultation">Консультация</option>
-              <option value="therapy">Терапия</option>
-              <option value="support">Поддержка</option>
-            </select>
-          </div>
-          <div class="section-form__form-group">
-            <input type="tel" id="phone" name="phone" class="section-form__input" required
-              placeholder="+7 (XXX) XXX-XX-XX" pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
-              title="Введите номер в формате: +7 (XXX) XXX-XX-XX" />
-            <div class="invalid-feedback" id="phoneError"></div>
-          </div>
-          <button type="submit" class="rehab-btn" id="submitButton">
-            <span class="button-text">Оставить заявку</span>
-            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          <!-- {% if rehab_centers|length > 4 %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#rehabsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
           </button>
-        </form>
-        {% include "includes/notification_modals.html" %}
+          <button class="carousel-control-next" type="button" data-bs-target="#rehabsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          {% endif %} -->
+        </div>
+        <div class="rehabs__button-wrapper">
+          <a
+            href="{% url 'facilities:rehabilitation_list' %}"
+            class="rehab-btn rehabs__button"
+            >Посмотреть все</a
+          >
+        </div>
       </div>
+    </div>
+  </section>
 
-      <address class="contact-info__item" itemscope itemtype="https://schema.org/LocalBusiness">
-        <h2 class="title__h3 contact-info__title" itemprop="name">
-          Контакты:
-        </h2>
-        <p>
-          Мы всегда на связи: позвоните, напишите или оставьте заявку, и мы
-          свяжемся с вами в любое время.
-        </p>
-        <p class="contact-info__item-address">
-          <strong>Телефон:</strong>
-          <span itemprop="telephone">+7 918 054-25-85</span>
-        </p>
+  <section class="clinics">
+    <div class="container">
+      <h2 class="title__h2 clinics__title">Клиники</h2>
+      <div class="section__content">
+        <div class="section__content-text clinics__content-text">
+          <p>
+            Мы предоставляем профессиональную медицинскую помощь, направленную на
+            диагностику, лечение и реабилитацию пациентов.
+          </p>
+          <p>
+            Наши специалисты используют современные методы терапии и
+            индивидуальный подход к каждому пациенту.
+          </p>
+        </div>
 
-        <p class="contact-info__item-address">
-          <strong>Адрес:</strong>
-          <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-            <span itemprop="addressLocality">г. Краснодар</span>,
-            <span itemprop="streetAddress"><br />ул. Красная, д. 12</span>
-          </span>
-        </p>
+        <div id="clinicsCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {% with first_slide=clinics|slice:":4" %} {% if first_slide %}
+            <div class="carousel-item active">
+              <div class="clinics__cards">
+                {% for clinic in first_slide %}
+                <div class="card card--clinic">
+                  <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
+                    <div class="card__image">
+                      {% with main_image=clinic.images.first %} {% if main_image %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% endif %} {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ clinic.name }}</h4>
+                      <p class="card__description">
+                        {% if clinic.city %} {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}
+                        {% endif %} {% endif %}
+                      </p>
+                      {% with service=clinic.services.first %} {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽</span
+                        >
+                      </div>
+                      {% endif %} {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %} {% with second_slide=clinics|slice:"4:8" %}
+            {% if second_slide %}
+            <div class="carousel-item">
+              <div class="clinics__cards">
+                {% for clinic in second_slide %}
+                <div class="card card--clinic">
+                  <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
+                    <div class="card__image">
+                      {% with main_image=clinic.images.first %} {% if main_image %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% endif %} {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ clinic.name }}</h4>
+                      <p class="card__description">
+                        {% if clinic.city %} {{ clinic.city.name }}{% if
+                        clinic.city.region %}, {{ clinic.city.region.name }}{%
+                        endif %} {% endif %}
+                      </p>
+                      {% with service=clinic.services.first %} {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽</span
+                        >
+                      </div>
+                      {% endif %} {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %} {% with third_slide=clinics|slice:"8:12" %}
+            {% if third_slide %}
+            <div class="carousel-item">
+              <div class="clinics__cards">
+                {% for clinic in third_slide %}
+                <div class="card card--clinic">
+                  <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
+                    <div class="card__image">
+                      {% with main_image=clinic.images.first %} {% if main_image %}
+                      <img
+                        src="{{ main_image.image.url }}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ clinic.name }}"
+                      />
+                      {% endif %} {% endwith %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">{{ clinic.name }}</h4>
+                      <p class="card__description">
+                        {% if clinic.city %} {{ clinic.city.name }}{% if
+                        clinic.city.region %}, {{ clinic.city.region.name }}{%
+                        endif %} {% endif %}
+                      </p>
+                      {% with service=clinic.services.first %} {% if service %}
+                      <div class="card__price">
+                        <span class="card__price-value"
+                          >от {{ service.price }} ₽</span
+                        >
+                      </div>
+                      {% endif %} {% endwith %}
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %}
+          </div>
+          {% if clinics|length > 4 %}
+          <!-- <button class="carousel-control-prev" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button> -->
+          {% endif %}
+        </div>
+        <div class="clinics__button-wrapper">
+          <a
+            href="{% url 'facilities:clinic_list' %}"
+            class="rehab-btn clinics__button"
+            >Посмотреть все</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <p class="contact-info__item-address">
-          <strong>E-mail:</strong>
-          <a href="mailto:moemore-rehab@mail.ru" itemprop="email">moemore-rehab@mail.ru</a>
-        </p>
+  <section class="specialists">
+    <div class="container">
+      <h2 class="title__h2 specialists__title">Наши специалисты</h2>
+      <div class="section__content">
+        <div class="section__content-text specialists__content-text">
+          <p>
+            Наши специалисты - опытные профессионалы в области лечения
+            зависимостей. Они помогут вам на пути к выздоровлению.
+          </p>
+        </div>
 
-        <p class="contact-info__item-address">
-          <strong>Часы работы:</strong>
-          <span itemprop="openingHoursSpecification" itemscope itemtype="https://schema.org/OpeningHoursSpecification">
-            <span itemprop="dayOfWeek" itemscope itemtype="https://schema.org/DayOfWeek">
-              <span itemprop="name">Пн-Пт</span>: 9:00 – 18:00</span>
-            <span itemprop="dayOfWeek" itemscope itemtype="https://schema.org/DayOfWeek">
-              <span itemprop="name"><br />Сб-Вс</span>: выходные
+        <div
+          id="specialistsCarousel"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            {% with first_slide=specialists|slice:":4" %} {% if first_slide %}
+            <div class="carousel-item active">
+              <div class="specialists__cards">
+                {% for specialist in first_slide %}
+                <div class="card card--specialist">
+                  <a href="{% url 'staff:specialist_detail' specialist.slug %}">
+                    <div class="card__image">
+                      {% if specialist.photo %}
+                      <img
+                        src="{{ specialist.photo.url }}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% endif %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">
+                        {{ specialist.get_full_name }}
+                      </h4>
+                      <p class="card__description">{{ specialist.position }}</p>
+                      <div class="card__specialist--location">
+                        <span class="card__specialist--location-value"
+                          >Опыт работы: {{ specialist.experience }} лет</span
+                        >
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %} {% with second_slide=specialists|slice:"4:8" %} {% if second_slide %}
+            <div class="carousel-item">
+              <div class="specialists__cards">
+                {% for specialist in second_slide %}
+                <div class="card card--specialist">
+                  <a href="{% url 'staff:specialist_detail' specialist.slug %}">
+                    <div class="card__image">
+                      {% if specialist.photo %}
+                      <img
+                        src="{{ specialist.photo.url }}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% endif %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">
+                        {{ specialist.get_full_name }}
+                      </h4>
+                      <p class="card__description">{{ specialist.position }}</p>
+                      <div class="card__specialist--location">
+                        <span class="card__specialist--location-value"
+                          >Опыт работы: {{ specialist.experience }} лет</span
+                        >
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} 
+            {% endwith %} 
+            {% with third_slide=specialists|slice:"8:12" %} {% if third_slide %}
+            <div class="carousel-item">
+              <div class="specialists__cards">
+                {% for specialist in third_slide %}
+                <div class="card card--specialist">
+                  <a href="{% url 'staff:specialist_detail' specialist.slug %}">
+                    <div class="card__image">
+                      {% if specialist.photo %}
+                      <img
+                        src="{{ specialist.photo.url }}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% else %}
+                      <img
+                        src="{% static 'deps/img/notImage.svg' %}"
+                        alt="{{ specialist.get_full_name }}"
+                      />
+                      {% endif %}
+                    </div>
+                    <div class="card__content">
+                      <h4 class="card__title title__h4">
+                        {{ specialist.get_full_name }}
+                      </h4>
+                      <p class="card__description">{{ specialist.position }}</p>
+                      <div class="card__specialist--location">
+                        <span class="card__specialist--location-value"
+                          >Опыт работы: {{ specialist.experience }} лет</span
+                        >
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% endwith %}
+          </div>
+          <!-- {% if specialists|length > 4 %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#specialistsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#specialistsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          {% endif %} -->
+        </div>
+        <div class="specialists__button-wrapper">
+          <a href="#" class="rehab-btn specialists__button">Посмотреть всех</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="useful-info">
+    <div class="container">
+      <h2 class="title__h2 useful-info__title">Полезная информация</h2>
+      <div class="section__content">
+        <div class="section__content-text">
+          <p>
+            Здесь вы найдете актуальные статьи, рекомендации и советы по вопросам
+            здоровья, лечения и профилактики.
+          </p>
+          <p>
+            Наши материалы помогут вам лучше разобраться в современных медицинских
+            подходах и возможностях реабилитации.
+          </p>
+        </div>
+        <div class="useful-info__cards">
+          <div class="card card--info">
+            <div class="card__image">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpmv1xefUmjyjR1Y81w-eqWWt5_-CAxohNJw&s"
+                alt="Изображение статьи"
+              />
+            </div>
+            <div class="card__content">
+              <h3 class="card__title title__h4">
+                Как распознать зависимость на ранних стадиях?
+              </h3>
+              <p class="card__description useful-info__card-description">
+                Зависимость не возникает внезапно — её признаки можно заметить ещё
+                на ранних этапах. Важно обратить внимание на изменения в поведении
+                и настроении человека.
+              </p>
+              <div class="useful-info__tags">
+                <a href="#" class="useful-info__tag">Зависимость</a>
+                <a href="#" class="useful-info__tag">Алкоголизм</a>
+              </div>
+            </div>
+          </div>
+          <div class="card card--info">
+            <div class="card__image">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROIndQKy5o1SLddOvIA3W7Mn1Xzeuu6zdLYA&s"
+                alt="Изображение статьи"
+              />
+            </div>
+            <div class="card__content">
+              <h3 class="card__title title__h4">
+                Что делать, когда вы узнали, что вашим близким нужна помощь?
+              </h3>
+              <p class="card__description">
+                В статье мы расскажем, с чего начать и какие шаги помогут не
+                усугубить ситуацию.
+              </p>
+              <div class="useful-info__tags">
+                <a href="#" class="useful-info__tag">Наркомания</a>
+                <a href="#" class="useful-info__tag">Родственникам </a>
+              </div>
+            </div>
+          </div>
+          <div class="card card--info">
+            <div class="card__image">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiaQPwk0SQGmowQ7uhaKsQQnQQm5fGhmtw&s"
+                alt="Изображение статьи"
+              />
+            </div>
+            <div class="card__content">
+              <h3 class="card__title title__h4">
+                Как убедить зависимого начать лечение?
+              </h3>
+              <p class="card__description">
+                Когда близкий человек отказывается признавать проблему, важно
+                найти подход. Разбираем тактику общения и ошибки, которых стоит
+                избегать.
+              </p>
+              <div class="useful-info__tags">
+                <a href="#" class="useful-info__tag">Психология</a>
+                <a href="#" class="useful-info__tag">Зависимости</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="rehab-btn useful-info__button">Перейти в раздел</a>
+    </div>
+  </section>
+
+  <section class="recovery-stories">
+    <div class="container">
+      <h2 class="title__h2 recovery-stories__title">Истории выздоровления</h2>
+      <div class="section__content">
+        <div class="section__content-text">
+          <p>
+            Реальные истории людей, которые преодолели зависимость. Эти примеры
+            вдохновляют и показывают, что выздоровление возможно.
+          </p>
+          <p>
+            Каждая история уникальна, и каждая из них подтверждает, что с
+            правильной поддержкой и решимостью можно преодолеть зависимость, и
+            вдохновляет на путь выздоровления, где восстановление отношений с
+            собой и близкими — это реальная цель.
+          </p>
+        </div>
+        <div class="recovery-stories__cards">
+          {% for story in recovery_stories %} {% include
+          "includes/cards/recovery_story_card.html" with story=story %} {% endfor  %}
+        </div>
+        <a
+          href="{% url 'recovery_stories:list' %}"
+          class="rehab-btn recovery-stories__button"
+          >Читать истории</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-info">
+    <div class="container">
+      <div class="contact-info__flex-wrapper">
+        <div class="contact-info__item">
+          <h2 class="title__h3 contact-info__title">
+            Запишитесь на бесплатную консультацию
+          </h2>
+          <p class="section__text contact-info__text">
+            Зависимость разрушает жизнь, но помощь рядом. Оставьте заявку, и наш
+            сотрудник запишет вас на бесплатную консультацию в течение 15 минут.
+          </p>
+          <form
+            class="section-form"
+            method="post"
+            action="{% url 'requests:consultation_request' %}"
+            id="contactInfoForm"
+          >
+            {% csrf_token %}
+            <div class="section-form__form-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="section-form__input"
+                placeholder="Ваше имя (необязательно)"
+              />
+            </div>
+            <div class="section-form__form-group">
+              <select
+                id="service-type"
+                name="service-type"
+                class="section-form__select"
+                required
+              >
+                <option value="" disabled selected>Выберите услугу</option>
+                <option value="consultation">Консультация</option>
+                <option value="therapy">Терапия</option>
+                <option value="support">Поддержка</option>
+              </select>
+            </div>
+            <div class="section-form__form-group">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="section-form__input"
+                required
+                placeholder="+7 (XXX) XXX-XX-XX"
+                pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
+                title="Введите номер в формате: +7 (XXX) XXX-XX-XX"
+              />
+              <div class="invalid-feedback" id="phoneError"></div>
+            </div>
+            <button type="submit" class="rehab-btn" id="submitButton">
+              <span class="button-text">Оставить заявку</span>
+              <span
+                class="spinner-border spinner-border-sm d-none"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
+          </form>
+          {% include "includes/notification_modals.html" %}
+        </div>
+
+        <address
+          class="contact-info__item"
+          itemscope
+          itemtype="https://schema.org/LocalBusiness"
+        >
+          <h2 class="title__h3 contact-info__title" itemprop="name">Контакты:</h2>
+          <p>
+            Мы всегда на связи: позвоните, напишите или оставьте заявку, и мы
+            свяжемся с вами в любое время.
+          </p>
+          <p class="contact-info__item-address">
+            <strong>Телефон:</strong>
+            <span itemprop="telephone">+7 918 054-25-85</span>
+          </p>
+
+          <p class="contact-info__item-address">
+            <strong>Адрес:</strong>
+            <span
+              itemprop="address"
+              itemscope
+              itemtype="https://schema.org/PostalAddress"
+            >
+              <span itemprop="addressLocality">г. Краснодар</span>,
+              <span itemprop="streetAddress"><br />ул. Красная, д. 12</span>
             </span>
-          </span>
-        </p>
-      </address>
-    </div>
-  </div>
-</section>
+          </p>
 
-<section class="for-partners about-help">
-  <div class="container">
-    <h2 class="title__h2 for-partners__title about-help__title">
-      Для партнеров
-    </h2>
+          <p class="contact-info__item-address">
+            <strong>E-mail:</strong>
+            <a href="mailto:moemore-rehab@mail.ru" itemprop="email"
+              >moemore-rehab@mail.ru</a
+            >
+          </p>
 
-    <div class="section__content">
-      <div class="section__content-text for-partners__text">
-        <p>
-          Если вы реабилитационный центр, клиника или врач, занимающийся
-          частной практикой, мы приглашаем вас к сотрудничеству!
-        </p>
-        <p>
-          Узнайте, как наше партнерство может быть полезным для вас.Вместе
-          мы сможем оказывать помощь большему числу людей, предоставляя
-          полный спектр медицинских и психологических услуг.
-        </p>
+          <p class="contact-info__item-address">
+            <strong>Часы работы:</strong>
+            <span
+              itemprop="openingHoursSpecification"
+              itemscope
+              itemtype="https://schema.org/OpeningHoursSpecification"
+            >
+              <span
+                itemprop="dayOfWeek"
+                itemscope
+                itemtype="https://schema.org/DayOfWeek"
+              >
+                <span itemprop="name">Пн-Пт</span>: 9:00 – 18:00</span
+              >
+              <span
+                itemprop="dayOfWeek"
+                itemscope
+                itemtype="https://schema.org/DayOfWeek"
+              >
+                <span itemprop="name"><br />Сб-Вс</span>: выходные
+              </span>
+            </span>
+          </p>
+        </address>
       </div>
-      <h3 class="title__h3 for-partners__title">
-        Преимущества сотрудничества с нами
-      </h3>
-      <div class="for-partners__content-item about-help__content-item about-help__icons">
-        <div class="icons-grid">
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/clients-icon.svg' %}" alt="клиенты" />
-            <p>
-              Дополнительные клиенты и постоянный поток заявок от пациентов
-            </p>
-          </div>
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/conversation-icon.svg' %}" alt="conversation" />
-            <p>
-              Совместное обсуждение сложных случаев для повышения качества
-              услуг
-            </p>
-          </div>
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/expirience-icon.svg' %}" alt="expirience" />
-            <p>Повышение эффективности лечения через обмен опытом</p>
-          </div>
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/expansion-icon.svg' %}" alt="expansion" />
-            <p>
-              Расширение спектра возможностей для лечения и реабилитации
-              пациентов
-            </p>
-          </div>
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/speedup-icon.svg' %}" alt="speedup" />
-            <p>Ускоренная обработка запросов и увеличение конверсии</p>
-          </div>
-          <div class="icons-grid__item">
-            <img src="{% static 'deps/icons/about_partners/care.svg' %}" alt="care" />
-            <p>Возможность комплексного подхода в лечении и реабилитации</p>
+    </div>
+  </section>
+
+  <section class="for-partners about-help">
+    <div class="container">
+      <h2 class="title__h2 for-partners__title about-help__title">
+        Для партнеров
+      </h2>
+
+      <div class="section__content">
+        <div class="section__content-text for-partners__text">
+          <p>
+            Если вы реабилитационный центр, клиника или врач, занимающийся частной
+            практикой, мы приглашаем вас к сотрудничеству!
+          </p>
+          <p>
+            Узнайте, как наше партнерство может быть полезным для вас.Вместе мы
+            сможем оказывать помощь большему числу людей, предоставляя полный
+            спектр медицинских и психологических услуг.
+          </p>
+        </div>
+        <h3 class="title__h3 for-partners__title">
+          Преимущества сотрудничества с нами
+        </h3>
+        <div
+          class="for-partners__content-item about-help__content-item about-help__icons"
+        >
+          <div class="icons-grid">
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/clients-icon.svg' %}"
+                alt="клиенты"
+              />
+              <p>Дополнительные клиенты и постоянный поток заявок от пациентов</p>
+            </div>
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/conversation-icon.svg' %}"
+                alt="conversation"
+              />
+              <p>
+                Совместное обсуждение сложных случаев для повышения качества услуг
+              </p>
+            </div>
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/expirience-icon.svg' %}"
+                alt="expirience"
+              />
+              <p>Повышение эффективности лечения через обмен опытом</p>
+            </div>
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/expansion-icon.svg' %}"
+                alt="expansion"
+              />
+              <p>
+                Расширение спектра возможностей для лечения и реабилитации
+                пациентов
+              </p>
+            </div>
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/speedup-icon.svg' %}"
+                alt="speedup"
+              />
+              <p>Ускоренная обработка запросов и увеличение конверсии</p>
+            </div>
+            <div class="icons-grid__item">
+              <img
+                src="{% static 'deps/icons/about_partners/care.svg' %}"
+                alt="care"
+              />
+              <p>Возможность комплексного подхода в лечении и реабилитации</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="for-partners__flex-wrapper">
-      <div class="for-partners__image">
-        <img src="{% static "deps/img/partnership.png" %}" alt="Изображение консультации" class="for-partners__img" />
-      </div>
+      <div class="for-partners__flex-wrapper">
+        <div class="for-partners__image">
+          <img src="{% static "deps/img/partnership.png" %}" alt="Изображение
+          консультации" class="for-partners__img" />
+        </div>
 
-      <div class="for-partners__content">
-        <h2 class="title__h2 consultation__title">Присоединяйтесь к нам</h2>
-        <p class="section__text for-partners__text">
-          Мы готовы обсудить возможности сотрудничества. Станьте частью
-          нашей команды профессионалов и помогите большему количеству людей
-          на пути к выздоровлению. Оставьте заявку для сотрудничества!
-        </p>
-        <form class="section-form" method="post" action="{% url 'requests:partner_request' %}" id="partnerForm">
-          {% csrf_token %}
-          <div class="section-form__form-group">
-            <input type="text" id="name" name="name" class="section-form__input"
-              placeholder="Контактное лицо" required />
-          </div>
-          <div class="section-form__form-group">
-            <input type="tel" id="phone" name="phone" class="section-form__input" required
-              placeholder="+7 (XXX) XXX-XX-XX" pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
-              title="Введите номер в формате: +7 (XXX) XXX-XX-XX" />
-            <div class="invalid-feedback" id="phoneError"></div>
-          </div>
-          <div class="section-form__form-group">
-            <input type="email" id="email" name="email" class="section-form__input"
-              placeholder="Email (необязательно)" />
-          </div>
-          <div class="section-form__form-group">
-            <textarea id="message" name="message" class="section-form__input"
-              placeholder="Сообщение (необязательно)"></textarea>
-          </div>
-          <button type="submit" class="rehab-btn" id="partnerSubmitButton">
-            <span class="button-text">Отправить заявку</span>
-            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-          </button>
-        </form>
-        {% include "includes/notification_modals.html" %}
+        <div class="for-partners__content">
+          <h2 class="title__h2 consultation__title">Присоединяйтесь к нам</h2>
+          <p class="section__text for-partners__text">
+            Мы готовы обсудить возможности сотрудничества. Станьте частью нашей
+            команды профессионалов и помогите большему количеству людей на пути к
+            выздоровлению. Оставьте заявку для сотрудничества!
+          </p>
+          <form
+            class="section-form"
+            method="post"
+            action="{% url 'requests:partner_request' %}"
+            id="partnerForm"
+          >
+            {% csrf_token %}
+            <div class="section-form__form-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="section-form__input"
+                placeholder="Контактное лицо"
+                required
+              />
+            </div>
+            <div class="section-form__form-group">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="section-form__input"
+                required
+                placeholder="+7 (XXX) XXX-XX-XX"
+                pattern="\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}"
+                title="Введите номер в формате: +7 (XXX) XXX-XX-XX"
+              />
+              <div class="invalid-feedback" id="phoneError"></div>
+            </div>
+            <div class="section-form__form-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="section-form__input"
+                placeholder="Email (необязательно)"
+              />
+            </div>
+            <div class="section-form__form-group">
+              <textarea
+                id="message"
+                name="message"
+                class="section-form__input"
+                placeholder="Сообщение (необязательно)"
+              ></textarea>
+            </div>
+            <button type="submit" class="rehab-btn" id="partnerSubmitButton">
+              <span class="button-text">Отправить заявку</span>
+              <span
+                class="spinner-border spinner-border-sm d-none"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
+          </form>
+          {% include "includes/notification_modals.html" %}
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
-

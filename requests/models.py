@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
 from medical_services.models import Service
 from django.utils import timezone
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -194,21 +195,21 @@ class AnonymousRequest(TimeStampedModel):
 
     # Поля для отслеживания пользователей
     created_by = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         verbose_name='Создано пользователем',
         on_delete=models.SET_NULL,
         null=True,
         related_name='created_requests'
     )
     updated_by = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         verbose_name='Обновлено пользователем',
         on_delete=models.SET_NULL,
         null=True,
         related_name='updated_requests'
     )
     assigned_to = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         verbose_name='Назначено',
         on_delete=models.SET_NULL,
         null=True,
@@ -258,7 +259,7 @@ class RequestNote(TimeStampedModel):
         verbose_name=_('Важное')
     )
     created_by = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         related_name='request_notes',
@@ -288,11 +289,11 @@ class RequestStatusHistory(models.Model):
     comment = models.TextField('Комментарий', blank=True, null=True)
     changed_at = models.DateTimeField('Дата изменения', auto_now_add=True)
     changed_by = models.ForeignKey(
-        'auth.User',
-        verbose_name='Изменено пользователем',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='status_changes'
+        related_name='status_changes',
+        verbose_name='Изменено пользователем'
     )
 
     class Meta:
@@ -320,7 +321,7 @@ class RequestActionLog(TimeStampedModel):
         verbose_name=_('Заявка')
     )
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         related_name='request_actions',
