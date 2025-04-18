@@ -183,3 +183,7 @@ ACCESS_CONTROL = {
 
 # JSON сериализация
 DEFAULT_JSON_ENCODER = 'facilities.utils.CustomJSONEncoder'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@rehabs-platform.com'

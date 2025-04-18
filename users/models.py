@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
+from datetime import timedelta
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -34,53 +35,36 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     """
-    Расширенная модель пользователя
+    Модель пользователя
     """
     class Role(models.TextChoices):
         SUPERUSER = 'superuser', _('Суперпользователь')
         CONTENT_ADMIN = 'content_admin', _('Администратор контента')
         REQUESTS_ADMIN = 'requests_admin', _('Администратор заявок')
+        USER = 'user', _('Пользователь')
 
-    groups = models.ManyToManyField(
-        Group,
-        verbose_name=_('groups'),
-        blank=True,
-        help_text=_(
-            'The groups this user belongs to. A user will get all permissions '
-            'granted to each of their groups.'
-        ),
-        related_name='custom_user_set',
-        related_query_name='custom_user'
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        verbose_name=_('user permissions'),
-        blank=True,
-        help_text=_('Specific permissions for this user.'),
-        related_name='custom_user_set',
-        related_query_name='custom_user'
-    )
-    email = models.EmailField(_('Email'), unique=True)
-    phone = models.CharField(_('Телефон'), max_length=20, blank=True, null=True)
-    avatar = models.ImageField(_('Аватар'), upload_to='avatars/', blank=True, null=True)
     role = models.CharField(
+        _('Роль'),
         max_length=20,
         choices=Role.choices,
-        default=Role.CONTENT_ADMIN,
-        verbose_name=_('Роль')
+        default=Role.USER
     )
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
+    email = models.EmailField(
+        _('Email'),
+        unique=True
     )
-    is_superuser = models.BooleanField(
-        _('superuser status'),
-        default=False,
-        help_text=_(
-            'Designates that this user has all permissions without '
-            'explicitly assigning them.'
-        ),
+    is_active = models.BooleanField(
+        _('Активен'),
+        default=True
+    )
+    last_login = models.DateTimeField(
+        _('Последний вход'),
+        null=True,
+        blank=True
+    )
+    date_joined = models.DateTimeField(
+        _('Дата регистрации'),
+        auto_now_add=True
     )
 
     objects = UserManager()
@@ -108,28 +92,11 @@ class User(AbstractUser):
         return self.role in [self.Role.SUPERUSER, self.Role.REQUESTS_ADMIN]
 
     def save(self, *args, **kwargs):
-        # Если это новый пользователь (еще не сохранен в БД)
-        if not self.pk:
-            # Если роль суперпользователя, устанавливаем все права
-            if self.role == self.Role.SUPERUSER:
-                self.is_staff = True
-                self.is_superuser = True
-            # Для других ролей устанавливаем только staff
-            elif self.role in [self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
-                self.is_staff = True
-                self.is_superuser = False
-        else:
-            # Для существующего пользователя обновляем права в зависимости от роли
-            if self.role == self.Role.SUPERUSER:
-                self.is_staff = True
-                self.is_superuser = True
-            elif self.role in [self.Role.CONTENT_ADMIN, self.Role.REQUESTS_ADMIN]:
-                self.is_staff = True
-                self.is_superuser = False
-            else:
-                self.is_staff = False
-                self.is_superuser = False
-
+        """
+        Переопределение метода save для хеширования пароля
+        """
+        if self._state.adding and self.password and not self.password.startswith(('pbkdf2_sha256$', 'bcrypt$')):
+            self.password = make_password(self.password)
         super().save(*args, **kwargs)
 
 class UserProfile(TimeStampedModel):
