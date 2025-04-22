@@ -16,7 +16,10 @@ from facilities.models import Clinic, RehabCenter
 from django.core.files.uploadedfile import UploadedFile
 from django.utils.html import format_html
 from django.urls import path
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.template.response import TemplateResponse
+from django.shortcuts import redirect
 
 class FacilitySpecialistForm(ModelForm):
     facility_type = forms.ModelChoiceField(
@@ -107,25 +110,107 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
         return custom_urls + urls
     
     def upload_photo_view(self, request, object_id):
+        """Загрузка фото специалиста"""
         obj = self.get_object(request, object_id)
-        if request.method == 'POST' and 'photo' in request.FILES:
-            obj.photo = request.FILES['photo']
-            obj.save()
-        return HttpResponseRedirect(
-            request.META.get('HTTP_REFERER', 
-                             f'/admin/staff/facilityspecialist/{object_id}/change/')
-        )
+        
+        # Если GET-запрос, отображаем шаблон для загрузки
+        if request.method == 'GET':
+            context = {
+                'opts': self.model._meta,
+                'object_id': object_id,
+                'original': obj,
+                'title': _('Загрузить фото'),
+                'app_label': self.model._meta.app_label,
+            }
+            return TemplateResponse(
+                request,
+                'admin/staff/facilityspecialist/upload_photo.html',
+                context
+            )
+            
+        # Если POST-запрос, обрабатываем загрузку файла
+        elif request.method == 'POST' and 'photo' in request.FILES:
+            try:
+                # Получаем файл
+                photo_file = request.FILES['photo']
+                
+                # Сохраняем его
+                obj.photo = photo_file
+                obj.save()
+                
+                # Очищаем объект из request
+                request.FILES.clear()
+                
+                # Добавляем сообщение об успехе
+                messages.success(request, _('Фото успешно загружено'))
+                
+                # Возвращаем скрипт перенаправления без использования объекта в сессии
+                html = f"""
+                <html>
+                <body>
+                <script>
+                    window.location.href = '/admin/staff/facilityspecialist/{object_id}/change/';
+                </script>
+                </body>
+                </html>
+                """
+                return HttpResponse(html)
+            except Exception as e:
+                messages.error(request, f'Ошибка при загрузке фото: {str(e)}')
+                # Возвращаем скрипт перенаправления с сообщением об ошибке
+                html = f"""
+                <html>
+                <body>
+                <script>
+                    window.location.href = '/admin/staff/facilityspecialist/{object_id}/change/';
+                </script>
+                </body>
+                </html>
+                """
+                return HttpResponse(html)
+        
+        # Если другой тип запроса или нет файла, просто перенаправляем
+        html = f"""
+        <html>
+        <body>
+        <script>
+            window.location.href = '/admin/staff/facilityspecialist/{object_id}/change/';
+        </script>
+        </body>
+        </html>
+        """
+        return HttpResponse(html)
     
     def delete_photo_view(self, request, object_id):
+        """Удаление фото специалиста"""
         obj = self.get_object(request, object_id)
+        
         if obj.photo:
-            obj.photo.delete(save=False)
-            obj.photo = None
-            obj.save()
-        return HttpResponseRedirect(
-            request.META.get('HTTP_REFERER', 
-                             f'/admin/staff/facilityspecialist/{object_id}/change/')
-        )
+            try:
+                # Сохраняем имя файла для логирования
+                filename = obj.photo.name
+                
+                # Удаляем файл
+                obj.photo.delete(save=False)
+                obj.photo = None
+                obj.save()
+                
+                # Добавляем сообщение об успехе
+                messages.success(request, _('Фото успешно удалено'))
+            except Exception as e:
+                messages.error(request, f'Ошибка при удалении фото: {str(e)}')
+        
+        # Возвращаем скрипт перенаправления без использования объекта в сессии
+        html = f"""
+        <html>
+        <body>
+        <script>
+            window.location.href = '/admin/staff/facilityspecialist/{object_id}/change/';
+        </script>
+        </body>
+        </html>
+        """
+        return HttpResponse(html)
     
     def photo_display(self, obj):
         if obj.photo:
@@ -162,13 +247,23 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
         
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         if obj and obj.photo:
-            context.update({
-                'photo_url': obj.photo.url,
-                'has_photo': True,
-                'object_id': obj.pk,
-                'upload_photo_url': f'/admin/staff/facilityspecialist/{obj.pk}/upload-photo/',
-                'delete_photo_url': f'/admin/staff/facilityspecialist/{obj.pk}/delete-photo/',
-            })
+            try:
+                # Используем только URL, а не объект
+                photo_url = obj.photo.url
+                context.update({
+                    'photo_url': photo_url,
+                    'has_photo': True,
+                    'object_id': obj.pk,
+                    'upload_photo_url': f'/admin/staff/facilityspecialist/{obj.pk}/upload-photo/',
+                    'delete_photo_url': f'/admin/staff/facilityspecialist/{obj.pk}/delete-photo/',
+                })
+            except Exception:
+                # Если возникла ошибка с файлом, не показываем его
+                context.update({
+                    'has_photo': False,
+                    'object_id': obj.pk,
+                    'upload_photo_url': f'/admin/staff/facilityspecialist/{obj.pk}/upload-photo/',
+                })
         elif obj:
             context.update({
                 'has_photo': False,

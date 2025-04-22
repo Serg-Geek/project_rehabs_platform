@@ -1,0 +1,67 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+<style>
+    .photo-upload-container {
+        margin: 1em 0;
+        padding: 2em;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        max-width: 800px;
+    }
+    .photo-upload-form {
+        margin-top: 1em;
+    }
+    .photo-upload-button {
+        background-color: #417690;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1em;
+    }
+    .photo-upload-field {
+        margin-bottom: 1em;
+    }
+    .back-link {
+        margin-top: 2em;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url 'admin:staff_facilityspecialist_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; <a href="{% url 'admin:staff_facilityspecialist_change' object_id %}">{{ original|truncatewords:"18" }}</a>
+    &rsaquo; {% trans 'Upload photo' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="photo-upload-container">
+    <h1>{% trans "Загрузить фото для специалиста" %}: {{ original.get_full_name }}</h1>
+    
+    <form action="." method="post" enctype="multipart/form-data" class="photo-upload-form">
+        {% csrf_token %}
+        <div class="photo-upload-field">
+            <label for="id_photo">{% trans "Выберите фото" %}:</label>
+            <input type="file" name="photo" id="id_photo" accept="image/*" required>
+            <p class="help">{% trans "Изображение будет автоматически оптимизировано." %}</p>
+        </div>
+        <button type="submit" class="photo-upload-button">
+            {% trans "Загрузить" %}
+        </button>
+    </form>
+    
+    <a href="{% url 'admin:staff_facilityspecialist_change' object_id %}" class="back-link">
+        ← {% trans "Вернуться к редактированию специалиста" %}
+    </a>
+</div>
+{% endblock %} 
