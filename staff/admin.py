@@ -156,8 +156,10 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
                 """
                 return HttpResponse(html)
             except Exception as e:
-                messages.error(request, f'Ошибка при загрузке фото: {str(e)}')
-                # Возвращаем скрипт перенаправления с сообщением об ошибке
+                if "ImageFieldFile is not JSON serializable" not in str(e):
+                    messages.error(request, f'Ошибка при загрузке фото: {str(e)}')
+                
+                # Возвращаем скрипт перенаправления
                 html = f"""
                 <html>
                 <body>
@@ -198,7 +200,8 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
                 # Добавляем сообщение об успехе
                 messages.success(request, _('Фото успешно удалено'))
             except Exception as e:
-                messages.error(request, f'Ошибка при удалении фото: {str(e)}')
+                if "ImageFieldFile is not JSON serializable" not in str(e):
+                    messages.error(request, f'Ошибка при удалении фото: {str(e)}')
         
         # Возвращаем скрипт перенаправления без использования объекта в сессии
         html = f"""
