@@ -1,0 +1,80 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .photo-upload-container {
+        margin: 1em 0;
+        padding: 1em;
+        border: 1px solid #eee;
+        border-radius: 4px;
+    }
+    .current-photo {
+        margin-bottom: 1em;
+    }
+    .current-photo img {
+        max-width: 300px;
+        max-height: 300px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+    .photo-upload-form,
+    .photo-delete-form {
+        margin-top: 1em;
+    }
+    .photo-delete-button {
+        background-color: #ba2121;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .photo-upload-button {
+        background-color: #417690;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .photo-upload-field {
+        margin-bottom: 0.5em;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="photo-upload-container">
+    <h2>{% trans "Фото специалиста" %}</h2>
+    
+    {% if has_photo %}
+    <div class="current-photo">
+        <img src="{{ photo_url }}" alt="{% trans 'Фото специалиста' %}" />
+    </div>
+    
+    <form action="{{ delete_photo_url }}" method="post" class="photo-delete-form">
+        {% csrf_token %}
+        <button type="submit" class="photo-delete-button">
+            {% trans "Удалить фото" %}
+        </button>
+    </form>
+    {% else %}
+    <p>{% trans "У специалиста нет фото" %}</p>
+    {% endif %}
+    
+    <form action="{{ upload_photo_url }}" method="post" enctype="multipart/form-data" class="photo-upload-form">
+        {% csrf_token %}
+        <div class="photo-upload-field">
+            <label for="id_photo">{% trans "Загрузить фото" %}:</label>
+            <input type="file" name="photo" id="id_photo" accept="image/*">
+        </div>
+        <button type="submit" class="photo-upload-button">
+            {% trans "Загрузить" %}
+        </button>
+    </form>
+</div>
+
+{{ block.super }}
+{% endblock %} 
