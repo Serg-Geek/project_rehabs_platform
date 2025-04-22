@@ -107,6 +107,13 @@ class FacilityImageAdmin(admin.ModelAdmin):
     def get_json_encoder(self):
         return CustomJSONEncoder
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        obj = self.get_object(request, object_id)
+        if obj and obj.facility:
+            extra_context['title'] = f"{obj.get_image_type_display()} - {obj.facility.name}"
+        return super().change_view(request, object_id, form_url, extra_context)
+
 @admin.register(FacilityDocument)
 class FacilityDocumentAdmin(admin.ModelAdmin):
     list_display = [
