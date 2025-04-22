@@ -132,9 +132,11 @@ class MedicalSpecialist(TimeStampedModel):
         return f"{self.last_name} {self.first_name}"
         
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.slug or self.slug.startswith('-'):
             # Формируем базовый слаг из фамилии и имени
             base_slug = slugify(f"{self.last_name}-{self.first_name}")
+            if not base_slug:  # Если после slugify получили пустую строку
+                base_slug = f"specialist-{self.id}" if self.id else "specialist"
             slug = base_slug
             
             # Проверяем, существует ли уже такой слаг
@@ -184,7 +186,8 @@ class FacilitySpecialist(MedicalSpecialist):
     def save(self, *args, **kwargs):
         if not self.content_type or not self.object_id:
             raise ValueError("Facility specialist must be associated with a facility")
-        super().save(*args, **kwargs)
+        # Вызываем save() родительского класса для генерации slug
+        super(FacilitySpecialist, self).save(*args, **kwargs)
 
 class SpecialistDocument(TimeStampedModel):
     """

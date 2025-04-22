@@ -9,6 +9,15 @@ from .models import (
 from django.utils.text import slugify
 from django.db.models import Q
 from transliterate import slugify as transliterate_slugify
+from django.forms import ModelForm
+
+class FacilitySpecialistForm(ModelForm):
+    class Meta:
+        model = FacilitySpecialist
+        exclude = ['content_type', 'object_id', 'slug']
+        widgets = {
+            'photo': admin.widgets.AdminFileWidget
+        }
 
 @admin.register(Specialization)
 class SpecializationAdmin(admin.ModelAdmin):
@@ -18,6 +27,7 @@ class SpecializationAdmin(admin.ModelAdmin):
 
 @admin.register(FacilitySpecialist)
 class FacilitySpecialistAdmin(admin.ModelAdmin):
+    form = FacilitySpecialistForm
     list_display = [
         'get_full_name',
         'position',
@@ -36,7 +46,6 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
         'position'
     ]
     filter_horizontal = ['specializations']
-    exclude = ['content_type', 'object_id', 'slug']
     
     def get_facility_name(self, obj):
         return str(obj.facility) if obj.facility else '-'
