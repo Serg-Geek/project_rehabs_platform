@@ -37,3 +37,6 @@ docker-compose.yml
 
 .pylintrc
 1README.md
+.cursor
+
+README2.md
