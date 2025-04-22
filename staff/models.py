@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.db.models import Q
+from django.urls import reverse
 
 def transliterate(text):
     """Транслитерация кириллицы в латиницу"""
@@ -188,6 +189,9 @@ class FacilitySpecialist(MedicalSpecialist):
             raise ValueError("Facility specialist must be associated with a facility")
         # Вызываем save() родительского класса для генерации slug
         super(FacilitySpecialist, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('staff:specialist_detail', kwargs={'slug': self.slug})
 
 class SpecialistDocument(TimeStampedModel):
     """

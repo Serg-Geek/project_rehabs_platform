@@ -5,7 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from .models import (
     FacilitySpecialist,
     Specialization,
-    SpecialistDocument
+    SpecialistDocument,
+    MedicalSpecialist
 )
 from django.utils.text import slugify
 from django.db.models import Q
@@ -20,6 +21,29 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect
+
+class SpecialistDocumentForm(ModelForm):
+    class Meta:
+        model = SpecialistDocument
+        fields = ['specialist', 'document_type', 'title', 'document', 'number', 'issue_date', 'expiry_date', 'is_active']
+
+    def clean_document(self):
+        document = self.cleaned_data.get('document')
+        if document and not isinstance(document, UploadedFile):
+            raise forms.ValidationError(_('Файл должен быть загружен'))
+        return document
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Если специалист является FacilitySpecialist, используем его базовый класс
+        if isinstance(instance.specialist, FacilitySpecialist):
+            instance.specialist = instance.specialist.medicalspecialist_ptr
+        elif isinstance(instance.specialist, MedicalSpecialist):
+            # Если это уже базовый класс, оставляем как есть
+            pass
+        if commit:
+            instance.save()
+        return instance
 
 class FacilitySpecialistForm(ModelForm):
     facility_type = forms.ModelChoiceField(
@@ -47,6 +71,10 @@ class FacilitySpecialistForm(ModelForm):
         
         if commit:
             instance.save()
+            # Сохраняем связи с специализациями
+            if 'specializations' in self.cleaned_data:
+                instance.specializations.set(self.cleaned_data['specializations'])
+        
         return instance
 
 @admin.register(Specialization)
