@@ -21,22 +21,27 @@
         <div class="detail__content rehab-help__content">
             <div class="clinic-detail__content detail__content-item--img rehab-help__content-item rehab-help__image">
                 <div id="clinicCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        {% for image in clinic.images.all %}
-                        <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
-                        {% endfor %}
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{{ clinic.main_image.url }}" class="d-block w-100 clinic-detail__img" alt="{{ clinic.name }}" />
+                    {% with images=clinic.images.all %}
+                    {% if images %}
+                        <div class="carousel-indicators">
+                            {% for image in images %}
+                            <button type="button" data-bs-target="#clinicCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                                {% if forloop.first %}class="active" aria-current="true"{% endif %} 
+                                aria-label="Slide {{ forloop.counter }}">
+                            </button>
+                            {% endfor %}
                         </div>
-                        {% for image in clinic.images.all %}
-                        <div class="carousel-item">
-                            <img src="{{ image.image.url }}" class="d-block w-100 clinic-detail__img" alt="{{ clinic.name }}" />
+                        <div class="carousel-inner">
+                            {% for image in images %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100 clinic-detail__img" alt="{{ clinic.name }}" />
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% else %}
+                        <img src="{% static 'deps/img/notImage.svg' %}" class="d-block w-100 clinic-detail__img" alt="{{ clinic.name }}" />
+                    {% endif %}
+                    {% endwith %}
                 </div>
             </div>
             <div class="detail__content-wrapper rehab-help__content-item">
