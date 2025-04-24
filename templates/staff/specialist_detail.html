@@ -4,7 +4,7 @@
 {% block title %}{{ specialist.last_name }} {{ specialist.first_name }} - {{ specialist.position }}{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <div class="specialist-detail">
         <div class="specialist-detail__header">
             <div class="specialist-detail__photo">
@@ -19,18 +19,26 @@
                 <p class="specialist-detail__position">{{ specialist.position }}</p>
                 <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p>
                 <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p>
+                <div class="specialist-detail__specializations">
+                    <h2>Специализации:</h2>
+                    <ul>
+                        {% for specialization in specialist.specializations.all %}
+                        <li>{{ specialization.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div class="specialist-detail__content">
             <div class="specialist-detail__section">
                 <h2>Образование</h2>
-                <p>{{ specialist.education }}</p>
+                <p>{{ specialist.education|default:'' }}</p>
             </div>
 
             <div class="specialist-detail__section">
                 <h2>Биография</h2>
-                <p>{{ specialist.biography }}</p>
+                <p>{{ specialist.biography|default:'Тестовая биография' }}</p>
             </div>
         </div>
     </div>
