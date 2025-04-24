@@ -61,6 +61,16 @@ python manage.py migrate
 python manage.py load_all_initial_data
 ```
 
+Для загрузки отдельных фикстур используйте команду:
+
+```bash
+# Загрузка специализаций
+python manage.py loaddata staff/fixtures/specializations.json
+
+# Загрузка других фикстур
+python manage.py loaddata <path_to_fixture>
+```
+
 7. Создайте суперпользователя:
 
 ```bash
