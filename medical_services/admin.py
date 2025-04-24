@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.contrib.contenttypes.models import ContentType
 from .models import (
     ServiceCategory,
     TherapyMethod,
@@ -41,8 +42,15 @@ class FacilityServiceAdmin(admin.ModelAdmin):
     list_filter = ['content_type', 'service', 'is_active']
     search_fields = ['service__name']
     filter_horizontal = ['specialists']
-    raw_id_fields = ['content_type']
 
     def get_facility_name(self, obj):
         return str(obj.facility)
     get_facility_name.short_description = _('Учреждение')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "content_type":
+            # Ограничиваем выбор только моделями учреждений
+            kwargs["queryset"] = ContentType.objects.filter(
+                model__in=['clinic', 'rehabcenter']
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
