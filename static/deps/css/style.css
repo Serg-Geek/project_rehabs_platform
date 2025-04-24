@@ -862,6 +862,19 @@ template {
   padding: 10px 10px
 }
 
+.menu__logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  transition: opacity .3s ease
+}
+
+.menu__logo-link {
+  display: none;
+  text-decoration: none;
+  transition: opacity .3s ease
+}
+
 .menu.fixed {
   position: fixed;
   top: 0;
@@ -870,6 +883,11 @@ template {
   margin: 0 auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
   animation: slideDown .3s ease
+}
+
+.menu.fixed .menu__logo-link {
+  display: block;
+  opacity: 1
 }
 
 .navbar__mobile {
@@ -1972,6 +1990,30 @@ template {
   object-fit: cover
 }
 
+.detail .detail__content-item--img .carousel-indicators {
+  margin-bottom: -25px
+}
+
+.detail .detail__content-item--img .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #78a0aa;
+  margin: 0 5px;
+  transition: background-color .3s ease
+}
+
+.detail .detail__content-item--img .carousel-indicators [data-bs-target].active {
+  background-color: #143a44
+}
+
+@media (max-width:991px) {
+  .detail .detail__content-item--img .carousel-indicators {
+    display: none
+  }
+}
+
 .detail .detail__content-wrapper {
   gap: 20px;
   display: flex;
@@ -1988,7 +2030,9 @@ template {
   font-size: 20px;
   line-height: 120%;
   letter-spacing: -.02em;
-  color: #143a44
+  color: #143a44;
+  word-wrap: break-word;
+  word-break: break-word
 }
 
 .detail__text p {
@@ -2007,7 +2051,12 @@ template {
   list-style: none;
   font-size: 20px;
   letter-spacing: -.02em;
-  color: #4d5974
+  color: #4d5974;
+  margin-bottom: 8px
+}
+
+.detail__services-list li:last-child {
+  margin-bottom: 0
 }
 
 .detail__info .detail__title {
