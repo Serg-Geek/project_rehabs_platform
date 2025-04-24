@@ -7,18 +7,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Список фикстур в порядке загрузки
         fixtures = [
-            # Базовые справочники
-            'facilities/fixtures/regions.json',
-            'facilities/fixtures/cities.json',
+            # Базовые справочники (из core)
+            'core/fixtures/regions.json',
+            'core/fixtures/cities.json',
             
-            # Типы организаций
+            # Типы организаций (из facilities)
             'facilities/fixtures/organization_types.json',
             
-            # Основные данные
+            # Основные данные (из facilities)
             'facilities/fixtures/clinics.json',
             'facilities/fixtures/rehab_centers.json',
             
-            # Отзывы (должны загружаться после организаций)
+            # Отзывы (из facilities)
             'facilities/fixtures/reviews.json',
         ]
 
