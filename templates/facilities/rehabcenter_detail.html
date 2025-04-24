@@ -20,13 +20,24 @@
     <div class="container">
         <div class="detail__content rehab-help__content">
             <div class="rehab-detail__content rehab-help__content-item rehab-help__image detail__content-item--img">
-                {% with main_image=center.images.first %}
-                {% if main_image %}
-                <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                {% else %}
-                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                {% endif %}
-                {% endwith %}
+                <div id="rehabCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#rehabCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        {% for image in center.images.all %}
+                        <button type="button" data-bs-target="#rehabCarousel" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ center.main_image.url }}" class="d-block w-100 rehab-detail__img" alt="{{ center.name }}" />
+                        </div>
+                        {% for image in center.images.all %}
+                        <div class="carousel-item">
+                            <img src="{{ image.image.url }}" class="d-block w-100 rehab-detail__img" alt="{{ center.name }}" />
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="detail__content-wrapper rehab-help__content-item">
                 <h2 class="title__h2 detail__title">
