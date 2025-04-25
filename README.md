@@ -67,6 +67,9 @@ python manage.py load_all_initial_data
 # Загрузка специализаций
 python manage.py loaddata staff/fixtures/specializations.json
 
+# Загрузка категорий историй выздоровления
+python manage.py load_initial_categories
+
 # Загрузка других фикстур
 python manage.py loaddata <path_to_fixture>
 ```
