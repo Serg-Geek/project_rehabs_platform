@@ -2,9 +2,28 @@ from django.core.management.base import BaseCommand
 from recovery_stories.models import RecoveryCategory
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
+from django.utils.text import slugify
 
 class Command(BaseCommand):
     help = 'Загружает начальные категории историй выздоровления'
+
+    def get_unique_slug(self, base_slug, parent_slug=None):
+        """
+        Генерирует уникальный slug для категории
+        """
+        if parent_slug:
+            slug = f"{parent_slug}-{base_slug}"
+        else:
+            slug = base_slug
+
+        # Проверяем уникальность slug
+        counter = 1
+        original_slug = slug
+        while RecoveryCategory.objects.filter(slug=slug).exists():
+            slug = f"{original_slug}-{counter}"
+            counter += 1
+
+        return slug
 
     def handle(self, *args, **options):
         # Сначала удаляем все существующие категории
@@ -81,25 +100,27 @@ class Command(BaseCommand):
                 children = category_data.pop('children', [])
                 
                 # Создаем родительскую категорию
+                parent_slug = slugify(category_data['name'])
                 category = RecoveryCategory.objects.create(
                     name=category_data['name'],
                     description=category_data['description'],
-                    order=category_data['order']
+                    order=category_data['order'],
+                    slug=self.get_unique_slug(parent_slug)
                 )
                 created_count += 1
 
                 # Создаем дочерние категории
                 for child_data in children:
+                    child_base_slug = slugify(child_data['name'])
                     child = RecoveryCategory.objects.create(
                         name=child_data['name'],
                         description=child_data['description'],
                         order=child_data['order'],
-                        parent=category
+                        parent=category,
+                        slug=self.get_unique_slug(child_base_slug, category.slug)
                     )
                     created_count += 1
 
         self.stdout.write(
-            self.style.SUCCESS(
-                f'Успешно загружены категории: создано {created_count}'
-            )
+            self.style.SUCCESS(f'Успешно создано {created_count} категорий')
         ) 
