@@ -161,10 +161,10 @@ class Clinic(AbstractMedicalFacility):
         verbose_name=_('Документы')
     )
     reviews = GenericRelation(
-        'Review',
+        'reviews.Review',
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name='clinic',
+        related_query_name='facility',
         verbose_name=_('Отзывы')
     )
 
@@ -218,10 +218,10 @@ class RehabCenter(AbstractMedicalFacility):
         verbose_name=_('Документы')
     )
     reviews = GenericRelation(
-        'Review',
+        'reviews.Review',
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name='rehab_center',
+        related_query_name='facility',
         verbose_name=_('Отзывы')
     )
     address = models.TextField(

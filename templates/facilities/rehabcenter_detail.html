@@ -131,6 +131,13 @@
 <section class="detail__reviews">
     <div class="container">
         <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
+        {% if user.is_authenticated %}
+        <div class="detail__reviews-actions">
+            <a href="{% url 'reviews:facility_create' facility_type='rehab' facility_id=center.id %}" class="rehab-btn">
+                Оставить отзыв
+            </a>
+        </div>
+        {% endif %}
         <div class="detail__reviews-slider">
             {% for review in center.reviews.all %}
             <div class="detail__review">
@@ -141,6 +148,9 @@
                         <i class="far fa-star"></i>
                         {% endif %}
                         {% endfor %}
+                </div>
+                <div class="detail__review-author">
+                    {{ review.author_display }}
                 </div>
                 <div class="detail__review-date">
                     {{ review.created_at|date:"d.m.Y" }}

@@ -89,7 +89,14 @@ class FacilityDetailView(DetailView):
         raise ValueError("Invalid facility type")
 
     def get_queryset(self):
-        return self.get_model().objects.prefetch_related('reviews').all()
+        return self.get_model().objects.prefetch_related(
+            'reviews',
+            'images',
+            'documents',
+            'specialists',
+            'city',
+            'city__region'
+        ).all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

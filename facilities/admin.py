@@ -5,8 +5,7 @@ from .models import (
     Clinic,
     RehabCenter,
     FacilityImage,
-    FacilityDocument,
-    Review
+    FacilityDocument
 )
 from staff.models import FacilitySpecialist
 from django.utils.translation import gettext_lazy as _
@@ -128,17 +127,3 @@ class FacilityDocumentAdmin(admin.ModelAdmin):
     search_fields = ['title', 'number']
     ordering = ['-created_at']
     exclude = ['content_type', 'object_id']
-
-@admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
-    list_display = [
-        'id',
-        'facility',
-        'rating',
-        'content',
-        'created_at'
-    ]
-    list_filter = ['rating', 'created_at']
-    search_fields = ['content', 'facility__name']
-    ordering = ['-created_at']
-    readonly_fields = ['created_at', 'updated_at']
