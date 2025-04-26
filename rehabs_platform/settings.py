@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'requests.apps.RequestsConfig',
     'medical_services.apps.MedicalServicesConfig',
+    'reviews.apps.ReviewsConfig',
     'recovery_stories.apps.RecoveryStoriesConfig',
     'admin_logs.apps.AdminLogsConfig',
     'content.apps.ContentConfig',

@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.db.models import Q
 from django.urls import reverse
+from reviews.models import Review
 
 def transliterate(text):
     """Транслитерация кириллицы в латиницу"""
@@ -117,6 +118,14 @@ class MedicalSpecialist(TimeStampedModel):
     is_active = models.BooleanField(
         default=True,
         verbose_name=_('Активен')
+    )
+
+    reviews = GenericRelation(
+        'reviews.Review',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='specialist',
+        verbose_name=_('Отзывы')
     )
 
     class Meta:
