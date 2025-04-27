@@ -136,40 +136,99 @@ class AnonymousRequest(TimeStampedModel):
     Анонимные заявки от пользователей
     """
     class RequestType(models.TextChoices):
-        CONSULTATION = 'consultation', 'Консультация'
-        TREATMENT = 'treatment', 'Лечение'
-        REHABILITATION = 'rehabilitation', 'Реабилитация'
-        PARTNER = 'partner', 'Партнерство'
-        OTHER = 'other', 'Другое'
+        CONSULTATION = 'consultation', _('Консультация')
+        TREATMENT = 'treatment', _('Лечение')
+        REHABILITATION = 'rehabilitation', _('Реабилитация')
+        PARTNER = 'partner', _('Партнерство')
+        OTHER = 'other', _('Другое')
 
     class Status(models.TextChoices):
-        NEW = 'new', 'Новая'
-        IN_PROGRESS = 'in_progress', 'В обработке'
-        WAITING_COMMISSION = 'waiting_commission', 'Ожидание комиссии'
-        COMMISSION_RECEIVED = 'commission_received', 'Комиссия получена'
-        TREATMENT_STARTED = 'treatment_started', 'Лечение начато (опционально)'
-        TREATMENT_COMPLETED = 'treatment_completed', 'Лечение завершено (опционально)'
-        CANCELLED = 'cancelled', 'Отменена'
-        CLOSED = 'closed', 'Закрыта'
+        NEW = 'new', _('Новая')
+        IN_PROGRESS = 'in_progress', _('В обработке')
+        WAITING_COMMISSION = 'waiting_commission', _('Ожидание комиссии')
+        COMMISSION_RECEIVED = 'commission_received', _('Комиссия получена')
+        TREATMENT_STARTED = 'treatment_started', _('Лечение начато')
+        TREATMENT_COMPLETED = 'treatment_completed', _('Лечение завершено')
+        CANCELLED = 'cancelled', _('Отменена')
+        CLOSED = 'closed', _('Закрыта')
 
     class Priority(models.TextChoices):
-        LOW = 'low', 'Низкий'
-        MEDIUM = 'medium', 'Средний'
-        HIGH = 'high', 'Высокий'
-        URGENT = 'urgent', 'Срочный'
+        LOW = 'low', _('Низкий')
+        MEDIUM = 'medium', _('Средний')
+        HIGH = 'high', _('Высокий')
+        URGENT = 'urgent', _('Срочный')
+        
+    class Source(models.TextChoices):
+        WEBSITE_FORM = 'website_form', _('Веб-форма')
+        PHONE_CALL = 'phone_call', _('Телефонный звонок')
+        EMAIL = 'email', _('Email')
+        OFFLINE = 'offline', _('Очное обращение')
+        OTHER = 'other', _('Другое')
 
-    request_type = models.CharField('Тип заявки', max_length=20, choices=RequestType.choices)
-    status = models.CharField('Статус', max_length=20, choices=Status.choices, default=Status.NEW)
-    name = models.CharField('Имя', max_length=100)
-    phone = models.CharField('Телефон', max_length=20)
-    email = models.EmailField('Email', blank=True, null=True)
-    organization = models.CharField('Организация', max_length=200, blank=True, null=True)
-    message = models.TextField('Сообщение')
-    patient_name = models.CharField('Имя пациента', max_length=100, blank=True, null=True)
-    patient_age = models.IntegerField('Возраст пациента', blank=True, null=True)
-    preferred_contact_time = models.CharField('Предпочтительное время для связи', max_length=100, blank=True, null=True)
+    request_type = models.CharField(
+        _('Тип заявки'),
+        max_length=20,
+        choices=RequestType.choices
+    )
+    status = models.CharField(
+        _('Статус'),
+        max_length=20,
+        choices=Status.choices,
+        default=Status.NEW
+    )
+    priority = models.CharField(
+        _('Приоритет'),
+        max_length=20,
+        choices=Priority.choices,
+        default=Priority.MEDIUM
+    )
+    source = models.CharField(
+        _('Источник заявки'),
+        max_length=20,
+        choices=Source.choices,
+        default=Source.WEBSITE_FORM
+    )
+    name = models.CharField(
+        _('Имя'),
+        max_length=100
+    )
+    phone = models.CharField(
+        _('Телефон'),
+        max_length=20
+    )
+    email = models.EmailField(
+        _('Email'),
+        blank=True,
+        null=True
+    )
+    organization = models.CharField(
+        _('Организация'),
+        max_length=200,
+        blank=True,
+        null=True
+    )
+    message = models.TextField(
+        _('Сообщение')
+    )
+    patient_name = models.CharField(
+        _('Имя пациента'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    patient_age = models.IntegerField(
+        _('Возраст пациента'),
+        blank=True,
+        null=True
+    )
+    preferred_contact_time = models.CharField(
+        _('Предпочтительное время для связи'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
     
-    # Изменяем поле preferred_facility на GenericForeignKey для поддержки разных типов учреждений
+    # Поля для учреждения
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.SET_NULL,
@@ -184,50 +243,62 @@ class AnonymousRequest(TimeStampedModel):
     )
     preferred_facility = GenericForeignKey('content_type', 'object_id')
     
-    preferred_service = models.CharField('Предпочтительная услуга', max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField('Создано', auto_now_add=True)
-    updated_at = models.DateTimeField('Обновлено', auto_now=True)
+    preferred_service = models.CharField(
+        _('Предпочтительная услуга'),
+        max_length=200,
+        blank=True,
+        null=True
+    )
 
-    # Новые поля для комиссии
-    commission_amount = models.DecimalField('Сумма комиссии', max_digits=10, decimal_places=2, blank=True, null=True)
-    commission_received_date = models.DateField('Дата получения комиссии', blank=True, null=True)
-    commission_document = models.FileField('Документ комиссии', upload_to='commissions/', blank=True, null=True)
+    # Поля для комиссии
+    commission_amount = models.DecimalField(
+        _('Сумма комиссии'),
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True
+    )
+    commission_received_date = models.DateField(
+        _('Дата получения комиссии'),
+        blank=True,
+        null=True
+    )
+    commission_document = models.FileField(
+        _('Документ комиссии'),
+        upload_to='commissions/',
+        blank=True,
+        null=True
+    )
 
-    # Поля для отслеживания пользователей
+    # Поля для отслеживания
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='Создано пользователем',
+        verbose_name=_('Создано пользователем'),
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='created_requests'
     )
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='Обновлено пользователем',
+        verbose_name=_('Обновлено пользователем'),
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='updated_requests'
     )
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='Назначено',
+        verbose_name=_('Назначено'),
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='assigned_requests'
     )
 
-    # Поле приоритета
-    priority = models.CharField(
-        'Приоритет',
-        max_length=20,
-        choices=Priority.choices,
-        default=Priority.MEDIUM
-    )
-
     class Meta:
-        verbose_name = 'Анонимная заявка'
-        verbose_name_plural = 'Анонимные заявки'
+        verbose_name = _('Анонимная заявка')
+        verbose_name_plural = _('Анонимные заявки')
         ordering = ['-created_at']
 
     def __str__(self):
@@ -238,6 +309,13 @@ class AnonymousRequest(TimeStampedModel):
         
         if self.status == self.Status.COMMISSION_RECEIVED and not self.commission_received_date:
             self.commission_received_date = timezone.now().date()
+        
+        # Проверка на пустые поля name и phone
+        if not self.name:
+            self.name = "Анонимный пользователь"
+        
+        if not self.message:
+            self.message = "Заявка без содержания"
             
         super().save(*args, **kwargs)
 
@@ -341,3 +419,183 @@ class RequestActionLog(TimeStampedModel):
 
     def __str__(self):
         return f"{self.get_action_display()} - {self.request.name}"
+
+class RequestTemplate(models.Model):
+    """
+    Шаблоны для типовых заявок
+    """
+    name = models.CharField(_('Название шаблона'), max_length=100)
+    request_type = models.CharField(
+        _('Тип заявки'),
+        max_length=20,
+        choices=AnonymousRequest.RequestType.choices
+    )
+    template_text = models.TextField(_('Шаблонный текст'))
+    is_active = models.BooleanField(_('Активен'), default=True)
+    created_at = models.DateTimeField(_('Создано'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Обновлено'), auto_now=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('Создано пользователем'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_templates'
+    )
+    
+    class Meta:
+        verbose_name = _('Шаблон заявки')
+        verbose_name_plural = _('Шаблоны заявок')
+        ordering = ['name']
+        
+    def __str__(self):
+        return self.name
+
+class DependentRequest(TimeStampedModel):
+    """
+    Заявки от зависимых
+    """
+    class AddictionType(models.TextChoices):
+        ALCOHOL = 'alcohol', _('Алкоголь')
+        DRUGS = 'drugs', _('Наркотики')
+        GAMBLING = 'gambling', _('Игровая зависимость')
+        OTHER = 'other', _('Другое')
+
+    class ContactType(models.TextChoices):
+        ANONYMOUS = 'anonymous', _('Анонимно')
+        PSEUDONYM = 'pseudonym', _('Под псевдонимом')
+        REAL_NAME = 'real_name', _('Под реальным именем')
+
+    class Status(models.TextChoices):
+        NEW = 'new', _('Новая')
+        IN_PROGRESS = 'in_progress', _('В обработке')
+        APPROVED = 'approved', _('Одобрена')
+        REJECTED = 'rejected', _('Отклонена')
+        COMPLETED = 'completed', _('Завершена')
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name=_('Статус')
+    )
+    addiction_type = models.CharField(
+        max_length=20,
+        choices=AddictionType.choices,
+        default=AddictionType.OTHER,
+        verbose_name=_('Тип зависимости')
+    )
+    contact_type = models.CharField(
+        max_length=20,
+        choices=ContactType.choices,
+        default=ContactType.ANONYMOUS,
+        verbose_name=_('Тип контакта')
+    )
+    first_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Имя')
+    )
+    last_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Фамилия')
+    )
+    pseudonym = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Псевдоним')
+    )
+    phone = models.CharField(
+        max_length=20,
+        verbose_name=_('Телефон')
+    )
+    email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_('Email')
+    )
+    age = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_('Возраст')
+    )
+    addiction_duration = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Длительность зависимости')
+    )
+    previous_treatment = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Предыдущее лечение')
+    )
+    current_condition = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Текущее состояние')
+    )
+    preferred_treatment = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Предпочтительный вид лечения')
+    )
+    emergency_contact = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Контактное лицо')
+    )
+    emergency_phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name=_('Телефон контактного лица')
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Заметки')
+    )
+    responsible_staff = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='dependent_requests',
+        verbose_name=_('Ответственный сотрудник')
+    )
+
+    class Meta:
+        verbose_name = _('Заявка от зависимого')
+        verbose_name_plural = _('Заявки от зависимых')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        if self.contact_type == self.ContactType.ANONYMOUS:
+            return f"Анонимная заявка #{self.id}"
+        elif self.contact_type == self.ContactType.PSEUDONYM and self.pseudonym:
+            return f"{self.pseudonym} (псевдоним)"
+        elif self.first_name and self.last_name:
+            return f"{self.last_name} {self.first_name}"
+        return f"Заявка #{self.id}"
+
+    def get_full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.last_name} {self.first_name}"
+        return "-"
+        
+    def save(self, *args, **kwargs):
+        # Проверка на обязательный телефон
+        if not self.phone:
+            raise ValueError(_('Телефон обязателен для заявки'))
+            
+        # Если контакт анонимный и нет имени, устанавливаем псевдоним
+        if self.contact_type == self.ContactType.ANONYMOUS and not self.pseudonym:
+            self.pseudonym = "Аноним"
+        
+        super().save(*args, **kwargs)

@@ -23,6 +23,12 @@ def get_changed_fields(instance, old_instance=None):
             old_value = old_value.isoformat()
         if isinstance(new_value, (datetime.datetime, datetime.date)):
             new_value = new_value.isoformat()
+        
+        # Обрабатываем объекты моделей
+        if hasattr(old_value, 'pk'):
+            old_value = str(old_value)
+        if hasattr(new_value, 'pk'):
+            new_value = str(new_value)
             
         if old_value != new_value:
             changed_fields[field_name] = {
@@ -78,7 +84,7 @@ def log_post_save(sender, instance, created, **kwargs):
         model_name=sender._meta.model_name,
         object_id=instance.pk,
         changes=changes,
-        access_level=instance._current_user.get_access_level() if hasattr(instance, '_current_user') else None,
+        access_level=None,
         ip_address=instance._current_ip if hasattr(instance, '_current_ip') else None
     )
 
@@ -102,6 +108,6 @@ def log_post_delete(sender, instance, **kwargs):
         app_label=sender._meta.app_label,
         model_name=sender._meta.model_name,
         object_id=instance.pk,
-        access_level=instance._current_user.get_access_level() if hasattr(instance, '_current_user') else None,
+        access_level=None,
         ip_address=instance._current_ip if hasattr(instance, '_current_ip') else None
     ) 

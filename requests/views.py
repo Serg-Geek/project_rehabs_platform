@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import JsonResponse
-from .models import AnonymousRequest, Request
+from .models import AnonymousRequest, Request, DependentRequest
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ class ConsultationRequestView(CreateView):
         try:
             # Set default values
             form.instance.status = AnonymousRequest.Status.NEW
-            form.instance.source = 'consultation_form'
+            form.instance.source = AnonymousRequest.Source.WEBSITE_FORM
             form.instance.request_type = AnonymousRequest.RequestType.CONSULTATION
             
             # Используем имя пользователя, если оно указано
@@ -91,7 +91,7 @@ class PartnerRequestView(CreateView):
             # Set default values
             form.instance.status = AnonymousRequest.Status.NEW
             form.instance.request_type = AnonymousRequest.RequestType.PARTNER
-            form.instance.source = 'partner_form'
+            form.instance.source = AnonymousRequest.Source.WEBSITE_FORM
             
             # Сохраняем форму
             response = super().form_valid(form)
@@ -111,6 +111,76 @@ class PartnerRequestView(CreateView):
                     'message': 'Произошла ошибка при отправке заявки'
                 }, status=500)
             return super().form_invalid(form)
+
+    def form_invalid(self, form):
+        error_messages = []
+        for field, errors in form.errors.items():
+            for error in errors:
+                error_messages.append(f'Ошибка в поле {field}: {error}')
+        
+        # Проверяем, является ли запрос AJAX-запросом
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'error': '\n'.join(error_messages)
+            })
+        
+        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
+        return redirect('requests:error', error_message='\n'.join(error_messages))
+
+class DependentRequestView(CreateView):
+    model = DependentRequest
+    template_name = 'facilities/includes/consultation.html'
+    fields = ['phone', 'addiction_type']
+    success_url = reverse_lazy('requests:success')
+
+    def form_valid(self, form):
+        try:
+            # Устанавливаем статус по умолчанию
+            form.instance.status = DependentRequest.Status.NEW
+            
+            # Устанавливаем тип контакта как анонимный по умолчанию
+            form.instance.contact_type = DependentRequest.ContactType.ANONYMOUS
+            
+            # Получаем имя, если оно указано
+            user_name = self.request.POST.get('name', '').strip()
+            if user_name:
+                form.instance.first_name = user_name
+            
+            # Получаем тип сервиса
+            service_type = self.request.POST.get('service-type')
+            if service_type == 'consultation':
+                form.instance.preferred_treatment = 'Консультация'
+            elif service_type == 'therapy':
+                form.instance.preferred_treatment = 'Терапия'
+            elif service_type == 'support':
+                form.instance.preferred_treatment = 'Поддержка'
+            
+            # Сохраняем форму
+            response = super().form_valid(form)
+            
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'request_number': form.instance.id,
+                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу успеха
+            messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
+            return redirect('requests:success')
+        except Exception as e:
+            # Проверяем, является ли запрос AJAX-запросом
+            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
+                })
+            
+            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
+            messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
+            return redirect('requests:error', error_message=str(e))
 
     def form_invalid(self, form):
         error_messages = []
