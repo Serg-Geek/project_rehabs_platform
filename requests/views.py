@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from .models import AnonymousRequest, Request, DependentRequest
+from django.utils import timezone
 
 # Create your views here.
 
@@ -208,23 +209,74 @@ def error_view(request):
 def print_request_report(request, request_id):
     """
     Представление для генерации печатной версии отчета по заявке
+    с дополнительной информацией и оптимизацией запросов
     """
     if not request.user.is_staff:
         return redirect('admin:login')
     
     try:
-        if 'type' in request.GET and request.GET.get('type') == 'dependent':
+        # Определяем тип заявки
+        request_type = request.GET.get('type', 'anonymous')
+        
+        if request_type == 'dependent':
             # Если это заявка от зависимого
-            req = DependentRequest.objects.get(pk=request_id)
+            req = DependentRequest.objects.select_related('responsible_staff').get(pk=request_id)
+            action_logs = []
         else:
-            # По умолчанию - анонимная заявка
-            req = AnonymousRequest.objects.get(pk=request_id)
+            # По умолчанию - анонимная заявка с оптимизацией запросов
+            req = AnonymousRequest.objects.select_related(
+                'created_by', 
+                'updated_by', 
+                'assigned_to'
+            ).get(pk=request_id)
             
-        return render(request, 'requests/print_report.html', {
+            # Получаем логи действий только для анонимных заявок
+            action_logs = req.action_logs.select_related('user').order_by('-created_at')[:10]
+            
+        # Общие данные для всех типов заявок
+        notes = []
+        status_history = []
+        
+        # Проверяем, есть ли у объекта заявки атрибут notes и загружаем с оптимизацией
+        if hasattr(req, 'notes') and req.notes is not None:
+            notes = req.notes.all().select_related('created_by').order_by('-created_at')
+            
+        # Проверяем, есть ли у объекта заявки атрибут status_history и загружаем с оптимизацией
+        if hasattr(req, 'status_history') and req.status_history is not None:
+            status_history = req.status_history.all().select_related('changed_by').order_by('-changed_at')
+            
+        # Формируем контекст с дополнительными данными
+        context = {
             'request': req,
+            'notes': notes,
+            'status_history': status_history,
+            'action_logs': action_logs,
             'user': request.user,
-            'title': f'Отчет по заявке #{req.id}'
-        })
+            'title': f'Отчет по заявке #{req.id}',
+            'report_type': 'enhanced',
+            'generation_time': timezone.now(),
+        }
+        
+        # Проверяем наличие предпочтительного учреждения
+        if hasattr(req, 'preferred_facility') and req.preferred_facility is not None:
+            context['facility'] = req.preferred_facility
+            
+        # Добавляем статистику обработки для административных целей
+        if request.user.is_superuser:
+            # Если пользователь суперпользователь, добавляем статистику
+            processing_time = None
+            if req.status in ['completed', 'closed', 'treatment_completed']:
+                # Вычисляем время обработки для закрытых заявок
+                if hasattr(req, 'status_history') and req.status_history.exists():
+                    first_status = req.status_history.order_by('changed_at').first()
+                    last_status = req.status_history.order_by('-changed_at').first()
+                    if first_status and last_status:
+                        processing_time = last_status.changed_at - first_status.changed_at
+            
+            context['processing_time'] = processing_time
+            
+        return render(request, 'requests/print_report.html', context)
+        
     except (AnonymousRequest.DoesNotExist, DependentRequest.DoesNotExist):
         messages.error(request, 'Заявка не найдена')
         return redirect('admin:index')

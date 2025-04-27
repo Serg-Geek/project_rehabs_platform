@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block title %}Отчет по заявке #{{ request.id }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -120,22 +120,69 @@
         font-weight: bold;
     }
     .status-new { background-color: #e3f2fd; color: #0d47a1; }
-    .status-in-progress { background-color: #fff9c4; color: #f57f17; }
+    .status-in_progress, .status-in-progress { background-color: #fff9c4; color: #f57f17; }
     .status-approved { background-color: #e8f5e9; color: #1b5e20; }
     .status-rejected { background-color: #ffebee; color: #b71c1c; }
-    .status-completed { background-color: #e8f5e9; color: #1b5e20; }
-    .status-closed { background-color: #eceff1; color: #263238; }
+    .status-completed, .status-treatment_completed { background-color: #e8f5e9; color: #1b5e20; }
+    .status-closed, .status-cancelled { background-color: #eceff1; color: #263238; }
+    .status-waiting_commission { background-color: #f3e5f5; color: #6a1b9a; }
+    .status-commission_received { background-color: #e8eaf6; color: #283593; }
+    .status-treatment_started { background-color: #e1f5fe; color: #0277bd; }
+
+    /* Стили для улучшенного отчета */
+    .enhanced .report-type-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 0.8em;
+        color: #495057;
+    }
+    .action-log-entry {
+        margin-bottom: 8px;
+        padding: 8px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+    .action-log-entry .action-timestamp {
+        font-size: 0.8em;
+        color: #6c757d;
+    }
+    .action-log-entry .action-details {
+        margin-top: 4px;
+    }
+    .processing-stats {
+        background-color: #e9ecef;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        border-left: 4px solid #6c757d;
+    }
+    .facility-info {
+        background-color: #f0f7ff;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        border-left: 4px solid #0d6efd;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="report-container">
+<div class="report-container {% if report_type == 'enhanced' %}enhanced{% endif %}">
+    {% if report_type == 'enhanced' %}
+    <div class="report-type-label">Расширенный отчет</div>
+    {% endif %}
+    
     <div class="print-button">
         <button onclick="window.print()">Печать отчета</button>
     </div>
     
     <div class="report-header">
-        <div class="report-title">Отчет по заявке #{{ request.id }}</div>
+        <div class="report-title">{{ title }}</div>
         {% if request.request_type %}
             <div class="report-subtitle">{{ request.get_request_type_display }}</div>
         {% elif request.addiction_type %}
@@ -347,14 +394,31 @@
     </div>
     {% endif %}
     
-    {% if request.notes %}
+    {% if facility %}
     <div class="section">
-        <h2>Заметки</h2>
-        <div class="field-value">{{ request.notes|linebreaks }}</div>
+        <h2>Информация об учреждении</h2>
+        <div class="facility-info">
+            <div class="field-row">
+                <div class="field-label">Наименование:</div>
+                <div class="field-value">{{ facility.name }}</div>
+            </div>
+            {% if facility.address %}
+            <div class="field-row">
+                <div class="field-label">Адрес:</div>
+                <div class="field-value">{{ facility.address }}</div>
+            </div>
+            {% endif %}
+            {% if facility.phone %}
+            <div class="field-row">
+                <div class="field-label">Телефон:</div>
+                <div class="field-value">{{ facility.phone }}</div>
+            </div>
+            {% endif %}
+        </div>
     </div>
     {% endif %}
     
-    {% if request.notes.all %}
+    {% if notes %}
     <div class="section">
         <h2>Заметки</h2>
         <table>
@@ -363,14 +427,18 @@
                     <th>Дата</th>
                     <th>Автор</th>
                     <th>Текст</th>
+                    {% if report_type == 'enhanced' %}<th>Важность</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
-            {% for note in request.notes.all %}
+            {% for note in notes %}
                 <tr>
                     <td>{{ note.created_at|date:"d.m.Y H:i" }}</td>
                     <td>{{ note.created_by|default:"—" }}</td>
                     <td>{{ note.text }}</td>
+                    {% if report_type == 'enhanced' %}
+                    <td>{% if note.is_important %}Важное{% else %}Обычное{% endif %}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -378,7 +446,7 @@
     </div>
     {% endif %}
     
-    {% if request.status_history.all %}
+    {% if status_history %}
     <div class="section">
         <h2>История статусов</h2>
         <table>
@@ -388,15 +456,19 @@
                     <th>Старый статус</th>
                     <th>Новый статус</th>
                     <th>Пользователь</th>
+                    {% if report_type == 'enhanced' %}<th>Комментарий</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
-            {% for history in request.status_history.all %}
+            {% for history in status_history %}
                 <tr>
                     <td>{{ history.changed_at|date:"d.m.Y H:i" }}</td>
                     <td>{{ history.get_old_status_display }}</td>
                     <td>{{ history.get_new_status_display }}</td>
                     <td>{{ history.changed_by|default:"—" }}</td>
+                    {% if report_type == 'enhanced' %}
+                    <td>{{ history.comment|default:"—" }}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -404,11 +476,50 @@
     </div>
     {% endif %}
     
+    {% if report_type == 'enhanced' and action_logs %}
+    <div class="section">
+        <h2>Журнал действий</h2>
+        <div class="action-logs">
+            {% for log in action_logs %}
+            <div class="action-log-entry">
+                <div class="action-header">
+                    <strong>{{ log.get_action_display }}</strong>
+                    <span class="action-timestamp">{{ log.created_at|date:"d.m.Y H:i" }} - {{ log.user|default:"Система" }}</span>
+                </div>
+                <div class="action-details">
+                    {{ log.details|linebreaks }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if report_type == 'enhanced' and user.is_superuser and processing_time %}
+    <div class="section">
+        <h2>Статистика обработки</h2>
+        <div class="processing-stats">
+            <div class="field-row">
+                <div class="field-label">Время обработки:</div>
+                <div class="field-value">{{ processing_time }}</div>
+            </div>
+            <div class="field-row">
+                <div class="field-label">Количество изменений статуса:</div>
+                <div class="field-value">{{ status_history|length }}</div>
+            </div>
+            <div class="field-row">
+                <div class="field-label">Количество заметок:</div>
+                <div class="field-value">{{ notes|length }}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
     <div class="section">
         <h2>Информация о формировании отчета</h2>
         <div class="field-row">
             <div class="field-label">Дата формирования:</div>
-            <div class="field-value">{% now "d.m.Y H:i" %}</div>
+            <div class="field-value">{{ generation_time|date:"d.m.Y H:i" }}</div>
         </div>
         <div class="field-row">
             <div class="field-label">Сформировано:</div>

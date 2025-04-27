@@ -217,12 +217,12 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
         if obj.pk:
             url = reverse('requests:print_report', args=[obj.pk])
             return format_html(
-                '<a href="{}" class="button" target="_blank">'
-                '<i class="fas fa-print"></i> Печать отчета</a>',
+                '<a href="{}" class="button" style="background-color: #28a745;" target="_blank">'
+                '<i class="fas fa-file-alt"></i> Печать отчета</a>',
                 url
             )
         return ''
-    print_report_button.short_description = _('Печать')
+    print_report_button.short_description = _('Печать отчета')
 
     def save_model(self, request, obj, form, change):
         if not change:  # Если это новая запись
@@ -326,12 +326,12 @@ class DependentRequestAdmin(admin.ModelAdmin):
         if obj.pk:
             url = reverse('requests:print_report', args=[obj.pk]) + '?type=dependent'
             return format_html(
-                '<a href="{}" class="button" target="_blank">'
-                '<i class="fas fa-print"></i> Печать отчета</a>',
+                '<a href="{}" class="button" style="background-color: #28a745;" target="_blank">'
+                '<i class="fas fa-file-alt"></i> Печать отчета</a>',
                 url
             )
         return ''
-    print_report_button.short_description = _('Печать')
+    print_report_button.short_description = _('Печать отчета')
     
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
