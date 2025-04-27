@@ -1,0 +1,435 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Отчет по заявке #{{ request.id }}{% endblock %}
+
+{% block extrastyle %}
+<style>
+    @media print {
+        #header, .breadcrumbs, .submit-row, #footer {
+            display: none;
+        }
+        .content {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-size: 12pt;
+        }
+        h1 {
+            font-size: 16pt;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .print-button {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    }
+    
+    .section {
+        margin-bottom: 20px;
+    }
+    .section h2 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+    .field-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .field-label {
+        font-weight: bold;
+        width: 200px;
+    }
+    .field-value {
+        flex: 1;
+    }
+    .print-button {
+        margin: 20px 0;
+        text-align: center;
+    }
+    .print-button button {
+        padding: 10px 20px;
+        background-color: #417690;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .print-button button:hover {
+        background-color: #205070;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .report-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .report-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .report-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .report-subtitle {
+        font-size: 16px;
+        color: #666;
+    }
+    .report-date {
+        font-style: italic;
+        margin-top: 10px;
+    }
+    .report-meta {
+        text-align: right;
+        margin-bottom: 20px;
+        font-size: 0.9em;
+    }
+    .status-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: #eee;
+        font-weight: bold;
+    }
+    .status-new { background-color: #e3f2fd; color: #0d47a1; }
+    .status-in-progress { background-color: #fff9c4; color: #f57f17; }
+    .status-approved { background-color: #e8f5e9; color: #1b5e20; }
+    .status-rejected { background-color: #ffebee; color: #b71c1c; }
+    .status-completed { background-color: #e8f5e9; color: #1b5e20; }
+    .status-closed { background-color: #eceff1; color: #263238; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <div class="print-button">
+        <button onclick="window.print()">Печать отчета</button>
+    </div>
+    
+    <div class="report-header">
+        <div class="report-title">Отчет по заявке #{{ request.id }}</div>
+        {% if request.request_type %}
+            <div class="report-subtitle">{{ request.get_request_type_display }}</div>
+        {% elif request.addiction_type %}
+            <div class="report-subtitle">Заявка от зависимого: {{ request.get_addiction_type_display }}</div>
+        {% endif %}
+        <div class="report-date">Дата формирования: {% now "j F Y H:i" %}</div>
+    </div>
+    
+    <div class="report-meta">
+        Статус: <span class="status-badge status-{{ request.status }}">{{ request.get_status_display }}</span><br>
+        Создана: {{ request.created_at|date:"d.m.Y H:i" }}
+    </div>
+    
+    <div class="section">
+        <h2>Основная информация</h2>
+        
+        {% if request.request_type %}
+            <div class="field-row">
+                <div class="field-label">Тип заявки:</div>
+                <div class="field-value">{{ request.get_request_type_display }}</div>
+            </div>
+        {% endif %}
+        
+        <div class="field-row">
+            <div class="field-label">Статус:</div>
+            <div class="field-value">{{ request.get_status_display }}</div>
+        </div>
+        
+        {% if request.priority %}
+            <div class="field-row">
+                <div class="field-label">Приоритет:</div>
+                <div class="field-value">{{ request.get_priority_display }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.source %}
+            <div class="field-row">
+                <div class="field-label">Источник:</div>
+                <div class="field-value">{{ request.get_source_display }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.addiction_type %}
+            <div class="field-row">
+                <div class="field-label">Тип зависимости:</div>
+                <div class="field-value">{{ request.get_addiction_type_display }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.contact_type %}
+            <div class="field-row">
+                <div class="field-label">Тип контакта:</div>
+                <div class="field-value">{{ request.get_contact_type_display }}</div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Контактная информация</h2>
+        
+        {% if request.name %}
+            <div class="field-row">
+                <div class="field-label">Имя:</div>
+                <div class="field-value">{{ request.name }}</div>
+            </div>
+        {% elif request.first_name or request.last_name or request.pseudonym %}
+            <div class="field-row">
+                <div class="field-label">Имя:</div>
+                <div class="field-value">
+                    {% if request.pseudonym and request.contact_type == 'pseudonym' %}
+                        {{ request.pseudonym }} (псевдоним)
+                    {% else %}
+                        {{ request.first_name }} {{ request.last_name }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="field-row">
+            <div class="field-label">Телефон:</div>
+            <div class="field-value">{{ request.phone }}</div>
+        </div>
+        
+        {% if request.email %}
+            <div class="field-row">
+                <div class="field-label">Email:</div>
+                <div class="field-value">{{ request.email }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.organization %}
+            <div class="field-row">
+                <div class="field-label">Организация:</div>
+                <div class="field-value">{{ request.organization }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.preferred_contact_time %}
+            <div class="field-row">
+                <div class="field-label">Предпочт. время связи:</div>
+                <div class="field-value">{{ request.preferred_contact_time }}</div>
+            </div>
+        {% endif %}
+        
+        {% if request.emergency_contact or request.emergency_phone %}
+            <div class="field-row">
+                <div class="field-label">Контактное лицо:</div>
+                <div class="field-value">{{ request.emergency_contact }}</div>
+            </div>
+            <div class="field-row">
+                <div class="field-label">Телефон контактного лица:</div>
+                <div class="field-value">{{ request.emergency_phone }}</div>
+            </div>
+        {% endif %}
+    </div>
+    
+    {% if request.message %}
+    <div class="section">
+        <h2>Сообщение</h2>
+        <div class="field-value">{{ request.message|linebreaks }}</div>
+    </div>
+    {% endif %}
+    
+    {% if request.patient_name or request.patient_age %}
+    <div class="section">
+        <h2>Информация о пациенте</h2>
+        
+        {% if request.patient_name %}
+        <div class="field-row">
+            <div class="field-label">Имя пациента:</div>
+            <div class="field-value">{{ request.patient_name }}</div>
+        </div>
+        {% endif %}
+        
+        {% if request.patient_age %}
+        <div class="field-row">
+            <div class="field-label">Возраст пациента:</div>
+            <div class="field-value">{{ request.patient_age }}</div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if request.age %}
+    <div class="field-row">
+        <div class="field-label">Возраст:</div>
+        <div class="field-value">{{ request.age }}</div>
+    </div>
+    {% endif %}
+    
+    {% if request.addiction_duration or request.previous_treatment or request.current_condition %}
+    <div class="section">
+        <h2>Информация о зависимости</h2>
+        
+        {% if request.addiction_duration %}
+        <div class="field-row">
+            <div class="field-label">Длительность зависимости:</div>
+            <div class="field-value">{{ request.addiction_duration }}</div>
+        </div>
+        {% endif %}
+        
+        {% if request.previous_treatment %}
+        <div class="field-row">
+            <div class="field-label">Предыдущее лечение:</div>
+            <div class="field-value">{{ request.previous_treatment|linebreaks }}</div>
+        </div>
+        {% endif %}
+        
+        {% if request.current_condition %}
+        <div class="field-row">
+            <div class="field-label">Текущее состояние:</div>
+            <div class="field-value">{{ request.current_condition|linebreaks }}</div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if request.preferred_service %}
+    <div class="section">
+        <h2>Предпочтительная услуга</h2>
+        <div class="field-value">{{ request.preferred_service }}</div>
+    </div>
+    {% endif %}
+    
+    {% if request.preferred_treatment %}
+    <div class="section">
+        <h2>Предпочтительный вид лечения</h2>
+        <div class="field-value">{{ request.preferred_treatment|linebreaks }}</div>
+    </div>
+    {% endif %}
+    
+    {% if request.medical_history or request.treatment_plan %}
+    <div class="section">
+        <h2>Медицинская информация</h2>
+        
+        {% if request.medical_history %}
+        <div class="field-row">
+            <div class="field-label">История болезни:</div>
+            <div class="field-value">{{ request.medical_history|linebreaks }}</div>
+        </div>
+        {% endif %}
+        
+        {% if request.treatment_plan %}
+        <div class="field-row">
+            <div class="field-label">План лечения:</div>
+            <div class="field-value">{{ request.treatment_plan|linebreaks }}</div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if request.notes %}
+    <div class="section">
+        <h2>Заметки</h2>
+        <div class="field-value">{{ request.notes|linebreaks }}</div>
+    </div>
+    {% endif %}
+    
+    {% if request.notes.all %}
+    <div class="section">
+        <h2>Заметки</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Автор</th>
+                    <th>Текст</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for note in request.notes.all %}
+                <tr>
+                    <td>{{ note.created_at|date:"d.m.Y H:i" }}</td>
+                    <td>{{ note.created_by|default:"—" }}</td>
+                    <td>{{ note.text }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+    {% if request.status_history.all %}
+    <div class="section">
+        <h2>История статусов</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Старый статус</th>
+                    <th>Новый статус</th>
+                    <th>Пользователь</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for history in request.status_history.all %}
+                <tr>
+                    <td>{{ history.changed_at|date:"d.m.Y H:i" }}</td>
+                    <td>{{ history.get_old_status_display }}</td>
+                    <td>{{ history.get_new_status_display }}</td>
+                    <td>{{ history.changed_by|default:"—" }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+    <div class="section">
+        <h2>Информация о формировании отчета</h2>
+        <div class="field-row">
+            <div class="field-label">Дата формирования:</div>
+            <div class="field-value">{% now "d.m.Y H:i" %}</div>
+        </div>
+        <div class="field-row">
+            <div class="field-label">Сформировано:</div>
+            <div class="field-value">{{ user.get_full_name }}</div>
+        </div>
+        
+        {% if request.responsible_staff %}
+        <div class="field-row">
+            <div class="field-label">Ответственный:</div>
+            <div class="field-value">{{ request.responsible_staff.get_full_name }}</div>
+        </div>
+        {% elif request.assigned_to %}
+        <div class="field-row">
+            <div class="field-label">Назначено:</div>
+            <div class="field-value">{{ request.assigned_to.get_full_name|default:request.assigned_to.username }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="print-button">
+        <button onclick="window.print()">Печать отчета</button>
+    </div>
+</div>
+{% endblock %} 

@@ -204,3 +204,27 @@ def success_view(request):
 def error_view(request):
     error_message = request.GET.get('error_message', '')
     return render(request, 'requests/error.html', {'error_message': error_message})
+
+def print_request_report(request, request_id):
+    """
+    Представление для генерации печатной версии отчета по заявке
+    """
+    if not request.user.is_staff:
+        return redirect('admin:login')
+    
+    try:
+        if 'type' in request.GET and request.GET.get('type') == 'dependent':
+            # Если это заявка от зависимого
+            req = DependentRequest.objects.get(pk=request_id)
+        else:
+            # По умолчанию - анонимная заявка
+            req = AnonymousRequest.objects.get(pk=request_id)
+            
+        return render(request, 'requests/print_report.html', {
+            'request': req,
+            'user': request.user,
+            'title': f'Отчет по заявке #{req.id}'
+        })
+    except (AnonymousRequest.DoesNotExist, DependentRequest.DoesNotExist):
+        messages.error(request, 'Заявка не найдена')
+        return redirect('admin:index')

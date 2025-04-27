@@ -9,4 +9,5 @@ urlpatterns = [
     path('dependent/', views.DependentRequestView.as_view(), name='dependent_request'),
     path('success/', views.success_view, name='success'),
     path('error/', views.error_view, name='error'),
+    path('report/<int:request_id>/', views.print_request_report, name='print_report'),
 ] 

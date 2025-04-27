@@ -115,16 +115,16 @@ class RequestActionLogAdmin(admin.ModelAdmin):
 
 @admin.register(AnonymousRequest)
 class AnonymousRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'request_type', 'source', 'status', 'priority', 'name', 'phone', 'organization', 'created_at', 'assigned_to')
+    list_display = ('id', 'request_type', 'source', 'status', 'priority', 'name', 'phone', 'organization', 'created_at', 'assigned_to', 'print_report_button')
     list_filter = ('request_type', 'source', 'status', 'priority', 'created_at')
     search_fields = ('name', 'phone', 'email', 'organization', 'message')
-    readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+    readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'print_report_button')
     list_editable = ('status', 'priority', 'assigned_to')
     inlines = [RequestNoteInline, RequestStatusHistoryInline, RequestActionLogInline]
     
     fieldsets = (
         (None, {
-            'fields': ('request_type', 'status', 'source', 'priority')
+            'fields': ('request_type', 'status', 'source', 'priority', 'print_report_button')
         }),
         (_('Контактная информация'), {
             'fields': ('name', 'phone', 'email', 'organization', 'preferred_contact_time'),
@@ -213,6 +213,17 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
         self.message_user(request, _(f'Установлен высокий приоритет для {updated} заявок'))
     mark_as_high_priority.short_description = _('Установить высокий приоритет')
 
+    def print_report_button(self, obj):
+        if obj.pk:
+            url = reverse('requests:print_report', args=[obj.pk])
+            return format_html(
+                '<a href="{}" class="button" target="_blank">'
+                '<i class="fas fa-print"></i> Печать отчета</a>',
+                url
+            )
+        return ''
+    print_report_button.short_description = _('Печать')
+
     def save_model(self, request, obj, form, change):
         if not change:  # Если это новая запись
             obj.created_by = request.user
@@ -279,14 +290,14 @@ class RequestTemplateAdmin(admin.ModelAdmin):
 
 @admin.register(DependentRequest)
 class DependentRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'addiction_type', 'contact_type', 'get_display_name', 'phone', 'status', 'created_at')
+    list_display = ('id', 'addiction_type', 'contact_type', 'get_display_name', 'phone', 'status', 'created_at', 'print_report_button')
     list_filter = ('addiction_type', 'contact_type', 'status', 'created_at')
     search_fields = ('first_name', 'last_name', 'pseudonym', 'phone', 'email')
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'print_report_button')
     
     fieldsets = (
         (None, {
-            'fields': ('addiction_type', 'contact_type', 'status')
+            'fields': ('addiction_type', 'contact_type', 'status', 'print_report_button')
         }),
         (_('Персональная информация'), {
             'fields': ('first_name', 'last_name', 'pseudonym', 'age', 'phone', 'email'),
@@ -310,6 +321,17 @@ class DependentRequestAdmin(admin.ModelAdmin):
             return obj.pseudonym
         return obj.get_full_name()
     get_display_name.short_description = _('Имя')
+    
+    def print_report_button(self, obj):
+        if obj.pk:
+            url = reverse('requests:print_report', args=[obj.pk]) + '?type=dependent'
+            return format_html(
+                '<a href="{}" class="button" target="_blank">'
+                '<i class="fas fa-print"></i> Печать отчета</a>',
+                url
+            )
+        return ''
+    print_report_button.short_description = _('Печать')
     
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
