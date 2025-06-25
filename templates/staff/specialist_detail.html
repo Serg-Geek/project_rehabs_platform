@@ -32,17 +32,17 @@
                 <h2 class="title__h2 detail__title">{{ specialist.last_name }} {{ specialist.first_name }}</h2>
                 <div class="detail__text spec-detail__text">
                     <p class="specialist-detail__position">{{ specialist.position }}</p>
-                    <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p>
-                    <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p>
+                    {% comment %} <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p> {% endcomment %}
+                    {% comment %} <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p> {% endcomment %}
                     
-                    <div class="specialist-detail__specializations">
+                    {% comment %} <div class="specialist-detail__specializations">
                         <h3>Специализации:</h3>
                         <ul>
                             {% for specialization in specialist.specializations.all %}
                             <li>{{ specialization.name }}</li>
                             {% endfor %}
                         </ul>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
 
                 {% if specialist.facility and specialist.facility.slug %}
