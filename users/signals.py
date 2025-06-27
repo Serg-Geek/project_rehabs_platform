@@ -69,8 +69,7 @@ def handle_user_post_save(sender, instance, created, **kwargs):
             action=action,
             model_name='User',
             object_id=instance.pk,
-            details=details,
-            timestamp=timezone.now()
+            details=details
         )
 
 
@@ -85,6 +84,5 @@ def log_post_delete(sender, instance, **kwargs):
             action='delete',
             model_name='User',
             object_id=instance.pk,
-            details=f'Удален пользователь: {instance.username}',
-            timestamp=timezone.now()
+            details=f'Удален пользователь: {instance.username}'
         ) 
