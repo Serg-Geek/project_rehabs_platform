@@ -65,7 +65,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('email', 'password')}),
         (_('Персональная информация'), {'fields': ('username', 'first_name', 'last_name', 'phone', 'avatar')}),
         (_('Роли и права'), {'fields': ('role', 'is_active', 'groups', 'user_permissions')}),
-        (_('Важные даты'), {'fields': ('last_login', 'date_joined')}),
+        (_('Важные даты'), {'fields': ('last_login',)}),
     )
     
     add_fieldsets = (
