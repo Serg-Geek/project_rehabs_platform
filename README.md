@@ -6,9 +6,9 @@
 
 ### Backend
 
-- Python 3.11
+- Python 3.11+
 - Django 5.1.8
-- PostgreSQL 15
+- SQLite (разработка) / PostgreSQL (продакшн)
 
 ### Frontend
 
@@ -17,12 +17,20 @@
 - JavaScript
 - Bootstrap 5
 
+### Дополнительные библиотеки
+
+- django-cleanup - автоматическая очистка файлов
+- django-ckeditor-5 - WYSIWYG редактор
+- Pillow - обработка изображений
+- Faker - генерация тестовых данных
+- transliterate - транслитерация
+
 ## Установка
 
 1. Клонируйте репозиторий:
 
 ```bash
-git clone https://github.com/yourusername/project_rehabs_platform.git
+git clone https://github.com/Serg-Geek/project_rehabs_platform.git
 cd project_rehabs_platform
 ```
 
@@ -41,13 +49,12 @@ venv\Scripts\activate  # для Windows
 pip install -r requirements.txt
 ```
 
-4. Создайте файл с переменными окружения:
+4. Создайте файл с секретным ключом:
 
 ```bash
-cp .env.example .env
+# Создайте файл rehabs_platform/secret.py
+echo "MY_SECRET_KEY = 'ваш-секретный-ключ-здесь'" > rehabs_platform/secret.py
 ```
-
-Отредактируйте файл .env, указав необходимые настройки.
 
 5. Примените миграции:
 
@@ -58,20 +65,14 @@ python manage.py migrate
 6. Загрузите начальные данные:
 
 ```bash
+# Загрузка всех данных
 python manage.py load_all_initial_data
-```
 
-Для загрузки отдельных фикстур используйте команду:
-
-```bash
 # Загрузка специализаций
 python manage.py loaddata staff/fixtures/specializations.json
 
 # Загрузка категорий историй выздоровления
 python manage.py load_initial_categories
-
-# Загрузка других фикстур
-python manage.py loaddata <path_to_fixture>
 ```
 
 7. Создайте суперпользователя:
@@ -79,6 +80,8 @@ python manage.py loaddata <path_to_fixture>
 ```bash
 python manage.py createsuperuser
 ```
+
+**Важно:** Вход в систему осуществляется по email, а не по username!
 
 8. Запустите сервер разработки:
 
@@ -90,15 +93,23 @@ python manage.py runserver
 
 ```
 project_rehabs_platform/
-├── apps/                    # Django-приложения
-│   ├── core/               # Базовые модели и функционал
-│   ├── facilities/         # Медицинские учреждения
-│   ├── staff/              # Специалисты
-│   └── ...
-├── config/                 # Конфигурация проекта
+├── core/                   # Базовые модели (регионы, города)
+├── facilities/             # Медицинские учреждения
+├── staff/                  # Специалисты и специализации
+├── users/                  # Пользователи и аутентификация
+├── blog/                   # Блог и статьи
+├── requests/               # Заявки и обращения
+├── medical_services/       # Медицинские услуги
+├── reviews/                # Отзывы
+├── recovery_stories/       # Истории выздоровления
+├── admin_logs/             # Логирование действий админов
+├── content/                # Контент и настройки сайта
+├── emails/                 # Шаблоны email
+├── rehabs_platform/        # Основные настройки проекта
 ├── templates/              # HTML-шаблоны
 ├── static/                 # Статические файлы
-└── ...
+├── media/                  # Загружаемые файлы
+└── docs/                   # Документация
 ```
 
 ## Основной функционал
@@ -107,8 +118,9 @@ project_rehabs_platform/
 
 - Поиск реабилитационных центров и клиник
 - Просмотр информации об учреждениях
-- Чтение отзывов
+- Чтение отзывов и историй выздоровления
 - Запись на консультацию
+- Подача анонимных заявок
 
 ### Для реабилитационных центров
 
@@ -119,9 +131,92 @@ project_rehabs_platform/
 
 ### Для администраторов
 
-- Управление пользователями
+- Управление пользователями и ролями
 - Модерация контента
+- Управление заявками
 - Аналитика и отчеты
+- Система логирования действий
+
+## Система ролей
+
+- **Суперпользователь** - полный доступ ко всем функциям
+- **Администратор контента** - управление контентом сайта
+- **Администратор заявок** - обработка заявок пользователей
+- **Пользователь** - базовый доступ
+
+## Вход в систему
+
+**Важно:** Вход осуществляется по email, а не по username!
+
+### Суперпользователь по умолчанию:
+
+- **Email:** `admin@admin.com`
+- **Пароль:** `123456`
+
+### Создание нового суперпользователя:
+
+```bash
+# Через Django shell
+python manage.py shell -c "from users.models import User; user = User.objects.create_user(username='admin', email='admin@example.com', password='123456'); user.is_superuser = True; user.is_staff = True; user.role = 'superuser'; user.save(); print(f'Создан суперпользователь: {user.email}')"
+```
+
+**Примечание:** Замените `admin@example.com` и `123456` на нужные email и пароль.
+
+### Изменение роли существующего пользователя на суперпользователя:
+
+```bash
+# Через Django shell
+python manage.py shell -c "from users.models import User; user = User.objects.get(email='user@example.com'); user.is_superuser = True; user.is_staff = True; user.role = 'superuser'; user.save(); print(f'Пользователь {user.email} теперь суперпользователь')"
+```
+
+**Примечание:** Замените `user@example.com` на email пользователя, которому нужно дать права суперпользователя.
+
+## Команды управления
+
+### Загрузка данных
+
+```bash
+# Все данные
+python manage.py load_all_initial_data
+
+# Специализации
+python manage.py loaddata staff/fixtures/specializations.json
+
+# Категории историй
+python manage.py load_initial_categories
+```
+
+### Тестирование
+
+```bash
+# Запуск тестов
+python manage.py test
+
+# Создание тестовых данных
+python manage.py shell -c "from facilities.management.commands.create_fake_data import Command; Command().handle()"
+```
+
+## Разработка
+
+### Создание миграций
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### Создание суперпользователя
+
+```bash
+python manage.py createsuperuser
+```
+
+### Проверка проекта
+
+```bash
+python manage.py check
+python manage.py check --deploy
+```
 
 ## Лицензия
 
@@ -129,7 +224,7 @@ MIT
 
 ## Авторы
 
-- [Ваше имя](https://github.com/yourusername)
+- [Serg-Geek](https://github.com/Serg-Geek)
 
 ## Благодарности
 
