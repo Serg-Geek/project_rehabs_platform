@@ -132,11 +132,11 @@
     <div class="container">
         <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
         {% if user.is_authenticated %}
-        <div class="detail__reviews-actions">
+        {% comment %} <div class="detail__reviews-actions">
             <a href="{% url 'reviews:facility_create' facility_type='rehab' facility_id=center.id %}" class="rehab-btn">
                 Оставить отзыв
             </a>
-        </div>
+        </div> {% endcomment %}
         {% endif %}
         <div class="detail__reviews-slider">
             {% for review in center.reviews.all %}
