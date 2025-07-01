@@ -13,7 +13,7 @@
 *,
 ::after,
 ::before {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html {
@@ -975,9 +975,7 @@ template {
   transform: translateX(0)
 }
 
-.dropdown-menu.active body {
-  overflow: hidden
-}
+
 
 .dropdown-menu.active .footer__contacts-address-phone-description {
   font-weight: 900
