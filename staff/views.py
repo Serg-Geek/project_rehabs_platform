@@ -11,4 +11,6 @@ class SpecialistDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Добавляем документы специалиста в контекст
+        context['documents'] = self.object.documents.filter(is_active=True)
         return context

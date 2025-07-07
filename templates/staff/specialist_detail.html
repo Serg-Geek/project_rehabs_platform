@@ -76,4 +76,27 @@
         </div>
     </div>
 </section>
+
+<section class="detail-docs specialist-detail__docs">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Документы и сертификаты</h3>
+        <div class="detail-doc__images">
+            <div class="detail-docs__slider">
+                {% for doc in documents %}
+                <div class="detail-docs__image spec-detail__docs--image">
+                    {% if doc.document %}
+                    <img src="{{ doc.document.url }}" alt="{{ doc.title }}" />
+                    {% else %}
+                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="detail-docs__image spec-detail__docs--image">
+                    <!-- <p>Документы не загружены</p> -->
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
