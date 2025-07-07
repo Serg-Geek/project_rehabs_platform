@@ -120,20 +120,26 @@
 
 <section class="detail__reviews">
     <div class="container">
-        <h3 class="title__h3 detail__title">Отзывы пациентов о специалисте</h3>
+        <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
         <div class="detail__reviews-slider">
-            {% for review in specialist.reviews.all %}
+            {% if specialist.facility %}
+                {% for review in specialist.facility.reviews.all %}
+                <div class="detail__review">
+                    <h4 class="title__h4 detail__review-title">
+                        {{ review.author_name }}, {{ review.author_age }} лет
+                    </h4>
+                    <p>{{ review.content }}</p>
+                </div>
+                {% empty %}
+                <div class="detail__review">
+                    <p>Пока нет отзывов о центре</p>
+                </div>
+                {% endfor %}
+            {% else %}
             <div class="detail__review">
-                <h4 class="title__h4 detail__review-title">
-                    {{ review.author_name }}, {{ review.author_age }} лет
-                </h4>
-                <p>{{ review.content }}</p>
+                <p>Информация об учреждении не указана</p>
             </div>
-            {% empty %}
-            <div class="detail__review">
-                <p>Пока нет отзывов</p>
-            </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </section>
