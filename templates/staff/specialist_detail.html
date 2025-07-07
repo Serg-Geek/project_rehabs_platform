@@ -31,31 +31,37 @@
             <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
                 <h2 class="title__h2 detail__title">{{ specialist.last_name }} {{ specialist.first_name }}</h2>
                 <div class="detail__text spec-detail__text">
-                    <p class="specialist-detail__position">{{ specialist.position }}</p>
-                    {% comment %} <p class="specialist-detail__experience">Опыт работы: {{ specialist.experience_years }} лет</p> {% endcomment %}
-                    {% comment %} <p class="specialist-detail__schedule">График работы: {{ specialist.schedule }}</p> {% endcomment %}
-                    
-                    {% comment %} <div class="specialist-detail__specializations">
-                        <h3>Специализации:</h3>
-                        <ul>
-                            {% for specialization in specialist.specializations.all %}
-                            <li>{{ specialization.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div> {% endcomment %}
+                    <p>{{ specialist.position|default:'' }}</p>
+                    {% if specialist.facility and specialist.facility.city %}
+                    <div itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressRegion">{{ specialist.facility.city.region.name }}</span>,
+                        <span itemprop="addressCountry">Россия</span>
+                    </div>
+                    {% endif %}
                 </div>
-
+                
                 {% if specialist.facility and specialist.facility.slug %}
                 <div class="card">
                     <a href="{% url 'facilities:clinic_detail' specialist.facility.slug %}">
                         <div class="card__image">
-                            {% if specialist.facility.photo %}
-                                <img src="{{ specialist.facility.photo.url }}" alt="{{ specialist.facility.name }}" />
+                            {% if specialist.facility.images.first %}
+                                <img src="{{ specialist.facility.images.first.image.url }}" alt="{{ specialist.facility.name }}" />
+                            {% else %}
+                                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.facility.name }}" />
                             {% endif %}
                         </div>
                         <div class="card__content">
-                            <h3 class="card__title">{{ specialist.facility.name }}</h3>
-                            <p class="card__text">{{ specialist.facility.description }}</p>
+                            <h3 class="card__title title__h4">{{ specialist.facility.name }}</h3>
+                            <p class="card__description">
+                                {% if specialist.facility.city %}
+                                    {{ specialist.facility.city.name }}{% if specialist.facility.city.region %}, {{ specialist.facility.city.region.name }}{% endif %}
+                                {% endif %}
+                            </p>
+                            {% if specialist.facility.min_price %}
+                            <div class="card__price">
+                                <span class="card__price-value">от {{ specialist.facility.min_price }} P / месяц</span>
+                            </div>
+                            {% endif %}
                         </div>
                     </a>
                 </div>
@@ -76,20 +82,22 @@
             </div>
         </div>
         
+        {% if specialist.biography %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Биография</h3>
             <div class="spec-detail__wrapper">
                 <div class="spec-detail__text">
-                    <p>{{ specialist.biography|default:'Информация о биографии не указана' }}</p>
+                    <p>{{ specialist.biography }}</p>
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </section>
 
-<section class="detail-docs specialist-detail__docs">
+<section class="detail-docs clinic-detail__docs">
     <div class="container">
-        <h3 class="title__h3 detail__title">Документы и сертификаты</h3>
+        <h3 class="title__h3 detail__title">Лицензии и документы</h3>
         <div class="detail-doc__images">
             <div class="detail-docs__slider">
                 {% for doc in documents %}
@@ -102,11 +110,33 @@
                 </div>
                 {% empty %}
                 <div class="detail-docs__image spec-detail__docs--image">
-                    <!-- <p>Документы не загружены</p> -->
+                    <img src="{% static 'deps/img/notImage.svg' %}" alt="Документы не загружены" />
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
 </section>
-{% endblock %}
+
+<section class="detail__reviews">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Отзывы пациентов о специалисте</h3>
+        <div class="detail__reviews-slider">
+            {% for review in specialist.reviews.all %}
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    {{ review.author_name }}, {{ review.author_age }} лет
+                </h4>
+                <p>{{ review.content }}</p>
+            </div>
+            {% empty %}
+            <div class="detail__review">
+                <p>Пока нет отзывов</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% include "facilities/includes/consultation.html" %}
+{% endblock %} 
