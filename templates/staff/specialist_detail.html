@@ -60,17 +60,27 @@
                     </a>
                 </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="specialist-detail__content">
-                    <div class="specialist-detail__section">
-                        <h3>Образование</h3>
-                        <p>{{ specialist.education|default:'' }}</p>
-                    </div>
-
-                    <div class="specialist-detail__section">
-                        <h3>Биография</h3>
-                        <p>{{ specialist.biography|default:'Тестовая биография' }}</p>
-                    </div>
+<section class="detail__info spec-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <h3 class="title__h3 detail__title">Образование</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ specialist.education|default:'Информация об образовании не указана' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-content__wrapper detail-content__wrapper-second">
+            <h3 class="title__h3 detail__title">Биография</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ specialist.biography|default:'Информация о биографии не указана' }}</p>
                 </div>
             </div>
         </div>
