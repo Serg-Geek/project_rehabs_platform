@@ -42,7 +42,7 @@
                 
                 {% if specialist.facility and specialist.facility.slug %}
                 <div class="card">
-                    <a href="{% url 'facilities:clinic_detail' specialist.facility.slug %}">
+                    <a href="{% if specialist.facility.organization_type.slug == 'clinic' %}{% url 'facilities:clinic_detail' specialist.facility.slug %}{% else %}{% url 'facilities:rehab_detail' specialist.facility.slug %}{% endif %}">
                         <div class="card__image">
                             {% if specialist.facility.images.first %}
                                 <img src="{{ specialist.facility.images.first.image.url }}" alt="{{ specialist.facility.name }}" />
