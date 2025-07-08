@@ -13,7 +13,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
-from facilities.models import MedicalFacility, OrganizationType, City, Review, FacilityImage
+from facilities.models import Clinic, RehabCenter, OrganizationType, City, Review, FacilityImage
 from core.models import Region
 from django.contrib.auth import get_user_model
 
@@ -70,7 +70,7 @@ class CatalogViewsTest(TestCase):
         )
         
         # Создаем тестовые учреждения
-        self.clinic = MedicalFacility.objects.create(
+        self.clinic = Clinic.objects.create(
             name='Тестовая клиника',
             slug='test-clinic',
             organization_type=self.clinic_type,
@@ -83,7 +83,7 @@ class CatalogViewsTest(TestCase):
             description='Тестовое описание'
         )
         
-        self.rehab = MedicalFacility.objects.create(
+        self.rehab = RehabCenter.objects.create(
             name='Тестовый центр',
             slug='test-rehab',
             organization_type=self.rehab_type,
@@ -92,8 +92,11 @@ class CatalogViewsTest(TestCase):
             phone='+7 (999) 999-99-98',
             email='rehab@test.com',
             website='http://rehab.com',
-            license_number='123457',
-            description='Тестовое описание'
+            description='Тестовое описание',
+            capacity=100,
+            program_duration=30,
+            min_price=50000,
+            accommodation_conditions='Комфортные условия проживания'
         )
 
     def test_clinic_list_view(self):
@@ -142,7 +145,8 @@ class CatalogViewsTest(TestCase):
         - Отсутствие ошибок при отсутствии данных
         """
         # Удаляем все учреждения
-        MedicalFacility.objects.all().delete()
+        Clinic.objects.all().delete()
+        RehabCenter.objects.all().delete()
         
         # Проверяем клиники
         response = self.client.get(reverse('facilities:clinic_list'))
@@ -165,7 +169,7 @@ class CatalogViewsTest(TestCase):
         """
         # Создаем дополнительные учреждения
         for i in range(15):
-            MedicalFacility.objects.create(
+            Clinic.objects.create(
                 name=f'Клиника {i}',
                 slug=f'clinic-{i}',
                 organization_type=self.clinic_type,
@@ -195,7 +199,7 @@ class CatalogViewsTest(TestCase):
         - Соответствие найденного учреждения поисковому запросу
         """
         # Создаем учреждение с уникальным названием
-        unique_facility = MedicalFacility.objects.create(
+        unique_facility = Clinic.objects.create(
             name='Специализированная клиника',
             slug='unique-clinic',
             organization_type=self.clinic_type,
@@ -222,10 +226,26 @@ class CatalogViewsTest(TestCase):
         - Наличие данных учреждения в контексте
         - Наличие связанных учреждений
         """
-        response = self.client.get(reverse('facilities:detail', kwargs={'slug': self.clinic.slug}))
+        response = self.client.get(reverse('facilities:clinic_detail', kwargs={'slug': self.clinic.slug}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'facilities/facility_detail.html')
-        self.assertEqual(response.context['facility'], self.clinic)
+        self.assertTemplateUsed(response, 'facilities/clinic_detail.html')
+        self.assertEqual(response.context['clinic'], self.clinic)
+        self.assertIn('related_facilities', response.context)
+
+    def test_rehab_detail_view(self):
+        """
+        Тест детального просмотра реабилитационного центра.
+        
+        Проверяет:
+        - Корректный HTTP-статус
+        - Использование правильного шаблона
+        - Наличие данных центра в контексте
+        - Наличие связанных учреждений
+        """
+        response = self.client.get(reverse('facilities:rehab_detail', kwargs={'slug': self.rehab.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'facilities/rehabcenter_detail.html')
+        self.assertEqual(response.context['center'], self.rehab)
         self.assertIn('related_facilities', response.context)
 
     def test_invalid_facility_slug(self):
@@ -236,7 +256,7 @@ class CatalogViewsTest(TestCase):
         - Возврат 404 ошибки при неверном slug
         - Корректную обработку несуществующих URL
         """
-        response = self.client.get(reverse('facilities:detail', kwargs={'slug': 'invalid-slug'}))
+        response = self.client.get(reverse('facilities:clinic_detail', kwargs={'slug': 'invalid-slug'}))
         self.assertEqual(response.status_code, 404)
 
     def test_facility_with_image(self):
@@ -268,7 +288,7 @@ class CatalogViewsTest(TestCase):
         )
         
         # Проверяем отображение
-        response = self.client.get(reverse('facilities:detail', kwargs={'slug': self.clinic.slug}))
+        response = self.client.get(reverse('facilities:clinic_detail', kwargs={'slug': self.clinic.slug}))
         self.assertEqual(response.status_code, 200)
         
         # Проверяем, что изображение связано с учреждением
