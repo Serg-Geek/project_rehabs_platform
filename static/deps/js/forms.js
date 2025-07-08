@@ -1,3 +1,29 @@
+// Функция маски ввода для телефонных номеров
+function initPhoneMask(phoneInput) {
+  if (!phoneInput) return;
+
+  // Используем библиотеку inputmask для создания маски
+  $(phoneInput).inputmask({
+    mask: '+7 (999) 999-99-99',
+    placeholder: '+7 (XXX) XXX-XX-XX',
+    showMaskOnHover: true,
+    showMaskOnFocus: true,
+    onBeforePaste: function (pastedValue, opts) {
+      // Очищаем вставляемое значение от всех символов кроме цифр
+      const processedValue = pastedValue.replace(/\D/g, '');
+      return processedValue;
+    },
+    onBeforeMask: function (value, opts) {
+      // Обрабатываем значение перед применением маски
+      if (value && !value.startsWith('+7')) {
+        // Если номер не начинается с +7, добавляем его
+        return '+7' + value.replace(/\D/g, '');
+      }
+      return value;
+    }
+  });
+}
+
 class FormHandler {
   constructor(formId, options = {}) {
     this.form = document.getElementById(formId);
@@ -30,6 +56,9 @@ class FormHandler {
 
   init() {
     if (this.phoneInput) {
+      // Применяем маску ввода
+      initPhoneMask(this.phoneInput);
+      // Добавляем валидацию
       this.phoneInput.addEventListener('input', this.validatePhone.bind(this));
     }
 
@@ -82,9 +111,14 @@ class FormHandler {
 
   validatePhone(e) {
     const phone = e.target.value;
-    const phoneRegex = /^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$/;
+    // Проверяем, что номер полностью заполнен (все 10 цифр после +7)
+    const digitsOnly = phone.replace(/\D/g, '');
+    const hasEnoughDigits = digitsOnly.length >= 11; // +7 + 10 цифр
+    
+    // Проверяем формат с помощью inputmask
+    const isComplete = phone.replace(/[_\s]/g, '').length === 18; // +7 (999) 999-99-99 = 18 символов
 
-    if (!phoneRegex.test(phone)) {
+    if (!hasEnoughDigits || !isComplete) {
       this.phoneError.textContent =
         'Введите номер в формате: +7 (XXX) XXX-XX-XX';
       this.phoneInput.classList.add('is-invalid');
@@ -155,13 +189,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Форма контактной информации
   new FormHandler('contactInfoForm', {
-    phoneInputId: 'phone',
-    phoneErrorId: 'phoneError',
+    phoneInputId: 'contact-phone',
+    phoneErrorId: 'contactPhoneError',
   });
 
   // Форма партнеров
   new FormHandler('partnerForm', {
-    phoneInputId: 'phone',
-    phoneErrorId: 'phoneError',
+    phoneInputId: 'partner-phone',
+    phoneErrorId: 'partnerPhoneError',
   });
+
+  // Форма на странице контактов
+  const contactInput = document.getElementById('contact-input');
+  if (contactInput) {
+    initPhoneMask(contactInput);
+  }
 });
