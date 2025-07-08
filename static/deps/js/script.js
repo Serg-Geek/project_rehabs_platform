@@ -322,5 +322,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Инициализация кнопок "Показать еще"
     initLoadMore(loadMoreRehabsButton, '/facilities/load-more-rehabs/');
     initLoadMore(loadMoreClinicsButton, '/facilities/load-more-clinics/');
+
+    // Инициализация Lightbox2
+    if (typeof lightbox !== 'undefined') {
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': 'Изображение %1 из %2',
+            'fadeDuration': 300,
+            'imageFadeDuration': 300,
+            'positionFromTop': 50
+        });
+    }
 });
 

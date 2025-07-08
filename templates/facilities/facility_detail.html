@@ -105,7 +105,9 @@
                 {% for doc in facility.documents.all %}
                 <div class="detail-docs__image spec-detail__docs--image">
                     {% if doc.document %}
-                    <img src="{{ doc.document.url }}" alt="{{ doc.title }}" />
+                    <a href="{{ doc.document.url }}" data-lightbox="facility-docs" data-title="{{ doc.title|default:doc.document.name }}">
+                        <img src="{{ doc.document.url }}" alt="{{ doc.title }}" />
+                    </a>
                     {% else %}
                     <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
                     {% endif %}
