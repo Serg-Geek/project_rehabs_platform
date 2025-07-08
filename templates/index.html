@@ -218,9 +218,7 @@
                   <div class="card__content">
                     <h4 class="card__title title__h4">{{ center.name }}</h4>
                     <p class="card__description">
-                      {% if center.city %} {{ center.city.name }}{% if
-                      center.city.region %}, {{ center.city.region.name }}{%
-                      endif %} {% endif %}
+                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
                     </p>
                     {% with service=center.services.first %} {% if service %}
                     <div class="card__price">
@@ -289,9 +287,10 @@
                   <div class="card__content">
                     <h4 class="card__title title__h4">{{ center.name }}</h4>
                     <p class="card__description">
-                      {% if center.city %} {{ center.city.name }}{% if
-                      center.city.region %}, {{ center.city.region.name }}{%
-                      endif %} {% endif %}
+                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
+                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
+                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
+                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
                     </p>
                     {% with service=center.services.first %} {% if service %}
                     <div class="card__price">
@@ -357,9 +356,7 @@
                   <div class="card__content">
                     <h4 class="card__title title__h4">{{ clinic.name }}</h4>
                     <p class="card__description">
-                      {% if clinic.city %} {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name
-                      }}
-                      {% endif %} {% endif %}
+                      {% if clinic.city %} {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}{% endif %}{% endif %}
                     </p>
                     {% with service=clinic.services.first %} {% if service %}
                     <div class="card__price">
@@ -488,7 +485,8 @@
                     </h4>
                     <p class="card__description">{{ specialist.position }}</p>
                     <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience_years|year_plural }}</span>
+                      <span class="card__specialist--location-value">Опыт работы: {{
+                        specialist.experience_years|year_plural }}</span>
                     </div>
                   </div>
                 </a>
@@ -515,7 +513,8 @@
                     </h4>
                     <p class="card__description">{{ specialist.position }}</p>
                     <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience_years|year_plural }}</span>
+                      <span class="card__specialist--location-value">Опыт работы: {{
+                        specialist.experience_years|year_plural }}</span>
                     </div>
                   </div>
                 </a>
@@ -544,7 +543,8 @@
                     </h4>
                     <p class="card__description">{{ specialist.position }}</p>
                     <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience_years|year_plural }}</span>
+                      <span class="card__specialist--location-value">Опыт работы: {{
+                        specialist.experience_years|year_plural }}</span>
                     </div>
                   </div>
                 </a>
