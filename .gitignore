@@ -1,4 +1,4 @@
-hon
+# Python
 *.pyc
 *.pyo
 *.pyd
@@ -40,3 +40,6 @@ docker-compose.yml
 .cursor
 
 README2.md
+
+# Documentation
+docs/unused_fields_analysis.md
