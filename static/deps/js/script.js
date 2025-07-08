@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const menu = document.querySelector(".menu");
     const burgerMenu = document.querySelector("#burgerMenu");
     const dropdownMenu = document.querySelector("#dropdownMenu");
-    const filterForm = document.getElementById("filter-form");
-    const categorySelect = document.getElementById("category");
     const loadMoreRehabsButton = document.getElementById("loadMoreRehabs");
     const loadMoreClinicsButton = document.getElementById("loadMoreClinics");
 
@@ -116,14 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", handleScroll);
     initCustomSelect();
 
-    // Отслеживаем изменение значения в <select>
-    if (categorySelect) {
-        categorySelect.addEventListener("change", function () {
-            // Автоматически отправляем форму
-            filterForm.submit();
-        });
-    }
-
     // Функция для инициализации слайдера
     function initSlider(selector, prevButton, nextButton, settings) {
         if (document.querySelector(selector)) {
@@ -205,69 +195,95 @@ document.addEventListener("DOMContentLoaded", () => {
     // Функция инициализации кастомного селекта
     function initCustomSelect() {
         console.log('Инициализация кастомного селекта');
-        const customSelect = document.querySelector('.custom-select');
-        if (!customSelect) {
-            console.log('Кастомный селект не найден');
+        const customSelects = document.querySelectorAll('.custom-select');
+        if (!customSelects.length) {
+            console.log('Кастомные селекты не найдены');
             return;
         }
-        console.log('Кастомный селект найден');
+        console.log(`Найдено ${customSelects.length} кастомных селектов`);
 
-        const selected = customSelect.querySelector('.custom-select__selected');
-        const options = customSelect.querySelector('.custom-select__options');
-        const select = document.querySelector('#category');
+        customSelects.forEach((customSelect, index) => {
+            const selected = customSelect.querySelector('.custom-select__selected');
+            const options = customSelect.querySelector('.custom-select__options');
+            const select = customSelect.querySelector('select');
 
-        if (!selected || !options || !select) {
-            console.log('Не найдены необходимые элементы селекта');
-            return;
-        }
-        console.log('Все элементы селекта найдены');
+            if (!selected || !options || !select) {
+                console.log(`Не найдены необходимые элементы селекта ${index + 1}`);
+                return;
+            }
+            console.log(`Инициализация селекта ${index + 1}`);
 
-        // Открытие/закрытие выпадающего списка
-        selected.addEventListener('click', function (e) {
-            console.log('Клик по выбранному элементу');
-            e.stopPropagation();
-            customSelect.classList.toggle('active');
-            options.classList.toggle('active');
-        });
-
-        // Выбор опции
-        options.querySelectorAll('.custom-select__option').forEach(option => {
-            option.addEventListener('click', function (e) {
-                console.log('Клик по опции');
+            // Открытие/закрытие выпадающего списка
+            selected.addEventListener('click', function (e) {
+                console.log(`Клик по выбранному элементу селекта ${index + 1}`);
                 e.stopPropagation();
-                const value = this.dataset.value;
-                const text = this.textContent;
-
-                // Обновляем текст выбранной опции
-                selected.textContent = text;
-
-                // Обновляем значение скрытого select
-                select.value = value;
-
-                // Закрываем выпадающий список
-                customSelect.classList.remove('active');
-                options.classList.remove('active');
-
-                // Отправляем форму
-                filterForm.submit();
+                
+                // Закрываем все другие селекты
+                customSelects.forEach((otherSelect, otherIndex) => {
+                    if (otherIndex !== index) {
+                        otherSelect.classList.remove('active');
+                        otherSelect.querySelector('.custom-select__options').classList.remove('active');
+                    }
+                });
+                
+                customSelect.classList.toggle('active');
+                options.classList.toggle('active');
             });
+
+            // Выбор опции
+            options.querySelectorAll('.custom-select__option').forEach(option => {
+                option.addEventListener('click', function (e) {
+                    console.log(`Клик по опции селекта ${index + 1}`);
+                    e.stopPropagation();
+                    const value = this.dataset.value;
+                    const text = this.textContent;
+
+                    // Обновляем текст выбранной опции
+                    selected.textContent = text;
+
+                    // Обновляем значение скрытого select
+                    select.value = value;
+
+                    // Закрываем выпадающий список
+                    customSelect.classList.remove('active');
+                    options.classList.remove('active');
+
+                    // Отправляем форму
+                    const form = customSelect.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                });
+            });
+
+            // Установка начального значения
+            if (select.value) {
+                const option = options.querySelector(`[data-value="${select.value}"]`);
+                if (option) {
+                    selected.textContent = option.textContent;
+                }
+            }
         });
 
-        // Закрытие при клике вне селекта
+        // Закрытие при клике вне селектов
         document.addEventListener('click', function (e) {
-            if (!customSelect.contains(e.target)) {
-                customSelect.classList.remove('active');
-                options.classList.remove('active');
+            let clickedInside = false;
+            customSelects.forEach(customSelect => {
+                if (customSelect.contains(e.target)) {
+                    clickedInside = true;
+                }
+            });
+            
+            if (!clickedInside) {
+                customSelects.forEach(customSelect => {
+                    customSelect.classList.remove('active');
+                    const options = customSelect.querySelector('.custom-select__options');
+                    if (options) {
+                        options.classList.remove('active');
+                    }
+                });
             }
         });
-
-        // Установка начального значения
-        if (select.value) {
-            const option = options.querySelector(`[data-value="${select.value}"]`);
-            if (option) {
-                selected.textContent = option.textContent;
-            }
-        }
     }
 
     // Функция для загрузки дополнительных карточек

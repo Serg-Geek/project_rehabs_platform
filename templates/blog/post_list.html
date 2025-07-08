@@ -52,15 +52,33 @@
                 </form>
                 <form id="filter-form" class="filter-section" method="get">
                     <label for="category">Сортировать по</label>
-                    <select id="category" name="category" onchange="this.form.submit()">
-                        <option value="all" {% if not request.GET.category %}selected{% endif %}>всем категориям
-                        </option>
-                        {% for category in categories %}
-                        <option value="{{ category.slug }}" 
-                        {% if request.GET.category == category.slug %} selected
-                        {%endif %}>{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="custom-select">
+                        <div class="custom-select__selected">
+                            {% if request.GET.category %}
+                                {% for category in categories %}
+                                    {% if request.GET.category == category.slug %}
+                                        {{ category.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                всем категориям
+                            {% endif %}
+                        </div>
+                        <div class="custom-select__options">
+                            <div class="custom-select__option" data-value="all">всем категориям</div>
+                            {% for category in categories %}
+                            <div class="custom-select__option" data-value="{{ category.slug }}">{{ category.name }}</div>
+                            {% endfor %}
+                        </div>
+                        <select id="category" name="category" style="display: none;">
+                            <option value="all" {% if not request.GET.category %}selected{% endif %}>всем категориям</option>
+                            {% for category in categories %}
+                            <option value="{{ category.slug }}" 
+                            {% if request.GET.category == category.slug %} selected
+                            {%endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="useful-info__cards">
