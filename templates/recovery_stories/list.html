@@ -59,7 +59,7 @@
                     <select id="category" name="category" onchange="this.form.submit()">
                         <option value="all" {% if not current_category %}selected{% endif %}>Все истории</option>
                         {% for category in categories %}
-                        <option value="{{ category.slug }}" {% if current_category==category %}selected {% endif %}>
+                        <option value="{{ category.slug }}" {% if current_category == category %}selected{% endif %}>
                             {{ category.name }}
                         </option>
                         {% endfor %}
