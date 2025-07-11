@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load russian_plural %}
+
+{% block title %}
+Специалисты | Центр помощи зависимым
+{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Специалисты
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="catalog specialists-catalog">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">Специалисты</h2>
+        
+        <div class="section__content">
+            <div class="section__content-text catalog__content-text">
+                <p>
+                    Они не просто лечат, а поддерживают и понимают, что каждый случай уникален. 
+                    Найдите специалиста рядом с вами, который поможет вам восстановиться и начать новую жизнь.
+                </p>
+            </div>
+            
+            <div class="search-filter">
+                <form method="get" action="{% url 'staff:specialists_list' %}" class="header__search">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="header__search-input" 
+                        placeholder="Поиск..." 
+                        value="{{ search_query }}"
+                    />
+                    <button type="submit" class="header__search-button">
+                        <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
+                    </button>
+                </form>
+            </div>
+            
+            <div class="specialists__cards">
+                {% for specialist in specialists %}
+                <div class="card card--specialist">
+                    <a href="{% url 'staff:specialist_detail' specialist.slug %}">
+                        <div class="card__image">
+                            {% if specialist.photo %}
+                            <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
+                            {% else %}
+                            <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
+                            {% endif %}
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                {{ specialist.get_full_name }}
+                            </h3>
+                            <p class="card__description">
+                                {{ specialist.position }}
+                            </p>
+                            <div class="card__specialist--location">
+                                <span class="card__specialist--location-value">
+                                    Опыт работы: {{ specialist.experience_years|year_plural }}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="specialists__empty">
+                    <p>Специалисты не найдены</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="pagination__link">Назад</a>
+                {% endif %}
+                
+                <span class="pagination__current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="pagination__link">Вперед</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %} 
