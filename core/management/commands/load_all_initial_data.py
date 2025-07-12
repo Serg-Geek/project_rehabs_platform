@@ -17,6 +17,7 @@ class Command(BaseCommand):
             # Основные данные (из facilities)
             'facilities/fixtures/clinics.json',
             'facilities/fixtures/rehab_centers.json',
+            'facilities/fixtures/private_doctors.json',
             
             # Отзывы (из facilities)
             'facilities/fixtures/reviews.json',
