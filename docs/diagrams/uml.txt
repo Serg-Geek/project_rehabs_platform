@@ -1,181 +1,191 @@
 @startuml
 skinparam rankdir TB
+title Архитектура моделей Django - Центр помощи зависимым
 
-' Сущность Регион
-entity "Регион" as Region {
+' Базовые модели
+entity "TimeStampedModel" as TimeStampedModel {
     + id : int <<PK>>
     --
-    Название : string
+    created_at : datetime
+    updated_at : datetime
 }
 
-' Сущность Клиника/Рехаб
-entity "Клиника/Рехаб" as Clinic {
+' Core приложение
+entity "Region" as Region {
     + id : int <<PK>>
     --
-    Название : string
-    Описание : text
-    Регион_id : int <<FK>>
-    Тип : enum('clinic', 'rehab')
+    name : string
+    slug : string
 }
 
-' Сущность Услуга
-entity "Услуга" as Service {
+entity "City" as City {
     + id : int <<PK>>
     --
-    Название : string
-    Описание : text
-    Название_админ : string
+    name : string
+    slug : string
+    region : Region <<FK>>
 }
 
-' Связка Услуги и Клиники
-entity "Услуга-Клиника" as ClinicService {
+' Facilities приложение
+entity "OrganizationType" as OrganizationType {
     + id : int <<PK>>
     --
-    Клиника_id : int <<FK>>
-    Услуга_id : int <<FK>>
-    Дата_появления : date
+    name : string
+    slug : string
+    description : text
+    competencies : text
 }
 
-' Цена услуги
-entity "Цена Услуги" as ServicePrice {
+entity "AbstractMedicalFacility" as AbstractMedicalFacility {
     + id : int <<PK>>
     --
-    Услуга_Клиника_id : int <<FK>>
-    Цена : decimal
-    Дата_назначения : date
+    name : string
+    slug : string
+    organization_type : OrganizationType <<FK>>
+    description : text
+    address : text
+    phone : string
+    email : string
+    website : string
+    license_number : string
+    is_active : bool
+    city : City <<FK>>
 }
 
-' Сущность Врач
-entity "Врач" as Doctor {
+entity "RehabCenter" as RehabCenter {
     + id : int <<PK>>
     --
-    ФИО : string
-    Стаж : int
-    Образование : string
+    capacity : int
+    program_duration : int
+    min_price : decimal
+    accommodation_conditions : text
 }
 
-' Связка Врач-Клиника
-entity "Врач-Клиника" as DoctorClinic {
+entity "Clinic" as Clinic {
     + id : int <<PK>>
     --
-    Врач_id : int <<FK>>
-    Клиника_id : int <<FK>>
-    Должность : string
-    Дата_появления : date
+    emergency_support : bool
+    has_hospital : bool
 }
 
-' 📸 Сущность Изображение (новая)
-entity "Изображение" as Image {
+entity "PrivateDoctor" as PrivateDoctor {
     + id : int <<PK>>
     --
-    Файл : string
-    Описание : string
-    Дата_создания : datetime
+    first_name : string
+    last_name : string
+    middle_name : string
+    experience_years : int
+    education : text
+    biography : text
+    achievements : text
+    office_description : text
+    parking_available : bool
+    wheelchair_accessible : bool
+    schedule : text
+    home_visits : bool
+    emergency_available : bool
+    weekend_work : bool
+    consultation_price : decimal
+    home_visit_price : decimal
+    insurance_accepted : bool
+    license_issue_date : date
+    license_expiry_date : date
+    online_consultations : bool
+    video_consultations : bool
+    special_equipment : text
 }
 
-' Связка Изображения и Клиники (ManyToMany)
-entity "Изображение-Клиника" as FacilityImage {
+entity "FacilityImage" as FacilityImage {
     + id : int <<PK>>
     --
-    Клиника_id : int <<FK>>
-    Изображение_id : int <<FK>>
-    Основное : bool
-    Порядок : int
+    content_type : ContentType <<FK>>
+    object_id : int
+    image : ImageField
+    image_type : string
+    title : string
+    description : text
+    is_main : bool
+    order : int
 }
 
-' Сущность Статья
-entity "Статья" as Article {
+entity "FacilityDocument" as FacilityDocument {
     + id : int <<PK>>
     --
-    Заголовок : string
-    Текст : text
-    Категория_id : int <<FK>>
+    content_type : ContentType <<FK>>
+    object_id : int
+    document_type : string
+    title : string
+    document : FileField
+    number : string
+    issue_date : date
+    expiry_date : date
+    is_active : bool
 }
 
-' Сущность Категория статьи
-entity "Категория" as Category {
+' Staff приложение
+entity "Specialization" as Specialization {
     + id : int <<PK>>
     --
-    Название : string
+    name : string
+    slug : string
+    description : text
 }
 
-' 📸 Связка Изображений и Статьи (ManyToMany)
-entity "Изображение-Статья" as ArticleImage {
+entity "FacilitySpecialist" as FacilitySpecialist {
     + id : int <<PK>>
     --
-    Статья_id : int <<FK>>
-    Изображение_id : int <<FK>>
+    content_type : ContentType <<FK>>
+    object_id : int
+    first_name : string
+    last_name : string
+    middle_name : string
+    photo : ImageField
+    experience_years : int
+    education : text
+    biography : text
+    achievements : text
+    is_active : bool
 }
 
-' Офферы (теперь ниже запроса)
-entity "Оффер" as Offer {
+' Reviews приложение
+entity "Review" as Review {
     + id : int <<PK>>
     --
-    Запрос_id : int <<FK>>
-    Клиника_id : int <<FK>>
-    Дата : date
-    Комментарий : text
+    content_type : ContentType <<FK>>
+    object_id : int
+    rating : int
+    content : text
 }
 
-' Сущность Запрос (перемещен выше Оффера)
-entity "Запрос" as Request {
-    + id : int <<PK>>
-    --
-    Имя : string
-    Телефон : string
-    Email : string
-    Комментарий : text
-    Клиника_id : int <<FK>>
-}
+' Связи наследования
+AbstractMedicalFacility --|> TimeStampedModel
+RehabCenter --|> AbstractMedicalFacility
+Clinic --|> AbstractMedicalFacility
+PrivateDoctor --|> AbstractMedicalFacility
 
-' Статусы
-entity "Статус" as Status {
-    + id : int <<PK>>
-    --
-    Название : string
-}
+' Связи Many-to-Many
+PrivateDoctor ||--o{ Specialization : "specializations"
 
-' Запрос-Статус
-entity "Запрос-Статус" as RequestStatus {
-    + id : int <<PK>>
-    --
-    Запрос_id : int <<FK>>
-    Статус_id : int <<FK>>
-    Комментарий_админа : text
-}
+' Generic Relations
+RehabCenter ||--o{ FacilityImage : "images"
+Clinic ||--o{ FacilityImage : "images"
+PrivateDoctor ||--o{ FacilityImage : "images"
 
-' Контракт
-entity "Контракт" as Contract {
-    + id : int <<PK>>
-    --
-    Запрос_id : int <<FK>>
-    Клиника_id : int <<FK>>
-    Дата : date
-    Услуга : string
-    Стоимость : decimal
-    Комментарий : text
-}
+RehabCenter ||--o{ FacilityDocument : "documents"
+Clinic ||--o{ FacilityDocument : "documents"
+PrivateDoctor ||--o{ FacilityDocument : "documents"
 
-' 📌 Определение связей
-Clinic }|--|| Region : "м:1"
-ClinicService }|--|| Clinic : "м:1"
-ClinicService }|--|| Service : "м:1"
-ServicePrice }|--|| ClinicService : "м:1"
-DoctorClinic }|--|| Doctor : "м:1"
-DoctorClinic }|--|| Clinic : "м:1"
-Article }|--|| Category : "м:1"
-Request }|--|| Clinic : "м:1"
-RequestStatus }|--|| Request : "м:1"
-RequestStatus }|--|| Status : "м:1"
-Offer }|--|| Request : "м:1"
-Offer }|--|| Clinic : "м:1"
-Contract }|--|| Request : "м:1"
-Contract }|--|| Clinic : "м:1"
+RehabCenter ||--o{ FacilitySpecialist : "specialists"
+Clinic ||--o{ FacilitySpecialist : "specialists"
+PrivateDoctor ||--o{ FacilitySpecialist : "specialists"
 
-' 🔗 Связи для изображений
-FacilityImage }|--|| Clinic : "м:1"
-FacilityImage }|--|| Image : "м:1"
-ArticleImage }|--|| Article : "м:1"
-ArticleImage }|--|| Image : "м:1"
+RehabCenter ||--o{ Review : "reviews"
+Clinic ||--o{ Review : "reviews"
+PrivateDoctor ||--o{ Review : "reviews"
+
+' Связи Foreign Key
+City ||--o{ AbstractMedicalFacility : "city"
+OrganizationType ||--o{ AbstractMedicalFacility : "organization_type"
+City ||--o{ Region : "region"
 
 @enduml
