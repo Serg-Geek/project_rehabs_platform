@@ -1,0 +1,106 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+title Диаграмма компонентов системы "Центр помощи зависимым"
+
+package "Frontend" {
+    [Главная страница] as HomePage
+    [Страница поиска] as SearchPage
+    [Детальная страница учреждения] as DetailPage
+    [Страница специалистов] as SpecialistsPage
+    [Админ-панель] as AdminPanel
+}
+
+package "Django Applications" {
+    package "Core" {
+        [Region Model] as Region
+        [City Model] as City
+        [Core Views] as CoreViews
+    }
+    
+    package "Facilities" {
+        [AbstractMedicalFacility] as AbstractFacility
+        [RehabCenter Model] as RehabCenter
+        [Clinic Model] as Clinic
+        [PrivateDoctor Model] as PrivateDoctor
+        [FacilityImage Model] as FacilityImage
+        [FacilityDocument Model] as FacilityDocument
+        [Facilities Views] as FacilitiesViews
+    }
+    
+    package "Staff" {
+        [Specialization Model] as Specialization
+        [FacilitySpecialist Model] as FacilitySpecialist
+        [Staff Views] as StaffViews
+    }
+    
+    package "Reviews" {
+        [Review Model] as Review
+        [Reviews Views] as ReviewsViews
+    }
+}
+
+package "External Services" {
+    database "PostgreSQL" as DB
+    [Static Files] as StaticFiles
+    [Media Files] as MediaFiles
+    [Email Service] as EmailService
+}
+
+package "Infrastructure" {
+    [Nginx] as Nginx
+    [Gunicorn] as Gunicorn
+    [Redis Cache] as Redis
+}
+
+' Frontend connections
+HomePage --> CoreViews : HTTP
+SearchPage --> FacilitiesViews : HTTP
+DetailPage --> FacilitiesViews : HTTP
+SpecialistsPage --> StaffViews : HTTP
+AdminPanel --> CoreViews : HTTP
+
+' Django app connections
+CoreViews --> Region : ORM
+CoreViews --> City : ORM
+FacilitiesViews --> AbstractFacility : ORM
+FacilitiesViews --> RehabCenter : ORM
+FacilitiesViews --> Clinic : ORM
+FacilitiesViews --> PrivateDoctor : ORM
+FacilitiesViews --> FacilityImage : ORM
+FacilitiesViews --> FacilityDocument : ORM
+StaffViews --> Specialization : ORM
+StaffViews --> FacilitySpecialist : ORM
+ReviewsViews --> Review : ORM
+
+' Cross-app connections
+AbstractFacility --> Region : FK
+AbstractFacility --> City : FK
+PrivateDoctor --> Specialization : M2M
+FacilitySpecialist --> AbstractFacility : Generic FK
+Review --> AbstractFacility : Generic FK
+FacilityImage --> AbstractFacility : Generic FK
+FacilityDocument --> AbstractFacility : Generic FK
+
+' External connections
+CoreViews --> DB : SQL
+FacilitiesViews --> DB : SQL
+StaffViews --> DB : SQL
+ReviewsViews --> DB : SQL
+
+FacilitiesViews --> StaticFiles : Serve
+FacilitiesViews --> MediaFiles : Upload/Download
+CoreViews --> EmailService : Send notifications
+
+' Infrastructure
+Nginx --> Gunicorn : Proxy
+Gunicorn --> CoreViews : WSGI
+Gunicorn --> FacilitiesViews : WSGI
+Gunicorn --> StaffViews : WSGI
+Gunicorn --> ReviewsViews : WSGI
+
+CoreViews --> Redis : Cache
+FacilitiesViews --> Redis : Cache
+
+@enduml 

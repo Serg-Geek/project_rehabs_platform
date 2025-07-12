@@ -1,0 +1,149 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+title Диаграмма развертывания - "Центр помощи зависимым"
+
+node "Load Balancer" {
+    [HAProxy] as HAProxy
+}
+
+node "Web Server 1" {
+    [Nginx] as Nginx1
+    [Gunicorn] as Gunicorn1
+    [Django App] as Django1
+}
+
+node "Web Server 2" {
+    [Nginx] as Nginx2
+    [Gunicorn] as Gunicorn2
+    [Django App] as Django2
+}
+
+node "Database Server" {
+    database "PostgreSQL Primary" as PostgresPrimary
+    database "PostgreSQL Replica" as PostgresReplica
+}
+
+node "Cache Server" {
+    [Redis Master] as RedisMaster
+    [Redis Slave] as RedisSlave
+}
+
+node "File Storage" {
+    [NFS Server] as NFSServer
+    folder "Media Files" as MediaFiles
+    folder "Static Files" as StaticFiles
+}
+
+node "Backup Server" {
+    [Backup Service] as BackupService
+    folder "Database Backups" as DBBackups
+    folder "File Backups" as FileBackups
+}
+
+node "Monitoring" {
+    [Prometheus] as Prometheus
+    [Grafana] as Grafana
+    [AlertManager] as AlertManager
+}
+
+node "CI/CD" {
+    [GitLab CI] as GitLabCI
+    [Docker Registry] as DockerRegistry
+    [Deployment Scripts] as DeployScripts
+}
+
+' Load Balancer connections
+HAProxy --> Nginx1 : HTTP/HTTPS
+HAProxy --> Nginx2 : HTTP/HTTPS
+
+' Web Server connections
+Nginx1 --> Gunicorn1 : Unix Socket
+Nginx2 --> Gunicorn2 : Unix Socket
+Gunicorn1 --> Django1 : WSGI
+Gunicorn2 --> Django2 : WSGI
+
+' Database connections
+Django1 --> PostgresPrimary : SQL
+Django2 --> PostgresPrimary : SQL
+PostgresPrimary --> PostgresReplica : Replication
+
+' Cache connections
+Django1 --> RedisMaster : Redis Protocol
+Django2 --> RedisMaster : Redis Protocol
+RedisMaster --> RedisSlave : Replication
+
+' File storage connections
+Nginx1 --> NFSServer : NFS
+Nginx2 --> NFSServer : NFS
+Django1 --> NFSServer : NFS
+Django2 --> NFSServer : NFS
+
+NFSServer --> MediaFiles : Local Storage
+NFSServer --> StaticFiles : Local Storage
+
+' Backup connections
+BackupService --> PostgresPrimary : pg_dump
+BackupService --> NFSServer : rsync
+BackupService --> DBBackups : Local Storage
+BackupService --> FileBackups : Local Storage
+
+' Monitoring connections
+Prometheus --> Django1 : Metrics
+Prometheus --> Django2 : Metrics
+Prometheus --> PostgresPrimary : Metrics
+Prometheus --> RedisMaster : Metrics
+Prometheus --> Nginx1 : Metrics
+Prometheus --> Nginx2 : Metrics
+
+Grafana --> Prometheus : Query
+AlertManager --> Prometheus : Alerts
+
+' CI/CD connections
+GitLabCI --> DockerRegistry : Push Images
+DeployScripts --> HAProxy : Health Check
+DeployScripts --> Nginx1 : Deploy
+DeployScripts --> Nginx2 : Deploy
+
+note right of HAProxy
+  Load Balancer:
+  - Распределение нагрузки
+  - SSL termination
+  - Health checks
+  - Rate limiting
+end note
+
+note right of PostgresPrimary
+  Database:
+  - Primary для записи
+  - Реплика для чтения
+  - Автоматические бэкапы
+  - Мониторинг производительности
+end note
+
+note right of RedisMaster
+  Cache:
+  - Сессии пользователей
+  - Кэш запросов
+  - Очереди задач
+  - Временные данные
+end note
+
+note right of NFSServer
+  File Storage:
+  - Загруженные изображения
+  - Документы учреждений
+  - Статические файлы
+  - Резервные копии
+end note
+
+note right of Prometheus
+  Мониторинг:
+  - Метрики приложения
+  - Системные метрики
+  - Алерты
+  - Дашборды
+end note
+
+@enduml 

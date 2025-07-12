@@ -1,0 +1,93 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+title Пользовательские сценарии (Use Cases) - "Центр помощи зависимым"
+
+actor "Посетитель" as Visitor
+actor "Зарегистрированный пользователь" as User
+actor "Администратор" as Admin
+actor "Суперпользователь" as SuperUser
+
+rectangle "Система помощи зависимым" {
+    usecase "Просмотр главной страницы" as UC1
+    usecase "Поиск учреждений" as UC2
+    usecase "Фильтрация по типу" as UC3
+    usecase "Фильтрация по специализации" as UC4
+    usecase "Фильтрация по городу" as UC5
+    usecase "Просмотр детальной информации" as UC6
+    usecase "Просмотр отзывов" as UC7
+    usecase "Оставление отзыва" as UC8
+    usecase "Регистрация" as UC9
+    usecase "Авторизация" as UC10
+    usecase "Управление учреждениями" as UC11
+    usecase "Управление специалистами" as UC12
+    usecase "Модерация отзывов" as UC13
+    usecase "Управление пользователями" as UC14
+    usecase "Просмотр статистики" as UC15
+    usecase "Управление контентом" as UC16
+    usecase "Настройка системы" as UC17
+}
+
+' Visitor use cases
+Visitor --> UC1
+Visitor --> UC2
+Visitor --> UC3
+Visitor --> UC4
+Visitor --> UC5
+Visitor --> UC6
+Visitor --> UC7
+Visitor --> UC9
+Visitor --> UC10
+
+' User use cases (inherits from Visitor)
+User --> UC8
+
+' Admin use cases
+Admin --> UC11
+Admin --> UC12
+Admin --> UC13
+Admin --> UC15
+
+' SuperUser use cases (inherits from Admin)
+SuperUser --> UC14
+SuperUser --> UC16
+SuperUser --> UC17
+
+' Include relationships
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+UC2 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC11 ..> UC12 : <<include>>
+
+' Extend relationships
+UC2 <.. UC6 : <<extend>>
+UC8 <.. UC7 : <<extend>>
+
+note right of UC2
+  Поиск включает:
+  - Поиск по названию
+  - Фильтрацию по параметрам
+  - Сортировку результатов
+end note
+
+note right of UC6
+  Детальная информация включает:
+  - Контактные данные
+  - Описание услуг
+  - Фотографии
+  - Документы
+  - Специалистов
+end note
+
+note right of UC11
+  Управление учреждениями:
+  - Добавление новых
+  - Редактирование
+  - Управление изображениями
+  - Контроль активности
+end note
+
+@enduml 

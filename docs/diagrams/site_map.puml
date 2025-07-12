@@ -1,0 +1,119 @@
+@startuml
+!theme plain
+skinparam packageStyle rectangle
+
+title Карта сайта - "Центр помощи зависимым"
+
+package "Главная страница" {
+    [Главная] as Home
+}
+
+package "Поиск и каталог" {
+    [Поиск учреждений] as Search
+    [Реабилитационные центры] as RehabCenters
+    [Клиники] as Clinics
+    [Частные врачи] as PrivateDoctors
+    [Специалисты] as Specialists
+}
+
+package "Детальные страницы" {
+    [Детальная страница центра] as RehabDetail
+    [Детальная страница клиники] as ClinicDetail
+    [Детальная страница врача] as DoctorDetail
+    [Профиль специалиста] as SpecialistDetail
+}
+
+package "Пользовательские функции" {
+    [Регистрация] as Register
+    [Авторизация] as Login
+    [Личный кабинет] as Profile
+    [Оставить отзыв] as Review
+}
+
+package "Административная часть" {
+    [Админ-панель] as Admin
+    [Управление учреждениями] as ManageFacilities
+    [Управление специалистами] as ManageSpecialists
+    [Модерация отзывов] as ModerateReviews
+    [Статистика] as Statistics
+}
+
+package "Информационные страницы" {
+    [О проекте] as About
+    [Контакты] as Contacts
+    [Помощь] as Help
+    [Политика конфиденциальности] as Privacy
+}
+
+' Основная навигация
+Home --> Search
+Home --> RehabCenters
+Home --> Clinics
+Home --> PrivateDoctors
+Home --> Specialists
+Home --> About
+Home --> Contacts
+
+' Поиск и каталог
+Search --> RehabDetail
+Search --> ClinicDetail
+Search --> DoctorDetail
+Search --> SpecialistDetail
+
+RehabCenters --> RehabDetail
+Clinics --> ClinicDetail
+PrivateDoctors --> DoctorDetail
+Specialists --> SpecialistDetail
+
+' Детальные страницы
+RehabDetail --> Review
+ClinicDetail --> Review
+DoctorDetail --> Review
+SpecialistDetail --> Review
+
+' Пользовательские функции
+Home --> Register
+Home --> Login
+Register --> Profile
+Login --> Profile
+Profile --> Review
+
+' Административная часть
+Admin --> ManageFacilities
+Admin --> ManageSpecialists
+Admin --> ModerateReviews
+Admin --> Statistics
+
+ManageFacilities --> RehabDetail
+ManageFacilities --> ClinicDetail
+ManageFacilities --> DoctorDetail
+ManageSpecialists --> SpecialistDetail
+
+' Информационные страницы
+Home --> Help
+Home --> Privacy
+
+note right of Home
+  Главная страница содержит:
+  - Поиск по учреждениям
+  - Популярные центры
+  - Статистика
+  - Новости
+end note
+
+note right of Search
+  Поиск поддерживает:
+  - Фильтрацию по типу
+  - Фильтрацию по городу
+  - Фильтрацию по специализации
+  - Сортировку результатов
+end note
+
+note right of Admin
+  Админ-панель доступна:
+  - Суперпользователям
+  - Администраторам
+  - Модераторам
+end note
+
+@enduml 

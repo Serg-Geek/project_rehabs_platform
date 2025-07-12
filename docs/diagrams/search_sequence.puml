@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+
+title Диаграмма последовательности - Поиск учреждений
+
+actor "Пользователь" as User
+participant "Frontend" as Frontend
+participant "SearchView" as SearchView
+participant "Facility Model" as FacilityModel
+participant "Database" as DB
+participant "Cache" as Cache
+
+User -> Frontend : Вводит параметры поиска
+activate Frontend
+
+Frontend -> SearchView : GET /search?type=clinic&city=moscow&specialization=cardiology
+activate SearchView
+
+SearchView -> Cache : Проверяет кэш
+activate Cache
+
+alt Кэш найден
+    Cache -> SearchView : Возвращает кэшированные результаты
+else Кэш не найден
+    SearchView -> FacilityModel : filter(type=clinic, city=moscow)
+    activate FacilityModel
+    
+    FacilityModel -> DB : SELECT * FROM facilities WHERE type='clinic' AND city_id=1
+    activate DB
+    DB -> FacilityModel : Результаты запроса
+    deactivate DB
+    
+    FacilityModel -> FacilityModel : prefetch_related('specializations', 'images')
+    FacilityModel -> DB : Дополнительные запросы для связанных данных
+    activate DB
+    DB -> FacilityModel : Данные специализаций и изображений
+    deactivate DB
+    
+    FacilityModel -> SearchView : QuerySet с учреждениями
+    deactivate FacilityModel
+    
+    SearchView -> Cache : Сохраняет результаты в кэш
+    Cache -> SearchView : Подтверждение сохранения
+end
+
+SearchView -> SearchView : Пагинация результатов
+SearchView -> SearchView : Подготовка контекста для шаблона
+
+SearchView -> Frontend : HTML с результатами поиска
+deactivate SearchView
+
+Frontend -> User : Отображает результаты поиска
+deactivate Frontend
+
+note over User, DB
+  Процесс поиска включает:
+  1. Валидацию параметров
+  2. Проверку кэша
+  3. Выполнение запросов к БД
+  4. Загрузку связанных данных
+  5. Пагинацию результатов
+  6. Кэширование для оптимизации
+end note
+
+@enduml 

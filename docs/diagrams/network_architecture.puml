@@ -1,0 +1,194 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+title Сетевая архитектура - "Центр помощи зависимым"
+
+node "Internet" {
+    [Пользователи] as Users
+    [Поисковые роботы] as Crawlers
+    [CDN] as CDN
+}
+
+node "DMZ (Demilitarized Zone)" {
+    [Load Balancer] as LB
+    [WAF (Web Application Firewall)] as WAF
+    [SSL Terminator] as SSL
+}
+
+node "Web Tier" {
+    [Web Server 1] as Web1
+    [Web Server 2] as Web2
+    [Web Server 3] as Web3
+}
+
+node "Application Tier" {
+    [Django App 1] as App1
+    [Django App 2] as App2
+    [Django App 3] as App3
+}
+
+node "Data Tier" {
+    [PostgreSQL Primary] as DB1
+    [PostgreSQL Replica] as DB2
+    [Redis Master] as Redis1
+    [Redis Slave] as Redis2
+}
+
+node "Storage Tier" {
+    [File Server] as FileServer
+    [Backup Server] as BackupServer
+    [Monitoring Server] as MonitoringServer
+}
+
+node "Management Tier" {
+    [Admin Network] as AdminNet
+    [CI/CD Server] as CICD
+    [Development Server] as DevServer
+}
+
+' Internet connections
+Users --> CDN : HTTPS
+Crawlers --> CDN : HTTPS
+CDN --> LB : HTTPS
+
+' DMZ connections
+LB --> WAF : HTTP/HTTPS
+WAF --> SSL : HTTPS
+SSL --> Web1 : HTTP
+SSL --> Web2 : HTTP
+SSL --> Web3 : HTTP
+
+' Web tier connections
+Web1 --> App1 : Unix Socket
+Web2 --> App2 : Unix Socket
+Web3 --> App3 : Unix Socket
+
+' Application tier connections
+App1 --> DB1 : SQL (5432)
+App2 --> DB1 : SQL (5432)
+App3 --> DB1 : SQL (5432)
+
+App1 --> Redis1 : Redis (6379)
+App2 --> Redis1 : Redis (6379)
+App3 --> Redis1 : Redis (6379)
+
+App1 --> FileServer : NFS (2049)
+App2 --> FileServer : NFS (2049)
+App3 --> FileServer : NFS (2049)
+
+' Database connections
+DB1 --> DB2 : Replication (5432)
+Redis1 --> Redis2 : Replication (6379)
+
+' Storage connections
+FileServer --> BackupServer : rsync (22)
+DB1 --> BackupServer : pg_dump (5432)
+Redis1 --> BackupServer : Redis dump
+
+' Monitoring connections
+MonitoringServer --> Web1 : HTTP (80)
+MonitoringServer --> Web2 : HTTP (80)
+MonitoringServer --> Web3 : HTTP (80)
+MonitoringServer --> App1 : Metrics
+MonitoringServer --> App2 : Metrics
+MonitoringServer --> App3 : Metrics
+MonitoringServer --> DB1 : Metrics (5432)
+MonitoringServer --> Redis1 : Metrics (6379)
+
+' Management connections
+AdminNet --> Web1 : SSH (22)
+AdminNet --> Web2 : SSH (22)
+AdminNet --> Web3 : SSH (22)
+AdminNet --> DB1 : SSH (22)
+AdminNet --> FileServer : SSH (22)
+
+CICD --> Web1 : Deploy
+CICD --> Web2 : Deploy
+CICD --> Web3 : Deploy
+
+DevServer --> DB2 : SQL (5432)
+DevServer --> Redis2 : Redis (6379)
+
+' Security zones
+rectangle "Public Zone" {
+    Users
+    Crawlers
+    CDN
+}
+
+rectangle "DMZ Zone" {
+    LB
+    WAF
+    SSL
+}
+
+rectangle "Internal Zone" {
+    Web1
+    Web2
+    Web3
+    App1
+    App2
+    App3
+}
+
+rectangle "Data Zone" {
+    DB1
+    DB2
+    Redis1
+    Redis2
+}
+
+rectangle "Storage Zone" {
+    FileServer
+    BackupServer
+    MonitoringServer
+}
+
+rectangle "Management Zone" {
+    AdminNet
+    CICD
+    DevServer
+}
+
+note right of WAF
+  Web Application Firewall:
+  - Защита от DDoS
+  - Блокировка вредоносных запросов
+  - Rate limiting
+  - WAF rules
+end note
+
+note right of SSL
+  SSL Termination:
+  - HTTPS termination
+  - Certificate management
+  - SSL offloading
+  - Security headers
+end note
+
+note right of DB1
+  Database Security:
+  - Encrypted connections
+  - Access control
+  - Audit logging
+  - Backup encryption
+end note
+
+note right of FileServer
+  File Storage Security:
+  - Encrypted storage
+  - Access control lists
+  - Virus scanning
+  - Backup verification
+end note
+
+note right of AdminNet
+  Management Security:
+  - VPN access only
+  - Two-factor authentication
+  - Audit logging
+  - Restricted access
+end note
+
+@enduml 
