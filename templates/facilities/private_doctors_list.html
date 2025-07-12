@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load russian_plural %}
+
+{% block title %}
+Частные врачи | Центр помощи зависимым
+{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Частные врачи
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<section class="catalog private-doctors-catalog">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">Частные врачи</h2>
+        
+        <div class="section__content">
+            <div class="section__content-text catalog__content-text">
+                <p>
+                    Найдите опытных частнопрактикующих врачей в вашем городе. 
+                    Они предоставляют качественную медицинскую помощь в удобное для вас время.
+                </p>
+            </div>
+            
+            <div class="doctors__cards">
+                {% for doctor in doctors %}
+                <div class="card card--doctor">
+                    <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}">
+                        <div class="card__image">
+                            {% if doctor.main_image %}
+                                <img src="{{ doctor.main_image.image.url }}" alt="{{ doctor.get_full_name }}" />
+                            {% else %}
+                                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doctor.get_full_name }}" />
+                            {% endif %}
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title title__h4">
+                                {{ doctor.get_full_name }}
+                            </h3>
+                            <div class="card__specializations">
+                                {% for specialization in doctor.specializations.all %}
+                                <span class="specialization-tag">{{ specialization.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="card__info">
+                                <div class="card__info-item">
+                                    <span class="card__info-label">Опыт:</span>
+                                    <span class="card__info-value">{{ doctor.experience_years|year_plural }}</span>
+                                </div>
+                                <div class="card__info-item">
+                                    <span class="card__info-label">Город:</span>
+                                    <span class="card__info-value">{{ doctor.city.name }}</span>
+                                </div>
+                                {% if doctor.consultation_price %}
+                                <div class="card__info-item">
+                                    <span class="card__info-label">Консультация:</span>
+                                    <span class="card__info-value">{{ doctor.consultation_price }} ₽</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="card__features">
+                                {% if doctor.home_visits %}
+                                <span class="feature-tag">Выезд на дом</span>
+                                {% endif %}
+                                {% if doctor.online_consultations %}
+                                <span class="feature-tag">Онлайн</span>
+                                {% endif %}
+                                {% if doctor.emergency_available %}
+                                <span class="feature-tag">Экстренно</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="doctors__empty">
+                    <p>Врачи не найдены</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if specialization_filter %}&specialization={{ specialization_filter }}{% endif %}{% if home_visits_filter %}&home_visits={{ home_visits_filter }}{% endif %}" class="pagination__link">Назад</a>
+                {% endif %}
+                
+                <span class="pagination__current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if specialization_filter %}&specialization={{ specialization_filter }}{% endif %}{% if home_visits_filter %}&home_visits={{ home_visits_filter }}{% endif %}" class="pagination__link">Вперед</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %} 

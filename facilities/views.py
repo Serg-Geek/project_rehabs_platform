@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
-from .models import Clinic, RehabCenter
+from .models import Clinic, RehabCenter, PrivateDoctor
 from medical_services.models import FacilityService
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
@@ -165,6 +165,124 @@ def load_more_clinics(request):
             cards_html += render_to_string(
                 'includes/cards/clinic_card.html',
                 {'clinic': clinic},
+                request=request
+            )
+        
+        return JsonResponse({
+            'cards': cards_html,
+            'has_more': has_more
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+class PrivateDoctorListView(ListView):
+    model = PrivateDoctor
+    template_name = 'facilities/private_doctors_list.html'
+    context_object_name = 'doctors'
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = PrivateDoctor.objects.filter(is_active=True).prefetch_related(
+            'specializations',
+            'city',
+            'city__region',
+            'images'
+        ).order_by('last_name', 'first_name')
+        
+        # Поиск по имени, специализации или городу
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(middle_name__icontains=search_query) |
+                Q(specializations__name__icontains=search_query) |
+                Q(city__name__icontains=search_query)
+            ).distinct()
+        
+        # Фильтрация по городу
+        city_filter = self.request.GET.get('city')
+        if city_filter:
+            queryset = queryset.filter(city__slug=city_filter)
+        
+        # Фильтрация по специализации
+        specialization_filter = self.request.GET.get('specialization')
+        if specialization_filter:
+            queryset = queryset.filter(specializations__slug=specialization_filter)
+        
+        # Фильтрация по возможности выезда на дом
+        home_visits = self.request.GET.get('home_visits')
+        if home_visits == 'true':
+            queryset = queryset.filter(home_visits=True)
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        context['city_filter'] = self.request.GET.get('city', '')
+        context['specialization_filter'] = self.request.GET.get('specialization', '')
+        context['home_visits_filter'] = self.request.GET.get('home_visits', '')
+        
+        # Добавляем список всех специализаций для фильтра
+        from staff.models import Specialization
+        context['specializations'] = Specialization.objects.all().order_by('name')
+        
+        return context
+
+class PrivateDoctorDetailView(DetailView):
+    model = PrivateDoctor
+    template_name = 'facilities/private_doctor_detail.html'
+    context_object_name = 'doctor'
+
+    def get_queryset(self):
+        return PrivateDoctor.objects.filter(is_active=True).prefetch_related(
+            'specializations',
+            'city',
+            'city__region',
+            'images',
+            'documents',
+            'reviews'
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Похожие врачи в том же городе
+        related_doctors = PrivateDoctor.objects.filter(
+            is_active=True,
+            city=self.object.city
+        ).exclude(pk=self.object.pk).prefetch_related('specializations')[:4]
+        
+        # Врачи с похожими специализациями
+        similar_specializations = self.object.specializations.all()
+        similar_doctors = PrivateDoctor.objects.filter(
+            is_active=True,
+            specializations__in=similar_specializations
+        ).exclude(pk=self.object.pk).distinct()[:4]
+        
+        context['related_doctors'] = related_doctors
+        context['similar_doctors'] = similar_doctors
+        context['reviews'] = self.object.reviews.all().order_by('-created_at')[:5]
+        context['documents'] = self.object.documents.filter(is_active=True)
+        context['images'] = self.object.images.all().order_by('order', 'created_at')
+        
+        return context
+
+def load_more_doctors(request):
+    try:
+        offset = int(request.GET.get('offset', 0))
+        limit = 12
+        
+        doctors = PrivateDoctor.objects.filter(is_active=True).order_by('last_name', 'first_name')[offset:offset + limit + 1]
+        has_more = len(doctors) > limit
+        doctors = doctors[:limit]
+        
+        cards_html = ''
+        for doctor in doctors:
+            cards_html += render_to_string(
+                'includes/cards/private_doctor_card.html',
+                {'doctor': doctor},
                 request=request
             )
         

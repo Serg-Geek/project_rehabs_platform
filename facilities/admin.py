@@ -5,7 +5,8 @@ from .models import (
     Clinic,
     RehabCenter,
     FacilityImage,
-    FacilityDocument
+    FacilityDocument,
+    PrivateDoctor
 )
 from staff.models import FacilitySpecialist
 from django.utils.translation import gettext_lazy as _
@@ -99,7 +100,7 @@ class FacilityImageAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "content_type":
             kwargs["queryset"] = ContentType.objects.filter(
-                model__in=['clinic', 'rehabcenter']
+                model__in=['clinic', 'rehabcenter', 'privatedoctor']
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
@@ -127,3 +128,85 @@ class FacilityDocumentAdmin(admin.ModelAdmin):
     search_fields = ['title', 'number']
     ordering = ['-created_at']
     exclude = ['content_type', 'object_id']
+
+@admin.register(PrivateDoctor)
+class PrivateDoctorAdmin(BaseFacilityAdmin):
+    list_display = [
+        'get_full_name',
+        'organization_type',
+        'city',
+        'phone',
+        'consultation_price',
+        'is_active'
+    ]
+    list_filter = [
+        'organization_type',
+        'city__region',
+        'city',
+        'is_active',
+        'home_visits',
+        'emergency_available',
+        'weekend_work',
+        'online_consultations',
+        'video_consultations',
+        'insurance_accepted'
+    ]
+    search_fields = [
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone',
+        'email',
+        'address',
+        'specializations__name'
+    ]
+    filter_horizontal = ['specializations']
+    prepopulated_fields = {'slug': ('last_name', 'first_name')}
+    inlines = [FacilityImageInline, FacilityDocumentInline]
+    
+    fieldsets = (
+        (_('Основная информация'), {
+            'fields': (
+                'name', 'slug', 'organization_type',
+                'first_name', 'last_name', 'middle_name',
+                'specializations', 'experience_years', 'education',
+                'biography', 'achievements', 'is_active'
+            )
+        }),
+        (_('Контактная информация'), {
+            'fields': ('phone', 'email', 'website')
+        }),
+        (_('Место приема'), {
+            'fields': (
+                'address', 'city', 'office_description',
+                'parking_available', 'wheelchair_accessible'
+            )
+        }),
+        (_('График работы'), {
+            'fields': (
+                'schedule', 'home_visits', 'emergency_available', 'weekend_work'
+            )
+        }),
+        (_('Финансовые аспекты'), {
+            'fields': (
+                'consultation_price', 'home_visit_price',
+                'insurance_accepted'
+            )
+        }),
+        (_('Лицензирование'), {
+            'fields': (
+                'license_number', 'license_issue_date', 'license_expiry_date'
+            )
+        }),
+        (_('Дополнительные возможности'), {
+            'fields': (
+                'online_consultations', 'video_consultations',
+                'special_equipment'
+            )
+        }),
+    )
+
+    def get_full_name(self, obj):
+        return obj.get_full_name()
+    get_full_name.short_description = _('ФИО')
+    get_full_name.admin_order_field = 'last_name'

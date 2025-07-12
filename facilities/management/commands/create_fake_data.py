@@ -1,16 +1,22 @@
 from django.core.management.base import BaseCommand
-from django.utils.text import slugify
-from facilities.models import (
-    OrganizationType, AbstractMedicalFacility, Clinic, RehabCenter,
-    Review, FacilityDocument
-)
-from core.models import City, Region
-from staff.models import FacilitySpecialist
-from faker import Faker
-import uuid
-from datetime import datetime, timedelta
-import random
 from django.contrib.contenttypes.models import ContentType
+from django.utils.text import slugify
+from django.db.models import Q
+import random
+import uuid
+from faker import Faker
+from datetime import date, timedelta
+
+from facilities.models import (
+    OrganizationType, 
+    Clinic, 
+    RehabCenter, 
+    FacilityImage, 
+    FacilityDocument,
+    PrivateDoctor
+)
+from staff.models import FacilitySpecialist, Specialization
+from core.models import City, Region
 
 class Command(BaseCommand):
     help = 'Creates fake data for medical facilities'
@@ -149,6 +155,97 @@ class Command(BaseCommand):
         )
         return specialist
 
+    def create_private_doctors(self):
+        """Создание тестовых частных врачей"""
+        self.stdout.write('Создание частных врачей...')
+        
+        # Получаем города и специализации
+        cities = list(City.objects.all())
+        specializations = list(Specialization.objects.all())
+        private_doctor_type = OrganizationType.objects.get(slug='private-doctor')
+        
+        if not cities:
+            self.stdout.write(self.style.WARNING('Нет городов для создания врачей'))
+            return
+            
+        if not specializations:
+            self.stdout.write(self.style.WARNING('Нет специализаций для создания врачей'))
+            return
+        
+        # Создаем 20 частных врачей
+        for i in range(20):
+            first_name = self.faker.first_name()
+            last_name = self.faker.last_name()
+            middle_name = self.faker.middle_name()
+            
+            # Формируем название
+            if middle_name:
+                name = f"{last_name} {first_name} {middle_name}"
+            else:
+                name = f"{last_name} {first_name}"
+            
+            # Создаем базовый слаг
+            base_slug = slugify(f"{last_name}-{first_name}")
+            slug = base_slug
+            
+            # Проверяем уникальность slug
+            counter = 1
+            while PrivateDoctor.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            
+            # Создаем врача
+            doctor = PrivateDoctor.objects.create(
+                name=name,
+                slug=slug,
+                organization_type=private_doctor_type,
+                first_name=first_name,
+                last_name=last_name,
+                middle_name=middle_name,
+                experience_years=random.randint(5, 35),
+                education=self.faker.text(max_nb_chars=300),
+                biography=self.faker.text(max_nb_chars=500),
+                achievements=self.faker.text(max_nb_chars=200),
+                phone=self.faker.phone_number(),
+                email=self.faker.email(),
+                website=self.faker.url() if random.choice([True, False]) else '',
+                address=self.faker.address(),
+                city=random.choice(cities),
+                office_description=self.faker.text(max_nb_chars=200),
+                parking_available=random.choice([True, False]),
+                wheelchair_accessible=random.choice([True, False]),
+                schedule=self.faker.text(max_nb_chars=150),
+                home_visits=random.choice([True, False]),
+                emergency_available=random.choice([True, False]),
+                weekend_work=random.choice([True, False]),
+                consultation_price=random.randint(1000, 5000) if random.choice([True, False]) else None,
+                home_visit_price=random.randint(2000, 8000) if random.choice([True, False]) else None,
+                insurance_accepted=random.choice([True, False]),
+                license_number=f"ЛО-{random.randint(100000, 999999)}" if random.choice([True, False]) else '',
+                license_issue_date=date.today() - timedelta(days=random.randint(100, 1000)),
+                license_expiry_date=date.today() + timedelta(days=random.randint(100, 1000)),
+                online_consultations=random.choice([True, False]),
+                video_consultations=random.choice([True, False]),
+                special_equipment=self.faker.text(max_nb_chars=150) if random.choice([True, False]) else '',
+                is_active=True
+            )
+            
+            # Добавляем специализации
+            doctor_specializations = random.sample(specializations, random.randint(1, 3))
+            doctor.specializations.set(doctor_specializations)
+            
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f'Создан врач: {doctor.get_full_name()} в {doctor.city.name}'
+                )
+            )
+        
+        self.stdout.write(
+            self.style.SUCCESS(
+                f'Создано {PrivateDoctor.objects.count()} частных врачей'
+            )
+        )
+
     def handle(self, *args, **kwargs):
         num_clinics = kwargs['num_clinics']
         num_rehabs = kwargs['num_rehabs']
@@ -160,7 +257,7 @@ class Command(BaseCommand):
 
         # Получаем типы организаций
         clinic_type = OrganizationType.objects.get(slug='clinic')
-        rehab_type = OrganizationType.objects.get(slug='rehab')
+        rehab_type = OrganizationType.objects.get(slug='rehabilitation-center')
 
         # Создаем клиники
         for i in range(num_clinics):
@@ -272,4 +369,5 @@ class Command(BaseCommand):
 
                 self.stdout.write(self.style.SUCCESS(f'Created rehab center: {rehab.name}'))
 
+        self.create_private_doctors()
         self.stdout.write(self.style.SUCCESS('Successfully created fake data')) 

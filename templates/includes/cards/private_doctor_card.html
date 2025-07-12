@@ -1,0 +1,48 @@
+<div class="card card--doctor">
+    <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}">
+        <div class="card__image">
+            {% if doctor.main_image %}
+                <img src="{{ doctor.main_image.image.url }}" alt="{{ doctor.get_full_name }}" />
+            {% else %}
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doctor.get_full_name }}" />
+            {% endif %}
+        </div>
+        <div class="card__content">
+            <h3 class="card__title title__h4">
+                {{ doctor.get_full_name }}
+            </h3>
+            <div class="card__specializations">
+                {% for specialization in doctor.specializations.all %}
+                <span class="specialization-tag">{{ specialization.name }}</span>
+                {% endfor %}
+            </div>
+            <div class="card__info">
+                <div class="card__info-item">
+                    <span class="card__info-label">Опыт:</span>
+                    <span class="card__info-value">{{ doctor.experience_years|year_plural }}</span>
+                </div>
+                <div class="card__info-item">
+                    <span class="card__info-label">Город:</span>
+                    <span class="card__info-value">{{ doctor.city.name }}</span>
+                </div>
+                {% if doctor.consultation_price %}
+                <div class="card__info-item">
+                    <span class="card__info-label">Консультация:</span>
+                    <span class="card__info-value">{{ doctor.consultation_price }} ₽</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card__features">
+                {% if doctor.home_visits %}
+                <span class="feature-tag">Выезд на дом</span>
+                {% endif %}
+                {% if doctor.online_consultations %}
+                <span class="feature-tag">Онлайн</span>
+                {% endif %}
+                {% if doctor.emergency_available %}
+                <span class="feature-tag">Экстренно</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+</div> 

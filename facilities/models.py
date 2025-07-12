@@ -106,6 +106,8 @@ class AbstractMedicalFacility(TimeStampedModel):
             return reverse('facilities:rehab_detail', kwargs={'slug': self.slug})
         elif isinstance(self, Clinic):
             return reverse('facilities:clinic_detail', kwargs={'slug': self.slug})
+        elif isinstance(self, PrivateDoctor):
+            return reverse('facilities:private_doctor_detail', kwargs={'slug': self.slug})
         return '#'  # Fallback URL
 
     def __str__(self):
@@ -404,3 +406,210 @@ class FacilityDocument(TimeStampedModel):
 
     def __str__(self):
         return f"{self.facility} - {self.get_document_type_display()}"
+
+class PrivateDoctor(AbstractMedicalFacility):
+    """
+    Модель частнопрактикующего врача
+    """
+    # Персональная информация
+    first_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Имя')
+    )
+    last_name = models.CharField(
+        max_length=100,
+        verbose_name=_('Фамилия')
+    )
+    middle_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name=_('Отчество')
+    )
+    specializations = models.ManyToManyField(
+        'staff.Specialization',
+        verbose_name=_('Специализации')
+    )
+    experience_years = models.IntegerField(
+        verbose_name=_('Стаж (лет)')
+    )
+    education = models.TextField(
+        verbose_name=_('Образование'),
+        blank=True,
+        null=True
+    )
+    biography = models.TextField(
+        verbose_name=_('Биография'),
+        blank=True,
+        null=True
+    )
+    achievements = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Достижения')
+    )
+    
+    # Место приема
+    office_description = models.TextField(
+        verbose_name=_('Описание кабинета/офиса'),
+        blank=True,
+        null=True
+    )
+    parking_available = models.BooleanField(
+        default=False,
+        verbose_name=_('Наличие парковки')
+    )
+    wheelchair_accessible = models.BooleanField(
+        default=False,
+        verbose_name=_('Доступность для инвалидных колясок')
+    )
+    
+    # График работы
+    schedule = models.TextField(
+        verbose_name=_('График работы')
+    )
+    home_visits = models.BooleanField(
+        default=False,
+        verbose_name=_('Выезд на дом')
+    )
+    emergency_available = models.BooleanField(
+        default=False,
+        verbose_name=_('Экстренная помощь')
+    )
+    weekend_work = models.BooleanField(
+        default=False,
+        verbose_name=_('Работа в выходные')
+    )
+    
+    # Финансовые аспекты
+    consultation_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name=_('Стоимость консультации'),
+        null=True,
+        blank=True
+    )
+    home_visit_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name=_('Стоимость выезда на дом'),
+        null=True,
+        blank=True
+    )
+    insurance_accepted = models.BooleanField(
+        default=False,
+        verbose_name=_('Принимает страховку')
+    )
+    
+    # Лицензирование
+    license_issue_date = models.DateField(
+        verbose_name=_('Дата выдачи лицензии'),
+        null=True,
+        blank=True
+    )
+    license_expiry_date = models.DateField(
+        verbose_name=_('Срок действия лицензии'),
+        null=True,
+        blank=True
+    )
+    
+    # Дополнительные возможности
+    online_consultations = models.BooleanField(
+        default=False,
+        verbose_name=_('Онлайн консультации')
+    )
+    video_consultations = models.BooleanField(
+        default=False,
+        verbose_name=_('Видеоконсультации')
+    )
+    special_equipment = models.TextField(
+        verbose_name=_('Специальное оборудование'),
+        blank=True,
+        null=True
+    )
+    
+    # Generic Relations
+    specialists = GenericRelation(
+        'staff.FacilitySpecialist',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='private_doctor',
+        verbose_name=_('Специалисты')
+    )
+    images = GenericRelation(
+        'FacilityImage',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='private_doctor',
+        verbose_name=_('Изображения')
+    )
+    documents = GenericRelation(
+        'FacilityDocument',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='private_doctor',
+        verbose_name=_('Документы')
+    )
+    reviews = GenericRelation(
+        'reviews.Review',
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='facility',
+        verbose_name=_('Отзывы')
+    )
+
+    class Meta:
+        verbose_name = _('Частный врач')
+        verbose_name_plural = _('Частные врачи')
+        ordering = ['last_name', 'first_name']
+
+    def __str__(self):
+        return f"{self.get_full_name()} ({self.organization_type.name})"
+
+    def get_full_name(self):
+        """Получить полное имя врача"""
+        if self.middle_name:
+            return f"{self.last_name} {self.first_name} {self.middle_name}"
+        return f"{self.last_name} {self.first_name}"
+
+    def get_absolute_url(self):
+        """Получить абсолютный URL врача"""
+        return reverse('facilities:private_doctor_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        # Формируем название из имени и фамилии
+        if not self.name:
+            self.name = self.get_full_name()
+        
+        # Формируем базовый слаг из фамилии и имени
+        if not self.slug:
+            base_slug = slugify(f"{self.last_name}-{self.first_name}")
+            slug = base_slug
+            
+            # Проверяем, существует ли уже такой слаг
+            counter = 1
+            while PrivateDoctor.objects.filter(Q(slug=slug) & ~Q(pk=self.pk)).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
+            
+        super().save(*args, **kwargs)
+
+    @property
+    def average_rating(self):
+        """Средний рейтинг врача"""
+        reviews = self.reviews.all()
+        if reviews:
+            return sum(review.rating for review in reviews) / len(reviews)
+        return 0
+
+    @property
+    def reviews_count(self):
+        """Количество отзывов"""
+        return self.reviews.count()
+
+    @property
+    def main_image(self):
+        """Главное изображение врача (is_main=True), либо первое, либо None"""
+        return self.images.filter(is_main=True).first() or self.images.first()
