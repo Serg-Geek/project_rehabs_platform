@@ -2,16 +2,16 @@
 {% load static %}
 {% load russian_plural %}
 
-{% block title %}
-{{ doctor.get_full_name }} - Частный врач | Центр помощи зависимым
-{% endblock %}
+{% block title %}{{ doctor.get_full_name }} - Частный врач{% endblock %}
 
 {% block content %}
 <nav aria-label="breadcrumb">
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">
                 {{ doctor.get_full_name }}
             </li>
@@ -19,247 +19,158 @@
     </div>
 </nav>
 
-<section class="doctor-detail">
+<section class="detail spec-detail rehab-help">
     <div class="container">
-        <div class="doctor-detail__header">
-            <div class="doctor-detail__photo">
+        <div class="detail__content rehab-help__content">
+            <div class="detail__content-item detail__content-item--img rehab-help__content-item rehab-help__image">
                 {% if doctor.main_image %}
                     <img src="{{ doctor.main_image.image.url }}" alt="{{ doctor.get_full_name }}" />
                 {% else %}
                     <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doctor.get_full_name }}" />
                 {% endif %}
             </div>
-            
-            <div class="doctor-detail__info">
-                <h1 class="title__h1">{{ doctor.get_full_name }}</h1>
-                
-                <div class="doctor-detail__specializations">
-                    {% for specialization in doctor.specializations.all %}
-                    <span class="specialization-tag">{{ specialization.name }}</span>
-                    {% endfor %}
-                </div>
-                
-                <div class="doctor-detail__stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Опыт работы:</span>
-                        <span class="stat-value">{{ doctor.experience_years|year_plural }}</span>
-                    </div>
-                    {% if doctor.average_rating > 0 %}
-                    <div class="stat-item">
-                        <span class="stat-label">Рейтинг:</span>
-                        <span class="stat-value">{{ doctor.average_rating|floatformat:1 }} ⭐ ({{ doctor.reviews_count }} отзывов)</span>
+            <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
+                <h2 class="title__h2 detail__title">{{ doctor.get_full_name }}</h2>
+                <div class="detail__text spec-detail__text">
+                    <p>
+                        {% for specialization in doctor.specializations.all %}
+                        {{ specialization.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% if doctor.city %}
+                    <div itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressRegion">{{ doctor.city.region.name }}</span>,
+                        <span itemprop="addressCountry">Россия</span>
                     </div>
                     {% endif %}
-                    <div class="stat-item">
-                        <span class="stat-label">Город:</span>
-                        <span class="stat-value">{{ doctor.city.name }}</span>
-                    </div>
-                </div>
-                
-                <div class="doctor-detail__contact">
-                    <div class="contact-item">
-                        <span class="contact-label">Телефон:</span>
-                        <a href="tel:{{ doctor.phone }}" class="contact-value">{{ doctor.phone }}</a>
-                    </div>
-                    {% if doctor.email %}
-                    <div class="contact-item">
-                        <span class="contact-label">Email:</span>
-                        <a href="mailto:{{ doctor.email }}" class="contact-value">{{ doctor.email }}</a>
-                    </div>
-                    {% endif %}
-                    {% if doctor.website %}
-                    <div class="contact-item">
-                        <span class="contact-label">Сайт:</span>
-                        <a href="{{ doctor.website }}" target="_blank" class="contact-value">{{ doctor.website }}</a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="doctor-detail__content">
-            <div class="doctor-detail__main">
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">О враче</h2>
-                    {% if doctor.biography %}
-                    <div class="doctor-detail__biography">
-                        {{ doctor.biography|linebreaks }}
-                    </div>
-                    {% endif %}
-                    
-                    <div class="doctor-detail__education">
-                        <h3 class="title__h4">Образование</h3>
-                        {% if doctor.education %}
-                        <p>{{ doctor.education }}</p>
-                        {% else %}
-                        <p>Информация об образовании не указана</p>
-                        {% endif %}
-                    </div>
-                    
-                    {% if doctor.achievements %}
-                    <div class="doctor-detail__achievements">
-                        <h3 class="title__h4">Достижения</h3>
-                        <p>{{ doctor.achievements|linebreaks }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-                
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">Место приема</h2>
-                    <div class="doctor-detail__address">
-                        {% if doctor.address %}
-                        <p><strong>Адрес:</strong> {{ doctor.address }}</p>
-                        {% else %}
-                        <p><strong>Адрес:</strong> Информация об адресе не указана</p>
-                        {% endif %}
-                        {% if doctor.office_description %}
-                        <p><strong>Описание кабинета:</strong> {{ doctor.office_description }}</p>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="doctor-detail__features">
-                        {% if doctor.parking_available %}
-                        <span class="feature-tag">Парковка</span>
-                        {% endif %}
-                        {% if doctor.wheelchair_accessible %}
-                        <span class="feature-tag">Доступность для инвалидов</span>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">График работы</h2>
-                    <div class="doctor-detail__schedule">
-                        <p>{{ doctor.schedule|linebreaks }}</p>
-                    </div>
-                    
-                    <div class="doctor-detail__services">
-                        {% if doctor.home_visits %}
-                        <div class="service-item">
-                            <span class="service-icon">🏠</span>
-                            <span class="service-text">Выезд на дом</span>
-                            {% if doctor.home_visit_price %}
-                            <span class="service-price">от {{ doctor.home_visit_price }} ₽</span>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                        {% if doctor.emergency_available %}
-                        <div class="service-item">
-                            <span class="service-icon">🚨</span>
-                            <span class="service-text">Экстренная помощь</span>
-                        </div>
-                        {% endif %}
-                        {% if doctor.weekend_work %}
-                        <div class="service-item">
-                            <span class="service-icon">📅</span>
-                            <span class="service-text">Работа в выходные</span>
-                        </div>
-                        {% endif %}
-                        {% if doctor.online_consultations %}
-                        <div class="service-item">
-                            <span class="service-icon">💻</span>
-                            <span class="service-text">Онлайн консультации</span>
-                        </div>
-                        {% endif %}
-                        {% if doctor.video_consultations %}
-                        <div class="service-item">
-                            <span class="service-icon">📹</span>
-                            <span class="service-text">Видеоконсультации</span>
-                        </div>
-                        {% endif %}
-                    </div>
                 </div>
                 
                 {% if doctor.consultation_price or doctor.home_visit_price %}
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">Стоимость услуг</h2>
-                    <div class="doctor-detail__prices">
-                        {% if doctor.consultation_price %}
-                        <div class="price-item">
-                            <span class="price-service">Консультация</span>
-                            <span class="price-value">{{ doctor.consultation_price }} ₽</span>
-                        </div>
-                        {% endif %}
-                        {% if doctor.home_visit_price %}
-                        <div class="price-item">
-                            <span class="price-service">Выезд на дом</span>
-                            <span class="price-value">{{ doctor.home_visit_price }} ₽</span>
-                        </div>
-                        {% endif %}
+                <div class="doctor-prices">
+                    {% if doctor.consultation_price %}
+                    <div class="price-item">
+                        <span class="price-label">Консультация:</span>
+                        <span class="price-value">{{ doctor.consultation_price }} ₽</span>
                     </div>
-                    
-                    <div class="doctor-detail__payment">
-                        {% if doctor.insurance_accepted %}
-                        <p><strong>Принимает страховку</strong></p>
-                        {% endif %}
+                    {% endif %}
+                    {% if doctor.home_visit_price %}
+                    <div class="price-item">
+                        <span class="price-label">Выезд на дом:</span>
+                        <span class="price-value">{{ doctor.home_visit_price }} ₽</span>
                     </div>
-                </div>
-                {% endif %}
-                
-                {% if doctor.special_equipment %}
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">Специальное оборудование</h2>
-                    <p>{{ doctor.special_equipment|linebreaks }}</p>
-                </div>
-                {% endif %}
-                
-                {% if reviews %}
-                <div class="doctor-detail__section">
-                    <h2 class="title__h3">Отзывы пациентов</h2>
-                    <div class="doctor-detail__reviews">
-                        {% for review in reviews %}
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="review-rating">
-                                    {% for i in "12345" %}
-                                    {% if forloop.counter <= review.rating %}
-                                    <span class="star filled">⭐</span>
-                                    {% else %}
-                                    <span class="star">☆</span>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="review-date">{{ review.created_at|date:"d.m.Y" }}</div>
-                            </div>
-                            <div class="review-content">
-                                {{ review.content|linebreaks }}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-            
-            <div class="doctor-detail__sidebar">
-                {% if related_doctors %}
-                <div class="doctor-detail__related">
-                    <h3 class="title__h4">Врачи в {{ doctor.city.name }}</h3>
-                    {% for related_doctor in related_doctors %}
-                    <div class="related-doctor">
-                        <a href="{% url 'facilities:private_doctor_detail' related_doctor.slug %}">
-                            <div class="related-doctor__photo">
-                                {% if related_doctor.main_image %}
-                                    <img src="{{ related_doctor.main_image.image.url }}" alt="{{ related_doctor.get_full_name }}" />
-                                {% else %}
-                                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ related_doctor.get_full_name }}" />
-                                {% endif %}
-                            </div>
-                            <div class="related-doctor__info">
-                                <h4 class="related-doctor__name">{{ related_doctor.get_full_name }}</h4>
-                                <div class="related-doctor__specializations">
-                                    {% for specialization in related_doctor.specializations.all %}
-                                    <span class="specialization-tag small">{{ specialization.name }}</span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </section>
+
+<section class="detail__info spec-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <h3 class="title__h3 detail__title">Образование</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ doctor.education|default:'Информация об образовании не указана' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        {% if doctor.biography %}
+        <div class="detail-content__wrapper detail-content__wrapper-second">
+            <h3 class="title__h3 detail__title">О враче</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ doctor.biography }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if doctor.achievements %}
+        <div class="detail-content__wrapper detail-content__wrapper-second">
+            <h3 class="title__h3 detail__title">Достижения</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ doctor.achievements }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if doctor.special_equipment %}
+        <div class="detail-content__wrapper detail-content__wrapper-second">
+            <h3 class="title__h3 detail__title">Специальное оборудование</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <p>{{ doctor.special_equipment }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if doctor.documents.all %}
+<section class="detail-docs clinic-detail__docs">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Документы специалиста</h3>
+        <div class="detail-doc__images">
+            <div class="detail-docs__slider">
+                {% for doc in doctor.documents.all %}
+                <div class="detail-docs__image spec-detail__docs--image">
+                    {% if doc.document %}
+                    <a href="{{ doc.document.url }}" data-lightbox="doctor-docs" data-title="{{ doc.title|default:doc.document.name }}">
+                        <img src="{{ doc.document.url }}" alt="{{ doc.title }}" />
+                    </a>
+                    {% else %}
+                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if reviews %}
+<section class="detail__reviews">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Отзывы пациентов</h3>
+        <div class="detail__reviews-slider">
+            {% for review in reviews %}
+            <div class="detail__review">
+                <h4 class="title__h4 detail__review-title">
+                    {{ review.author_name }}{% if review.author_age %}, {{ review.author_age }} лет{% endif %}
+                </h4>
+                <p>{{ review.content }}</p>
+            </div>
+            {% empty %}
+            <div class="detail__review">
+                <p>Пока нет отзывов</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if related_doctors %}
+<section class="detail-rehabs rehabs">
+    <div class="container">
+        <h3 class="title__h3 detail-rehabs__title">Другие специалисты в вашем регионе</h3>
+        <div class="section__content">
+            <div class="doctors__cards">
+                {% for related_doctor in related_doctors %}
+                {% include "includes/cards/private_doctor_card.html" with doctor=related_doctor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include "facilities/includes/consultation.html" %}
 {% endblock %} 

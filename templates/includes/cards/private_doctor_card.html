@@ -18,7 +18,7 @@
                 {% endfor %}
             </p>
             <div class="card__specialist--location">
-                <span class="card__specialist--location-value">Опыт работы: {{ doctor.experience_years|year_plural }}</span>
+                <span class="card__specialist--location-value">{{ doctor.city.region.name }}, {{ doctor.city.name }}</span>
             </div>
         </div>
     </a>
