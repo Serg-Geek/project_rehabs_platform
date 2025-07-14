@@ -1,4 +1,7 @@
-<div class="card card--doctor">
+{% load static %}
+{% load russian_plural %}
+
+<div class="card card--specialist">
     <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}">
         <div class="card__image">
             {% if doctor.main_image %}
@@ -8,40 +11,14 @@
             {% endif %}
         </div>
         <div class="card__content">
-            <h3 class="card__title title__h4">
-                {{ doctor.get_full_name }}
-            </h3>
-            <div class="card__specializations">
+            <h3 class="card__title title__h4">{{ doctor.get_full_name }}</h3>
+            <p class="card__description">
                 {% for specialization in doctor.specializations.all %}
-                <span class="specialization-tag">{{ specialization.name }}</span>
+                {{ specialization.name }}{% if not forloop.last %}, {% endif %}
                 {% endfor %}
-            </div>
-            <div class="card__info">
-                <div class="card__info-item">
-                    <span class="card__info-label">Опыт:</span>
-                    <span class="card__info-value">{{ doctor.experience_years|year_plural }}</span>
-                </div>
-                <div class="card__info-item">
-                    <span class="card__info-label">Город:</span>
-                    <span class="card__info-value">{{ doctor.city.name }}</span>
-                </div>
-                {% if doctor.consultation_price %}
-                <div class="card__info-item">
-                    <span class="card__info-label">Консультация:</span>
-                    <span class="card__info-value">{{ doctor.consultation_price }} ₽</span>
-                </div>
-                {% endif %}
-            </div>
-            <div class="card__features">
-                {% if doctor.home_visits %}
-                <span class="feature-tag">Выезд на дом</span>
-                {% endif %}
-                {% if doctor.online_consultations %}
-                <span class="feature-tag">Онлайн</span>
-                {% endif %}
-                {% if doctor.emergency_available %}
-                <span class="feature-tag">Экстренно</span>
-                {% endif %}
+            </p>
+            <div class="card__specialist--location">
+                <span class="card__specialist--location-value">Опыт работы: {{ doctor.experience_years|year_plural }}</span>
             </div>
         </div>
     </a>
