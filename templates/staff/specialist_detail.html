@@ -57,7 +57,7 @@
                                     {{ specialist.facility.city.name }}{% if specialist.facility.city.region %}, {{ specialist.facility.city.region.name }}{% endif %}
                                 {% endif %}
                             </p>
-                            {% if specialist.facility.min_price %}
+                            {% if specialist.facility.organization_type.slug == 'rehab-center' and specialist.facility.min_price %}
                             <div class="card__price">
                                 <span class="card__price-value">от {{ specialist.facility.min_price }} P / месяц</span>
                             </div>

@@ -205,29 +205,7 @@
           <div class="carousel-item active">
             <div class="rehabs__cards">
               {% for center in first_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %} {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
-                    </p>
-                    {% with service=center.services.first %} {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %} {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/rehab_card.html" with facility=center %}
               {% endfor %}
             </div>
           </div>
@@ -237,34 +215,7 @@
           <div class="carousel-item">
             <div class="rehabs__cards">
               {% for center in second_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %}
-                    {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %} {{ center.city.name }}
-                      {% if center.city.region %}, {{ center.city.region.name }}{% endif %}
-                      {% endif %}
-                    </p>
-                    {% with service=center.services.first %}
-                    {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/rehab_card.html" with facility=center %}
               {% endfor %}
             </div>
           </div>
@@ -275,31 +226,7 @@
           <div class="carousel-item">
             <div class="rehabs__cards">
               {% for center in third_slide %}
-              <div class="card">
-                <a href="{% url 'facilities:rehab_detail' center.slug %}">
-                  <div class="card__image">
-                    {% with main_image=center.images.first %} {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ center.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ center.name }}" />
-                    {% endif %} {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ center.name }}</h4>
-                    <p class="card__description">
-                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
-                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
-                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
-                      {% if center.city %} {{ center.city.name }}{% if center.city.region %}, {{ center.city.region.name }}{% endif %}{% endif %}
-                    </p>
-                    {% with service=center.services.first %} {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽ / месяц</span>
-                    </div>
-                    {% endif %} {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/rehab_card.html" with facility=center %}
               {% endfor %}
             </div>
           </div>
@@ -344,28 +271,7 @@
           <div class="carousel-item active">
             <div class="clinics__cards">
               {% for clinic in first_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %} {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %} {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %} {{ clinic.city.name }}{% if clinic.city.region %}, {{ clinic.city.region.name }}{% endif %}{% endif %}
-                    </p>
-                    {% with service=clinic.services.first %} {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %} {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/clinic_card.html" with clinic=clinic %}
               {% endfor %}
             </div>
           </div>
@@ -374,30 +280,7 @@
           <div class="carousel-item">
             <div class="clinics__cards">
               {% for clinic in second_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %} {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %} {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %} {{ clinic.city.name }}{% if
-                      clinic.city.region %}, {{ clinic.city.region.name }}{%
-                      endif %} {% endif %}
-                    </p>
-                    {% with service=clinic.services.first %} {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %} {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/clinic_card.html" with clinic=clinic %}
               {% endfor %}
             </div>
           </div>
@@ -406,30 +289,7 @@
           <div class="carousel-item">
             <div class="clinics__cards">
               {% for clinic in third_slide %}
-              <div class="card card--clinic">
-                <a href="{% url 'facilities:clinic_detail' clinic.slug %}">
-                  <div class="card__image">
-                    {% with main_image=clinic.images.first %} {% if main_image %}
-                    <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ clinic.name }}" />
-                    {% endif %} {% endwith %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">{{ clinic.name }}</h4>
-                    <p class="card__description">
-                      {% if clinic.city %} {{ clinic.city.name }}{% if
-                      clinic.city.region %}, {{ clinic.city.region.name }}{%
-                      endif %} {% endif %}
-                    </p>
-                    {% with service=clinic.services.first %} {% if service %}
-                    <div class="card__price">
-                      <span class="card__price-value">от {{ service.price }} ₽</span>
-                    </div>
-                    {% endif %} {% endwith %}
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/clinic_card.html" with clinic=clinic %}
               {% endfor %}
             </div>
           </div>
@@ -470,26 +330,7 @@
           <div class="carousel-item active">
             <div class="specialists__cards">
               {% for specialist in first_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">
-                      {{ specialist.get_full_name }}
-                    </h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{ specialist.experience_years|year_plural }}</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/specialist_card.html" with specialist=specialist %}
               {% endfor %}
             </div>
           </div>
@@ -497,27 +338,7 @@
           <div class="carousel-item">
             <div class="specialists__cards">
               {% for specialist in second_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">
-                      {{ specialist.get_full_name }}
-                    </h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{
-                        specialist.experience_years|year_plural }}</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/specialist_card.html" with specialist=specialist %}
               {% endfor %}
             </div>
           </div>
@@ -527,27 +348,7 @@
           <div class="carousel-item">
             <div class="specialists__cards">
               {% for specialist in third_slide %}
-              <div class="card card--specialist">
-                <a href="{% url 'staff:specialist_detail' specialist.slug %}">
-                  <div class="card__image">
-                    {% if specialist.photo %}
-                    <img src="{{ specialist.photo.url }}" alt="{{ specialist.get_full_name }}" />
-                    {% else %}
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ specialist.get_full_name }}" />
-                    {% endif %}
-                  </div>
-                  <div class="card__content">
-                    <h4 class="card__title title__h4">
-                      {{ specialist.get_full_name }}
-                    </h4>
-                    <p class="card__description">{{ specialist.position }}</p>
-                    <div class="card__specialist--location">
-                      <span class="card__specialist--location-value">Опыт работы: {{
-                        specialist.experience_years|year_plural }}</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+              {% include "includes/cards/specialist_card.html" with specialist=specialist %}
               {% endfor %}
             </div>
           </div>
@@ -813,7 +614,7 @@
 
     <div class="for-partners__flex-wrapper">
       <div class="for-partners__image">
-        <img src="{% static " deps/img/partnership.png" %}" alt="Изображение
+        <img src="{% static "deps/img/partnership.png" %}" alt="Изображение
           консультации" class="for-partners__img" />
       </div>
 

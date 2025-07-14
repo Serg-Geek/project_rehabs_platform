@@ -73,8 +73,18 @@ class ClinicAdmin(BaseFacilityAdmin):
 
 @admin.register(RehabCenter)
 class RehabCenterAdmin(BaseFacilityAdmin):
-    list_display = BaseFacilityAdmin.list_display + ['capacity', 'program_duration']
+    list_display = BaseFacilityAdmin.list_display + ['capacity', 'program_duration', 'min_price']
     list_filter = BaseFacilityAdmin.list_filter
+    
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
+        }),
+        (_('Реабилитационная программа'), {
+            'fields': ('capacity', 'program_duration', 'min_price', 'accommodation_conditions'),
+            'classes': ('collapse',)
+        }),
+    )
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):
