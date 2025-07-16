@@ -362,9 +362,12 @@ class DependentRequest(TimeStampedModel):
     class Status(models.TextChoices):
         NEW = 'new', _('Новая')
         IN_PROGRESS = 'in_progress', _('В обработке')
-        APPROVED = 'approved', _('Одобрена')
-        REJECTED = 'rejected', _('Отклонена')
-        COMPLETED = 'completed', _('Завершена')
+        WAITING_COMMISSION = 'waiting_commission', _('Ожидание комиссии')
+        COMMISSION_RECEIVED = 'commission_received', _('Комиссия получена')
+        TREATMENT_STARTED = 'treatment_started', _('Лечение начато')
+        TREATMENT_COMPLETED = 'treatment_completed', _('Лечение завершено')
+        CANCELLED = 'cancelled', _('Отменена')
+        CLOSED = 'closed', _('Закрыта')
 
     status = models.CharField(
         max_length=20,
