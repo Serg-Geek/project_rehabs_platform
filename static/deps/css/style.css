@@ -759,7 +759,17 @@ template {
   font-weight: 400;
   font-size: 20px;
   text-transform: uppercase;
-  color: #143a44
+  color: #143a44;
+  text-decoration: none;
+}
+.navbar__brand-text:hover {
+  text-decoration: none; /* Убирает подчёркивание при наведении */
+}
+
+
+
+.navbar a:hover {
+  text-decoration: none;
 }
 
 .navbar__location {
