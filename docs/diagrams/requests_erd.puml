@@ -1,0 +1,144 @@
+@startuml
+skinparam rankdir TB
+title ERD - Модуль заявок (requests)
+legend
+  <b>Модуль заявок:</b>
+  * AnonymousRequest — анонимные заявки
+  * DependentRequest — заявки от зависимых
+  * RequestNote, DependentRequestNote — заметки
+  * RequestStatusHistory, DependentRequestStatusHistory — история статусов
+  * RequestActionLog — лог действий
+  * Связи с OrganizationType, User, назначенной организацией
+  * <<deprecated>> — устаревшее поле, не использовать в новых разработках
+end legend
+
+entity "AnonymousRequest" as AnonymousRequest {
+    + id : int <<PK>>
+    --
+    request_type : str
+    status : str
+    priority : str
+    source : str
+    name : str
+    phone : str
+    email : str
+    organization : str
+    message : text
+    patient_name : str
+    patient_age : int
+    preferred_contact_time : str
+    organization_type : OrganizationType <<FK>>
+    assigned_organization : str
+    preferred_service : str
+    commission_amount : decimal
+    commission_received_date : date
+    commission_document : file
+    created_by : User <<FK>>
+    updated_by : User <<FK>>
+    assigned_to : User <<FK>>
+    created_at : datetime
+    updated_at : datetime
+    --
+    content_type : ContentType <<FK>> <<deprecated>>
+    object_id : int <<deprecated>>
+    preferred_facility : facility <<deprecated>>
+}
+
+entity "DependentRequest" as DependentRequest {
+    + id : int <<PK>>
+    --
+    addiction_type : str
+    contact_type : str
+    status : str
+    first_name : str
+    last_name : str
+    pseudonym : str
+    phone : str
+    email : str
+    age : int
+    addiction_duration : str
+    previous_treatment : text
+    current_condition : text
+    preferred_treatment : text
+    emergency_contact : str
+    emergency_phone : str
+    extra_notes : text
+    responsible_staff : User <<FK>>
+    organization_type : OrganizationType <<FK>>
+    assigned_organization : str
+    created_at : datetime
+    updated_at : datetime
+}
+
+entity "RequestNote" as RequestNote {
+    + id : int <<PK>>
+    --
+    request : AnonymousRequest <<FK>>
+    text : text
+    is_important : bool
+    created_by : User <<FK>>
+    created_at : datetime
+    updated_at : datetime
+}
+
+entity "DependentRequestNote" as DependentRequestNote {
+    + id : int <<PK>>
+    --
+    request : DependentRequest <<FK>>
+    text : text
+    is_important : bool
+    created_by : User <<FK>>
+    created_at : datetime
+    updated_at : datetime
+}
+
+entity "RequestStatusHistory" as RequestStatusHistory {
+    + id : int <<PK>>
+    --
+    request : AnonymousRequest <<FK>>
+    old_status : str
+    new_status : str
+    comment : text
+    changed_at : datetime
+    changed_by : User <<FK>>
+}
+
+entity "DependentRequestStatusHistory" as DependentRequestStatusHistory {
+    + id : int <<PK>>
+    --
+    request : DependentRequest <<FK>>
+    old_status : str
+    new_status : str
+    comment : text
+    changed_at : datetime
+    changed_by : User <<FK>>
+}
+
+entity "RequestActionLog" as RequestActionLog {
+    + id : int <<PK>>
+    --
+    request : AnonymousRequest <<FK>>
+    user : User <<FK>>
+    action : str
+    details : text
+    created_at : datetime
+    updated_at : datetime
+}
+
+AnonymousRequest ||--o{ RequestNote : "notes"
+AnonymousRequest ||--o{ RequestStatusHistory : "status_history"
+AnonymousRequest ||--o{ RequestActionLog : "action_logs"
+DependentRequest ||--o{ DependentRequestNote : "notes"
+DependentRequest ||--o{ DependentRequestStatusHistory : "status_history"
+OrganizationType ||--o{ AnonymousRequest : "organization_type"
+OrganizationType ||--o{ DependentRequest : "organization_type"
+User ||--o{ AnonymousRequest : "created_by"
+User ||--o{ AnonymousRequest : "updated_by"
+User ||--o{ AnonymousRequest : "assigned_to"
+User ||--o{ RequestNote : "created_by"
+User ||--o{ RequestStatusHistory : "changed_by"
+User ||--o{ RequestActionLog : "user"
+User ||--o{ DependentRequest : "responsible_staff"
+User ||--o{ DependentRequestNote : "created_by"
+User ||--o{ DependentRequestStatusHistory : "changed_by"
+@enduml 

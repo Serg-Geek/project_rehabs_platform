@@ -128,6 +128,24 @@ Entity-Relationship Diagram базы данных, отображающий:
 - Мониторинг и бэкапы
 - CI/CD pipeline
 
+### requests_erd.puml
+
+ERD-диаграмма модуля заявок (requests):
+
+- **AnonymousRequest** — анонимные заявки
+- **DependentRequest** — заявки от зависимых
+- **RequestNote, DependentRequestNote** — заметки
+- **RequestStatusHistory, DependentRequestStatusHistory** — история статусов
+- **RequestActionLog** — лог действий
+- Связи с OrganizationType, User, назначенной организацией
+- Устаревшие поля (<<deprecated>>) отмечены явно и не используются в новых разработках
+
+Файлы:
+
+- `requests_erd.puml` — исходник PlantUML
+- `requests_erd.png` — изображение диаграммы
+- `requests_erd.svg` — SVG-версия (если требуется)
+
 ## Рекомендации по обновлению
 
 ### При изменении моделей
