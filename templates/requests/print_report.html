@@ -374,6 +374,26 @@
     </div>
     {% endif %}
     
+    {% if request.organization_type or request.assigned_organization %}
+    <div class="section">
+        <h2>Назначенное учреждение</h2>
+        <div class="facility-info">
+            {% if request.organization_type %}
+            <div class="field-row">
+                <div class="field-label">Тип организации:</div>
+                <div class="field-value">{{ request.organization_type.name }}</div>
+            </div>
+            {% endif %}
+            {% if request.assigned_organization %}
+            <div class="field-row">
+                <div class="field-label">Назначенная организация:</div>
+                <div class="field-value">{{ request.assigned_organization }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
     {% if request.medical_history or request.treatment_plan %}
     <div class="section">
         <h2>Медицинская информация</h2>

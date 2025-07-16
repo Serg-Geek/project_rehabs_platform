@@ -10,4 +10,5 @@ urlpatterns = [
     path('success/', views.success_view, name='success'),
     path('error/', views.error_view, name='error'),
     path('report/<int:request_id>/', views.print_request_report, name='print_report'),
+    path('ajax/organizations/', views.get_organizations_by_type, name='get_organizations_by_type'),
 ] 

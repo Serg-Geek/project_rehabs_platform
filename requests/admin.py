@@ -3,8 +3,10 @@ from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .models import (
     AnonymousRequest, RequestNote, RequestStatusHistory, 
-    RequestActionLog, Request, DependentRequest, RequestTemplate
+    RequestActionLog, DependentRequest, RequestTemplate,
+    DependentRequestNote, DependentRequestStatusHistory
 )
+from .forms import AnonymousRequestAdminForm, DependentRequestAdminForm
 from django.utils import timezone
 from django.utils.html import format_html
 from django.urls import reverse
@@ -47,35 +49,6 @@ class RequestActionLogInline(admin.TabularInline):
     def has_change_permission(self, request, obj=None):
         return False
 
-@admin.register(Request)
-class RequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'status', 'addiction_type', 'contact_type', 'get_full_name', 'pseudonym', 'email', 'phone', 'responsible_staff', 'created_at')
-    list_filter = ('status', 'addiction_type', 'contact_type', 'responsible_staff', 'created_at')
-    search_fields = ('first_name', 'last_name', 'pseudonym', 'email', 'phone', 'emergency_contact', 'emergency_phone')
-    readonly_fields = ('created_at', 'updated_at')
-    
-    fieldsets = (
-        (None, {
-            'fields': ('status', 'addiction_type', 'responsible_staff')
-        }),
-        (_('Персональная информация'), {
-            'fields': ('contact_type', 'first_name', 'last_name', 'pseudonym', 'email', 'phone')
-        }),
-        (_('Контактная информация'), {
-            'fields': ('emergency_contact', 'emergency_phone')
-        }),
-        (_('Медицинская информация'), {
-            'fields': ('medical_history', 'treatment_plan')
-        }),
-        (_('Дополнительно'), {
-            'fields': ('notes', 'created_at', 'updated_at')
-        })
-    )
-
-    def get_full_name(self, obj):
-        return obj.get_full_name()
-    get_full_name.short_description = _('ФИО')
-
 @admin.register(RequestStatusHistory)
 class RequestStatusHistoryAdmin(admin.ModelAdmin):
     list_display = ('request', 'old_status', 'new_status', 'changed_at', 'changed_by')
@@ -115,9 +88,10 @@ class RequestActionLogAdmin(admin.ModelAdmin):
 
 @admin.register(AnonymousRequest)
 class AnonymousRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'request_type', 'source', 'status', 'priority', 'name', 'phone', 'organization', 'created_at', 'assigned_to', 'print_report_button')
-    list_filter = ('request_type', 'source', 'status', 'priority', 'created_at')
-    search_fields = ('name', 'phone', 'email', 'organization', 'message')
+    form = AnonymousRequestAdminForm
+    list_display = ('id', 'request_type', 'source', 'status', 'priority', 'name', 'phone', 'organization', 'organization_type', 'assigned_organization', 'created_at', 'assigned_to', 'print_report_button')
+    list_filter = ('request_type', 'source', 'status', 'priority', 'organization_type', 'created_at')
+    search_fields = ('name', 'phone', 'email', 'organization', 'message', 'assigned_organization')
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'print_report_button')
     list_editable = ('status', 'priority', 'assigned_to')
     inlines = [RequestNoteInline, RequestStatusHistoryInline, RequestActionLogInline]
@@ -135,6 +109,10 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
         }),
         (_('Дополнительная информация'), {
             'fields': ('patient_name', 'patient_age', 'preferred_service')
+        }),
+        (_('Назначение учреждения'), {
+            'fields': ('organization_type', 'organization_choice', 'assigned_organization'),
+            'description': _('Выберите тип организации и конкретную организацию.'),
         }),
         (_('Управление комиссией'), {
             'fields': ('commission_amount', 'commission_received_date', 'commission_document'),
@@ -288,12 +266,28 @@ class RequestTemplateAdmin(admin.ModelAdmin):
             obj.created_by = request.user
         super().save_model(request, obj, form, change)
 
+class DependentRequestNoteInline(admin.StackedInline):
+    model = DependentRequestNote
+    extra = 1
+    verbose_name_plural = _('Заметки')
+    readonly_fields = ('created_at', 'created_by')
+    can_delete = False
+
+class DependentRequestStatusHistoryInline(admin.TabularInline):
+    model = DependentRequestStatusHistory
+    extra = 0
+    readonly_fields = ('old_status', 'new_status', 'comment', 'changed_at', 'changed_by')
+    verbose_name_plural = _('История статусов')
+    can_delete = False
+
 @admin.register(DependentRequest)
 class DependentRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'addiction_type', 'contact_type', 'get_display_name', 'phone', 'status', 'created_at', 'print_report_button')
-    list_filter = ('addiction_type', 'contact_type', 'status', 'created_at')
-    search_fields = ('first_name', 'last_name', 'pseudonym', 'phone', 'email')
+    form = DependentRequestAdminForm
+    list_display = ('id', 'addiction_type', 'contact_type', 'get_display_name', 'phone', 'status', 'organization_type', 'assigned_organization', 'created_at', 'print_report_button')
+    list_filter = ('addiction_type', 'contact_type', 'status', 'organization_type', 'created_at')
+    search_fields = ('first_name', 'last_name', 'pseudonym', 'phone', 'email', 'assigned_organization')
     readonly_fields = ('created_at', 'updated_at', 'print_report_button')
+    inlines = [DependentRequestNoteInline, DependentRequestStatusHistoryInline]
     
     fieldsets = (
         (None, {
@@ -309,8 +303,12 @@ class DependentRequestAdmin(admin.ModelAdmin):
         (_('Контактная информация'), {
             'fields': ('emergency_contact', 'emergency_phone')
         }),
+        (_('Назначение учреждения'), {
+            'fields': ('organization_type', 'organization_choice', 'assigned_organization'),
+            'description': _('Выберите тип организации и конкретную организацию.'),
+        }),
         (_('Дополнительно'), {
-            'fields': ('notes', 'responsible_staff', 'created_at', 'updated_at')
+            'fields': ('extra_notes', 'responsible_staff', 'created_at', 'updated_at')
         }),
     )
     
@@ -347,4 +345,46 @@ class DependentRequestAdmin(admin.ModelAdmin):
         return form
     
     def save_model(self, request, obj, form, change):
+        if not change:  # Если это новая запись
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        
+        # Отладочная информация
+        print(f"DEBUG: save_model вызван для DependentRequest #{obj.id}")
+        print(f"DEBUG: change = {change}")
+        print(f"DEBUG: form.changed_data = {form.changed_data}")
+        print(f"DEBUG: obj.status = {obj.status}")
+        print(f"DEBUG: obj.assigned_organization = {obj.assigned_organization}")
+        
+        # Отслеживаем изменение статуса
+        if change and 'status' in form.changed_data:
+            old_status = DependentRequest.objects.get(pk=obj.pk).status
+            print(f"DEBUG: Статус изменился с {old_status} на {obj.status}")
+            # Создаем запись в истории статусов
+            DependentRequestStatusHistory.objects.create(
+                request=obj,
+                old_status=old_status,
+                new_status=obj.status,
+                changed_by=request.user
+            )
+            print(f"DEBUG: Запись в истории статусов создана")
+        
         super().save_model(request, obj, form, change)
+
+@admin.register(DependentRequestNote)
+class DependentRequestNoteAdmin(admin.ModelAdmin):
+    list_display = ('request', 'text', 'is_important', 'created_by', 'created_at')
+    list_filter = ('is_important', 'created_at')
+    search_fields = ('text', 'request__first_name', 'request__last_name', 'request__phone')
+
+@admin.register(DependentRequestStatusHistory)
+class DependentRequestStatusHistoryAdmin(admin.ModelAdmin):
+    list_display = ('request', 'old_status', 'new_status', 'changed_at', 'changed_by')
+    list_filter = ('old_status', 'new_status', 'changed_at')
+    readonly_fields = ('request', 'old_status', 'new_status', 'comment', 'changed_at', 'changed_by')
+    def has_add_permission(self, request):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return False

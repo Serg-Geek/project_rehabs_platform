@@ -4,8 +4,9 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.http import JsonResponse
-from .models import AnonymousRequest, Request, DependentRequest
+from .models import AnonymousRequest, DependentRequest
 from django.utils import timezone
+from facilities.models import Clinic, RehabCenter, PrivateDoctor, OrganizationType
 
 # Create your views here.
 
@@ -280,3 +281,31 @@ def print_request_report(request, request_id):
     except (AnonymousRequest.DoesNotExist, DependentRequest.DoesNotExist):
         messages.error(request, 'Заявка не найдена')
         return redirect('admin:index')
+
+def get_organizations_by_type(request):
+    """
+    AJAX-view для получения списка организаций по типу
+    """
+    organization_type_id = request.GET.get('organization_type_id')
+    
+    if not organization_type_id:
+        return JsonResponse({'organizations': []})
+    
+    try:
+        organization_type = OrganizationType.objects.get(id=organization_type_id)
+        organizations = []
+        
+        if organization_type.name == 'Клиника':
+            orgs = Clinic.objects.filter(is_active=True)
+            organizations = [{'id': org.name, 'name': org.name} for org in orgs]
+        elif organization_type.name == 'Реабилитационный центр':
+            orgs = RehabCenter.objects.filter(is_active=True)
+            organizations = [{'id': org.name, 'name': org.name} for org in orgs]
+        elif organization_type.name == 'Частный врач':
+            orgs = PrivateDoctor.objects.filter(is_active=True)
+            organizations = [{'id': org.get_full_name(), 'name': org.get_full_name()} for org in orgs]
+        
+        return JsonResponse({'organizations': organizations})
+        
+    except OrganizationType.DoesNotExist:
+        return JsonResponse({'organizations': []})

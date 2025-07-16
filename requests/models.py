@@ -8,129 +8,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-class Request(TimeStampedModel):
-    """
-    Заявка на лечение
-    """
-    class Status(models.TextChoices):
-        NEW = 'new', _('Новая')
-        IN_PROGRESS = 'in_progress', _('В обработке')
-        APPROVED = 'approved', _('Одобрена')
-        REJECTED = 'rejected', _('Отклонена')
-        COMPLETED = 'completed', _('Завершена')
-
-    class AddictionType(models.TextChoices):
-        ALCOHOL = 'alcohol', _('Алкоголь')
-        DRUGS = 'drugs', _('Наркотики')
-        GAMBLING = 'gambling', _('Игровая зависимость')
-        OTHER = 'other', _('Другое')
-
-    class ContactType(models.TextChoices):
-        ANONYMOUS = 'anonymous', _('Анонимно')
-        PSEUDONYM = 'pseudonym', _('Под псевдонимом')
-        REAL_NAME = 'real_name', _('Под реальным именем')
-
-    status = models.CharField(
-        max_length=20,
-        choices=Status.choices,
-        default=Status.NEW,
-        verbose_name=_('Статус')
-    )
-    addiction_type = models.CharField(
-        max_length=20,
-        choices=AddictionType.choices,
-        verbose_name=_('Тип зависимости')
-    )
-    contact_type = models.CharField(
-        max_length=20,
-        choices=ContactType.choices,
-        default=ContactType.ANONYMOUS,
-        verbose_name=_('Тип контакта')
-    )
-    first_name = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Имя')
-    )
-    last_name = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Фамилия')
-    )
-    email = models.EmailField(
-        blank=True,
-        null=True,
-        verbose_name=_('Email')
-    )
-    phone = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,
-        verbose_name=_('Телефон')
-    )
-    pseudonym = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Псевдоним')
-    )
-    emergency_contact = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name=_('Контактное лицо')
-    )
-    emergency_phone = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,
-        verbose_name=_('Телефон контактного лица')
-    )
-    medical_history = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('История болезни')
-    )
-    treatment_plan = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('План лечения')
-    )
-    notes = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name=_('Заметки')
-    )
-    responsible_staff = models.ForeignKey(
-        'users.User',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='requests',
-        verbose_name=_('Ответственный сотрудник')
-    )
-
-    class Meta:
-        verbose_name = _('Заявка')
-        verbose_name_plural = _('Заявки')
-        ordering = ['-created_at']
-
-    def __str__(self):
-        if self.contact_type == self.ContactType.ANONYMOUS:
-            return f"Анонимная заявка #{self.id}"
-        elif self.contact_type == self.ContactType.PSEUDONYM and self.pseudonym:
-            return f"{self.pseudonym} (псевдоним)"
-        elif self.first_name and self.last_name:
-            return f"{self.last_name} {self.first_name}"
-        return f"Заявка #{self.id}"
-
-    def get_full_name(self):
-        if self.first_name and self.last_name:
-            return f"{self.last_name} {self.first_name}"
-        return "-"
-
 class AnonymousRequest(TimeStampedModel):
     """
     Анонимные заявки от пользователей
@@ -228,7 +105,23 @@ class AnonymousRequest(TimeStampedModel):
         null=True
     )
     
-    # Поля для учреждения
+    # Поля для учреждения (новые)
+    organization_type = models.ForeignKey(
+        'facilities.OrganizationType',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('Тип организации')
+    )
+    assigned_organization = models.CharField(
+        _('Назначенная организация'),
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text=_('Сначала выберите тип организации, сохраните заявку, затем выберите организацию из списка')
+    )
+    
+    # Поля для учреждения (старые - оставляем для совместимости)
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.SET_NULL,
@@ -556,10 +449,10 @@ class DependentRequest(TimeStampedModel):
         null=True,
         verbose_name=_('Телефон контактного лица')
     )
-    notes = models.TextField(
+    extra_notes = models.TextField(
         blank=True,
         null=True,
-        verbose_name=_('Заметки')
+        verbose_name=_('Дополнительные заметки')
     )
     responsible_staff = models.ForeignKey(
         'users.User',
@@ -568,6 +461,22 @@ class DependentRequest(TimeStampedModel):
         blank=True,
         related_name='dependent_requests',
         verbose_name=_('Ответственный сотрудник')
+    )
+    
+    # Поля для учреждения
+    organization_type = models.ForeignKey(
+        'facilities.OrganizationType',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('Тип организации')
+    )
+    assigned_organization = models.CharField(
+        _('Назначенная организация'),
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text=_('Сначала выберите тип организации, сохраните заявку, затем выберите организацию из списка')
     )
 
     class Meta:
@@ -599,3 +508,66 @@ class DependentRequest(TimeStampedModel):
             self.pseudonym = "Аноним"
         
         super().save(*args, **kwargs)
+
+class DependentRequestNote(TimeStampedModel):
+    """
+    Заметки к заявкам от зависимых
+    """
+    request = models.ForeignKey(
+        'DependentRequest',
+        on_delete=models.CASCADE,
+        related_name='notes',
+        verbose_name=_('Заявка от зависимого')
+    )
+    text = models.TextField(
+        verbose_name=_('Текст')
+    )
+    is_important = models.BooleanField(
+        default=False,
+        verbose_name=_('Важное')
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='dependent_request_notes',
+        verbose_name=_('Создано пользователем')
+    )
+
+    class Meta:
+        verbose_name = _('Заметка к заявке от зависимого')
+        verbose_name_plural = _('Заметки к заявкам от зависимых')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Заметка к заявке #{self.request.id} - {self.request.get_full_name()}"
+
+class DependentRequestStatusHistory(models.Model):
+    """
+    История изменений статуса заявки от зависимого
+    """
+    request = models.ForeignKey(
+        'DependentRequest',
+        on_delete=models.CASCADE,
+        related_name='status_history',
+        verbose_name=_('Заявка от зависимого')
+    )
+    old_status = models.CharField('Старый статус', max_length=20, choices=DependentRequest.Status.choices)
+    new_status = models.CharField('Новый статус', max_length=20, choices=DependentRequest.Status.choices)
+    comment = models.TextField('Комментарий', blank=True, null=True)
+    changed_at = models.DateTimeField('Дата изменения', auto_now_add=True)
+    changed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='dependent_status_changes',
+        verbose_name=_('Изменено пользователем')
+    )
+
+    class Meta:
+        verbose_name = _('История статусов заявки от зависимого')
+        verbose_name_plural = _('История статусов заявок от зависимых')
+        ordering = ['-changed_at']
+
+    def __str__(self):
+        return f'{self.request.get_full_name()} - {self.old_status} -> {self.new_status}'
