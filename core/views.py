@@ -4,6 +4,7 @@ from facilities.models import RehabCenter, Clinic
 from staff.models import MedicalSpecialist
 from medical_services.models import ServiceCategory, Service
 from recovery_stories.models import RecoveryStory
+from blog.models import Tag, BlogPost
 
 # Create your views here.
 
@@ -56,6 +57,13 @@ class HomeView(TemplateView):
                 continue
         
         context['service_categories'] = service_categories
+
+        # Получаем карточки полезной информации из постов блога
+        context['useful_info_cards'] = BlogPost.objects.filter(
+            is_published=True,
+            is_featured=True
+        ).prefetch_related('tags').order_by('-publish_date')[:3]
+        
         return context
 
 class ContactsView(TemplateView):

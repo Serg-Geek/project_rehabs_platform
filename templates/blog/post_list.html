@@ -83,33 +83,7 @@
             </div>
             <div class="useful-info__cards">
                 {% for post in posts %}
-                <div class="card card--info">
-                    <a href="{% url 'blog:post_detail' post.slug %}">
-                        <div class="card__image">
-                            {% if post.image %}
-                            <img src="{{ post.image.url }}" alt="{{ post.title }}" />
-                            {% else %}
-                            <img src="{% static 'deps/images/default-post.jpg' %}" alt="{{ post.title }}" />
-                            {% endif %}
-                        </div>
-                        <div class="card__content">
-                            <h3 class="card__title title__h4">{{ post.title }}</h3>
-                            <p class="card__description useful-info__card-description">
-                                {{ post.preview_text|truncatewords:30 }}
-                            </p>
-                            <div class="useful-info__tags">
-                                {% for tag in post.tags.all %}
-                                <a href="?tag={{ tag.slug }}" class="useful-info__tag">
-                                    {% if tag.is_system and tag.get_icon_path %}
-                                    <img src="{% static tag.get_icon_path %}" alt="{{ tag.name }}" class="tag-icon" />
-                                    {% endif %}
-                                    {{ tag.name }}
-                                </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                {% include "blog/includes/useful_info_card.html" with card=post %}
                 {% empty %}
                 <div class="alert alert-info">
                     Посты не найдены.

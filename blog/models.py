@@ -88,6 +88,11 @@ class BlogPost(TimeStampedModel):
         default=False,
         verbose_name=_('Опубликовано')
     )
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name=_('На главной странице'),
+        help_text=_('Отображать карточку на главной странице')
+    )
     publish_date = models.DateTimeField(
         blank=True,
         null=True,
@@ -130,6 +135,19 @@ class BlogPost(TimeStampedModel):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def get_tags_with_icons(self):
+        """
+        Возвращает теги с иконками для шаблона
+        """
+        tags_data = []
+        for tag in self.tags.filter(is_active=True):
+            tags_data.append({
+                'name': tag.name,
+                'url': f'?tag={tag.slug}',
+                'icon': tag.get_icon_path() if tag.is_system else None
+            })
+        return tags_data
 
 class BlogImage(TimeStampedModel):
     """

@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="card card--info">
+  <a href="{{ card.get_absolute_url }}">
+    <div class="card__image">
+      {% if card.image %}
+        <img src="{{ card.image.url }}" alt="{{ card.title }}" />
+      {% else %}
+        <img src="{% static 'deps/images/default-post.jpg' %}" alt="{{ card.title }}" />
+      {% endif %}
+    </div>
+    <div class="card__content">
+      <h3 class="card__title title__h4">{{ card.title }}</h3>
+      <p class="card__description">
+        {{ card.preview_text|truncatewords:30 }}
+      </p>
+      <div class="useful-info__tags">
+        {% for tag_data in card.get_tags_with_icons %}
+          <a href="{{ tag_data.url|default:'#' }}" class="useful-info__tag">
+            {% if tag_data.icon %}
+              <img src="{% static tag_data.icon %}" alt="{{ tag_data.name }}" class="tag-icon" />
+            {% endif %}
+            {{ tag_data.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </a>
+</div> 

@@ -387,65 +387,9 @@
         </p>
       </div>
       <div class="useful-info__cards">
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpmv1xefUmjyjR1Y81w-eqWWt5_-CAxohNJw&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Как распознать зависимость на ранних стадиях?
-            </h3>
-            <p class="card__description useful-info__card-description">
-              Зависимость не возникает внезапно — её признаки можно заметить ещё
-              на ранних этапах. Важно обратить внимание на изменения в поведении
-              и настроении человека.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Зависимость</a>
-              <a href="#" class="useful-info__tag">Алкоголизм</a>
-            </div>
-          </div>
-        </div>
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROIndQKy5o1SLddOvIA3W7Mn1Xzeuu6zdLYA&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Что делать, когда вы узнали, что вашим близким нужна помощь?
-            </h3>
-            <p class="card__description">
-              В статье мы расскажем, с чего начать и какие шаги помогут не
-              усугубить ситуацию.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Наркомания</a>
-              <a href="#" class="useful-info__tag">Родственникам </a>
-            </div>
-          </div>
-        </div>
-        <div class="card card--info">
-          <div class="card__image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiaQPwk0SQGmowQ7uhaKsQQnQQm5fGhmtw&s"
-              alt="Изображение статьи" />
-          </div>
-          <div class="card__content">
-            <h3 class="card__title title__h4">
-              Как убедить зависимого начать лечение?
-            </h3>
-            <p class="card__description">
-              Когда близкий человек отказывается признавать проблему, важно
-              найти подход. Разбираем тактику общения и ошибки, которых стоит
-              избегать.
-            </p>
-            <div class="useful-info__tags">
-              <a href="#" class="useful-info__tag">Психология</a>
-              <a href="#" class="useful-info__tag">Зависимости</a>
-            </div>
-          </div>
-        </div>
+        {% for card in useful_info_cards %}
+          {% include "blog/includes/useful_info_card.html" with card=card %}
+        {% endfor %}
       </div>
     </div>
     <a href="#" class="rehab-btn useful-info__button">Перейти в раздел</a>
