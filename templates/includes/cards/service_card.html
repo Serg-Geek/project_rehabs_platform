@@ -1,0 +1,19 @@
+<div class="card">
+    <a href="{% url 'medical_services:service_detail' service.slug %}">
+        <div class="card__content">
+            <h3 class="card__title">{{ service.name }}</h3>
+            {% if service.description %}
+                <p class="card__description">{{ service.description|truncatewords:20 }}</p>
+            {% endif %}
+            {% if service.categories.all %}
+                <div class="useful-info__tags">
+                    {% for category in service.categories.all %}
+                        <a href="{% url 'medical_services:category_detail' category.slug %}" class="useful-info__tag">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </a>
+</div> 
