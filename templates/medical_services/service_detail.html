@@ -21,25 +21,12 @@
 <section class="detail spec-detail rehab-help">
     <div class="container">
         <div class="detail__content rehab-help__content">
-            <div class="detail__content-item detail__content-item--img rehab-help__content-item rehab-help__image">
-                <img src="{% static 'deps/img/service-default.svg' %}" alt="{{ service.name }}" />
-            </div>
             <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
                 <h2 class="title__h2 detail__title">{{ service.name }}</h2>
                 <div class="detail__text spec-detail__text">
                     {% if service.description %}
                         <p>{{ service.description }}</p>
                     {% endif %}
-                    <div class="service-info">
-                        <div class="service-duration">
-                            <i class="fas fa-clock me-2"></i>
-                            Длительность: {{ service.duration }} мин.
-                        </div>
-                        <div class="service-facilities">
-                            <i class="fas fa-hospital me-2"></i>
-                            {{ total_facilities }} {{ total_facilities|russian_plural:"учреждение,учреждения,учреждений" }} предоставляют эту услугу
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -56,7 +43,7 @@
                     <div class="categories-tags">
                         {% for category in service.categories.all %}
                             <a href="{% url 'medical_services:category_detail' category.slug %}" 
-                               class="category-tag">
+                               class="useful-info__tag">
                                 {{ category.name }}
                             </a>
                         {% endfor %}
