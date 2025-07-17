@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="card">
-    <a href="{% url 'facilities:rehab_detail' facility.slug %}">
+    <a href="{% url 'facilities:rehab_detail' facility.slug %}{% if from_service %}?from_service={{ from_service }}{% endif %}">
         <div class="card__image">
             {% with main_image=facility.images.first %}
             {% if main_image %}

@@ -2,7 +2,7 @@
 {% load russian_plural %}
 
 <div class="card card--specialist">
-    <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}">
+    <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}{% if from_service %}?from_service={{ from_service }}{% endif %}">
         <div class="card__image">
             {% if doctor.main_image %}
                 <img src="{{ doctor.main_image.image.url }}" alt="{{ doctor.get_full_name }}" />

@@ -9,12 +9,16 @@
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">
-                {{ doctor.get_full_name }}
-            </li>
+            {% if from_service_obj %}
+                <li class="breadcrumb-item">
+                    <a href="{% url 'medical_services:service_detail' from_service_obj.slug %}">{{ from_service_obj.name }}</a>
+                </li>
+            {% else %}
+                <li class="breadcrumb-item">
+                    <a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a>
+                </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">{{ doctor.get_full_name }}</li>
         </ol>
     </div>
 </nav>

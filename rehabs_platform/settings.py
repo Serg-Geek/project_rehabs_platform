@@ -80,6 +80,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'content.context_processors.site_content',
+                'medical_services.context_processors.footer_services',
             ],
         },
     },

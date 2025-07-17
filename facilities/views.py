@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from .models import Clinic, RehabCenter, PrivateDoctor
-from medical_services.models import FacilityService
+from medical_services.models import FacilityService, Service
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -125,6 +125,16 @@ class FacilityDetailView(DetailView):
         context['related_facilities'] = related_facilities
         context['services'] = services
         context['facility_type'] = self.kwargs.get('facility_type')
+        
+        # --- Добавляем from_service_obj для хлебных крошек ---
+        from_service_slug = self.request.GET.get('from_service')
+        if from_service_slug:
+            try:
+                from_service_obj = Service.objects.get(slug=from_service_slug)
+                context['from_service_obj'] = from_service_obj
+            except Service.DoesNotExist:
+                pass
+        # ---
         return context
 
 def load_more_rehabs(request):
@@ -267,6 +277,15 @@ class PrivateDoctorDetailView(DetailView):
         context['documents'] = self.object.documents.filter(is_active=True)
         context['images'] = self.object.images.all().order_by('order', 'created_at')
         
+        # --- Добавляем from_service_obj для хлебных крошек ---
+        from_service_slug = self.request.GET.get('from_service')
+        if from_service_slug:
+            try:
+                from_service_obj = Service.objects.get(slug=from_service_slug)
+                context['from_service_obj'] = from_service_obj
+            except Service.DoesNotExist:
+                pass
+        # ---
         return context
 
 def load_more_doctors(request):

@@ -6,6 +6,7 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from core.models import TimeStampedModel
+from core.utils import generate_slug
 from staff.models import MedicalSpecialist
 from facilities.models import RehabCenter
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -21,7 +22,8 @@ class ServiceCategory(TimeStampedModel):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name=_('Slug')
+        verbose_name=_('Slug'),
+        blank=True
     )
     description = models.TextField(
         blank=True,
@@ -51,6 +53,11 @@ class ServiceCategory(TimeStampedModel):
 
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_slug(self.name, ServiceCategory, self)
+        super().save(*args, **kwargs)
 
 class TherapyMethod(TimeStampedModel):
     """
@@ -62,7 +69,8 @@ class TherapyMethod(TimeStampedModel):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name=_('Slug')
+        verbose_name=_('Slug'),
+        blank=True
     )
     description = models.TextField(
         blank=True,
@@ -80,6 +88,11 @@ class TherapyMethod(TimeStampedModel):
 
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_slug(self.name, TherapyMethod, self)
+        super().save(*args, **kwargs)
 
 class Service(TimeStampedModel):
     """
@@ -91,7 +104,8 @@ class Service(TimeStampedModel):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name=_('Slug')
+        verbose_name=_('Slug'),
+        blank=True
     )
     categories = models.ManyToManyField(
         ServiceCategory,
@@ -121,13 +135,7 @@ class Service(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name)
-            slug = base_slug
-            counter = 1
-            while Service.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
+            self.slug = generate_slug(self.name, Service, self)
         super().save(*args, **kwargs)
 
 class FacilityService(TimeStampedModel):

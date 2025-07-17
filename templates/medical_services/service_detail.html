@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load russian_plural %}
+
+{% block title %}{{ service.name }} - Услуги{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'medical_services:service_list' %}">Услуги</a></li>
+            {% for category in service.categories.all %}
+                <li class="breadcrumb-item"><a href="{% url 'medical_services:category_detail' category.slug %}">{{ category.name }}</a></li>
+            {% endfor %}
+            <li class="breadcrumb-item active" aria-current="page">{{ service.name }}</li>
+        </ol>
+    </div>
+</nav>
+
+<section class="detail spec-detail rehab-help">
+    <div class="container">
+        <div class="detail__content rehab-help__content">
+            <div class="detail__content-item detail__content-item--img rehab-help__content-item rehab-help__image">
+                <img src="{% static 'deps/img/service-default.svg' %}" alt="{{ service.name }}" />
+            </div>
+            <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
+                <h2 class="title__h2 detail__title">{{ service.name }}</h2>
+                <div class="detail__text spec-detail__text">
+                    {% if service.description %}
+                        <p>{{ service.description }}</p>
+                    {% endif %}
+                    <div class="service-info">
+                        <div class="service-duration">
+                            <i class="fas fa-clock me-2"></i>
+                            Длительность: {{ service.duration }} мин.
+                        </div>
+                        <div class="service-facilities">
+                            <i class="fas fa-hospital me-2"></i>
+                            {{ total_facilities }} {{ total_facilities|russian_plural:"учреждение,учреждения,учреждений" }} предоставляют эту услугу
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if service.categories.all %}
+<section class="detail__info spec-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <h3 class="title__h3 detail__title">Категории услуги</h3>
+            <div class="spec-detail__wrapper">
+                <div class="spec-detail__text">
+                    <div class="categories-tags">
+                        {% for category in service.categories.all %}
+                            <a href="{% url 'medical_services:category_detail' category.slug %}" 
+                               class="category-tag">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Учреждения, предоставляющие услугу -->
+{% if rehab_centers or clinics or private_doctors %}
+<section class="detail-rehabs rehabs">
+    <div class="container">
+        <h3 class="title__h3 detail-rehabs__title">
+            Учреждения, предоставляющие услугу "{{ service.name }}"
+        </h3>
+        
+        <!-- Реабилитационные центры -->
+        {% if rehab_centers %}
+        <div class="section__content">
+            <h4 class="title__h4 section__subtitle">
+                <i class="fas fa-hospital-alt me-2"></i>
+                Реабилитационные центры ({{ rehab_centers|length }})
+            </h4>
+            <div class="rehabs__cards">
+                {% for item in rehab_centers %}
+                {% include "includes/cards/rehab_card.html" with facility=item.facility from_service=service.slug %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Клиники -->
+        {% if clinics %}
+        <div class="section__content">
+            <h4 class="title__h4 section__subtitle">
+                <i class="fas fa-clinic-medical me-2"></i>
+                Клиники ({{ clinics|length }})
+            </h4>
+            <div class="clinics__cards">
+                {% for item in clinics %}
+                {% include "includes/cards/clinic_card.html" with clinic=item.facility from_service=service.slug %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Частные врачи -->
+        {% if private_doctors %}
+        <div class="section__content">
+            <h4 class="title__h4 section__subtitle">
+                <i class="fas fa-user-md me-2"></i>
+                Частные врачи ({{ private_doctors|length }})
+            </h4>
+            <div class="doctors__cards">
+                {% for item in private_doctors %}
+                {% include "includes/cards/private_doctor_card.html" with doctor=item.facility from_service=service.slug %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% else %}
+<!-- Если нет учреждений -->
+<section class="detail__info spec-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                В данный момент нет учреждений, предоставляющих эту услугу. 
+                <a href="{% url 'requests:consultation_request' %}" class="alert-link">Оставьте заявку</a> 
+                для получения консультации.
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include "facilities/includes/consultation.html" %}
+{% endblock %} 
