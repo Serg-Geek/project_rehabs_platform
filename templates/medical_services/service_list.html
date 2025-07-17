@@ -1,175 +1,104 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Услуги{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Хлебные крошки -->
-    <nav aria-label="breadcrumb" class="mt-3">
+<nav aria-label="breadcrumb">
+    <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
             <li class="breadcrumb-item active" aria-current="page">Услуги</li>
         </ol>
-    </nav>
-
-    <!-- Заголовок -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h2 mb-3">Медицинские услуги</h1>
-            <p class="lead">Найдите нужную услугу и учреждения, которые её предоставляют</p>
-        </div>
     </div>
+</nav>
 
-    <!-- Фильтры и поиск -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="get" class="row g-3">
-                        <div class="col-md-6">
-                            <label for="search" class="form-label">Поиск услуг</label>
-                            <input type="text" class="form-control" id="search" name="search" 
-                                   value="{{ request.GET.search }}" placeholder="Введите название услуги...">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="category" class="form-label">Категория</label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">Все категории</option>
-                                {% for category in categories %}
-                                    <option value="{{ category.slug }}" 
-                                            {% if request.GET.category == category.slug %}selected{% endif %}>
-                                        {{ category.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">&nbsp;</label>
-                            <div>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search me-1"></i>Найти
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<section class="catalog catalog-services">
+    <div class="container">
+        <h2 class="title__h2 catalog__title">
+            Медицинские услуги
+        </h2>
+        <div class="section__content">
+            <div class="section__content-text catalog__content-text">
+                <p>
+                    Найдите нужную услугу и учреждения, которые её предоставляют.
+                    Мы поможем вам подобрать квалифицированных специалистов
+                    и подходящий курс лечения.
+                </p>
             </div>
-        </div>
-    </div>
-
-    <!-- Результаты -->
-    <div class="row">
-        <div class="col-12">
-            {% if services %}
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h4 mb-0">Найдено услуг: {{ services|length }}</h2>
-                    {% if request.GET.search or request.GET.category %}
-                        <a href="{% url 'medical_services:service_list' %}" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-times me-1"></i>Сбросить фильтры
-                        </a>
-                    {% endif %}
-                </div>
-
-                <div class="row">
-                    {% for service in services %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a href="{% url 'medical_services:service_detail' service.slug %}" 
-                                       class="text-decoration-none">
-                                        {{ service.name }}
-                                    </a>
-                                </h5>
-                                {% if service.description %}
-                                    <p class="card-text">{{ service.description|truncatewords:20 }}</p>
-                                {% endif %}
-                                
-                                <!-- Категории услуги -->
-                                {% if service.categories.all %}
-                                <div class="mb-3">
-                                    {% for category in service.categories.all %}
-                                        <a href="{% url 'medical_services:category_detail' category.slug %}" 
-                                           class="badge bg-secondary text-decoration-none me-1">
-                                            {{ category.name }}
-                                        </a>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">
-                                        <i class="fas fa-clock me-1"></i>
-                                        {{ service.duration }} мин.
-                                    </span>
-                                    <span class="badge bg-primary">
-                                        {{ service.facilities.count }} учреждений
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <a href="{% url 'medical_services:service_detail' service.slug %}" 
-                                   class="btn btn-outline-primary btn-sm">
-                                    Подробнее
-                                </a>
-                            </div>
+            <div class="search-filter">
+                <form action="{% url 'medical_services:service_list' %}" method="get" class="header__search">
+                    <input type="text" name="search" class="header__search-input" placeholder="Поиск услуг..."
+                        value="{{ request.GET.search }}" />
+                    <button type="submit" class="header__search-button">
+                        <img src="{% static 'deps/icons/main/search.svg' %}" alt="Поиск" class="header__search-icon" />
+                    </button>
+                </form>
+                <form id="filter-form" class="filter-section" method="get" action="{% url 'medical_services:service_list' %}">
+                    <label for="category">Сортировать по</label>
+                    <div class="custom-select">
+                        <div class="custom-select__selected">
+                            {% if request.GET.category %}
+                                {% for category in categories %}
+                                    {% if request.GET.category == category.slug %}
+                                        {{ category.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                всем категориям
+                            {% endif %}
                         </div>
+                        <div class="custom-select__options">
+                            <div class="custom-select__option" data-value="all">всем категориям</div>
+                            {% for category in categories %}
+                            <div class="custom-select__option" data-value="{{ category.slug }}">{{ category.name }}</div>
+                            {% endfor %}
+                        </div>
+                        <select id="category" name="category" style="display: none;">
+                            <option value="all" {% if not request.GET.category %}selected{% endif %}>всем категориям</option>
+                            {% for category in categories %}
+                            <option value="{{ category.slug }}" 
+                            {% if request.GET.category == category.slug %} selected
+                            {%endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    {% endfor %}
+                </form>
+            </div>
+            <div class="rehabs__cards">
+                {% for service in services %}
+                    {% include "includes/cards/service_card.html" with service=service %}
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p>Услуги не найдены</p>
                 </div>
-
-                <!-- Пагинация -->
-                {% if is_paginated %}
-                <nav aria-label="Навигация по страницам">
-                    <ul class="pagination justify-content-center">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-                                    <i class="fas fa-angle-double-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        <li class="page-item active">
-                            <span class="page-link">
-                                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                            </span>
-                        </li>
-
-                        {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-                                    <i class="fas fa-angle-double-right"></i>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+                {% endfor %}
+            </div>
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">&laquo;</a>
                 {% endif %}
 
-            {% else %}
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>
-                    {% if request.GET.search or request.GET.category %}
-                        По вашему запросу ничего не найдено. 
-                        <a href="{% url 'medical_services:service_list' %}" class="alert-link">Показать все услуги</a>
-                    {% else %}
-                        В данный момент нет доступных услуг.
-                    {% endif %}
-                </div>
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="pagination__link pagination__link--active">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}"
+                    class="pagination__link">&raquo;</a>
+                {% endif %}
+            </div>
             {% endif %}
         </div>
     </div>
-</div>
+</section>
+
+{% include "facilities/includes/consultation.html" %}
 {% endblock %} 
