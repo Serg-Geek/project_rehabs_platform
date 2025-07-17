@@ -1659,6 +1659,9 @@ template {
   background: #9bdff6;
   color: #256472
 }
+.useful-info__tag.serveses__tag{
+  margin-right: 10px;
+}
 
 .useful-info__card-description {
   flex-grow: 1

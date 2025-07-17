@@ -43,7 +43,7 @@
                     <div class="categories-tags">
                         {% for category in service.categories.all %}
                             <a href="{% url 'medical_services:category_detail' category.slug %}" 
-                               class="useful-info__tag">
+                               class="useful-info__tag serveses__tag">
                                 {{ category.name }}
                             </a>
                         {% endfor %}
