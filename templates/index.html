@@ -126,7 +126,7 @@
           </h3>
           <ul>
             {% for service in service_categories.alcoholism.services %}
-            <li><a href="#">{{ service.name }}</a></li>
+            <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -139,7 +139,7 @@
           </h3>
           <ul>
             {% for service in service_categories.drug_addiction.services %}
-            <li><a href="#">{{ service.name }}</a></li>
+            <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -152,7 +152,7 @@
           </h3>
           <ul>
             {% for service in service_categories.other.services %}
-            <li><a href="#">{{ service.name }}</a></li>
+            <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
             {% endfor %}
           </ul>
         </div>
