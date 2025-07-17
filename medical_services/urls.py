@@ -4,9 +4,6 @@ from . import views
 app_name = 'medical_services'
 
 urlpatterns = [
-    # Список всех категорий услуг
-    path('categories/', views.ServiceCategoryListView.as_view(), name='category_list'),
-    
     # Детальная страница категории
     path('category/<slug:slug>/', views.ServiceCategoryDetailView.as_view(), name='category_detail'),
     
