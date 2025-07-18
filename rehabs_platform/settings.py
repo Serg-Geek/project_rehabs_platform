@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'medical_services.apps.MedicalServicesConfig',
     'reviews.apps.ReviewsConfig',
     'recovery_stories.apps.RecoveryStoriesConfig',
-    # 'admin_logs.apps.AdminLogsConfig',  # Временно отключено для диагностики
+    'admin_logs.apps.AdminLogsConfig',
     'content.apps.ContentConfig',
 ]
 

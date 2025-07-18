@@ -62,6 +62,20 @@ echo "MY_SECRET_KEY = 'ваш-секретный-ключ-здесь'" > rehabs_
 python manage.py migrate
 ```
 
+**Если при запуске миграций возникает ошибка "Dependency on app with no migrations: users", выполните:**
+
+```bash
+python manage.py makemigrations users
+```
+
+**Если возникает ошибка с зависимостями миграций (например, "NodeNotFoundError"), выполните:**
+
+```bash
+python manage.py makemigrations
+```
+
+Это создаст необходимые миграции и позволит корректно применить все миграции проекта.
+
 6. Загрузите начальные данные:
 
 ```bash
