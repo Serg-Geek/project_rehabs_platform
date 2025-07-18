@@ -62,6 +62,19 @@ echo "MY_SECRET_KEY = 'ваш-секретный-ключ-здесь'" > rehabs_
 python manage.py migrate
 ```
 
+**Быстрая установка (рекомендуется):**
+
+```bash
+python manage.py setup_project
+```
+
+Эта команда автоматически:
+
+- Создаст необходимые папки migrations
+- Применит все миграции
+- Загрузит начальные данные
+- Создаст суперпользователя (admin@admin.com / 123456)
+
 **Если при запуске миграций возникает ошибка "Dependency on app with no migrations: users", выполните:**
 
 ```bash
@@ -258,6 +271,17 @@ python manage.py shell -c "from users.models import User; user = User.objects.ge
 **Примечание:** Замените `user@example.com` на email пользователя, которому нужно дать права суперпользователя.
 
 ## Команды управления
+
+### Быстрая установка проекта
+
+```bash
+# Полная автоматическая установка
+python manage.py setup_project
+
+# Установка с пропуском определенных шагов
+python manage.py setup_project --skip-data  # без загрузки данных
+python manage.py setup_project --skip-superuser  # без создания админа
+```
 
 ### Загрузка данных
 
