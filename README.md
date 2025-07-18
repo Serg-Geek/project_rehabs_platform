@@ -89,6 +89,100 @@ python manage.py makemigrations
 
 Это создаст необходимые миграции и позволит корректно применить все миграции проекта.
 
+## Решение проблем с миграциями
+
+### Проблема: NodeNotFoundError при выполнении миграций
+
+**Симптомы:**
+
+```
+django.db.migrations.exceptions.NodeNotFoundError: Migration requests.0007_alter_dependentrequest_status_and_more dependencies reference nonexistent parent node ('requests', '0006_remove_dependentrequest_notes_and_more')
+```
+
+**Причина:**
+В репозитории отсутствуют миграции 0001-0006 для приложения `requests`, но есть миграция 0007, которая от них зависит.
+
+**Решение:**
+
+1. Обновите репозиторий до последней версии:
+
+   ```bash
+   git pull origin main
+   ```
+
+2. Убедитесь, что в папке `requests/migrations/` есть все файлы:
+
+   - `0001_initial.py`
+   - `0002_initial.py`
+   - `0003_dependentrequest_content_type_and_more.py`
+   - `0004_remove_dependentrequest_content_type_and_more.py`
+   - `0005_anonymousrequest_assigned_organization_and_more.py`
+   - `0006_remove_dependentrequest_notes_and_more.py`
+   - `0007_alter_dependentrequest_status_and_more.py`
+   - `__init__.py`
+
+3. Если файлы отсутствуют, используйте команду автоматической установки:
+   ```bash
+   python manage.py setup_project
+   ```
+
+### Проблема: Dependency on app with no migrations
+
+**Симптомы:**
+
+```
+ValueError: Dependency on app with no migrations: users
+```
+
+**Причина:**
+В приложении отсутствует папка `migrations` или файл `__init__.py` в ней.
+
+**Решение:**
+
+1. Создайте папку migrations для проблемного приложения:
+
+   ```bash
+   mkdir users/migrations
+   echo. > users/migrations/__init__.py  # Windows
+   # или
+   touch users/migrations/__init__.py    # Linux/Mac
+   ```
+
+2. Создайте начальную миграцию:
+
+   ```bash
+   python manage.py makemigrations users
+   ```
+
+3. Или используйте автоматическую установку:
+   ```bash
+   python manage.py setup_project
+   ```
+
+### Автоматическое решение проблем
+
+Команда `setup_project` автоматически решает большинство проблем с миграциями:
+
+```bash
+python manage.py setup_project
+```
+
+**Что делает команда:**
+
+- ✅ Создает папки `migrations/` для всех приложений
+- ✅ Создает файлы `__init__.py` в папках migrations
+- ✅ Применяет все миграции
+- ✅ Загружает начальные данные
+- ✅ Создает суперпользователя
+
+**Опции команды:**
+
+```bash
+python manage.py setup_project --skip-migrations  # без миграций
+python manage.py setup_project --skip-data        # без загрузки данных
+python manage.py setup_project --skip-superuser   # без создания админа
+```
+
 6. Загрузите начальные данные:
 
 ```bash
