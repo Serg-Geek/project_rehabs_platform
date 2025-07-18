@@ -25,6 +25,7 @@ config/settings_local.py
 **/migrations/*.py
 !**/migrations/__init__.py
 !requests/migrations/*.py
+!facilities/migrations/*.py
 
 # IDE/Editor
 .vscode/
