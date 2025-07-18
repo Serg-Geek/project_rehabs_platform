@@ -21,12 +21,6 @@ media/
 secret
 config/settings_local.py
 
-# Migrations
-**/migrations/*.py
-!**/migrations/__init__.py
-!requests/migrations/*.py
-!facilities/migrations/*.py
-
 # IDE/Editor
 .vscode/
 .idea/
