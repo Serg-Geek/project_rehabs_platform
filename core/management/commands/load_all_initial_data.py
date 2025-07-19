@@ -47,4 +47,92 @@ class Command(BaseCommand):
                 )
                 return
 
+        # Создаем системные теги для блога
+        try:
+            self.stdout.write('Создание системных тегов для блога...')
+            from blog.models import Tag
+            
+            # Словарь системных тегов с описаниями
+            system_tags_data = {
+                'profilaktika-i-preduprezhdenie': {
+                    'name': 'Профилактика и предупреждение',
+                    'description': 'Материалы по профилактике зависимостей и предупреждению рецидивов',
+                    'icon': 'deps/icons/articles_tags_icons/prevention-icon.svg'
+                },
+                'yuridicheskaya-konsultatsiya': {
+                    'name': 'Юридическая консультация',
+                    'description': 'Правовые вопросы, связанные с зависимостями и реабилитацией',
+                    'icon': 'deps/icons/articles_tags_icons/justice-hammer-icon.svg'
+                },
+                'psihiatriya': {
+                    'name': 'Психиатрия',
+                    'description': 'Психиатрические аспекты лечения зависимостей',
+                    'icon': 'deps/icons/articles_tags_icons/psychiatrist-icon.svg'
+                },
+                'psihologiya': {
+                    'name': 'Психология',
+                    'description': 'Психологические методы лечения и поддержки',
+                    'icon': 'deps/icons/articles_tags_icons/psychologist-icon.svg'
+                },
+                'rodstvennikam': {
+                    'name': 'Родственникам',
+                    'description': 'Информация для родственников зависимых людей',
+                    'icon': 'deps/icons/articles_tags_icons/clients-icon.svg'
+                },
+                'narkomaniya': {
+                    'name': 'Наркомания',
+                    'description': 'Материалы по лечению наркотической зависимости',
+                    'icon': 'deps/icons/articles_tags_icons/medicine-icon.svg'
+                },
+                'alkogolizm': {
+                    'name': 'Алкоголизм',
+                    'description': 'Материалы по лечению алкогольной зависимости',
+                    'icon': 'deps/icons/articles_tags_icons/alcohol-icon.svg'
+                },
+            }
+            
+            created_count = 0
+            updated_count = 0
+            
+            for slug, data in system_tags_data.items():
+                tag, created = Tag.objects.get_or_create(
+                    slug=slug,
+                    defaults={
+                        'name': data['name'],
+                        'description': data['description'],
+                        'icon': data['icon'],
+                        'is_system': True,
+                        'is_active': True
+                    }
+                )
+                
+                if created:
+                    created_count += 1
+                else:
+                    # Обновляем существующий тег, если данные изменились
+                    if (tag.name != data['name'] or 
+                        tag.description != data['description'] or 
+                        tag.icon != data['icon'] or 
+                        not tag.is_system or 
+                        not tag.is_active):
+                        
+                        tag.name = data['name']
+                        tag.description = data['description']
+                        tag.icon = data['icon']
+                        tag.is_system = True
+                        tag.is_active = True
+                        tag.save()
+                        updated_count += 1
+            
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f'✓ Системные теги созданы: {created_count} новых, {updated_count} обновлено'
+                )
+            )
+            
+        except Exception as e:
+            self.stdout.write(
+                self.style.ERROR(f'✗ Ошибка при создании системных тегов: {str(e)}')
+            )
+
         self.stdout.write(self.style.SUCCESS('✓ Все начальные данные успешно загружены')) 

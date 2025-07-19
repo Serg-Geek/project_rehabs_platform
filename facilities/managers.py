@@ -1,348 +1,259 @@
 """
-Managers for facility models.
+Custom managers for facilities models.
 
-This module provides custom managers for facility models
-with optimized queries and business logic.
+This module provides optimized query methods for facilities models.
 """
 
 from django.db import models
-from django.db.models import Avg, Count, Q
-from django.utils import timezone
+from django.db.models import Q, Prefetch
 
 
 class FacilityManager(models.Manager):
     """
-    Custom manager for medical facilities.
-    
-    Provides optimized queries and business logic for facility operations.
+    Base manager for facility models with common query optimizations.
     """
     
-    def active_with_related(self):
+    def with_related_data(self):
         """
-        Get active facilities with related objects optimized.
+        Get facilities with basic related data (images, city, region).
         
         Returns:
-            QuerySet: Active facilities with city, organization_type, reviews, and images
+            QuerySet: Facilities with prefetched related data
         """
-        return self.select_related('city', 'organization_type')\
-                   .prefetch_related('reviews', 'images')\
-                   .filter(is_active=True)
+        return self.select_related('city', 'city__region')\
+                   .prefetch_related('images')
     
-    def by_city_and_type(self, city_slug=None, org_type_slug=None):
+    def with_full_data(self):
         """
-        Filter facilities by city and organization type.
+        Get facilities with all related data for detail views.
+        
+        Returns:
+            QuerySet: Facilities with all prefetched related data
+        """
+        return self.select_related('city', 'city__region')\
+                   .prefetch_related(
+                       'reviews',
+                       'images',
+                       'documents',
+                       'specialists'
+                   )
+    
+    def active(self):
+        """
+        Get only active facilities.
+        
+        Returns:
+            QuerySet: Active facilities
+        """
+        return self.filter(is_active=True)
+    
+    def by_region(self, region):
+        """
+        Get facilities by region.
         
         Args:
-            city_slug: City slug to filter by
-            org_type_slug: Organization type slug to filter by
+            region: Region object or slug
             
         Returns:
-            QuerySet: Filtered facilities
+            QuerySet: Facilities in the specified region
         """
-        queryset = self.active_with_related()
-        
-        if city_slug:
-            queryset = queryset.filter(city__slug=city_slug)
-            
-        if org_type_slug:
-            queryset = queryset.filter(organization_type__slug=org_type_slug)
-            
-        return queryset
+        if hasattr(region, 'slug'):
+            return self.filter(city__region=region)
+        return self.filter(city__region__slug=region)
     
-    def with_rating_above(self, min_rating):
+    def by_city(self, city):
         """
-        Get facilities with average rating above specified value.
+        Get facilities by city.
         
         Args:
-            min_rating: Minimum average rating
+            city: City object or slug
             
         Returns:
-            QuerySet: Facilities with rating above minimum
+            QuerySet: Facilities in the specified city
         """
-        return self.active_with_related()\
-                   .annotate(avg_rating=Avg('reviews__rating'))\
-                   .filter(avg_rating__gte=min_rating)
+        if hasattr(city, 'slug'):
+            return self.filter(city=city)
+        return self.filter(city__slug=city)
     
-    def with_review_count(self, min_reviews=1):
+    def search(self, query):
         """
-        Get facilities with minimum number of reviews.
+        Search facilities by name, description, or address.
         
         Args:
-            min_reviews: Minimum number of reviews
+            query: Search query string
             
         Returns:
-            QuerySet: Facilities with minimum reviews
+            QuerySet: Matching facilities
         """
-        return self.active_with_related()\
-                   .annotate(review_count=Count('reviews'))\
-                   .filter(review_count__gte=min_reviews)
-    
-    def search_by_name(self, search_term):
-        """
-        Search facilities by name.
+        if not query:
+            return self.none()
         
-        Args:
-            search_term: Search term for facility name
-            
-        Returns:
-            QuerySet: Facilities matching search term
-        """
-        return self.active_with_related()\
-                   .filter(name__icontains=search_term)
-    
-    def by_services(self, service_names):
-        """
-        Get facilities that provide specific services.
-        
-        Args:
-            service_names: List of service names
-            
-        Returns:
-            QuerySet: Facilities providing specified services
-        """
-        return self.active_with_related()\
-                   .filter(services__name__in=service_names)\
-                   .distinct()
-    
-    def recently_updated(self, days=30):
-        """
-        Get facilities updated recently.
-        
-        Args:
-            days: Number of days to look back
-            
-        Returns:
-            QuerySet: Recently updated facilities
-        """
-        cutoff_date = timezone.now() - timezone.timedelta(days=days)
-        return self.active_with_related()\
-                   .filter(updated_at__gte=cutoff_date)
-    
-    def with_images(self):
-        """
-        Get facilities that have images.
-        
-        Returns:
-            QuerySet: Facilities with images
-        """
-        return self.active_with_related()\
-                   .filter(images__isnull=False)\
-                   .distinct()
-    
-    def top_rated(self, limit=10):
-        """
-        Get top rated facilities.
-        
-        Args:
-            limit: Maximum number of facilities to return
-            
-        Returns:
-            QuerySet: Top rated facilities
-        """
-        return self.active_with_related()\
-                   .annotate(avg_rating=Avg('reviews__rating'))\
-                   .filter(avg_rating__isnull=False)\
-                   .order_by('-avg_rating')[:limit]
-    
-    def by_license_status(self, has_license=True):
-        """
-        Get facilities by license status.
-        
-        Args:
-            has_license: Whether to get facilities with or without license
-            
-        Returns:
-            QuerySet: Facilities by license status
-        """
-        if has_license:
-            return self.active_with_related()\
-                       .exclude(license_number='')
-        else:
-            return self.active_with_related()\
-                       .filter(license_number='')
+        return self.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(address__icontains=query)
+        )
 
 
 class ClinicManager(FacilityManager):
     """
-    Custom manager for clinics.
-    
-    Provides clinic-specific queries and business logic.
+    Manager for Clinic model with clinic-specific query methods.
     """
     
-    def with_emergency_support(self):
+    def with_related_data(self):
         """
-        Get clinics with emergency support.
+        Get clinics with basic related data.
         
         Returns:
-            QuerySet: Clinics with emergency support
+            QuerySet: Clinics with prefetched related data
         """
-        return self.active_with_related()\
-                   .filter(emergency_support=True)
+        return super().with_related_data().order_by('name')
     
-    def with_hospital(self):
+    def with_full_data(self):
         """
-        Get clinics with hospital facilities.
+        Get clinics with all related data for detail views.
         
         Returns:
-            QuerySet: Clinics with hospital
+            QuerySet: Clinics with all prefetched related data
         """
-        return self.active_with_related()\
-                   .filter(has_hospital=True)
+        return super().with_full_data().order_by('name')
     
     def by_specialization(self, specialization):
         """
         Get clinics by medical specialization.
         
         Args:
-            specialization: Medical specialization
+            specialization: Specialization object or slug
             
         Returns:
-            QuerySet: Clinics with specified specialization
+            QuerySet: Clinics with the specified specialization
         """
-        return self.active_with_related()\
-                   .filter(specializations__name__icontains=specialization)\
-                   .distinct()
+        if hasattr(specialization, 'slug'):
+            return self.filter(specializations=specialization)
+        return self.filter(specializations__slug=specialization)
 
 
 class RehabCenterManager(FacilityManager):
     """
-    Custom manager for rehabilitation centers.
-    
-    Provides rehab center-specific queries and business logic.
+    Manager for RehabCenter model with rehab-specific query methods.
     """
     
-    def by_capacity(self, min_capacity=None, max_capacity=None):
+    def with_related_data(self):
         """
-        Get rehab centers by capacity.
+        Get rehab centers with basic related data.
+        
+        Returns:
+            QuerySet: Rehab centers with prefetched related data
+        """
+        return super().with_related_data().order_by('name')
+    
+    def with_full_data(self):
+        """
+        Get rehab centers with all related data for detail views.
+        
+        Returns:
+            QuerySet: Rehab centers with all prefetched related data
+        """
+        return super().with_full_data().order_by('name')
+    
+    def by_addiction_type(self, addiction_type):
+        """
+        Get rehab centers by addiction type.
         
         Args:
-            min_capacity: Minimum capacity
-            max_capacity: Maximum capacity
+            addiction_type: Addiction type object or slug
             
         Returns:
-            QuerySet: Rehab centers within capacity range
+            QuerySet: Rehab centers for the specified addiction type
         """
-        queryset = self.active_with_related()
-        
-        if min_capacity is not None:
-            queryset = queryset.filter(capacity__gte=min_capacity)
-            
-        if max_capacity is not None:
-            queryset = queryset.filter(capacity__lte=max_capacity)
-            
-        return queryset
+        if hasattr(addiction_type, 'slug'):
+            return self.filter(addiction_types=addiction_type)
+        return self.filter(addiction_types__slug=addiction_type)
     
-    def by_program_duration(self, min_duration=None, max_duration=None):
+    def with_home_visits(self):
         """
-        Get rehab centers by program duration.
-        
-        Args:
-            min_duration: Minimum program duration in days
-            max_duration: Maximum program duration in days
-            
-        Returns:
-            QuerySet: Rehab centers within duration range
-        """
-        queryset = self.active_with_related()
-        
-        if min_duration is not None:
-            queryset = queryset.filter(program_duration__gte=min_duration)
-            
-        if max_duration is not None:
-            queryset = queryset.filter(program_duration__lte=max_duration)
-            
-        return queryset
-    
-    def by_price_range(self, min_price=None, max_price=None):
-        """
-        Get rehab centers by price range.
-        
-        Args:
-            min_price: Minimum price
-            max_price: Maximum price
-            
-        Returns:
-            QuerySet: Rehab centers within price range
-        """
-        queryset = self.active_with_related()
-        
-        if min_price is not None:
-            queryset = queryset.filter(min_price__gte=min_price)
-            
-        if max_price is not None:
-            queryset = queryset.filter(min_price__lte=max_price)
-            
-        return queryset
-    
-    def with_special_programs(self):
-        """
-        Get rehab centers with special programs.
+        Get rehab centers that offer home visits.
         
         Returns:
-            QuerySet: Rehab centers with special programs
+            QuerySet: Rehab centers with home visits
         """
-        return self.active_with_related()\
-                   .exclude(special_programs='')
+        return self.filter(home_visits=True)
 
 
 class PrivateDoctorManager(FacilityManager):
     """
-    Custom manager for private doctors.
-    
-    Provides private doctor-specific queries and business logic.
+    Manager for PrivateDoctor model with doctor-specific query methods.
     """
+    
+    def with_related_data(self):
+        """
+        Get private doctors with basic related data.
+        
+        Returns:
+            QuerySet: Private doctors with prefetched related data
+        """
+        return self.filter(is_active=True)\
+                   .select_related('city', 'city__region')\
+                   .prefetch_related('specializations', 'images')\
+                   .order_by('last_name', 'first_name')
+    
+    def with_full_data(self):
+        """
+        Get private doctors with all related data for detail views.
+        
+        Returns:
+            QuerySet: Private doctors with all prefetched related data
+        """
+        return self.filter(is_active=True)\
+                   .select_related('city', 'city__region')\
+                   .prefetch_related(
+                       'specializations',
+                       'images',
+                       'documents',
+                       'reviews'
+                   )\
+                   .order_by('last_name', 'first_name')
     
     def by_specialization(self, specialization):
         """
         Get private doctors by specialization.
         
         Args:
-            specialization: Medical specialization
+            specialization: Specialization object or slug
             
         Returns:
-            QuerySet: Private doctors with specified specialization
+            QuerySet: Private doctors with the specified specialization
         """
-        return self.active_with_related()\
-                   .filter(specializations__name__icontains=specialization)\
-                   .distinct()
+        if hasattr(specialization, 'slug'):
+            return self.filter(specializations=specialization)
+        return self.filter(specializations__slug=specialization)
     
-    def with_consultation_available(self):
+    def with_home_visits(self):
         """
-        Get private doctors with consultation available.
+        Get private doctors who offer home visits.
         
         Returns:
-            QuerySet: Private doctors with consultation
+            QuerySet: Private doctors with home visits
         """
-        return self.active_with_related()\
-                   .filter(consultation_available=True)
+        return self.filter(home_visits=True)
     
-    def by_experience_years(self, min_years=None, max_years=None):
+    def search(self, query):
         """
-        Get private doctors by experience years.
+        Search private doctors by name, specialization, or city.
         
         Args:
-            min_years: Minimum years of experience
-            max_years: Maximum years of experience
+            query: Search query string
             
         Returns:
-            QuerySet: Private doctors within experience range
+            QuerySet: Matching private doctors
         """
-        queryset = self.active_with_related()
+        if not query:
+            return self.none()
         
-        if min_years is not None:
-            queryset = queryset.filter(experience_years__gte=min_years)
-            
-        if max_years is not None:
-            queryset = queryset.filter(experience_years__lte=max_years)
-            
-        return queryset
-    
-    def with_emergency_consultation(self):
-        """
-        Get private doctors with emergency consultation.
-        
-        Returns:
-            QuerySet: Private doctors with emergency consultation
-        """
-        return self.active_with_related()\
-                   .filter(emergency_consultation=True) 
+        return self.filter(
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(middle_name__icontains=query) |
+            Q(specializations__name__icontains=query) |
+            Q(city__name__icontains=query)
+        ).distinct() 

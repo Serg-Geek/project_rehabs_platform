@@ -134,45 +134,65 @@ class PaginationMixin:
     
     Attributes:
         paginate_by: Number of items per page
-        page_param: GET parameter name for page number
+        page_kwarg: URL parameter name for page number
+        allow_empty: Whether to allow empty pages
     """
     
     paginate_by = 20
-    page_param = 'page'
+    page_kwarg = 'page'
+    allow_empty = True
     
-    def get_paginate_by(self):
-        """Get number of items per page."""
+    def get_paginate_by(self, queryset):
+        """Get the number of items to paginate by."""
         return self.paginate_by
     
-    def get_page_number(self):
-        """Get current page number from request."""
-        return self.request.GET.get(self.page_param, 1)
+    def get_page_kwarg(self):
+        """Get the URL parameter name for page number."""
+        return self.page_kwarg
     
-    def paginate_queryset(self, queryset):
+    def get_allow_empty(self):
+        """Get whether to allow empty pages."""
+        return self.allow_empty
+    
+    def paginate_queryset(self, queryset, page_size):
         """Paginate the queryset."""
-        paginator = Paginator(queryset, self.get_paginate_by())
-        page_number = self.get_page_number()
+        from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+        
+        paginator = Paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
+        page_kwarg = self.get_page_kwarg()
+        page = self.kwargs.get(page_kwarg) or self.request.GET.get(page_kwarg) or 1
+        
+        try:
+            page_number = int(page)
+        except (ValueError, TypeError):
+            page_number = 1
         
         try:
             page_obj = paginator.page(page_number)
-        except PageNotAnInteger:
+        except (EmptyPage, PageNotAnInteger):
             page_obj = paginator.page(1)
-        except EmptyPage:
-            page_obj = paginator.page(paginator.num_pages)
-            
-        return paginator, page_obj
+        
+        # Return 4 values as expected by Django ListView
+        return paginator, page_obj, page_obj.object_list, page_obj.has_other_pages()
     
     def get_context_data(self, **kwargs):
         """Add pagination data to context."""
         context = super().get_context_data(**kwargs)
         
-        if hasattr(self, 'paginator') and hasattr(self, 'page_obj'):
-            context.update({
-                'paginator': self.paginator,
-                'page_obj': self.page_obj,
-                'is_paginated': self.paginator.num_pages > 1,
-            })
-            
+        if hasattr(self, 'object_list'):
+            queryset = self.object_list
+        else:
+            queryset = self.get_queryset()
+        
+        page_size = self.get_paginate_by(queryset)
+        paginator, page_obj, object_list, is_paginated = self.paginate_queryset(queryset, page_size)
+        
+        context.update({
+            'paginator': paginator,
+            'page_obj': page_obj,
+            'is_paginated': is_paginated,
+        })
+        
         return context
 
 
