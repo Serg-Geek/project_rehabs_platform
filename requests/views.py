@@ -7,305 +7,312 @@ from django.http import JsonResponse
 from .models import AnonymousRequest, DependentRequest
 from django.utils import timezone
 from facilities.models import Clinic, RehabCenter, PrivateDoctor, OrganizationType
+from services.request_service import RequestService
 
 # Create your views here.
 
 class ConsultationRequestView(CreateView):
+    """
+    Представление для создания заявки на консультацию.
+    
+    Использует RequestService для обработки бизнес-логики.
+    """
     model = AnonymousRequest
     fields = ['phone']  # Только телефон, остальное заполним в form_valid
     template_name = 'facilities/includes/consultation.html'
     success_url = reverse_lazy('requests:success')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request_service = RequestService()
+
     def form_valid(self, form):
+        """Обработка валидной формы."""
         try:
-            # Set default values
-            form.instance.status = AnonymousRequest.Status.NEW
-            form.instance.source = AnonymousRequest.Source.WEBSITE_FORM
-            form.instance.request_type = AnonymousRequest.RequestType.CONSULTATION
+            # Делегируем логику сервису
+            result = self.request_service.create_consultation_request(
+                form_data=form.cleaned_data,
+                request_data=self.request.POST,
+                user=self.request.user
+            )
             
-            # Используем имя пользователя, если оно указано
-            user_name = self.request.POST.get('name', '').strip()
-            form.instance.name = user_name if user_name else 'Анонимный пользователь'
-            
-            form.instance.message = 'Заявка с формы консультации'  # Устанавливаем значение по умолчанию
-            
-            # Map service type to preferred_service
-            service_type = self.request.POST.get('service-type')
-            if service_type == 'consultation':
-                form.instance.preferred_service = 'Консультация'
-            elif service_type == 'therapy':
-                form.instance.preferred_service = 'Терапия'
-            elif service_type == 'support':
-                form.instance.preferred_service = 'Поддержка'
+            if result.success:
+                # Успешное создание
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': True,
+                        'request_number': result.data.id,
+                        'message': result.message
+                    })
+                else:
+                    messages.success(self.request, result.message)
+                    return redirect('requests:success')
             else:
-                form.instance.preferred_service = 'Консультация'  # Значение по умолчанию
-            
-            # Сохраняем форму
-            response = super().form_valid(form)
-            
-            # Проверяем, является ли запрос AJAX-запросом
-            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({
-                    'success': True,
-                    'request_number': form.instance.id,
-                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
-                })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу успеха
-            messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
-            return redirect('requests:success')
+                # Ошибка в сервисе
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': False,
+                        'error': result.error
+                    })
+                else:
+                    messages.error(self.request, result.error)
+                    return redirect('requests:error')
+                    
         except Exception as e:
-            # Проверяем, является ли запрос AJAX-запросом
+            # Неожиданная ошибка
+            error_message = f'Произошла ошибка при обработке заявки: {str(e)}'
+            
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': False,
-                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
+                    'error': error_message
                 })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-            messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
-            return redirect('requests:error', error_message=str(e))
+            else:
+                messages.error(self.request, error_message)
+                return redirect('requests:error')
 
     def form_invalid(self, form):
+        """Обработка невалидной формы."""
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(f'Ошибка в поле {field}: {error}')
         
-        # Проверяем, является ли запрос AJAX-запросом
+        error_text = '\n'.join(error_messages)
+        
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'success': False,
-                'error': '\n'.join(error_messages)
+                'error': error_text
             })
         
-        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-        return redirect('requests:error', error_message='\n'.join(error_messages))
+        return redirect('requests:error', error_message=error_text)
+
 
 class PartnerRequestView(CreateView):
+    """
+    Представление для создания заявки на партнерство.
+    
+    Использует RequestService для обработки бизнес-логики.
+    """
     model = AnonymousRequest
-    fields = ['name', 'phone', 'email', 'message']
+    fields = ['name', 'phone', 'email', 'message']  # Используем существующие поля
     template_name = 'index.html'
     success_url = reverse_lazy('requests:success')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request_service = RequestService()
+
     def form_valid(self, form):
+        """Обработка валидной формы."""
         try:
-            # Set default values
-            form.instance.status = AnonymousRequest.Status.NEW
-            form.instance.request_type = AnonymousRequest.RequestType.PARTNER
-            form.instance.source = AnonymousRequest.Source.WEBSITE_FORM
+            # Делегируем логику сервису
+            result = self.request_service.create_partner_request(
+                form_data=form.cleaned_data,
+                request_data=self.request.POST,
+                user=self.request.user
+            )
             
-            # Сохраняем форму
-            response = super().form_valid(form)
-            
-            # Проверяем, является ли запрос AJAX-запросом
-            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({
-                    'success': True,
-                    'message': 'Заявка успешно отправлена',
-                    'request_number': form.instance.id
-                })
-            return response
+            if result.success:
+                # Успешное создание
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': True,
+                        'request_number': result.data.id,
+                        'message': result.message
+                    })
+                else:
+                    messages.success(self.request, result.message)
+                    return redirect('requests:success')
+            else:
+                # Ошибка в сервисе
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': False,
+                        'error': result.error
+                    })
+                else:
+                    messages.error(self.request, result.error)
+                    return redirect('requests:error')
+                    
         except Exception as e:
+            # Неожиданная ошибка
+            error_message = f'Произошла ошибка при обработке заявки: {str(e)}'
+            
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': False,
-                    'message': 'Произошла ошибка при отправке заявки'
-                }, status=500)
-            return super().form_invalid(form)
+                    'error': error_message
+                })
+            else:
+                messages.error(self.request, error_message)
+                return redirect('requests:error')
 
     def form_invalid(self, form):
+        """Обработка невалидной формы."""
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(f'Ошибка в поле {field}: {error}')
         
-        # Проверяем, является ли запрос AJAX-запросом
+        error_text = '\n'.join(error_messages)
+        
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'success': False,
-                'error': '\n'.join(error_messages)
+                'error': error_text
             })
         
-        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-        return redirect('requests:error', error_message='\n'.join(error_messages))
+        return redirect('requests:error', error_message=error_text)
+
 
 class DependentRequestView(CreateView):
+    """
+    Представление для создания заявки на лечение зависимого.
+    
+    Использует RequestService для обработки бизнес-логики.
+    """
     model = DependentRequest
     template_name = 'facilities/includes/consultation.html'
-    fields = ['phone', 'addiction_type']
+    fields = ['phone', 'addiction_type']  # Используем существующие поля
     success_url = reverse_lazy('requests:success')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request_service = RequestService()
+
     def form_valid(self, form):
+        """Обработка валидной формы."""
         try:
-            # Устанавливаем статус по умолчанию
-            form.instance.status = DependentRequest.Status.NEW
+            # Делегируем логику сервису
+            result = self.request_service.create_dependent_request(
+                form_data=form.cleaned_data,
+                request_data=self.request.POST,
+                user=self.request.user
+            )
             
-            # Устанавливаем тип контакта как анонимный по умолчанию
-            form.instance.contact_type = DependentRequest.ContactType.ANONYMOUS
-            
-            # Получаем имя, если оно указано
-            user_name = self.request.POST.get('name', '').strip()
-            if user_name:
-                form.instance.first_name = user_name
-            
-            # Получаем тип сервиса
-            service_type = self.request.POST.get('service-type')
-            if service_type == 'consultation':
-                form.instance.preferred_treatment = 'Консультация'
-            elif service_type == 'therapy':
-                form.instance.preferred_treatment = 'Терапия'
-            elif service_type == 'support':
-                form.instance.preferred_treatment = 'Поддержка'
-            
-            # Сохраняем форму
-            response = super().form_valid(form)
-            
-            # Проверяем, является ли запрос AJAX-запросом
-            if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({
-                    'success': True,
-                    'request_number': form.instance.id,
-                    'message': 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.'
-                })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу успеха
-            messages.success(self.request, 'Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.')
-            return redirect('requests:success')
+            if result.success:
+                # Успешное создание
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': True,
+                        'request_number': result.data.id,
+                        'message': result.message
+                    })
+                else:
+                    messages.success(self.request, result.message)
+                    return redirect('requests:success')
+            else:
+                # Ошибка в сервисе
+                if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'success': False,
+                        'error': result.error
+                    })
+                else:
+                    messages.error(self.request, result.error)
+                    return redirect('requests:error')
+                    
         except Exception as e:
-            # Проверяем, является ли запрос AJAX-запросом
+            # Неожиданная ошибка
+            error_message = f'Произошла ошибка при обработке заявки: {str(e)}'
+            
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': False,
-                    'error': f'Произошла ошибка при обработке заявки: {str(e)}'
+                    'error': error_message
                 })
-            
-            # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-            messages.error(self.request, f'Произошла ошибка при обработке заявки: {str(e)}')
-            return redirect('requests:error', error_message=str(e))
+            else:
+                messages.error(self.request, error_message)
+                return redirect('requests:error')
 
     def form_invalid(self, form):
+        """Обработка невалидной формы."""
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(f'Ошибка в поле {field}: {error}')
         
-        # Проверяем, является ли запрос AJAX-запросом
+        error_text = '\n'.join(error_messages)
+        
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'success': False,
-                'error': '\n'.join(error_messages)
+                'error': error_text
             })
         
-        # Если это не AJAX-запрос, перенаправляем на страницу ошибки
-        return redirect('requests:error', error_message='\n'.join(error_messages))
+        return redirect('requests:error', error_message=error_text)
+
 
 def success_view(request):
+    """Представление для страницы успешной отправки заявки."""
     return render(request, 'requests/success.html')
 
+
 def error_view(request):
-    error_message = request.GET.get('error_message', '')
+    """Представление для страницы ошибки при отправке заявки."""
+    error_message = request.GET.get('error_message', 'Произошла неизвестная ошибка')
     return render(request, 'requests/error.html', {'error_message': error_message})
 
+
 def print_request_report(request, request_id):
-    """
-    Представление для генерации печатной версии отчета по заявке
-    с дополнительной информацией и оптимизацией запросов
-    """
-    if not request.user.is_staff:
-        return redirect('admin:login')
-    
+    """Представление для печати отчета по заявке."""
     try:
-        # Определяем тип заявки
-        request_type = request.GET.get('type', 'anonymous')
-        
-        if request_type == 'dependent':
-            # Если это заявка от зависимого
-            req = DependentRequest.objects.select_related('responsible_staff').get(pk=request_id)
-            action_logs = []
-        else:
-            # По умолчанию - анонимная заявка с оптимизацией запросов
-            req = AnonymousRequest.objects.select_related(
-                'created_by', 
-                'updated_by', 
-                'assigned_to'
-            ).get(pk=request_id)
-            
-            # Получаем логи действий только для анонимных заявок
-            action_logs = req.action_logs.select_related('user').order_by('-created_at')[:10]
-            
-        # Общие данные для всех типов заявок
-        notes = []
-        status_history = []
-        
-        # Проверяем, есть ли у объекта заявки атрибут notes и загружаем с оптимизацией
-        if hasattr(req, 'notes') and req.notes is not None:
-            notes = req.notes.all().select_related('created_by').order_by('-created_at')
-            
-        # Проверяем, есть ли у объекта заявки атрибут status_history и загружаем с оптимизацией
-        if hasattr(req, 'status_history') and req.status_history is not None:
-            status_history = req.status_history.all().select_related('changed_by').order_by('-changed_at')
-            
-        # Формируем контекст с дополнительными данными
+        # Пытаемся найти заявку среди анонимных заявок
+        try:
+            request_obj = AnonymousRequest.objects.get(id=request_id)
+            request_type = 'anonymous'
+        except AnonymousRequest.DoesNotExist:
+            # Если не найдена, ищем среди заявок на зависимых
+            try:
+                request_obj = DependentRequest.objects.get(id=request_id)
+                request_type = 'dependent'
+            except DependentRequest.DoesNotExist:
+                messages.error(request, 'Заявка не найдена')
+                return redirect('requests:error')
+
         context = {
-            'request': req,
-            'notes': notes,
-            'status_history': status_history,
-            'action_logs': action_logs,
-            'user': request.user,
-            'title': f'Отчет по заявке #{req.id}',
-            'report_type': 'enhanced',
-            'generation_time': timezone.now(),
+            'request_obj': request_obj,
+            'request_type': request_type,
+            'print_date': timezone.now(),
         }
         
-        # Проверяем наличие предпочтительного учреждения
-        if hasattr(req, 'preferred_facility') and req.preferred_facility is not None:
-            context['facility'] = req.preferred_facility
-            
-        # Добавляем статистику обработки для административных целей
-        if request.user.is_superuser:
-            # Если пользователь суперпользователь, добавляем статистику
-            processing_time = None
-            if req.status in ['completed', 'closed', 'treatment_completed']:
-                # Вычисляем время обработки для закрытых заявок
-                if hasattr(req, 'status_history') and req.status_history.exists():
-                    first_status = req.status_history.order_by('changed_at').first()
-                    last_status = req.status_history.order_by('-changed_at').first()
-                    if first_status and last_status:
-                        processing_time = last_status.changed_at - first_status.changed_at
-            
-            context['processing_time'] = processing_time
-            
         return render(request, 'requests/print_report.html', context)
         
-    except (AnonymousRequest.DoesNotExist, DependentRequest.DoesNotExist):
-        messages.error(request, 'Заявка не найдена')
-        return redirect('admin:index')
+    except Exception as e:
+        messages.error(request, f'Ошибка при формировании отчета: {str(e)}')
+        return redirect('requests:error')
+
 
 def get_organizations_by_type(request):
-    """
-    AJAX-view для получения списка организаций по типу
-    """
-    organization_type_id = request.GET.get('organization_type_id')
-    
-    if not organization_type_id:
-        return JsonResponse({'organizations': []})
-    
+    """AJAX представление для получения организаций по типу."""
     try:
-        organization_type = OrganizationType.objects.get(id=organization_type_id)
-        organizations = []
+        org_type = request.GET.get('type')
         
-        if organization_type.name == 'Клиника':
-            orgs = Clinic.objects.filter(is_active=True)
-            organizations = [{'id': org.name, 'name': org.name} for org in orgs]
-        elif organization_type.name == 'Реабилитационный центр':
-            orgs = RehabCenter.objects.filter(is_active=True)
-            organizations = [{'id': org.name, 'name': org.name} for org in orgs]
-        elif organization_type.name == 'Частный врач':
-            orgs = PrivateDoctor.objects.filter(is_active=True)
-            organizations = [{'id': org.get_full_name(), 'name': org.get_full_name()} for org in orgs]
+        if not org_type:
+            return JsonResponse({
+                'success': False,
+                'error': 'Не указан тип организации'
+            })
         
-        return JsonResponse({'organizations': organizations})
+        # Используем сервис для получения организаций
+        request_service = RequestService()
+        result = request_service.get_organizations_by_type(org_type)
         
-    except OrganizationType.DoesNotExist:
-        return JsonResponse({'organizations': []})
+        if result.success:
+            return JsonResponse({
+                'success': True,
+                'organizations': result.data
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': result.error
+            })
+            
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Ошибка получения организаций: {str(e)}'
+        })

@@ -6,6 +6,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.db.models import Q
+from .managers import FacilityManager, ClinicManager, RehabCenterManager, PrivateDoctorManager
 
 class OrganizationType(TimeStampedModel):
     """
@@ -170,6 +171,9 @@ class Clinic(AbstractMedicalFacility):
         verbose_name=_('Отзывы')
     )
 
+    # Используем кастомный manager
+    objects = ClinicManager()
+
     class Meta:
         verbose_name = _('Клиника')
         verbose_name_plural = _('Клиники')
@@ -240,6 +244,9 @@ class RehabCenter(AbstractMedicalFacility):
         null=True
     )
     license_number = None  # Переопределяем поле, чтобы оно не отображалось в админке
+
+    # Используем кастомный manager
+    objects = RehabCenterManager()
 
     class Meta:
         verbose_name = _('Реабилитационный центр')
@@ -555,6 +562,9 @@ class PrivateDoctor(AbstractMedicalFacility):
         related_query_name='facility',
         verbose_name=_('Отзывы')
     )
+
+    # Используем кастомный manager
+    objects = PrivateDoctorManager()
 
     class Meta:
         verbose_name = _('Частный врач')
