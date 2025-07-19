@@ -12,6 +12,7 @@ from .base import BaseService
 from .results import ServiceResult
 from requests.models import AnonymousRequest, DependentRequest
 from facilities.models import Clinic, RehabCenter, PrivateDoctor
+from core.logging import business_logger, error_logger
 
 User = get_user_model()
 
@@ -65,6 +66,13 @@ class RequestService(BaseService):
             # Save the request
             request_obj.save()
             
+            # Логируем создание заявки
+            business_logger.log_request_created(
+                request_obj=request_obj,
+                user=user,
+                ip_address=getattr(self, 'request_ip', None)
+            )
+            
             self.log_info("Consultation request created", 
                          request_id=request_obj.id,
                          service_type=service_type)
@@ -75,6 +83,16 @@ class RequestService(BaseService):
             )
             
         except Exception as e:
+            # Логируем ошибку
+            error_logger.log_exception(
+                exception=e,
+                context={
+                    'method': 'create_consultation_request',
+                    'service_type': self.safe_get(request_data, 'service-type'),
+                    'user_id': user.id if user else None,
+                },
+                user=user
+            )
             self.log_error("Error creating consultation request", e)
             return ServiceResult.error_result(
                 error="Ошибка создания заявки на консультацию"
