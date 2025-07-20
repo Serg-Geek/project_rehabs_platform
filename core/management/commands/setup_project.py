@@ -28,23 +28,41 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('🚀 Начинаем установку проекта...'))
         
-        # 1. Проверяем и создаем папки migrations
+        # 1. Создаем необходимые папки
+        self.create_required_folders()
+        
+        # 2. Проверяем и создаем папки migrations
         self.create_migrations_folders()
         
-        # 2. Применяем миграции
+        # 3. Применяем миграции
         if not options['skip_migrations']:
             self.apply_migrations()
         
-        # 3. Загружаем данные
+        # 4. Загружаем данные
         if not options['skip_data']:
             self.load_initial_data()
         
-        # 4. Создаем суперпользователя
+        # 5. Создаем суперпользователя
         if not options['skip_superuser']:
             self.create_superuser()
         
         self.stdout.write(self.style.SUCCESS('✅ Установка проекта завершена успешно!'))
         self.stdout.write(self.style.SUCCESS('🌐 Запустите сервер: python manage.py runserver'))
+
+    def create_required_folders(self):
+        """Создает необходимые папки для работы проекта"""
+        self.stdout.write('📁 Создаем необходимые папки...')
+        
+        required_folders = [
+            'logs',
+            'media',
+            'static',
+        ]
+        
+        for folder in required_folders:
+            folder_path = Path(settings.BASE_DIR) / folder
+            folder_path.mkdir(exist_ok=True)
+            self.stdout.write(f'  ✓ Папка {folder} создана/проверена')
 
     def create_migrations_folders(self):
         """Создает папки migrations и __init__.py файлы"""

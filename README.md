@@ -70,10 +70,21 @@ python manage.py setup_project
 
 Эта команда автоматически:
 
+- Создаст необходимые папки (logs, media, static)
 - Создаст необходимые папки migrations
 - Применит все миграции
 - Загрузит начальные данные
 - Создаст суперпользователя (admin@admin.com / 123456)
+
+**Если возникает ошибка с логированием (FileNotFoundError: logs/business.log), выполните:**
+
+```bash
+# Создайте папку logs вручную
+mkdir logs
+
+# Или используйте автоматическую установку
+python manage.py setup_project
+```
 
 **Если при запуске миграций возникает ошибка "Dependency on app with no migrations: users", выполните:**
 
@@ -157,6 +168,36 @@ ValueError: Dependency on app with no migrations: users
 3. Или используйте автоматическую установку:
    ```bash
    python manage.py setup_project
+   ```
+
+### Проблема: Ошибка логирования при запуске
+
+**Симптомы:**
+
+```
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/business.log'
+ValueError: Unable to configure handler 'file_business'
+```
+
+**Причина:**
+Папка `logs/` не существует при клонировании проекта, но система логирования пытается создать файлы логов.
+
+**Решение:**
+
+1. **Автоматическое решение (рекомендуется):**
+
+   ```bash
+   python manage.py setup_project
+   ```
+
+2. **Ручное решение:**
+
+   ```bash
+   # Создайте папку logs
+   mkdir logs
+
+   # Затем запустите миграции
+   python manage.py migrate
    ```
 
 ### Автоматическое решение проблем

@@ -159,6 +159,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 AUTH_USER_MODEL = 'users.User'
 
+# Создание папки logs если её нет
+import os
+logs_dir = BASE_DIR / 'logs'
+if not logs_dir.exists():
+    logs_dir.mkdir(exist_ok=True)
+
 # Настройки для системы логирования
 ADMIN_LOGS = {
     'ENABLE_LOGGING': True,
