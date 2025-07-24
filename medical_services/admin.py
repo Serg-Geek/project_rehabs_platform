@@ -26,11 +26,12 @@ class TherapyMethodAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_categories', 'duration', 'is_active']
-    list_filter = ['categories', 'is_active']
+    list_display = ['name', 'get_categories', 'duration', 'is_active', 'display_priority']
+    list_filter = ['categories', 'is_active', 'display_priority']
     search_fields = ['name', 'description']
     filter_horizontal = ['categories']
     exclude = ['slug']
+    ordering = ['-display_priority', 'name']
 
     def get_categories(self, obj):
         return ", ".join([category.name for category in obj.categories.all()])

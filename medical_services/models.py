@@ -124,6 +124,20 @@ class Service(TimeStampedModel):
         default=True,
         verbose_name=_('Активна')
     )
+    PRIORITY_HIGH = 3
+    PRIORITY_MEDIUM = 2
+    PRIORITY_LOW = 1
+    PRIORITY_CHOICES = [
+        (PRIORITY_HIGH, 'Высокий'),
+        (PRIORITY_MEDIUM, 'Средний'),
+        (PRIORITY_LOW, 'Низкий'),
+    ]
+    display_priority = models.IntegerField(
+        choices=PRIORITY_CHOICES,
+        default=PRIORITY_MEDIUM,
+        verbose_name='Приоритет отображения',
+        help_text='Высокий — 3, Средний — 2, Низкий — 1'
+    )
 
     class Meta:
         verbose_name = _('Услуга')

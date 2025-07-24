@@ -51,7 +51,7 @@ class HomeView(TemplateView):
                     'services': Service.objects.filter(
                         categories=category,
                         is_active=True
-                    ).order_by('name')
+                    ).order_by('-display_priority', 'name')
                 }
             except ServiceCategory.DoesNotExist:
                 continue

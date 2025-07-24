@@ -34,7 +34,7 @@ class ServiceCategoryDetailView(DetailView):
         services = Service.objects.filter(
             categories=self.object,
             is_active=True
-        ).order_by('name')
+        ).order_by('-display_priority', 'name')
         
         context['services'] = services
         return context
@@ -128,7 +128,7 @@ class ServiceListView(ListView):
     def get_queryset(self):
         queryset = Service.objects.filter(is_active=True).prefetch_related(
             'categories'
-        ).order_by('name')
+        ).order_by('-display_priority', 'name')
         
         # Фильтрация по категории
         category_slug = self.request.GET.get('category')

@@ -165,3 +165,45 @@ class HomePageServicesTest(TestCase):
         service_categories = response.context['service_categories']
         
         self.assertNotIn('alcoholism', service_categories)
+
+class ServicePriorityOrderTest(TestCase):
+    """Тест сортировки услуг по приоритету отображения"""
+    def setUp(self):
+        self.client = Client()
+        self.home_url = reverse('core:home')
+        self.category = ServiceCategory.objects.create(
+            name='Тестовая категория',
+            slug='lechenie-alkogolizma',  # Ключ для главной страницы
+            description='Тест',
+            order=1,
+            is_active=True
+        )
+        self.service_high = Service.objects.create(
+            name='Высокий приоритет',
+            description='Услуга с высоким приоритетом',
+            duration=30,
+            is_active=True,
+            display_priority=3
+        )
+        self.service_medium = Service.objects.create(
+            name='Средний приоритет',
+            description='Услуга со средним приоритетом',
+            duration=30,
+            is_active=True,
+            display_priority=2
+        )
+        self.service_low = Service.objects.create(
+            name='Низкий приоритет',
+            description='Услуга с низким приоритетом',
+            duration=30,
+            is_active=True,
+            display_priority=1
+        )
+        for s in [self.service_high, self.service_medium, self.service_low]:
+            s.categories.add(self.category)
+
+    def test_services_order_by_priority(self):
+        response = self.client.get(self.home_url)
+        services = response.context['service_categories']['alcoholism']['services']
+        # Проверяем порядок: высокий, средний, низкий
+        self.assertEqual(list(services), [self.service_high, self.service_medium, self.service_low])
