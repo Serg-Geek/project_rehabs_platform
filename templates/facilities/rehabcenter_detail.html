@@ -94,19 +94,7 @@
 </section>
 {% endif %}
 
-<section class="detail__specialists rehab-detail-specialists specialists">
-    <div class="container">
-        <h3 class="title__h3 detail__title">Специалисты центра</h3>
-        <div class="section__content">
-            <div class="specialists__cards">
-                {% for specialist in center.specialists.all %}
-                {% include "includes/cards/specialist_card.html" with specialist=specialist %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>
-
+{% if center.documents.all %}
 <section class="detail-docs rehab-detail__docs">
     <div class="container">
         <h3 class="title__h3 detail__title">Лицензии и документы</h3>
@@ -127,7 +115,24 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if center.specialists.all %}
+<section class="detail__specialists rehab-detail-specialists specialists">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Специалисты центра</h3>
+        <div class="section__content">
+            <div class="specialists__cards">
+                {% for specialist in center.specialists.all %}
+                {% include "includes/cards/specialist_card.html" with specialist=specialist %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if center.reviews.all %}
 <section class="detail__reviews">
     <div class="container">
         <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
@@ -165,7 +170,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if related_facilities %}
 <section class="detail-rehabs rehabs">
     <div class="container">
         <h3 class="title__h3 detail-rehabs__title">Другие центры в вашем регионе</h3>
@@ -178,6 +185,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 {% include "facilities/includes/consultation.html" %}
 {% endblock %}
