@@ -132,7 +132,7 @@ class ServiceListView(ListView):
         
         # Фильтрация по категории
         category_slug = self.request.GET.get('category')
-        if category_slug:
+        if category_slug and category_slug != 'all':
             queryset = queryset.filter(categories__slug=category_slug)
         
         # Поиск по названию
