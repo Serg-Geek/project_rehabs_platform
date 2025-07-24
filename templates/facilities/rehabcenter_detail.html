@@ -81,16 +81,18 @@
 </section>
 
 {% if programs %}
-<section class="detail__programs rehab-detail__programs">
-    <h3 class="title__h3 detail__title">Реабилитационные программы</h3>
-    <ul class="rehab-programs__list">
+<section class="detail__info rehab-detail__info">
+    <div class="container">
+        <h3 class="title__h3 detail__title">Реабилитационные программы</h3>
         {% for fs in programs %}
-        <li class="rehab-programs__item">
-            <strong>{{ fs.service.name }}</strong><br>
-            {{ fs.service.description|linebreaks }}
-        </li>
+        <div class="detail-content__wrapper">
+            <h4 class="title__h4">{{ fs.service.name }}</h4>
+            <div class="rehab-detail__text detail__text--width-limiter">
+                {{ fs.service.description|linebreaks }}
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 </section>
 {% endif %}
 
