@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 from .models import Clinic, RehabCenter, PrivateDoctor
 from medical_services.models import FacilityService, Service
 from django.contrib.contenttypes.models import ContentType
@@ -72,9 +72,18 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
     def get_queryset(self):
         """Используем кастомный manager для оптимизации."""
         queryset = RehabCenter.objects.with_related_data()
-        
-        # Применяем поиск из миксина
-        return super().get_queryset()
+        sort = self.request.GET.get('sort')
+        if sort == 'programs':
+            ct = ContentType.objects.get_for_model(RehabCenter)
+            program_services = FacilityService.objects.filter(
+                content_type=ct,
+                object_id=OuterRef('pk'),
+                service__is_rehabilitation_program=True
+            )
+            queryset = queryset.annotate(
+                has_program=Exists(program_services)
+            ).order_by('-has_program', 'name')
+        return super().get_queryset() if not sort else queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -123,6 +132,8 @@ class FacilityDetailView(DetailView):
         
         # Получаем услуги учреждения
         services = self._get_facility_services()
+        # Получаем реабилитационные программы
+        programs = [fs for fs in services if getattr(fs.service, 'is_rehabilitation_program', False)]
         
         # Добавляем данные в контекст
         if isinstance(self.object, Clinic):
@@ -132,6 +143,7 @@ class FacilityDetailView(DetailView):
         
         context['related_facilities'] = related_facilities
         context['services'] = services
+        context['programs'] = programs
         context['facility_type'] = self.kwargs.get('facility_type')
         
         # Добавляем from_service_obj для хлебных крошек

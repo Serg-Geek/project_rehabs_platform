@@ -182,24 +182,6 @@ class RehabCenter(AbstractMedicalFacility):
     """
     Модель реабилитационного центра с специфическими полями
     """
-    capacity = models.IntegerField(
-        verbose_name=_('Вместимость'),
-        default=0
-    )
-    program_duration = models.IntegerField(
-        verbose_name=_('Длительность программы (дней)'),
-        default=0
-    )
-    min_price = models.IntegerField(
-        verbose_name=_('Минимальная цена'),
-        default=0
-    )
-    accommodation_conditions = models.TextField(
-        verbose_name=_('Условия проживания'),
-        default='',
-        blank=True,
-        null=True
-    )
     specialists = GenericRelation(
         'staff.FacilitySpecialist',
         content_type_field='content_type',

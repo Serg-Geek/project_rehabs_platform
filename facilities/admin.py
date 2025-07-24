@@ -73,18 +73,28 @@ class ClinicAdmin(BaseFacilityAdmin):
 
 @admin.register(RehabCenter)
 class RehabCenterAdmin(BaseFacilityAdmin):
-    list_display = BaseFacilityAdmin.list_display + ['capacity', 'program_duration', 'min_price']
+    list_display = BaseFacilityAdmin.list_display + ['rehabilitation_programs_list']
     list_filter = BaseFacilityAdmin.list_filter
-    
+    readonly_fields = ['rehabilitation_programs_list']
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
-        }),
-        (_('Реабилитационная программа'), {
-            'fields': ('capacity', 'program_duration', 'min_price', 'accommodation_conditions'),
-            'classes': ('collapse',)
+            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'rehabilitation_programs_list')
         }),
     )
+
+    def rehabilitation_programs_list(self, obj):
+        from medical_services.models import FacilityService
+        from django.contrib.contenttypes.models import ContentType
+        ct = ContentType.objects.get_for_model(obj)
+        programs = FacilityService.objects.filter(
+            content_type=ct,
+            object_id=obj.pk,
+            service__is_rehabilitation_program=True
+        )
+        if programs.exists():
+            return "\n".join([fs.service.name for fs in programs])
+        return '-'
+    rehabilitation_programs_list.short_description = 'Реабилитационные программы'
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):

@@ -80,31 +80,19 @@
     </div>
 </section>
 
-<section class="detail__info rehab-detail__info">
-    <div class="container">
-        <div class="detail-content__wrapper">
-            <h3 class="title__h3 detail__title">Условия проживания</h3>
-            <div class="rehab-detail__text detail__text--width-limiter">
-                {% if center.accommodation_conditions %}
-                <p>{{ center.accommodation_conditions }}</p>
-                {% else %}
-                <p>Условия проживания не указаны</p>
-                {% endif %}
-            </div>
-        </div>
-        <div class="detail-content__wrapper detail-content__wrapper-second">
-            <h3 class="title__h3 detail__title">Условия поступления</h3>
-            <div class="rehab-detail__text detail__text--width-limiter">
-                {% if center.program_duration %}
-                <p>Длительность курса реабилитации: {{ center.program_duration }} дней</p>
-                <p>Вместимость центра: {{ center.capacity }} человек</p>
-                {% else %}
-                <p>Информация о курсе реабилитации не указана</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+{% if programs %}
+<section class="detail__programs rehab-detail__programs">
+    <h3 class="title__h3 detail__title">Реабилитационные программы</h3>
+    <ul class="rehab-programs__list">
+        {% for fs in programs %}
+        <li class="rehab-programs__item">
+            <strong>{{ fs.service.name }}</strong><br>
+            {{ fs.service.description|linebreaks }}
+        </li>
+        {% endfor %}
+    </ul>
 </section>
+{% endif %}
 
 <section class="detail__specialists rehab-detail-specialists specialists">
     <div class="container">
