@@ -120,6 +120,11 @@ class Service(TimeStampedModel):
         default=True,
         verbose_name=_('Активна')
     )
+    is_rehabilitation_program = models.BooleanField(
+        default=False,
+        verbose_name='Реабилитационная программа',
+        help_text='Отметьте, если услуга является реабилитационной программой'
+    )
     PRIORITY_HIGH = 3
     PRIORITY_MEDIUM = 2
     PRIORITY_LOW = 1

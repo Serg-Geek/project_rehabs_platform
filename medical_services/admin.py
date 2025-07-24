@@ -26,8 +26,8 @@ class TherapyMethodAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_categories', 'is_active', 'display_priority']
-    list_filter = ['categories', 'is_active', 'display_priority']
+    list_display = ['name', 'get_categories', 'is_active', 'display_priority', 'is_rehabilitation_program']
+    list_filter = ['categories', 'is_active', 'display_priority', 'is_rehabilitation_program']
     search_fields = ['name', 'description']
     filter_horizontal = ['categories']
     exclude = ['slug']
