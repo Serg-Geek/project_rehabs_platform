@@ -80,34 +80,36 @@
     </div>
 </section>
 
+{% if clinic.admission_conditions %}
 <section class="detail__info clinic-detail__info">
     <div class="container">
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">Условия поступления</h3>
             <div class="clinic-detail__text">
-                {% if clinic.admission_conditions %}
                 {{ clinic.admission_conditions|safe }}
-                {% else %}
-                <p>Условия поступления не указаны</p>
-                {% endif %}
-            </div>
-        </div>
-        <div class="detail-content__wrapper detail-content__wrapper-second">
-            <h3 class="title__h3 detail__title">Курс лечения</h3>
-            <div class="clinic-detail__text">
-                {% if clinic.treatment_course %}
-                {{ clinic.treatment_course|safe }}
-                {% else %}
-                <p>Информация о курсе лечения не указана</p>
-                {% endif %}
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if clinic.treatment_course %}
+<section class="detail__info clinic-detail__info">
+    <div class="container">
+        <div class="detail-content__wrapper detail-content__wrapper-second">
+            <h3 class="title__h3 detail__title">Курс лечения</h3>
+            <div class="clinic-detail__text">
+                {{ clinic.treatment_course|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if clinic.specialists.all %}
 <section class="detail__specialists clinic-detail-specialists specialists">
     <div class="container">
-        <h3 class="title__h3 detail__title">Специалисты центра</h3>
+        <h3 class="title__h3 detail__title">Специалисты учреждения</h3>
         <div class="section__content">
             <div class="specialists__cards">
                 {% for specialist in clinic.specialists.all %}
@@ -117,7 +119,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if clinic.documents.all %}
 <section class="detail-docs clinic-detail__docs">
     <div class="container">
         <h3 class="title__h3 detail__title">Лицензии и документы</h3>
@@ -138,10 +142,12 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if clinic.reviews.all %}
 <section class="detail__reviews">
     <div class="container">
-        <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
+        <h3 class="title__h3 detail__title">Отзывы пациентов о учреждении</h3>
         <div class="detail__reviews-slider">
             {% for review in clinic.reviews.all %}
             <div class="detail__review">
@@ -150,15 +156,13 @@
                 </h4>
                 <p>{{ review.content }}</p>
             </div>
-            {% empty %}
-            <div class="detail__review">
-                <p>Пока нет отзывов</p>
-            </div>
             {% endfor %}
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if related_facilities %}
 <section class="detail-rehabs rehabs">
     <div class="container">
         <h3 class="title__h3 detail-rehabs__title">Другие клиники в вашем регионе</h3>
@@ -171,6 +175,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 {% include "facilities/includes/consultation.html" %}
 {% endblock %}
