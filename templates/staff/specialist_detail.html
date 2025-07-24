@@ -73,15 +73,16 @@
 
 <section class="detail__info spec-detail__info">
     <div class="container">
+        {% if specialist.education %}
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">Образование</h3>
             <div class="spec-detail__wrapper">
                 <div class="spec-detail__text">
-                    <p>{{ specialist.education|default:'Информация об образовании не указана' }}</p>
+                    <p>{{ specialist.education }}</p>
                 </div>
             </div>
         </div>
-        
+        {% endif %}
         {% if specialist.biography %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Биография</h3>
@@ -95,6 +96,7 @@
     </div>
 </section>
 
+{% if documents %}
 <section class="detail-docs clinic-detail__docs">
     <div class="container">
         <h3 class="title__h3 detail__title">Лицензии и документы</h3>
@@ -110,41 +112,30 @@
                     <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doc.title }}" />
                     {% endif %}
                 </div>
-                {% empty %}
-                <div class="detail-docs__image spec-detail__docs--image">
-                    <img src="{% static 'deps/img/notImage.svg' %}" alt="Документы не загружены" />
-                </div>
                 {% endfor %}
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if specialist.facility and specialist.facility.reviews.all %}
 <section class="detail__reviews">
     <div class="container">
         <h3 class="title__h3 detail__title">Отзывы пациентов о центре</h3>
         <div class="detail__reviews-slider">
-            {% if specialist.facility %}
-                {% for review in specialist.facility.reviews.all %}
-                <div class="detail__review">
-                    <h4 class="title__h4 detail__review-title">
-                        {{ review.author_name }}, {{ review.author_age }} лет
-                    </h4>
-                    <p>{{ review.content }}</p>
-                </div>
-                {% empty %}
-                <div class="detail__review">
-                    <p>Пока нет отзывов о центре</p>
-                </div>
-                {% endfor %}
-            {% else %}
+            {% for review in specialist.facility.reviews.all %}
             <div class="detail__review">
-                <p>Информация об учреждении не указана</p>
+                <h4 class="title__h4 detail__review-title">
+                    {{ review.author_name }}, {{ review.author_age }} лет
+                </h4>
+                <p>{{ review.content }}</p>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </section>
+{% endif %}
 
 {% include "facilities/includes/consultation.html" %}
 {% endblock %} 
