@@ -24,7 +24,7 @@
                 </p>
             </div>
             {% include "facilities/includes/search_filter.html" %}
-            <div class="doctors__cards">
+            <div class="rehabs__cards">
                 {% for doctor in doctors %}
                     {% include "includes/cards/private_doctor_card.html" %}
                 {% empty %}
@@ -35,7 +35,7 @@
             </div>
             {% if has_more %}
             <div class="text-center mt-8">
-                <button id="loadMoreDoctors" class="rehab-btn doctors__button">Показать еще</button>
+                <button id="loadMoreDoctors" class="rehab-btn rehabs__button">Показать еще</button>
             </div>
             {% endif %}
         </div>
