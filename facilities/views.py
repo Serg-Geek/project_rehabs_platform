@@ -163,7 +163,7 @@ class FacilityDetailView(DetailView):
             content_type=content_type,
             object_id=self.object.pk,
             is_active=True
-        ).select_related('service')
+        ).select_related('service').order_by('-service__display_priority', 'service__name')
 
 def load_more_rehabs(request):
     """

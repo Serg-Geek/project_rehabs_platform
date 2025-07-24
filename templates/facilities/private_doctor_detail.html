@@ -4,6 +4,9 @@
 
 {% block title %}{{ doctor.get_full_name }} - Частный врач{% endblock %}
 
+{% block extra_css %}
+{% endblock %}
+
 {% block content %}
 <nav aria-label="breadcrumb">
     <div class="container">
@@ -35,18 +38,19 @@
             </div>
             <div class="detail__content-wrapper detail__content-item rehab-help__content-item">
                 <h2 class="title__h2 detail__title">{{ doctor.get_full_name }}</h2>
-                <div class="detail__text spec-detail__text">
-                    <p>
-                        {% for specialization in doctor.specializations.all %}
-                        {{ specialization.name }}{% if not forloop.last %}, {% endif %}
+                <div class="detail__text spec-detail__text rehab-help__text">
+                    <h3 class="title__h3 detail__title">Оказывает услуги</h3>
+                    <ul class="detail__services-list spec-detail__services-list">
+                        {% for facility_service in services %}
+                        <li>
+                          <a href="{% url 'medical_services:service_detail' facility_service.service.slug %}">
+                            {{ facility_service.service.name }}
+                          </a>
+                        </li>
+                        {% empty %}
+                        <li>Услуги не указаны</li>
                         {% endfor %}
-                    </p>
-                    {% if doctor.city %}
-                    <div itemscope itemtype="https://schema.org/PostalAddress">
-                        <span itemprop="addressRegion">{{ doctor.city.region.name }}</span>,
-                        <span itemprop="addressCountry">Россия</span>
-                    </div>
-                    {% endif %}
+                    </ul>
                 </div>
                 
                 {% if doctor.consultation_price or doctor.home_visit_price %}

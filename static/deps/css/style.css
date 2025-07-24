@@ -1340,6 +1340,11 @@ template {
   position: relative
 }
 
+.detail__text.clinic-detail__text.rehab-help__text .detail__services-list li a {
+  color: #4d5974 !important;
+  text-decoration: none !important;
+}
+
 .consultation__flex-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -3557,4 +3562,12 @@ template {
   object-fit: contain;
   display: block;
   aspect-ratio: 1.56;
+}
+
+.detail__services-list a,
+.detail__services-list a:hover,
+.detail__services-list a:focus,
+.detail__services-list a:active {
+    color: #4d5974;
+    text-decoration: none;
 }

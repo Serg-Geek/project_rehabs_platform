@@ -65,7 +65,11 @@
                     <h3 class="title__h3 detail__title">Оказывает услуги</h3>
                     <ul class="detail__services-list clinic-detail__services-list">
                         {% for facility_service in services %}
-                        <li>{{ facility_service.service.name }}</li>
+                        <li>
+                          <a href="{% url 'medical_services:service_detail' facility_service.service.slug %}">
+                            {{ facility_service.service.name }}
+                          </a>
+                        </li>
                         {% empty %}
                         <li>Услуги не указаны</li>
                         {% endfor %}
@@ -172,9 +176,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/facility_detail.css' %}">
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/facility_detail.js' %}"></script>
 {% endblock %}
