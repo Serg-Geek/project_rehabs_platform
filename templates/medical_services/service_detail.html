@@ -25,7 +25,7 @@
                 <h2 class="title__h2 detail__title">{{ service.name }}</h2>
                 <div class="detail__text spec-detail__text">
                     {% if service.description %}
-                        <p>{{ service.description }}</p>
+                        <div>{{ service.description|linebreaks }}</div>
                     {% endif %}
                 </div>
             </div>
