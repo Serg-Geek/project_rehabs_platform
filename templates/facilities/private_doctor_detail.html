@@ -76,15 +76,16 @@
 
 <section class="detail__info spec-detail__info">
     <div class="container">
+        {% if doctor.education %}
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">Образование</h3>
             <div class="spec-detail__wrapper">
                 <div class="spec-detail__text">
-                    <p>{{ doctor.education|default:'Информация об образовании не указана' }}</p>
+                    <p>{{ doctor.education }}</p>
                 </div>
             </div>
         </div>
-        
+        {% endif %}
         {% if doctor.biography %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">О враче</h3>
@@ -95,7 +96,6 @@
             </div>
         </div>
         {% endif %}
-        
         {% if doctor.achievements %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Достижения</h3>
@@ -106,7 +106,6 @@
             </div>
         </div>
         {% endif %}
-        
         {% if doctor.special_equipment %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Специальное оборудование</h3>
