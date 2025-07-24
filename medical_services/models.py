@@ -116,10 +116,6 @@ class Service(TimeStampedModel):
         blank=True,
         verbose_name=_('Описание')
     )
-    duration = models.PositiveIntegerField(
-        help_text=_('Длительность в минутах'),
-        verbose_name=_('Длительность')
-    )
     is_active = models.BooleanField(
         default=True,
         verbose_name=_('Активна')

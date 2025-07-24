@@ -40,13 +40,11 @@ class HomePageServicesTest(TestCase):
             Service.objects.create(
                 name='Реабилитация',
                 description='Услуга по лечению алкоголизма: Реабилитация',
-                duration=60,
                 is_active=True
             ),
             Service.objects.create(
                 name='Детоксикация',
                 description='Услуга по лечению алкоголизма: Детоксикация',
-                duration=60,
                 is_active=True
             )
         ]
@@ -55,13 +53,11 @@ class HomePageServicesTest(TestCase):
             Service.objects.create(
                 name='Реабилитация',
                 description='Услуга по лечению наркомании: Реабилитация',
-                duration=60,
                 is_active=True
             ),
             Service.objects.create(
                 name='Детоксикация',
                 description='Услуга по лечению наркомании: Детоксикация',
-                duration=60,
                 is_active=True
             )
         ]
@@ -70,13 +66,11 @@ class HomePageServicesTest(TestCase):
             Service.objects.create(
                 name='Психологическая помощь',
                 description='Дополнительная услуга: Психологическая помощь',
-                duration=60,
                 is_active=True
             ),
             Service.objects.create(
                 name='Психиатрическая помощь',
                 description='Дополнительная услуга: Психиатрическая помощь',
-                duration=60,
                 is_active=True
             )
         ]
@@ -145,7 +139,6 @@ class HomePageServicesTest(TestCase):
         inactive_service = Service.objects.create(
             name='Неактивная услуга',
             description='Неактивная услуга',
-            duration=60,
             is_active=False
         )
         inactive_service.categories.add(self.alcoholism_category)
@@ -181,21 +174,18 @@ class ServicePriorityOrderTest(TestCase):
         self.service_high = Service.objects.create(
             name='Высокий приоритет',
             description='Услуга с высоким приоритетом',
-            duration=30,
             is_active=True,
             display_priority=3
         )
         self.service_medium = Service.objects.create(
             name='Средний приоритет',
             description='Услуга со средним приоритетом',
-            duration=30,
             is_active=True,
             display_priority=2
         )
         self.service_low = Service.objects.create(
             name='Низкий приоритет',
             description='Услуга с низким приоритетом',
-            duration=30,
             is_active=True,
             display_priority=1
         )
