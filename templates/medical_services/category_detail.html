@@ -19,7 +19,7 @@
         <h2 class="title__h2 catalog__title">{{ category.name }}</h2>
         {% if category.description %}
         <div class="section__content-text catalog__content-text">
-            <p>{{ category.description }}</p>
+            <p>{{ category.description|linebreaks }}</p>
         </div>
         {% endif %}
         <div class="section__content">
@@ -43,7 +43,7 @@
                         <div class="card__content">
                             <h3 class="card__title">{{ child.name }}</h3>
                             {% if child.description %}
-                                <p class="card__description">{{ child.description|truncatewords:15 }}</p>
+                                <p class="card__description">{{ child.description|truncatewords:15|linebreaks }}</p>
                             {% endif %}
                             <div class="card__price">{{ child.services.count }} услуг</div>
                         </div>
