@@ -16,6 +16,15 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     list_filter = ['parent']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'description', 'parent', 'order', 'is_active')
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
+        }),
+    )
 
 @admin.register(TherapyMethod)
 class TherapyMethodAdmin(admin.ModelAdmin):
@@ -23,6 +32,15 @@ class TherapyMethodAdmin(admin.ModelAdmin):
     list_filter = ['is_active']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'description', 'is_active')
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
+        }),
+    )
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -32,6 +50,15 @@ class ServiceAdmin(admin.ModelAdmin):
     filter_horizontal = ['categories']
     exclude = ['slug']
     ordering = ['-display_priority', 'name']
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_priority')
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
+        }),
+    )
 
     def get_categories(self, obj):
         return ", ".join([category.name for category in obj.categories.all()])

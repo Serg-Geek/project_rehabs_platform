@@ -29,6 +29,17 @@ class ServiceCategory(TimeStampedModel):
         blank=True,
         verbose_name=_('Описание')
     )
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )
     parent = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -76,6 +87,17 @@ class TherapyMethod(TimeStampedModel):
         blank=True,
         verbose_name=_('Описание')
     )
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )
     is_active = models.BooleanField(
         default=True,
         verbose_name=_('Активен')
@@ -115,6 +137,17 @@ class Service(TimeStampedModel):
     description = models.TextField(
         blank=True,
         verbose_name=_('Описание')
+    )
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
     )
     is_active = models.BooleanField(
         default=True,

@@ -30,11 +30,13 @@ class ServiceCategoryDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Получаем услуги категории
-        services = Service.objects.filter(
-            categories=self.object,
-            is_active=True
-        ).order_by('-display_priority', 'name')
+        
+        # Получаем услуги в этой категории
+        services = self.object.services.filter(is_active=True).order_by('-display_priority', 'name')
+        
+        # SEO
+        context['meta_title'] = self.object.meta_title or self.object.name
+        context['meta_description'] = self.object.meta_description or (self.object.description[:160] if self.object.description else '')
         
         context['services'] = services
         return context
@@ -107,6 +109,10 @@ class ServiceDetailView(DetailView):
         except ContentType.DoesNotExist:
             # Если ContentType не найдены, оставляем списки пустыми
             pass
+        
+        # SEO
+        context['meta_title'] = self.object.meta_title or self.object.name
+        context['meta_description'] = self.object.meta_description or (self.object.description[:160] if self.object.description else '')
         
         context.update({
             'clinics': clinics,
