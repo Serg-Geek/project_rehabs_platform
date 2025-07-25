@@ -6,13 +6,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% if meta_title %}{{ meta_title }}{% else %}{% block title %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endblock %}{% endif %}</title>
-  <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{% block meta_description %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endblock %}{% endif %}">
+  <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{% block meta_description %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.{% endblock %}{% endif %}">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
   <meta property="og:title" content="{% if meta_title %}{{ meta_title }}{% else %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endif %}" />
-  <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endif %}" />
+  <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.{% endif %}" />
   <meta property="og:image" content="{% if meta_image %}{{ meta_image }}{% else %}{% static 'deps/img/og-image.jpg' %}{% endif %}" />
   <meta property="og:site_name" content="Центр помощи зависимым" />
   <meta property="og:locale" content="ru_RU" />
@@ -22,10 +22,10 @@
   <meta name="author" content="Центр помощи зависимым" />
   <meta name="robots" content="index, follow" />
   <meta name="language" content="ru" />
-  <meta name="geo.region" content="RU-KDA" />
-  <meta name="geo.placename" content="Анапа" />
-  <meta name="geo.position" content="44.8950;37.3163" />
-  <meta name="ICBM" content="44.8950, 37.3163" />
+  <meta name="geo.region" content="RU" />
+  <meta name="geo.placename" content="Россия" />
+  <meta name="geo.position" content="65.0000;105.0000" />
+  <meta name="ICBM" content="65.0000, 105.0000" />
   
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}" />
@@ -55,7 +55,7 @@
     "@type": "MedicalOrganization",
     "name": "Центр помощи зависимым",
     "alternateName": "Мое море",
-    "description": "{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endif %}",
+    "description": "{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.{% endif %}",
     "url": "{{ request.build_absolute_uri }}",
     "logo": "{% static 'deps/icons/main/logo.svg' %}",
     "image": "{% if meta_image %}{{ meta_image }}{% else %}{% static 'deps/img/og-image.jpg' %}{% endif %}",

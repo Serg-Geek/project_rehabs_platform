@@ -14,59 +14,20 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # SEO для главной страницы
-        context['meta_title'] = 'Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании в Анапе'
-        context['meta_description'] = 'Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7. Бесплатная консультация.'
+        # SEO контекст
+        context['meta_title'] = 'Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании по всей России'
+        context['meta_description'] = 'Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7. Бесплатная консультация.'
         
-        # Получаем активные реабилитационные центры
-        context['rehab_centers'] = RehabCenter.objects.filter(
-            is_active=True
-        ).select_related('city', 'city__region')[:6]
+        # Получаем данные для главной страницы
+        context['rehab_centers'] = RehabCenter.objects.filter(is_active=True).order_by('-rating')[:12]
+        context['clinics'] = Clinic.objects.filter(is_active=True).order_by('-rating')[:12]
+        context['specialists'] = MedicalSpecialist.objects.filter(is_active=True).order_by('-rating')[:12]
+        context['recovery_stories'] = RecoveryStory.objects.filter(is_published=True).order_by('-created_at')[:6]
+        context['useful_info_cards'] = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]
         
-        # Получаем активные клиники
-        context['clinics'] = Clinic.objects.filter(
-            is_active=True
-        ).select_related('city', 'city__region')[:6]
-        
-        # Получаем активных специалистов
-        context['specialists'] = MedicalSpecialist.objects.filter(
-            is_active=True
-        )[:6]
-
-        # Получаем истории выздоровления
-        context['recovery_stories'] = RecoveryStory.objects.filter(
-            is_published=True
-        ).order_by('-created_at')[:3]
-
-        # Получаем категории услуг для главной страницы
-        service_categories = {}
-        categories_mapping = {
-            'alcoholism': 'lechenie-alkogolizma',
-            'drug_addiction': 'lechenie-narkomanii',
-            'other': 'drugie-uslugi'
-        }
-        
-        # Получаем только активные категории
-        for key, slug in categories_mapping.items():
-            try:
-                category = ServiceCategory.objects.get(slug=slug, is_active=True)
-                service_categories[key] = {
-                    'category': category,
-                    'services': Service.objects.filter(
-                        categories=category,
-                        is_active=True
-                    ).order_by('-display_priority', 'name')
-                }
-            except ServiceCategory.DoesNotExist:
-                continue
-        
-        context['service_categories'] = service_categories
-
-        # Получаем карточки полезной информации из постов блога
-        context['useful_info_cards'] = BlogPost.objects.filter(
-            is_published=True,
-            is_featured=True
-        ).prefetch_related('tags').order_by('-publish_date')[:3]
+        # Получаем услуги для футера
+        context['service_categories'] = self.get_service_categories()
+        context['footer_services'] = self.get_footer_services()
         
         return context
 

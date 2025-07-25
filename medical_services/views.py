@@ -21,9 +21,9 @@ class ServiceCategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # SEO для списка категорий услуг
+        # SEO контекст
         context['meta_title'] = 'Категории услуг - Центр помощи зависимым'
-        context['meta_description'] = 'Категории медицинских услуг для лечения зависимостей. Лечение алкоголизма, наркомании, игромании.'
+        context['meta_description'] = 'Категории медицинских услуг для лечения зависимостей по всей России. Лечение алкоголизма, наркомании, игромании.'
         
         return context
 
@@ -162,10 +162,9 @@ class ServiceListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = ServiceCategory.objects.filter(is_active=True).order_by('name')
         
-        # SEO для списка услуг
+        # SEO контекст
         context['meta_title'] = 'Медицинские услуги - Центр помощи зависимым'
-        context['meta_description'] = 'Медицинские услуги для лечения зависимостей. Детоксикация, реабилитация, консультации нарколога.'
+        context['meta_description'] = 'Медицинские услуги для лечения зависимостей по всей России. Детоксикация, реабилитация, консультации нарколога.'
         
         return context

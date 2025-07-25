@@ -51,11 +51,10 @@ class ClinicListView(SearchMixin, PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['has_more'] = self.get_queryset().count() > self.paginate_by
         
-        # SEO для списка клиник
+        # SEO контекст
         context['meta_title'] = 'Клиники лечения зависимостей - Центр помощи зависимым'
-        context['meta_description'] = 'Найдите лучшие клиники для лечения алкоголизма, наркомании и игромании. Профессиональная помощь, анонимно, 24/7.'
+        context['meta_description'] = 'Найдите лучшие клиники для лечения алкоголизма, наркомании и игромании по всей России. Профессиональная помощь, анонимно, 24/7.'
         
         return context
 
@@ -92,11 +91,10 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['has_more'] = self.get_queryset().count() > self.paginate_by
         
-        # SEO для списка реабилитационных центров
+        # SEO контекст
         context['meta_title'] = 'Реабилитационные центры - Центр помощи зависимым'
-        context['meta_description'] = 'Реабилитационные центры для лечения зависимостей. Программы реабилитации, детоксикация, ресоциализация. Анонимно.'
+        context['meta_description'] = 'Реабилитационные центры для лечения зависимостей по всей России. Программы реабилитации, детоксикация, ресоциализация. Анонимно.'
         
         return context
 
@@ -292,9 +290,9 @@ class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView)
         from staff.models import Specialization
         context['specializations'] = Specialization.objects.all().order_by('name')
         
-        # SEO для списка частных врачей
+        # SEO контекст
         context['meta_title'] = 'Частные врачи - Центр помощи зависимым'
-        context['meta_description'] = 'Частные врачи-наркологи в Анапе. Индивидуальный подход, выезд на дом, анонимное лечение зависимостей.'
+        context['meta_description'] = 'Частные врачи-наркологи по всей России. Индивидуальный подход, выезд на дом, анонимное лечение зависимостей.'
         
         return context
 
