@@ -227,13 +227,15 @@ class Tag(TimeStampedModel):
 
     # Словарь с путями к иконкам для системных тегов
     SYSTEM_TAG_ICONS = {
-        'profilaktika-i-preduprezhdenie': 'deps/icons/articles_tags_icons/prevention-icon.svg',
+        'profilaktika-i-preduprezhdenie': 'deps/icons/articles_tags_icons/hand-stop-icon.svg',
         'yuridicheskaya-konsultatsiya': 'deps/icons/articles_tags_icons/justice-hammer-icon.svg',
         'psihiatriya': 'deps/icons/articles_tags_icons/psychiatrist-icon.svg',
         'psihologiya': 'deps/icons/articles_tags_icons/psychologist-icon.svg',
-        'rodstvennikam': 'deps/icons/articles_tags_icons/clients-icon.svg',
+        'rodstvennikam': 'deps/icons/articles_tags_icons/heart-icon.svg',
         'narkomaniya': 'deps/icons/articles_tags_icons/medicine-icon.svg',
         'alkogolizm': 'deps/icons/articles_tags_icons/alcohol-icon.svg',
+        'zavisimosti': 'deps/icons/articles_tags_icons/broken-heart-icon.svg',
+        'resotsializatsiya': 'deps/icons/articles_tags_icons/clients-icon.svg',
     }
 
     class Meta:
@@ -273,7 +275,7 @@ class Tag(TimeStampedModel):
             'profilaktika-i-preduprezhdenie': {
                 'name': 'Профилактика и предупреждение',
                 'description': 'Материалы по профилактике зависимостей и предупреждению рецидивов',
-                'icon': 'deps/icons/articles_tags_icons/prevention-icon.svg'
+                'icon': 'deps/icons/articles_tags_icons/hand-stop-icon.svg'
             },
             'yuridicheskaya-konsultatsiya': {
                 'name': 'Юридическая консультация',
@@ -293,7 +295,7 @@ class Tag(TimeStampedModel):
             'rodstvennikam': {
                 'name': 'Родственникам',
                 'description': 'Информация для родственников зависимых людей',
-                'icon': 'deps/icons/articles_tags_icons/clients-icon.svg'
+                'icon': 'deps/icons/articles_tags_icons/heart-icon.svg'
             },
             'narkomaniya': {
                 'name': 'Наркомания',
@@ -304,6 +306,16 @@ class Tag(TimeStampedModel):
                 'name': 'Алкоголизм',
                 'description': 'Материалы по лечению алкогольной зависимости',
                 'icon': 'deps/icons/articles_tags_icons/alcohol-icon.svg'
+            },
+            'zavisimosti': {
+                'name': 'Зависимости',
+                'description': 'Общие материалы по различным видам зависимостей',
+                'icon': 'deps/icons/articles_tags_icons/broken-heart-icon.svg'
+            },
+            'resotsializatsiya': {
+                'name': 'Ресоциализация',
+                'description': 'Материалы по возвращению к нормальной жизни после лечения',
+                'icon': 'deps/icons/articles_tags_icons/clients-icon.svg'
             },
         }
         
