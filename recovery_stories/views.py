@@ -65,6 +65,9 @@ class StoryDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         story = self.get_object()
+        # SEO
+        context['meta_title'] = story.meta_title or story.title
+        context['meta_description'] = story.meta_description or (story.excerpt[:160] if story.excerpt else '')
         
         # Увеличиваем счетчик просмотров
         story.views += 1

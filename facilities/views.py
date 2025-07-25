@@ -155,6 +155,9 @@ class FacilityDetailView(DetailView):
             except Service.DoesNotExist:
                 pass
         
+        # SEO
+        context['meta_title'] = self.object.meta_title or self.object.name
+        context['meta_description'] = self.object.meta_description or (self.object.description[:160] if self.object.description else '')
         return context
     
     def _get_related_facilities(self, model):
@@ -305,6 +308,9 @@ class PrivateDoctorDetailView(DetailView):
         context['related_doctors'] = related_doctors
         context['services'] = services
         
+        # SEO
+        context['meta_title'] = self.object.meta_title or self.object.get_full_name()
+        context['meta_description'] = self.object.meta_description or (self.object.biography[:160] if self.object.biography else '')
         return context
     
     def _get_related_doctors(self):

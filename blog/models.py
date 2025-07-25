@@ -558,3 +558,19 @@ class ArticleTag(TimeStampedModel):
 
     def __str__(self):
         return f"{self.article.title} - {self.tag.name}"
+
+class RecoveryStory(TimeStampedModel):
+    """
+    История выздоровления
+    """
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )

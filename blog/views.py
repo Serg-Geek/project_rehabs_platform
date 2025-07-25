@@ -99,6 +99,10 @@ class PostDetailView(DetailView):
         post = self.get_object()
         context['related_posts'] = self._get_related_posts(post)
         
+        # SEO
+        context['meta_title'] = post.meta_title or post.title
+        context['meta_description'] = post.meta_description or (post.preview_text[:160] if post.preview_text else '')
+        
         return context
 
     def get_object(self, queryset=None):
@@ -180,5 +184,9 @@ class BlogPostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """Добавление категорий в контекст."""
         context = super().get_context_data(**kwargs)
+        post = self.get_object()
+        # SEO
+        context['meta_title'] = post.meta_title or post.title
+        context['meta_description'] = post.meta_description or (post.preview_text[:160] if post.preview_text else '')
         context['categories'] = BlogCategory.objects.all()
         return context

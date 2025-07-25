@@ -134,6 +134,17 @@ class Clinic(AbstractMedicalFacility):
     """
     Модель клиники с специфическими полями
     """
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )
     emergency_support = models.BooleanField(
         default=False,
         verbose_name=_('Экстренная помощь')
@@ -182,6 +193,17 @@ class RehabCenter(AbstractMedicalFacility):
     """
     Модель реабилитационного центра с специфическими полями
     """
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )
     specialists = GenericRelation(
         'staff.FacilitySpecialist',
         content_type_field='content_type',
@@ -398,6 +420,17 @@ class PrivateDoctor(AbstractMedicalFacility):
     """
     Модель частнопрактикующего врача
     """
+    meta_title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Description')
+    )
     # Персональная информация
     first_name = models.CharField(
         max_length=100,

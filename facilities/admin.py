@@ -64,6 +64,10 @@ class BaseFacilityAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
         }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
+        }),
     )
 
 @admin.register(Clinic)
@@ -223,6 +227,10 @@ class PrivateDoctorAdmin(BaseFacilityAdmin):
                 'online_consultations', 'video_consultations',
                 'special_equipment'
             )
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
         }),
     )
 

@@ -18,6 +18,15 @@ class RecoveryStoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     inlines = [RecoveryStoryImageInline, RecoveryStoryTagInline]
     date_hierarchy = 'publish_date'
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'category', 'author', 'facility', 'content', 'excerpt', 'image', 'is_published', 'publish_date')
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',),
+        }),
+    )
 
 @admin.register(RecoveryCategory)
 class RecoveryCategoryAdmin(admin.ModelAdmin):
