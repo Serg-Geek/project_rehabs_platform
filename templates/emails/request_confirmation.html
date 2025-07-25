@@ -1,0 +1,75 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h2>Ваша заявка принята!</h2>
+
+<div class="info-box">
+    <p><strong>Спасибо за обращение!</strong> Мы получили вашу заявку и обработаем её в ближайшее время.</p>
+</div>
+
+<div class="request-details">
+    <h3>Детали вашей заявки #{{ request.id }}</h3>
+    
+    <div class="detail-row">
+        <span class="detail-label">Тип заявки:</span>
+        <span class="detail-value">{{ request.get_request_type_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Имя:</span>
+        <span class="detail-value">{{ request.name }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Телефон:</span>
+        <span class="detail-value">{{ request.phone }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Дата подачи:</span>
+        <span class="detail-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Статус:</span>
+        <span class="detail-value">{{ request.get_status_display }}</span>
+    </div>
+</div>
+
+{% if request.message %}
+<div class="request-details">
+    <h3>Ваше сообщение:</h3>
+    <p>{{ request.message|linebreaks }}</p>
+</div>
+{% endif %}
+
+<div class="info-box">
+    <h3>Что происходит дальше?</h3>
+    <ol>
+        <li><strong>В течение 15 минут</strong> наш специалист свяжется с вами по указанному телефону</li>
+        <li>Мы уточним детали вашей ситуации и потребности</li>
+        <li>Предложим подходящие варианты лечения и реабилитации</li>
+        <li>Ответим на все ваши вопросы</li>
+    </ol>
+</div>
+
+<div class="info-box">
+    <h3>Важная информация:</h3>
+    <ul>
+        <li>Все консультации <strong>бесплатны и анонимны</strong></li>
+        <li>Мы работаем <strong>24/7</strong> и готовы помочь в любое время</li>
+        <li>Наши специалисты имеют многолетний опыт работы</li>
+        <li>Мы сотрудничаем с проверенными клиниками по всей России</li>
+    </ul>
+</div>
+
+<p style="text-align: center; margin-top: 30px;">
+    <strong>Если у вас есть срочные вопросы, звоните прямо сейчас:</strong><br>
+    <span style="font-size: 20px; color: #007bff; font-weight: bold;">+7 800 000-00-00</span>
+</p>
+
+<p style="margin-top: 20px; font-size: 14px; color: #666;">
+    <strong>Обратите внимание:</strong> Если вы не получили звонок в течение 15 минут, 
+    пожалуйста, свяжитесь с нами самостоятельно по указанному номеру телефона.
+</p>
+{% endblock %} 

@@ -19,9 +19,9 @@ class HomeView(TemplateView):
         context['meta_description'] = 'Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7. Бесплатная консультация.'
         
         # Получаем данные для главной страницы
-        context['rehab_centers'] = RehabCenter.objects.filter(is_active=True).order_by('-rating')[:12]
-        context['clinics'] = Clinic.objects.filter(is_active=True).order_by('-rating')[:12]
-        context['specialists'] = MedicalSpecialist.objects.filter(is_active=True).order_by('-rating')[:12]
+        context['rehab_centers'] = RehabCenter.objects.filter(is_active=True).order_by('-created_at')[:12]
+        context['clinics'] = Clinic.objects.filter(is_active=True).order_by('-created_at')[:12]
+        context['specialists'] = MedicalSpecialist.objects.filter(is_active=True).order_by('-created_at')[:12]
         context['recovery_stories'] = RecoveryStory.objects.filter(is_published=True).order_by('-created_at')[:6]
         context['useful_info_cards'] = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]
         
@@ -30,6 +30,14 @@ class HomeView(TemplateView):
         context['footer_services'] = self.get_footer_services()
         
         return context
+    
+    def get_service_categories(self):
+        """Получает категории услуг для главной страницы"""
+        return ServiceCategory.objects.filter(is_active=True).order_by('name')[:6]
+    
+    def get_footer_services(self):
+        """Получает услуги для футера"""
+        return Service.objects.filter(is_active=True).order_by('name')[:8]
 
 class ContactsView(TemplateView):
     template_name = 'contacts.html'

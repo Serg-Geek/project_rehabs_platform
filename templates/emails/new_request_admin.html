@@ -1,0 +1,98 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h2>Новая заявка поступила!</h2>
+
+<div class="info-box">
+    <p><strong>Внимание!</strong> На сайте поступила новая заявка, требующая вашего внимания.</p>
+</div>
+
+<div class="request-details">
+    <h3>Детали заявки #{{ request.id }}</h3>
+    
+    <div class="detail-row">
+        <span class="detail-label">Тип заявки:</span>
+        <span class="detail-value">{{ request.get_request_type_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Имя клиента:</span>
+        <span class="detail-value">{{ request.name }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Телефон:</span>
+        <span class="detail-value">{{ request.phone }}</span>
+    </div>
+    
+    {% if request.email %}
+    <div class="detail-row">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">{{ request.email }}</span>
+    </div>
+    {% endif %}
+    
+    {% if request.organization %}
+    <div class="detail-row">
+        <span class="detail-label">Организация:</span>
+        <span class="detail-value">{{ request.organization }}</span>
+    </div>
+    {% endif %}
+    
+    {% if request.patient_name %}
+    <div class="detail-row">
+        <span class="detail-label">Имя пациента:</span>
+        <span class="detail-value">{{ request.patient_name }}</span>
+    </div>
+    {% endif %}
+    
+    {% if request.patient_age %}
+    <div class="detail-row">
+        <span class="detail-label">Возраст пациента:</span>
+        <span class="detail-value">{{ request.patient_age }} лет</span>
+    </div>
+    {% endif %}
+    
+    <div class="detail-row">
+        <span class="detail-label">Приоритет:</span>
+        <span class="detail-value">{{ request.get_priority_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Источник:</span>
+        <span class="detail-value">{{ request.get_source_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Дата создания:</span>
+        <span class="detail-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+</div>
+
+{% if request.message %}
+<div class="request-details">
+    <h3>Сообщение от клиента:</h3>
+    <p>{{ request.message|linebreaks }}</p>
+</div>
+{% endif %}
+
+<div class="info-box">
+    <p><strong>Рекомендуемые действия:</strong></p>
+    <ul>
+        <li>Связаться с клиентом в течение 15 минут</li>
+        <li>Уточнить детали заявки</li>
+        <li>Предложить подходящие варианты лечения</li>
+        <li>Обновить статус заявки в системе</li>
+    </ul>
+</div>
+
+<p style="text-align: center; margin-top: 30px;">
+    <a href="{{ site_url }}/admin/requests/anonimousrequest/{{ request.id }}/change/" class="button">
+        Открыть заявку в админке
+    </a>
+</p>
+
+<p style="margin-top: 20px; font-size: 14px; color: #666;">
+    <strong>Важно:</strong> Быстрый ответ на заявку повышает вероятность успешного обращения клиента.
+</p>
+{% endblock %} 

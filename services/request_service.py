@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from .base import BaseService
 from .results import ServiceResult
+from .email_service import EmailService
 from requests.models import AnonymousRequest, DependentRequest
 from facilities.models import Clinic, RehabCenter, PrivateDoctor
 from core.logging import business_logger, error_logger
@@ -24,6 +25,10 @@ class RequestService(BaseService):
     This service encapsulates all business logic related to creating,
     updating, and managing requests.
     """
+    
+    def __init__(self):
+        super().__init__()
+        self.email_service = EmailService()
     
     def create_consultation_request(self, form_data: Dict[str, Any], 
                                   request_data: Dict[str, Any], 
@@ -72,6 +77,13 @@ class RequestService(BaseService):
                 user=user,
                 ip_address=getattr(self, 'request_ip', None)
             )
+            
+            # Отправляем email-уведомление администратору
+            try:
+                self.email_service.send_new_request_notification(request_obj)
+            except Exception as email_error:
+                # Логируем ошибку отправки email, но не прерываем основной процесс
+                self.log_error(f"Failed to send email notification for request #{request_obj.id}", email_error)
             
             self.log_info("Consultation request created", 
                          request_id=request_obj.id,
@@ -133,6 +145,13 @@ class RequestService(BaseService):
             
             # Save the request
             request_obj.save()
+            
+            # Отправляем email-уведомление администратору о партнерской заявке
+            try:
+                self.email_service.send_partner_request_notification(request_obj)
+            except Exception as email_error:
+                # Логируем ошибку отправки email, но не прерываем основной процесс
+                self.log_error(f"Failed to send partner email notification for request #{request_obj.id}", email_error)
             
             self.log_info("Partner request created", 
                          request_id=request_obj.id,

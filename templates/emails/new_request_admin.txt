@@ -1,0 +1,36 @@
+Новая заявка поступила!
+
+Внимание! На сайте поступила новая заявка, требующая вашего внимания.
+
+ДЕТАЛИ ЗАЯВКИ #{{ request.id }}
+=====================================
+Тип заявки: {{ request.get_request_type_display }}
+Имя клиента: {{ request.name }}
+Телефон: {{ request.phone }}
+{% if request.email %}Email: {{ request.email }}{% endif %}
+{% if request.organization %}Организация: {{ request.organization }}{% endif %}
+{% if request.patient_name %}Имя пациента: {{ request.patient_name }}{% endif %}
+{% if request.patient_age %}Возраст пациента: {{ request.patient_age }} лет{% endif %}
+Приоритет: {{ request.get_priority_display }}
+Источник: {{ request.get_source_display }}
+Дата создания: {{ request.created_at|date:"d.m.Y H:i" }}
+
+{% if request.message %}
+СООБЩЕНИЕ ОТ КЛИЕНТА:
+{{ request.message }}
+{% endif %}
+
+РЕКОМЕНДУЕМЫЕ ДЕЙСТВИЯ:
+- Связаться с клиентом в течение 15 минут
+- Уточнить детали заявки
+- Предложить подходящие варианты лечения
+- Обновить статус заявки в системе
+
+Открыть заявку в админке: {{ site_url }}/admin/requests/anonimousrequest/{{ request.id }}/change/
+
+Важно: Быстрый ответ на заявку повышает вероятность успешного обращения клиента.
+
+---
+Центр помощи зависимым
+Телефон: +7 800 000-00-00
+Email: info@rehabs-platform.com 

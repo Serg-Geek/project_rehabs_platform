@@ -201,6 +201,23 @@ DEFAULT_JSON_ENCODER = 'facilities.utils.CustomJSONEncoder'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@rehabs-platform.com'
 
+# Email адреса администраторов для уведомлений
+ADMIN_EMAILS = [
+    'admin@rehabs-platform.com',
+    # Добавьте реальные email адреса администраторов
+]
+
+# URL сайта для email-шаблонов
+SITE_URL = 'http://localhost:8000'  # Изменить на реальный URL при деплое
+
+# Настройки для продакшена (раскомментировать при деплое)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@yandex.ru'
+# EMAIL_HOST_PASSWORD = 'your-app-password'
+
 # Настройки логирования
 LOGGING = {
     'version': 1,

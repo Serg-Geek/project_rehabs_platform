@@ -1,0 +1,79 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h2>Новая заявка на партнерство!</h2>
+
+<div class="info-box">
+    <p><strong>Внимание!</strong> Поступила новая заявка на партнерство, требующая вашего внимания.</p>
+</div>
+
+<div class="request-details">
+    <h3>Детали заявки на партнерство #{{ request.id }}</h3>
+    
+    <div class="detail-row">
+        <span class="detail-label">Контактное лицо:</span>
+        <span class="detail-value">{{ request.name }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Телефон:</span>
+        <span class="detail-value">{{ request.phone }}</span>
+    </div>
+    
+    {% if request.email %}
+    <div class="detail-row">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">{{ request.email }}</span>
+    </div>
+    {% endif %}
+    
+    {% if request.organization %}
+    <div class="detail-row">
+        <span class="detail-label">Организация:</span>
+        <span class="detail-value">{{ request.organization }}</span>
+    </div>
+    {% endif %}
+    
+    <div class="detail-row">
+        <span class="detail-label">Приоритет:</span>
+        <span class="detail-value">{{ request.get_priority_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Источник:</span>
+        <span class="detail-value">{{ request.get_source_display }}</span>
+    </div>
+    
+    <div class="detail-row">
+        <span class="detail-label">Дата создания:</span>
+        <span class="detail-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+</div>
+
+{% if request.message %}
+<div class="request-details">
+    <h3>Сообщение от потенциального партнера:</h3>
+    <p>{{ request.message|linebreaks }}</p>
+</div>
+{% endif %}
+
+<div class="info-box">
+    <p><strong>Рекомендуемые действия:</strong></p>
+    <ul>
+        <li>Связаться с представителем организации в течение 24 часов</li>
+        <li>Уточнить детали предлагаемого сотрудничества</li>
+        <li>Обсудить условия партнерства</li>
+        <li>Запланировать встречу или звонок для детального обсуждения</li>
+    </ul>
+</div>
+
+<p style="text-align: center; margin-top: 30px;">
+    <a href="{{ site_url }}/admin/requests/anonimousrequest/{{ request.id }}/change/" class="button">
+        Открыть заявку в админке
+    </a>
+</p>
+
+<p style="margin-top: 20px; font-size: 14px; color: #666;">
+    <strong>Важно:</strong> Партнерские заявки требуют особого внимания и могут привести к расширению сети партнеров.
+</p>
+{% endblock %} 
