@@ -52,6 +52,11 @@ class ClinicListView(SearchMixin, PaginationMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['has_more'] = self.get_queryset().count() > self.paginate_by
+        
+        # SEO для списка клиник
+        context['meta_title'] = 'Клиники лечения зависимостей - Центр помощи зависимым'
+        context['meta_description'] = 'Найдите лучшие клиники для лечения алкоголизма, наркомании и игромании. Профессиональная помощь, анонимно, 24/7.'
+        
         return context
 
 class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
@@ -88,6 +93,11 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['has_more'] = self.get_queryset().count() > self.paginate_by
+        
+        # SEO для списка реабилитационных центров
+        context['meta_title'] = 'Реабилитационные центры - Центр помощи зависимым'
+        context['meta_description'] = 'Реабилитационные центры для лечения зависимостей. Программы реабилитации, детоксикация, ресоциализация. Анонимно.'
+        
         return context
 
 class FacilityDetailView(DetailView):
@@ -158,6 +168,8 @@ class FacilityDetailView(DetailView):
         # SEO
         context['meta_title'] = self.object.meta_title or self.object.name
         context['meta_description'] = self.object.meta_description or (self.object.description[:160] if self.object.description else '')
+        context['meta_keywords'] = self.object.meta_keywords
+        context['meta_image'] = self.object.meta_image.url if self.object.meta_image else None
         return context
     
     def _get_related_facilities(self, model):
@@ -280,6 +292,10 @@ class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView)
         from staff.models import Specialization
         context['specializations'] = Specialization.objects.all().order_by('name')
         
+        # SEO для списка частных врачей
+        context['meta_title'] = 'Частные врачи - Центр помощи зависимым'
+        context['meta_description'] = 'Частные врачи-наркологи в Анапе. Индивидуальный подход, выезд на дом, анонимное лечение зависимостей.'
+        
         return context
 
 class PrivateDoctorDetailView(DetailView):
@@ -311,6 +327,8 @@ class PrivateDoctorDetailView(DetailView):
         # SEO
         context['meta_title'] = self.object.meta_title or self.object.get_full_name()
         context['meta_description'] = self.object.meta_description or (self.object.biography[:160] if self.object.biography else '')
+        context['meta_keywords'] = self.object.meta_keywords
+        context['meta_image'] = self.object.meta_image.url if self.object.meta_image else None
         return context
     
     def _get_related_doctors(self):

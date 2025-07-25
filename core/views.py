@@ -14,6 +14,10 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+        # SEO для главной страницы
+        context['meta_title'] = 'Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании в Анапе'
+        context['meta_description'] = 'Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7. Бесплатная консультация.'
+        
         # Получаем активные реабилитационные центры
         context['rehab_centers'] = RehabCenter.objects.filter(
             is_active=True
@@ -68,9 +72,21 @@ class HomeView(TemplateView):
 
 class ContactsView(TemplateView):
     template_name = 'contacts.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meta_title'] = 'Контакты - Центр помощи зависимым'
+        context['meta_description'] = 'Свяжитесь с нами для получения профессиональной помощи в лечении зависимостей. Анонимная консультация 24/7.'
+        return context
 
 class ConsultationView(TemplateView):
     template_name = 'consultation.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meta_title'] = 'Бесплатная консультация - Центр помощи зависимым'
+        context['meta_description'] = 'Получите бесплатную анонимную консультацию по лечению зависимостей. Профессиональные специалисты готовы помочь.'
+        return context
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)

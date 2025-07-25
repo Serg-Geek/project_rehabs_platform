@@ -17,6 +17,15 @@ class ServiceCategoryListView(ListView):
             is_active=True,
             parent__isnull=True  # Только родительские категории
         ).prefetch_related('children', 'services').order_by('order', 'name')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # SEO для списка категорий услуг
+        context['meta_title'] = 'Категории услуг - Центр помощи зависимым'
+        context['meta_description'] = 'Категории медицинских услуг для лечения зависимостей. Лечение алкоголизма, наркомании, игромании.'
+        
+        return context
 
 
 class ServiceCategoryDetailView(DetailView):
@@ -154,4 +163,9 @@ class ServiceListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = ServiceCategory.objects.filter(is_active=True).order_by('name')
+        
+        # SEO для списка услуг
+        context['meta_title'] = 'Медицинские услуги - Центр помощи зависимым'
+        context['meta_description'] = 'Медицинские услуги для лечения зависимостей. Детоксикация, реабилитация, консультации нарколога.'
+        
         return context

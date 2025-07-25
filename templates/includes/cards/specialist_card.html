@@ -5,9 +5,9 @@
     <a href="{% url 'staff:specialist_detail' specialist.slug %}">
         <div class="card__image">
             {% if specialist.photo %}
-            <img src="{{ specialist.photo.url }}" alt="Фото специалиста" />
+            <img src="{{ specialist.photo.url }}" alt="Фото специалиста {{ specialist.get_full_name }} - {{ specialist.position }}" />
             {% else %}
-            <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото специалиста" />
+            <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото специалиста {{ specialist.get_full_name }} - изображение отсутствует" />
             {% endif %}
         </div>
         <div class="card__content">

@@ -5,8 +5,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% if meta_title %}{{ meta_title }}{% else %}{% block title %}{% endblock %}{% endif %}</title>
-  <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{% block meta_description %}{% endblock %}{% endif %}">
+  <title>{% if meta_title %}{{ meta_title }}{% else %}{% block title %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endblock %}{% endif %}</title>
+  <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{% block meta_description %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endblock %}{% endif %}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:title" content="{% if meta_title %}{{ meta_title }}{% else %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endif %}" />
+  <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endif %}" />
+  <meta property="og:image" content="{% if meta_image %}{{ meta_image }}{% else %}{% static 'deps/img/og-image.jpg' %}{% endif %}" />
+  <meta property="og:site_name" content="Центр помощи зависимым" />
+  <meta property="og:locale" content="ru_RU" />
+  
+  <!-- Дополнительные SEO мета-теги -->
+  <meta name="keywords" content="{% if meta_keywords %}{{ meta_keywords }}{% else %}лечение алкоголизма, лечение наркомании, реабилитационные центры, наркологическая клиника, анонимное лечение зависимостей{% endif %}" />
+  <meta name="author" content="Центр помощи зависимым" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="ru" />
+  <meta name="geo.region" content="RU-KDA" />
+  <meta name="geo.placename" content="Анапа" />
+  <meta name="geo.position" content="44.8950;37.3163" />
+  <meta name="ICBM" content="44.8950, 37.3163" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+  
+  <!-- Предзагрузка критических ресурсов -->
+  <link rel="preload" href="{% static 'deps/css/style.css' %}" as="style" />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style" />
+  
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
   <link rel="stylesheet" type="text/css"
     href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
@@ -20,6 +47,48 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'deps/favicon_io/favicon-16x16.png' %}">
   <link rel="manifest" href="{% static 'deps/favicon_io/site.webmanifest' %}">
   <link rel="shortcut icon" href="{% static 'deps/favicon_io/favicon.ico' %}">
+  
+  <!-- Структурированные данные -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalOrganization",
+    "name": "Центр помощи зависимым",
+    "alternateName": "Мое море",
+    "description": "{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи в Анапе. Анонимно, 24/7.{% endif %}",
+    "url": "{{ request.build_absolute_uri }}",
+    "logo": "{% static 'deps/icons/main/logo.svg' %}",
+    "image": "{% if meta_image %}{{ meta_image }}{% else %}{% static 'deps/img/og-image.jpg' %}{% endif %}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ул. Ленина, д. 1",
+      "addressLocality": "Анапа",
+      "addressRegion": "Краснодарский край",
+      "postalCode": "353440",
+      "addressCountry": "RU"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+78000000000",
+      "contactType": "customer service",
+      "availableLanguage": "Russian",
+      "areaServed": "RU"
+    },
+    "sameAs": [
+      "https://t.me/moemorerehab"
+    ],
+    "medicalSpecialty": [
+      "Лечение алкоголизма",
+      "Лечение наркомании", 
+      "Лечение игромании",
+      "Реабилитация зависимостей"
+    ],
+    "areaServed": {
+      "@type": "Country",
+      "name": "Россия"
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -30,7 +99,7 @@
         <nav class="navbar">
           <a href="{% url 'core:home' %}">
             <div class="navbar__brand">
-              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="navbar__logo" />
               <span class="navbar__brand-text">Центр помощи зависимым</span>
             </div>
           </a>
@@ -62,7 +131,7 @@
       <div class="container">
         <nav class="menu">
           <a href="/" class="menu__logo-link">
-            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="menu__logo" />
+            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="menu__logo" />
           </a>
           <ul class="menu__list">
             <li class="menu__item">
@@ -95,7 +164,7 @@
         <!-- Мобильная версия хедера -->
         <div class="navbar__mobile">
           <div class="navbar__brand">
-            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="navbar__logo" />
+            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="navbar__logo" />
             <span class="navbar__brand-text">Центр помощи зависимым</span>
           </div>
 
@@ -168,7 +237,7 @@
         <div class="footer__grid-wrapper">
           <div class="footer__contacts">
             <div class="footer__logo footer__contacts-logo">
-              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип" class="footer__logo-img" />
+              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="footer__logo-img" />
               <span class="footer__logo-text">Центр помощи зависимым</span>
               <span class="footer__logo-text">«Мое море»</span>
             </div>

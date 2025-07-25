@@ -5,9 +5,9 @@
         <div class="card__image">
             {% with main_image=clinic.images.first %}
             {% if main_image %}
-            <img src="{{ main_image.image.url }}" alt="{{ clinic.name }}" />
+            <img src="{{ main_image.image.url }}" alt="Фото клиники {{ clinic.name }} - {{ clinic.city.name }}" />
             {% else %}
-            <img src="{% static 'deps/img/notImage.svg' %}" alt="Изображение учреждения" />
+            <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото клиники {{ clinic.name }} - изображение отсутствует" />
             {% endif %}
             {% endwith %}
         </div>

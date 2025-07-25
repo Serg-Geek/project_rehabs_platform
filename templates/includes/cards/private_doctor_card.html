@@ -5,9 +5,9 @@
     <a href="{% url 'facilities:private_doctor_detail' doctor.slug %}{% if from_service %}?from_service={{ from_service }}{% endif %}">
         <div class="card__image">
             {% if doctor.main_image %}
-                <img src="{{ doctor.main_image.image.url }}" alt="{{ doctor.get_full_name }}" />
+                <img src="{{ doctor.main_image.image.url }}" alt="Фото врача {{ doctor.get_full_name }} - {{ doctor.organization_type.name }}" />
             {% else %}
-                <img src="{% static 'deps/img/notImage.svg' %}" alt="{{ doctor.get_full_name }}" />
+                <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото врача {{ doctor.get_full_name }} - изображение отсутствует" />
             {% endif %}
         </div>
         <div class="card__content">

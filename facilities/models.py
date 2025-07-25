@@ -145,6 +145,18 @@ class Clinic(AbstractMedicalFacility):
         null=True,
         verbose_name=_('Meta Description')
     )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='facilities/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
+    )
     emergency_support = models.BooleanField(
         default=False,
         verbose_name=_('Экстренная помощь')
@@ -203,6 +215,18 @@ class RehabCenter(AbstractMedicalFacility):
         blank=True,
         null=True,
         verbose_name=_('Meta Description')
+    )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='facilities/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
     )
     specialists = GenericRelation(
         'staff.FacilitySpecialist',
@@ -430,6 +454,18 @@ class PrivateDoctor(AbstractMedicalFacility):
         blank=True,
         null=True,
         verbose_name=_('Meta Description')
+    )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='facilities/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
     )
     # Персональная информация
     first_name = models.CharField(

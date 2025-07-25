@@ -65,7 +65,7 @@ class BaseFacilityAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
@@ -83,6 +83,10 @@ class RehabCenterAdmin(BaseFacilityAdmin):
     fieldsets = (
         (None, {
             'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'rehabilitation_programs_list')
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
+            'classes': ('collapse',),
         }),
     )
 
@@ -229,7 +233,7 @@ class PrivateDoctorAdmin(BaseFacilityAdmin):
             )
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
