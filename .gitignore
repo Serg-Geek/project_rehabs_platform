@@ -39,5 +39,8 @@ docker-compose.yml
 README2.md
 
 # Documentation
-docs/unused_fields_analysis.md
+docs/
 project_docs/
+documentation/
+*.md
+!README.md
