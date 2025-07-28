@@ -8,6 +8,8 @@ like search, filtering, and pagination.
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
+from core.models import City, Region
 
 
 class SearchMixin:
@@ -272,3 +274,95 @@ class PermissionMixin:
             return redirect('home')  # Redirect to home or login
             
         return super().dispatch(request, *args, **kwargs) 
+
+
+class GeoDataMixin:
+    """
+    Миксин для добавления гео-данных в контекст представлений
+    """
+    
+    def get_geo_data(self, facility=None):
+        """
+        Получает гео-данные для учреждения или возвращает дефолтные
+        
+        Args:
+            facility: Объект учреждения (Clinic, RehabCenter, PrivateDoctor) или специалиста (FacilitySpecialist)
+            
+        Returns:
+            dict: Гео-данные для мета-тегов
+        """
+        # Если передан специалист, получаем учреждение через связь
+        if facility and hasattr(facility, 'facility') and facility.facility:
+            facility = facility.facility
+        
+        if facility and hasattr(facility, 'city') and facility.city:
+            city = facility.city
+            region = city.region
+            
+            return {
+                'geo_region': 'RU',
+                'geo_placename': f"{city.name}, {region.name}",
+                'geo_position': self._get_coordinates_for_city(city),
+                'icbm': self._get_coordinates_for_city(city),
+                'city_name': city.name,
+                'region_name': region.name,
+                'full_location': f"{city.name}, {region.name}"
+            }
+        
+        # Дефолтные значения для России
+        return {
+            'geo_region': 'RU',
+            'geo_placename': 'Россия',
+            'geo_position': '65.0000;105.0000',
+            'icbm': '65.0000, 105.0000',
+            'city_name': 'Анапа',
+            'region_name': 'Краснодарский край',
+            'full_location': 'Анапа, Краснодарский край'
+        }
+    
+    def _get_coordinates_for_city(self, city):
+        """
+        Возвращает координаты для города
+        В будущем можно вынести в отдельную модель с координатами
+        
+        Args:
+            city: Объект города
+            
+        Returns:
+            str: Координаты в формате "lat;lng"
+        """
+        # Координаты основных городов
+        city_coordinates = {
+            'Москва': '55.7558;37.6176',
+            'Санкт-Петербург': '59.9311;30.3609',
+            'Новосибирск': '55.0084;82.9357',
+            'Екатеринбург': '56.8431;60.6454',
+            'Казань': '55.8304;49.0661',
+            'Сочи': '43.6028;39.7342',
+            'Анапа': '44.8947;37.3166',
+            'Краснодар': '45.0448;38.9760',
+            'Химки': '55.8970;37.4297',
+            'Подольск': '55.4289;37.5444',
+            'Пушкин': '59.7231;30.4085',
+            'Петергоф': '59.8850;29.9086',
+            'Бердск': '54.7584;83.1072',
+            'Нижний Тагил': '57.9194;59.9651',
+            'Набережные Челны': '55.7436;52.3958',
+        }
+        
+        return city_coordinates.get(city.name, '65.0000;105.0000')
+    
+    def get_context_data(self, **kwargs):
+        """
+        Добавляет гео-данные в контекст
+        """
+        context = super().get_context_data(**kwargs)
+        
+        # Получаем объект учреждения или специалиста из контекста или из self.object
+        facility = context.get('facility') or context.get('specialist') or getattr(self, 'object', None)
+        
+        # Добавляем гео-данные
+        geo_data = self.get_geo_data(facility)
+        context.update(geo_data)
+        
+        return context 

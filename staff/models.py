@@ -161,6 +161,31 @@ class FacilitySpecialist(MedicalSpecialist):
         blank=True,
         null=True
     )
+    
+    # SEO поля
+    meta_title = models.CharField(
+        max_length=200, 
+        blank=True, 
+        null=True, 
+        verbose_name=_('Meta Title')
+    )
+    meta_description = models.TextField(
+        blank=True, 
+        null=True, 
+        verbose_name=_('Meta Description')
+    )
+    meta_keywords = models.CharField(
+        max_length=500, 
+        blank=True, 
+        null=True, 
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='staff/meta_images/', 
+        blank=True, 
+        null=True, 
+        verbose_name=_('Meta Image (OG/Twitter)')
+    )
 
     class Meta:
         verbose_name = _('Специалист учреждения')

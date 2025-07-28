@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'content.context_processors.site_content',
                 'medical_services.context_processors.footer_services',
+                'core.context_processors.geo_data',
             ],
         },
     },

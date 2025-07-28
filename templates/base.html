@@ -22,10 +22,10 @@
   <meta name="author" content="Центр помощи зависимым" />
   <meta name="robots" content="index, follow" />
   <meta name="language" content="ru" />
-  <meta name="geo.region" content="RU" />
-  <meta name="geo.placename" content="Россия" />
-  <meta name="geo.position" content="65.0000;105.0000" />
-  <meta name="ICBM" content="65.0000, 105.0000" />
+  <meta name="geo.region" content="{% if geo_region %}{{ geo_region }}{% else %}RU{% endif %}" />
+  <meta name="geo.placename" content="{% if geo_placename %}{{ geo_placename }}{% else %}Россия{% endif %}" />
+  <meta name="geo.position" content="{% if geo_position %}{{ geo_position }}{% else %}65.0000;105.0000{% endif %}" />
+  <meta name="ICBM" content="{% if icbm %}{{ icbm }}{% else %}65.0000, 105.0000{% endif %}" />
   
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}" />
@@ -62,8 +62,8 @@
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "ул. Ленина, д. 1",
-      "addressLocality": "Анапа",
-      "addressRegion": "Краснодарский край",
+      "addressLocality": "{% if city_name %}{{ city_name }}{% else %}Анапа{% endif %}",
+      "addressRegion": "{% if region_name %}{{ region_name }}{% else %}Краснодарский край{% endif %}",
       "postalCode": "353440",
       "addressCountry": "RU"
     },

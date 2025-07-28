@@ -68,6 +68,8 @@ class StoryDetailView(DetailView):
         # SEO
         context['meta_title'] = story.meta_title or story.title
         context['meta_description'] = story.meta_description or (story.excerpt[:160] if story.excerpt else '')
+        context['meta_keywords'] = story.meta_keywords
+        context['meta_image'] = story.meta_image.url if story.meta_image else None
         
         # Увеличиваем счетчик просмотров
         story.views += 1

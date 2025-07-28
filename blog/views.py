@@ -102,6 +102,8 @@ class PostDetailView(DetailView):
         # SEO
         context['meta_title'] = post.meta_title or post.title
         context['meta_description'] = post.meta_description or (post.preview_text[:160] if post.preview_text else '')
+        context['meta_keywords'] = post.meta_keywords
+        context['meta_image'] = post.meta_image.url if post.meta_image else None
         
         return context
 
@@ -188,5 +190,7 @@ class BlogPostDetailView(DetailView):
         # SEO
         context['meta_title'] = post.meta_title or post.title
         context['meta_description'] = post.meta_description or (post.preview_text[:160] if post.preview_text else '')
+        context['meta_keywords'] = post.meta_keywords
+        context['meta_image'] = post.meta_image.url if post.meta_image else None
         context['categories'] = BlogCategory.objects.all()
         return context

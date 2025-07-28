@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.db import models
-from core.mixins import SearchMixin, FilterMixin, PaginationMixin, CacheMixin
+from core.mixins import SearchMixin, FilterMixin, PaginationMixin, CacheMixin, GeoDataMixin
 
 # Create your views here.
 
@@ -98,7 +98,7 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
         
         return context
 
-class FacilityDetailView(DetailView):
+class FacilityDetailView(GeoDataMixin, DetailView):
     """
     Детальное представление учреждения.
     
@@ -296,7 +296,7 @@ class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView)
         
         return context
 
-class PrivateDoctorDetailView(DetailView):
+class PrivateDoctorDetailView(GeoDataMixin, DetailView):
     """
     Детальное представление частного врача.
     

@@ -21,6 +21,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect
+from facilities.utils import CustomJSONEncoder
 
 class SpecialistDocumentForm(ModelForm):
     class Meta:
@@ -116,10 +117,17 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
         (_('Информация о специалисте'), {
             'fields': ('specializations', 'experience_years', 'education', 'biography', 'achievements'),
         }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
+            'classes': ('collapse',),
+        }),
         (_('Статус'), {
             'fields': ('is_active',),
         }),
     )
+    
+    def get_json_encoder(self):
+        return CustomJSONEncoder
     
     def get_urls(self):
         urls = super().get_urls()
