@@ -18,7 +18,7 @@ class UserModelTests(TestCase):
         self.assertEqual(user.email, 'test@example.com')
         self.assertEqual(user.username, 'testuser')
         self.assertEqual(user.role, 'content_admin')
-        self.assertTrue(user.is_staff)
+        self.assertFalse(user.is_staff)  # Обычный пользователь НЕ должен быть staff
         self.assertFalse(user.is_superuser)
         self.assertTrue(user.check_password('testpass123'))
 

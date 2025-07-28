@@ -22,7 +22,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'description', 'parent', 'order', 'is_active')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
+            'fields': ('meta_title', 'meta_description'),
             'classes': ('collapse',),
         }),
     )
@@ -41,7 +41,7 @@ class TherapyMethodAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'description', 'is_active')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
+            'fields': ('meta_title', 'meta_description'),
             'classes': ('collapse',),
         }),
     )
@@ -59,10 +59,10 @@ class ServiceAdmin(admin.ModelAdmin):
     ordering = ['-display_priority', 'name']
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_priority')
+            'fields': ('name', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_priority')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
+            'fields': ('meta_title', 'meta_description'),
             'classes': ('collapse',),
         }),
     )

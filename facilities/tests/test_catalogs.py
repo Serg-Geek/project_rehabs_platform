@@ -92,11 +92,7 @@ class CatalogViewsTest(TestCase):
             phone='+7 (999) 999-99-98',
             email='rehab@test.com',
             website='http://rehab.com',
-            description='Тестовое описание',
-            capacity=100,
-            program_duration=30,
-            min_price=50000,
-            accommodation_conditions='Комфортные условия проживания'
+            description='Тестовое описание'
         )
 
     def test_clinic_list_view(self):

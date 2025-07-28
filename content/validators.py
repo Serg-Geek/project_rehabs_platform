@@ -11,17 +11,17 @@ def validate_image_format(image, size):
     
     Args:
         image: Файл изображения
-        size: Словарь с требуемыми размерами {'width': int, 'height': int}
+        size: Словарь с требуемыми размерами {'min_width': int, 'min_height': int}
     """
     try:
         # Открываем изображение
         img = Image.open(io.BytesIO(image.read()))
         
         # Проверяем размеры
-        if img.width < size['width'] or img.height < size['height']:
+        if img.width < size['min_width'] or img.height < size['min_height']:
             raise ValidationError(
                 _('Изображение должно быть не меньше %(width)sx%(height)s пикселей.'),
-                params={'width': size['width'], 'height': size['height']},
+                params={'width': size['min_width'], 'height': size['min_height']},
             )
             
         # Проверяем формат

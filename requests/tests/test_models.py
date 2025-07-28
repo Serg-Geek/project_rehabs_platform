@@ -6,7 +6,6 @@ from requests.models import (
     RequestNote, 
     RequestStatusHistory, 
     RequestActionLog, 
-    Request, 
     DependentRequest,
     RequestTemplate
 )

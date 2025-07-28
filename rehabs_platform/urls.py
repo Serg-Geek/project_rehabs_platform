@@ -37,4 +37,5 @@ urlpatterns = [
     path('medical-services/', include('medical_services.urls')),
     path('recovery-stories/', include('recovery_stories.urls')),  # Добавляем URL-маршруты для историй выздоровления
     path('reviews/', include('reviews.urls')),
+    path('content/', include('content.urls')),  # Добавляем URL-маршруты для контента
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
