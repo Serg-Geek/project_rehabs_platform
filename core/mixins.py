@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
-from core.models import City, Region
+from core.models import City, Region, CityCoordinates
 
 
 class SearchMixin:
@@ -278,38 +278,47 @@ class PermissionMixin:
 
 class GeoDataMixin:
     """
-    Миксин для добавления гео-данных в контекст представлений
+    Миксин для добавления географических данных в контекст представления
+    Используется для учреждений и персонала
     """
     
     def get_geo_data(self, facility=None):
         """
-        Получает гео-данные для учреждения или возвращает дефолтные
+        Получает географические данные для учреждения или специалиста
         
         Args:
-            facility: Объект учреждения (Clinic, RehabCenter, PrivateDoctor) или специалиста (FacilitySpecialist)
+            facility: Объект учреждения или специалиста
             
         Returns:
-            dict: Гео-данные для мета-тегов
+            dict: Словарь с географическими данными
         """
         # Если передан специалист, получаем учреждение через связь
         if facility and hasattr(facility, 'facility') and facility.facility:
             facility = facility.facility
         
+        # Получаем город учреждения
+        city = None
         if facility and hasattr(facility, 'city') and facility.city:
             city = facility.city
-            region = city.region
-            
-            return {
-                'geo_region': 'RU',
-                'geo_placename': f"{city.name}, {region.name}",
-                'geo_position': self._get_coordinates_for_city(city),
-                'icbm': self._get_coordinates_for_city(city),
-                'city_name': city.name,
-                'region_name': region.name,
-                'full_location': f"{city.name}, {region.name}"
-            }
         
-        # Дефолтные значения для России
+        # Если есть город, пытаемся получить координаты из БД
+        if city:
+            try:
+                coords = CityCoordinates.objects.get(city=city, is_active=True)
+                return {
+                    'geo_region': 'RU',
+                    'geo_placename': city.name,
+                    'geo_position': coords.get_coordinates_string(),
+                    'icbm': coords.get_icbm_string(),
+                    'city_name': city.name,
+                    'region_name': city.region.name if city.region else 'Россия',
+                    'full_location': f"{city.name}, {city.region.name}" if city.region else city.name
+                }
+            except CityCoordinates.DoesNotExist:
+                # Если координат нет в БД, используем хардкод для основных городов
+                return self._get_coordinates_for_city(city.name)
+        
+        # Если нет города или координат, возвращаем данные по умолчанию
         return {
             'geo_region': 'RU',
             'geo_placename': 'Россия',
@@ -320,48 +329,99 @@ class GeoDataMixin:
             'full_location': 'Анапа, Краснодарский край'
         }
     
-    def _get_coordinates_for_city(self, city):
+    def _get_coordinates_for_city(self, city_name):
         """
-        Возвращает координаты для города
-        В будущем можно вынести в отдельную модель с координатами
-        
-        Args:
-            city: Объект города
-            
-        Returns:
-            str: Координаты в формате "lat;lng"
+        Возвращает координаты для основных городов (хардкод как fallback)
         """
-        # Координаты основных городов
-        city_coordinates = {
-            'Москва': '55.7558;37.6176',
-            'Санкт-Петербург': '59.9311;30.3609',
-            'Новосибирск': '55.0084;82.9357',
-            'Екатеринбург': '56.8431;60.6454',
-            'Казань': '55.8304;49.0661',
-            'Сочи': '43.6028;39.7342',
-            'Анапа': '44.8947;37.3166',
-            'Краснодар': '45.0448;38.9760',
-            'Химки': '55.8970;37.4297',
-            'Подольск': '55.4289;37.5444',
-            'Пушкин': '59.7231;30.4085',
-            'Петергоф': '59.8850;29.9086',
-            'Бердск': '54.7584;83.1072',
-            'Нижний Тагил': '57.9194;59.9651',
-            'Набережные Челны': '55.7436;52.3958',
+        coordinates = {
+            'Москва': (55.7558, 37.6176),
+            'Санкт-Петербург': (59.9311, 30.3609),
+            'Новосибирск': (55.0084, 82.9357),
+            'Екатеринбург': (56.8519, 60.6122),
+            'Казань': (55.8304, 49.0661),
+            'Нижний Новгород': (56.2965, 43.9361),
+            'Челябинск': (55.1644, 61.4368),
+            'Самара': (53.2001, 50.1500),
+            'Уфа': (54.7388, 55.9721),
+            'Ростов-на-Дону': (47.2357, 39.7015),
+            'Краснодар': (45.0355, 38.9753),
+            'Анапа': (44.8947, 37.3166),
+            'Сочи': (43.6028, 39.7342),
+            'Волгоград': (48.7080, 44.5133),
+            'Пермь': (58.0105, 56.2502),
+            'Воронеж': (51.6720, 39.1843),
+            'Саратов': (51.5924, 46.0347),
+            'Тольятти': (53.5078, 49.4204),
+            'Ижевск': (56.8519, 53.2324),
+            'Ульяновск': (54.3176, 48.3706),
+            'Барнаул': (53.3548, 83.7698),
+            'Иркутск': (52.2896, 104.2806),
+            'Хабаровск': (48.4802, 135.0719),
+            'Ярославль': (57.6261, 39.8875),
+            'Владивосток': (43.1198, 131.8869),
+            'Махачкала': (42.9849, 47.5047),
+            'Томск': (56.4977, 84.9744),
+            'Оренбург': (51.7727, 55.0988),
+            'Кемерово': (55.3904, 86.0468),
+            'Новокузнецк': (53.7945, 87.1848),
+            'Рязань': (54.6269, 39.6916),
+            'Астрахань': (46.3589, 48.0506),
+            'Набережные Челны': (55.7436, 52.3958),
+            'Пенза': (53.2007, 45.0046),
+            'Липецк': (52.6031, 39.5708),
+            'Киров': (58.6035, 49.6668),
+            'Чебоксары': (56.1322, 47.2519),
+            'Тула': (54.1961, 37.6182),
+            'Калининград': (54.7074, 20.5072),
+            'Курск': (51.7373, 36.1873),
+            'Улан-Удэ': (51.8335, 107.5841),
+            'Ставрополь': (45.0428, 41.9734),
+            'Магнитогорск': (53.4186, 59.0472),
+            'Иваново': (57.0004, 40.9739),
+            'Брянск': (53.2521, 34.3717),
+            'Тверь': (56.8587, 35.9006),
+            'Белгород': (50.5977, 36.5858),
+            'Архангельск': (64.5473, 40.5602),
+            'Владимир': (56.1296, 40.4066),
+            'Севастополь': (44.6166, 33.5254),
+            'Чита': (52.0515, 113.4719),
+            'Грозный': (43.3178, 45.6949),
+            'Симферополь': (44.9572, 34.1108),
         }
         
-        return city_coordinates.get(city.name, '65.0000;105.0000')
+        if city_name in coordinates:
+            lat, lng = coordinates[city_name]
+            return {
+                'geo_region': 'RU',
+                'geo_placename': city_name,
+                'geo_position': f"{lat};{lng}",
+                'icbm': f"{lat}, {lng}",
+                'city_name': city_name,
+                'region_name': 'Россия',
+                'full_location': city_name
+            }
+        
+        # Если город не найден, возвращаем данные по умолчанию
+        return {
+            'geo_region': 'RU',
+            'geo_placename': 'Россия',
+            'geo_position': '65.0000;105.0000',
+            'icbm': '65.0000, 105.0000',
+            'city_name': 'Анапа',
+            'region_name': 'Краснодарский край',
+            'full_location': 'Анапа, Краснодарский край'
+        }
     
     def get_context_data(self, **kwargs):
         """
-        Добавляет гео-данные в контекст
+        Добавляет географические данные в контекст представления
         """
         context = super().get_context_data(**kwargs)
         
-        # Получаем объект учреждения или специалиста из контекста или из self.object
+        # Получаем объект учреждения или специалиста из контекста или self.object
         facility = context.get('facility') or context.get('specialist') or getattr(self, 'object', None)
         
-        # Добавляем гео-данные
+        # Получаем географические данные
         geo_data = self.get_geo_data(facility)
         context.update(geo_data)
         

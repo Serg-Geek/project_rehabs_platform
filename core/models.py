@@ -73,3 +73,45 @@ class City(TimeStampedModel):
 
     def __str__(self):
         return f"{self.name}, {self.region.name}"
+
+class CityCoordinates(TimeStampedModel):
+    """
+    Модель для хранения координат городов
+    """
+    city = models.OneToOneField(
+        City,
+        on_delete=models.CASCADE,
+        related_name='coordinates',
+        verbose_name=_('Город')
+    )
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name=_('Широта')
+    )
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name=_('Долгота')
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Активен')
+    )
+
+    class Meta:
+        verbose_name = _('Координаты города')
+        verbose_name_plural = _('Координаты городов')
+        ordering = ['city__name']
+        unique_together = ['city']
+
+    def __str__(self):
+        return f"{self.city.name}: {self.latitude}, {self.longitude}"
+
+    def get_coordinates_string(self):
+        """Возвращает координаты в формате для geo.position"""
+        return f"{self.latitude};{self.longitude}"
+
+    def get_icbm_string(self):
+        """Возвращает координаты в формате для ICBM"""
+        return f"{self.latitude}, {self.longitude}"

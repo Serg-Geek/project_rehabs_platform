@@ -146,6 +146,9 @@ class Command(BaseCommand):
         else:
             self.stdout.write('  📋 Резервная копия не найдена, загружаем из фикстур...')
             self.load_from_fixtures()
+        
+        # Добавляем координаты городов
+        self.add_city_coordinates()
 
     def load_from_fixtures(self):
         """Загружает данные из фикстур"""
@@ -154,6 +157,16 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('  ✓ Данные загружены из фикстур'))
         except Exception as e:
             self.stdout.write(self.style.WARNING(f'  ⚠ Ошибка при загрузке фикстур: {e}'))
+
+    def add_city_coordinates(self):
+        """Добавляет координаты для основных городов"""
+        self.stdout.write('📍 Добавляем координаты городов...')
+        
+        try:
+            call_command('add_city_coordinates', verbosity=0)
+            self.stdout.write(self.style.SUCCESS('  ✓ Координаты городов добавлены'))
+        except Exception as e:
+            self.stdout.write(self.style.WARNING(f'  ⚠ Ошибка при добавлении координат городов: {e}'))
 
     def create_superuser(self):
         """Создает суперпользователя по умолчанию"""
