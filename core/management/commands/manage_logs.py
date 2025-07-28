@@ -16,9 +16,23 @@ from django.conf import settings
 
 
 class Command(BaseCommand):
+    """
+    Command for managing system logs.
+    
+    Provides functions for:
+    - Viewing log statistics
+    - Cleaning old logs
+    - Analyzing logs
+    """
     help = 'Управление логами системы'
 
     def add_arguments(self, parser):
+        """
+        Add command arguments.
+        
+        Args:
+            parser: Argument parser instance
+        """
         parser.add_argument(
             'action',
             choices=['stats', 'clean', 'analyze', 'show'],
@@ -38,6 +52,13 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        """
+        Handle command execution.
+        
+        Args:
+            *args: Additional arguments
+            **options: Command options
+        """
         action = options['action']
         log_type = options['log_type']
         days = options['days']
@@ -60,7 +81,14 @@ class Command(BaseCommand):
             self.show_logs(logs_dir, log_type, days)
 
     def show_stats(self, logs_dir, log_type, days):
-        """Показать статистику логов."""
+        """
+        Show log statistics.
+        
+        Args:
+            logs_dir: Logs directory path
+            log_type: Type of logs to analyze
+            days: Number of days to analyze
+        """
         self.stdout.write(self.style.SUCCESS(f'Статистика логов за последние {days} дней:'))
         
         log_files = self._get_log_files(logs_dir, log_type)
@@ -76,7 +104,14 @@ class Command(BaseCommand):
                 self.stdout.write(f'  Размер файла: {stats["file_size_mb"]:.2f} MB')
 
     def clean_logs(self, logs_dir, log_type, days):
-        """Очистить старые логи."""
+        """
+        Clean old log files.
+        
+        Args:
+            logs_dir: Logs directory path
+            log_type: Type of logs to clean
+            days: Age threshold in days
+        """
         cutoff_date = datetime.now() - timedelta(days=days)
         log_files = self._get_log_files(logs_dir, log_type)
         
@@ -95,7 +130,14 @@ class Command(BaseCommand):
         )
 
     def analyze_logs(self, logs_dir, log_type, days):
-        """Анализ логов."""
+        """
+        Analyze log files.
+        
+        Args:
+            logs_dir: Logs directory path
+            log_type: Type of logs to analyze
+            days: Number of days to analyze
+        """
         self.stdout.write(self.style.SUCCESS(f'Анализ логов за последние {days} дней:'))
         
         log_files = self._get_log_files(logs_dir, log_type)
@@ -116,7 +158,14 @@ class Command(BaseCommand):
                         self.stdout.write(f'    {ip}: {count}')
 
     def show_logs(self, logs_dir, log_type, days):
-        """Показать содержимое логов."""
+        """
+        Show log file contents.
+        
+        Args:
+            logs_dir: Logs directory path
+            log_type: Type of logs to show
+            days: Number of days to show
+        """
         log_files = self._get_log_files(logs_dir, log_type)
         
         for log_file in log_files:
@@ -134,7 +183,16 @@ class Command(BaseCommand):
                     )
 
     def _get_log_files(self, logs_dir, log_type):
-        """Получить список файлов логов."""
+        """
+        Get list of log files.
+        
+        Args:
+            logs_dir: Logs directory path
+            log_type: Type of logs to get
+            
+        Returns:
+            list: List of log file paths
+        """
         if log_type == 'all':
             return [
                 logs_dir / 'general.log',
@@ -149,7 +207,16 @@ class Command(BaseCommand):
             return [logs_dir / f'{log_type}.log']
 
     def _analyze_log_file(self, log_file, days):
-        """Анализ одного файла логов."""
+        """
+        Analyze single log file.
+        
+        Args:
+            log_file: Log file path
+            days: Number of days to analyze
+            
+        Returns:
+            dict: Statistics dictionary
+        """
         stats = {
             'total_lines': 0,
             'error_count': 0,
@@ -177,7 +244,16 @@ class Command(BaseCommand):
         return stats
 
     def _detailed_analysis(self, log_file, days):
-        """Детальный анализ файла логов."""
+        """
+        Perform detailed analysis of log file.
+        
+        Args:
+            log_file: Log file path
+            days: Number of days to analyze
+            
+        Returns:
+            dict: Detailed analysis results
+        """
         analysis = {
             'top_errors': [],
             'top_ips': [],

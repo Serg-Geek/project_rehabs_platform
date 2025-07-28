@@ -14,6 +14,9 @@ from django.contrib.contenttypes.models import ContentType
 from .utils import CustomJSONEncoder
 
 class FacilityImageInline(GenericTabularInline):
+    """
+    Inline admin for facility images.
+    """
     model = FacilityImage
     ct_field = 'content_type'
     ct_fk_field = 'object_id'
@@ -23,6 +26,9 @@ class FacilityImageInline(GenericTabularInline):
     verbose_name_plural = _('Фотографии')
 
 class FacilityDocumentInline(GenericTabularInline):
+    """
+    Inline admin for facility documents.
+    """
     model = FacilityDocument
     ct_field = 'content_type'
     ct_fk_field = 'object_id'
@@ -32,6 +38,9 @@ class FacilityDocumentInline(GenericTabularInline):
     verbose_name_plural = _('Документы')
 
 class FacilitySpecialistInline(GenericTabularInline):
+    """
+    Inline admin for facility specialists.
+    """
     model = FacilitySpecialist
     ct_field = 'content_type'
     ct_fk_field = 'object_id'
@@ -42,11 +51,17 @@ class FacilitySpecialistInline(GenericTabularInline):
 
 @admin.register(OrganizationType)
 class OrganizationTypeAdmin(admin.ModelAdmin):
+    """
+    Admin for organization types.
+    """
     list_display = ['name', 'slug']
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
 
 class BaseFacilityAdmin(admin.ModelAdmin):
+    """
+    Base admin class for facility models.
+    """
     list_display = [
         'id',
         'name',
@@ -71,15 +86,27 @@ class BaseFacilityAdmin(admin.ModelAdmin):
     )
 
     def get_json_encoder(self):
+        """
+        Get custom JSON encoder for admin.
+        
+        Returns:
+            CustomJSONEncoder: Custom JSON encoder class
+        """
         return CustomJSONEncoder
 
 @admin.register(Clinic)
 class ClinicAdmin(BaseFacilityAdmin):
+    """
+    Admin for clinic model.
+    """
     list_display = BaseFacilityAdmin.list_display + ['emergency_support', 'has_hospital']
     list_filter = BaseFacilityAdmin.list_filter + ['emergency_support', 'has_hospital']
 
 @admin.register(RehabCenter)
 class RehabCenterAdmin(BaseFacilityAdmin):
+    """
+    Admin for rehabilitation center model.
+    """
     list_display = BaseFacilityAdmin.list_display + ['rehabilitation_programs_list']
     list_filter = BaseFacilityAdmin.list_filter
     readonly_fields = ['rehabilitation_programs_list']
@@ -94,21 +121,30 @@ class RehabCenterAdmin(BaseFacilityAdmin):
     )
 
     def rehabilitation_programs_list(self, obj):
+        """
+        Get list of rehabilitation programs for display.
+        
+        Args:
+            obj: RehabCenter instance
+            
+        Returns:
+            str: Comma-separated list of program names
+        """
         from medical_services.models import FacilityService
         from django.contrib.contenttypes.models import ContentType
         ct = ContentType.objects.get_for_model(obj)
         programs = FacilityService.objects.filter(
             content_type=ct,
-            object_id=obj.pk,
-            service__is_rehabilitation_program=True
-        )
-        if programs.exists():
-            return "\n".join([fs.service.name for fs in programs])
-        return '-'
-    rehabilitation_programs_list.short_description = 'Реабилитационные программы'
+            object_id=obj.id
+        ).values_list('service__name', flat=True)
+        return ', '.join(programs) if programs else 'Нет программ'
+    rehabilitation_programs_list.short_description = _('Программы реабилитации')
 
 @admin.register(FacilityImage)
 class FacilityImageAdmin(admin.ModelAdmin):
+    """
+    Admin for facility images.
+    """
     list_display = ['get_facility_name', 'image_type', 'title', 'is_main', 'order']
     list_filter = ['image_type', 'content_type']
     search_fields = ['title', 'description']
@@ -125,28 +161,67 @@ class FacilityImageAdmin(admin.ModelAdmin):
     ]
     
     def get_facility_name(self, obj):
-        return str(obj.facility)
+        """
+        Get facility name for display.
+        
+        Args:
+            obj: FacilityImage instance
+            
+        Returns:
+            str: Facility name
+        """
+        return str(obj.content_object) if obj.content_object else 'Unknown'
     get_facility_name.short_description = _('Учреждение')
-    
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "content_type":
-            kwargs["queryset"] = ContentType.objects.filter(
+        """
+        Customize foreign key field for content type.
+        
+        Args:
+            db_field: Database field
+            request: HTTP request object
+            **kwargs: Additional keyword arguments
+            
+        Returns:
+            FormField: Customized form field
+        """
+        if db_field.name == 'content_type':
+            kwargs['queryset'] = ContentType.objects.filter(
                 model__in=['clinic', 'rehabcenter', 'privatedoctor']
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
+
     def get_json_encoder(self):
+        """
+        Get custom JSON encoder for admin.
+        
+        Returns:
+            CustomJSONEncoder: Custom JSON encoder class
+        """
         return CustomJSONEncoder
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
+        """
+        Custom change view with additional context.
+        
+        Args:
+            request: HTTP request object
+            object_id: Object ID
+            form_url: Form URL
+            extra_context: Additional context
+            
+        Returns:
+            HttpResponse: Rendered change view
+        """
         extra_context = extra_context or {}
-        obj = self.get_object(request, object_id)
-        if obj and obj.facility:
-            extra_context['title'] = f"{obj.get_image_type_display()} - {obj.facility.name}"
+        extra_context['show_save_and_continue'] = True
         return super().change_view(request, object_id, form_url, extra_context)
 
 @admin.register(FacilityDocument)
 class FacilityDocumentAdmin(admin.ModelAdmin):
+    """
+    Admin for facility documents.
+    """
     list_display = [
         'document_type',
         'title',
@@ -162,6 +237,9 @@ class FacilityDocumentAdmin(admin.ModelAdmin):
 
 @admin.register(PrivateDoctor)
 class PrivateDoctorAdmin(BaseFacilityAdmin):
+    """
+    Admin for private doctor model.
+    """
     list_display = [
         'get_full_name',
         'organization_type',
@@ -196,52 +274,31 @@ class PrivateDoctorAdmin(BaseFacilityAdmin):
     inlines = [FacilityImageInline, FacilityDocumentInline]
     
     fieldsets = (
-        (_('Основная информация'), {
-            'fields': (
-                'name', 'slug', 'organization_type',
-                'first_name', 'last_name', 'middle_name',
-                'specializations', 'experience_years', 'education',
-                'biography', 'achievements', 'is_active'
-            )
+        (None, {
+            'fields': ('first_name', 'last_name', 'middle_name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
         }),
-        (_('Контактная информация'), {
-            'fields': ('phone', 'email', 'website')
+        (_('Специализация'), {
+            'fields': ('specializations', 'experience_years', 'consultation_price', 'home_visits', 'emergency_available')
         }),
-        (_('Место приема'), {
-            'fields': (
-                'address', 'city', 'office_description',
-                'parking_available', 'wheelchair_accessible'
-            )
-        }),
-        (_('График работы'), {
-            'fields': (
-                'schedule', 'home_visits', 'emergency_available', 'weekend_work'
-            )
-        }),
-        (_('Финансовые аспекты'), {
-            'fields': (
-                'consultation_price', 'home_visit_price',
-                'insurance_accepted'
-            )
-        }),
-        (_('Лицензирование'), {
-            'fields': (
-                'license_number', 'license_issue_date', 'license_expiry_date'
-            )
-        }),
-        (_('Дополнительные возможности'), {
-            'fields': (
-                'online_consultations', 'video_consultations',
-                'special_equipment'
-            )
+        (_('Расписание'), {
+            'fields': ('weekend_work', 'online_consultations', 'video_consultations', 'insurance_accepted')
         }),
         ('SEO', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
-
+    
     def get_full_name(self, obj):
+        """
+        Get full name for display.
+        
+        Args:
+            obj: PrivateDoctor instance
+            
+        Returns:
+            str: Full name
+        """
         return obj.get_full_name()
     get_full_name.short_description = _('ФИО')
     get_full_name.admin_order_field = 'last_name'

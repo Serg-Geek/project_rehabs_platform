@@ -2,9 +2,19 @@ from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
 class Command(BaseCommand):
+    """
+    Command to load all initial data from fixtures.
+    """
     help = 'Загружает все начальные данные из фикстур'
 
     def handle(self, *args, **options):
+        """
+        Handle command execution.
+        
+        Args:
+            *args: Additional arguments
+            **options: Command options
+        """
         # Список фикстур в порядке загрузки (соблюдаем зависимости)
         fixtures = [
             # Базовые справочники (из core)

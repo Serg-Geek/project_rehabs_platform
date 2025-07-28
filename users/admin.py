@@ -5,6 +5,9 @@ from django import forms
 from .models import User, UserProfile, UserActionLog
 
 class UserCreationForm(forms.ModelForm):
+    """
+    Custom user creation form with validation.
+    """
     password = forms.CharField(
         label=_('Password'),
         strip=False,
@@ -16,6 +19,15 @@ class UserCreationForm(forms.ModelForm):
         fields = ('email', 'username', 'role', 'password')
 
     def clean_role(self):
+        """
+        Validate user role.
+        
+        Returns:
+            str: Validated role
+            
+        Raises:
+            ValidationError: If role is invalid
+        """
         role = self.cleaned_data.get('role')
         if not role:
             raise forms.ValidationError(_('Роль обязательна для заполнения'))
@@ -27,18 +39,45 @@ class UserCreationForm(forms.ModelForm):
         return role
 
     def clean_email(self):
+        """
+        Validate email uniqueness.
+        
+        Returns:
+            str: Validated email
+            
+        Raises:
+            ValidationError: If email already exists
+        """
         email = self.cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
             raise forms.ValidationError(_('Пользователь с таким email уже существует'))
         return email
 
     def clean_username(self):
+        """
+        Validate username uniqueness.
+        
+        Returns:
+            str: Validated username
+            
+        Raises:
+            ValidationError: If username already exists
+        """
         username = self.cleaned_data.get('username')
         if username and User.objects.filter(username=username).exists():
             raise forms.ValidationError(_('Пользователь с таким именем уже существует'))
         return username
 
     def save(self, commit=True):
+        """
+        Save user with hashed password.
+        
+        Args:
+            commit: Whether to save to database
+            
+        Returns:
+            User: Saved user instance
+        """
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -46,6 +85,9 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserProfileInline(admin.StackedInline):
+    """
+    Inline admin for user profile.
+    """
     model = UserProfile
     can_delete = False
     verbose_name_plural = _('Профиль')
@@ -53,7 +95,7 @@ class UserProfileInline(admin.StackedInline):
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     """
-    Админка пользователей с разными представлениями
+    Custom user admin with role-based permissions.
     """
     add_form = UserCreationForm
     list_display = ('email', 'username', 'role', 'is_staff', 'is_active', 'last_login')
@@ -79,7 +121,13 @@ class CustomUserAdmin(UserAdmin):
 
     def has_add_permission(self, request):
         """
-        Проверяем права на создание пользователей
+        Check add permission for users.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            bool: True if user has permission
         """
         if not request.user.is_staff:
             return False
@@ -87,7 +135,14 @@ class CustomUserAdmin(UserAdmin):
 
     def has_change_permission(self, request, obj=None):
         """
-        Проверяем права на изменение пользователей
+        Check change permission for users.
+        
+        Args:
+            request: HTTP request object
+            obj: User instance
+            
+        Returns:
+            bool: True if user has permission
         """
         if not request.user.is_staff:
             return False
@@ -97,8 +152,13 @@ class CustomUserAdmin(UserAdmin):
 
     def save_model(self, request, obj, form, change):
         """
-        Переопределяем сохранение модели для установки правильных флагов
-        в зависимости от роли
+        Override save model to set proper flags.
+        
+        Args:
+            request: HTTP request object
+            obj: User instance to save
+            form: Form instance
+            change: Whether this is a change operation
         """
         if obj.role == obj.Role.SUPERUSER:
             if not request.user.is_superuser:
@@ -115,12 +175,27 @@ class CustomUserAdmin(UserAdmin):
         super().save_model(request, obj, form, change)
 
     def get_queryset(self, request):
+        """
+        Get filtered queryset based on URL.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            QuerySet: Filtered user queryset
+        """
         qs = super().get_queryset(request)
         if request.path.endswith('/staff-users/'):
             return qs.filter(role__in=[User.Role.SUPERUSER, User.Role.CONTENT_ADMIN, User.Role.REQUESTS_ADMIN])
         return qs
 
     def get_urls(self):
+        """
+        Get custom URLs for admin.
+        
+        Returns:
+            list: Custom URL patterns
+        """
         from django.urls import path
         urls = super().get_urls()
         custom_urls = [
@@ -130,11 +205,17 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
+    """
+    Admin for user profiles.
+    """
     list_display = ('user', 'birth_date')
     search_fields = ('user__email', 'user__username')
 
 @admin.register(UserActionLog)
 class UserActionLogAdmin(admin.ModelAdmin):
+    """
+    Admin for user action logs (read-only).
+    """
     list_display = ('user', 'action', 'model_name', 'object_id', 'created_at')
     list_filter = ('action', 'model_name', 'created_at')
     search_fields = ('user__username', 'user__email', 'details')
@@ -147,7 +228,46 @@ class UserActionLogAdmin(admin.ModelAdmin):
         (_('Детали'), {
             'fields': ('details',)
         }),
-        (_('Даты'), {
-            'fields': ('created_at', 'updated_at')
-        })
+        (_('Временные метки'), {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
     )
+    
+    def has_add_permission(self, request):
+        """
+        Disable add permission for action logs.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            bool: Always False
+        """
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        """
+        Disable change permission for action logs.
+        
+        Args:
+            request: HTTP request object
+            obj: Model instance
+            
+        Returns:
+            bool: Always False
+        """
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """
+        Disable delete permission for action logs.
+        
+        Args:
+            request: HTTP request object
+            obj: Model instance
+            
+        Returns:
+            bool: Always False
+        """
+        return False

@@ -4,9 +4,19 @@ from core.models import City, CityCoordinates
 
 
 class Command(BaseCommand):
+    """
+    Command to add coordinates for major Russian cities.
+    """
     help = 'Добавить координаты для основных городов России'
 
     def handle(self, *args, **options):
+        """
+        Handle command execution.
+        
+        Args:
+            *args: Additional arguments
+            **options: Command options
+        """
         # Координаты основных городов России
         cities_data = {
             'Москва': (55.7558, 37.6176),
@@ -98,17 +108,6 @@ class Command(BaseCommand):
                         coords.is_active = True
                         coords.save()
                         updated_count += 1
-                        self.stdout.write(
-                            self.style.WARNING(
-                                f'🔄 Обновлены координаты для {city_name}: {lat}, {lng}'
-                            )
-                        )
-                else:
-                    self.stdout.write(
-                        self.style.ERROR(
-                            f'❌ Город "{city_name}" не найден в базе данных'
-                        )
-                    )
 
         self.stdout.write(
             self.style.SUCCESS(

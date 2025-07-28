@@ -17,14 +17,27 @@ from .logging import performance_logger, error_logger, security_logger
 
 
 class RequestLoggingMiddleware(MiddlewareMixin):
-    """Middleware для логирования HTTP запросов."""
+    """
+    Middleware for automatic HTTP request logging.
+    """
     
     def __init__(self, get_response=None):
+        """
+        Initialize middleware with logger.
+        
+        Args:
+            get_response: Django response handler
+        """
         super().__init__(get_response)
         self.logger = logging.getLogger('requests')
     
     def process_request(self, request):
-        """Логирование входящих запросов."""
+        """
+        Log incoming requests.
+        
+        Args:
+            request: HTTP request object
+        """
         request.start_time = time.time()
         
         # Логируем только важные запросы (исключаем статику и медиа)
@@ -41,7 +54,16 @@ class RequestLoggingMiddleware(MiddlewareMixin):
             self.logger.info(f"REQUEST_START: {log_data}")
     
     def process_response(self, request, response):
-        """Логирование исходящих ответов."""
+        """
+        Log outgoing responses and performance metrics.
+        
+        Args:
+            request: HTTP request object
+            response: HTTP response object
+            
+        Returns:
+            HttpResponse: Response object
+        """
         if hasattr(request, 'start_time'):
             response_time = time.time() - request.start_time
             
@@ -78,7 +100,13 @@ class RequestLoggingMiddleware(MiddlewareMixin):
         return response
     
     def process_exception(self, request, exception):
-        """Логирование исключений."""
+        """
+        Log exceptions and security events.
+        
+        Args:
+            request: HTTP request object
+            exception: Exception that occurred
+        """
         if isinstance(exception, Http404):
             # 404 ошибки логируем как INFO
             log_data = {
@@ -110,7 +138,15 @@ class RequestLoggingMiddleware(MiddlewareMixin):
             )
     
     def _should_skip_logging(self, path):
-        """Определяет, нужно ли пропустить логирование для данного пути."""
+        """
+        Determine if logging should be skipped for this path.
+        
+        Args:
+            path: Request path
+            
+        Returns:
+            bool: True if logging should be skipped
+        """
         skip_paths = [
             '/static/',
             '/media/',
@@ -121,7 +157,15 @@ class RequestLoggingMiddleware(MiddlewareMixin):
         return any(path.startswith(skip_path) for skip_path in skip_paths)
     
     def _get_client_ip(self, request):
-        """Получение IP адреса клиента."""
+        """
+        Get client IP address.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            str: Client IP address
+        """
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             ip = x_forwarded_for.split(',')[0]
@@ -131,14 +175,27 @@ class RequestLoggingMiddleware(MiddlewareMixin):
 
 
 class SecurityMiddleware(MiddlewareMixin):
-    """Middleware для обнаружения подозрительной активности."""
+    """
+    Middleware for detecting suspicious activity.
+    """
     
     def __init__(self, get_response=None):
+        """
+        Initialize security middleware.
+        
+        Args:
+            get_response: Django response handler
+        """
         super().__init__(get_response)
         self.logger = logging.getLogger('security')
     
     def process_request(self, request):
-        """Проверка на подозрительную активность."""
+        """
+        Check for suspicious activity in requests.
+        
+        Args:
+            request: HTTP request object
+        """
         ip_address = self._get_client_ip(request)
         
         # Проверяем на SQL инъекции в URL
@@ -172,10 +229,17 @@ class SecurityMiddleware(MiddlewareMixin):
                     ip_address=ip_address,
                     user=request.user
                 )
-                break
     
     def _get_client_ip(self, request):
-        """Получение IP адреса клиента."""
+        """
+        Get client IP address.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            str: Client IP address
+        """
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             ip = x_forwarded_for.split(',')[0]
@@ -185,14 +249,30 @@ class SecurityMiddleware(MiddlewareMixin):
 
 
 class DatabaseLoggingMiddleware(MiddlewareMixin):
-    """Middleware для логирования операций с базой данных."""
+    """
+    Middleware for logging database operations.
+    """
     
     def __init__(self, get_response=None):
+        """
+        Initialize database logging middleware.
+        
+        Args:
+            get_response: Django response handler
+        """
         super().__init__(get_response)
         self.logger = logging.getLogger('database')
     
     def process_request(self, request):
-        """Настройка логирования запросов к БД."""
+        """
+        Setup database logging context for requests.
+        
+        Args:
+            request: HTTP request object
+            
+        Returns:
+            None: Always returns None
+        """
         if hasattr(request, 'user') and request.user.is_authenticated:
             # Добавляем информацию о пользователе в контекст
             request.db_user_context = {

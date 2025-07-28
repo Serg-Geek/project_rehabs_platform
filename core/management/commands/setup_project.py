@@ -6,9 +6,18 @@ from pathlib import Path
 
 
 class Command(BaseCommand):
+    """
+    Command for automatic project setup from scratch.
+    """
     help = 'Автоматическая установка проекта с нуля'
 
     def add_arguments(self, parser):
+        """
+        Add command arguments.
+        
+        Args:
+            parser: Argument parser instance
+        """
         parser.add_argument(
             '--skip-migrations',
             action='store_true',
@@ -26,6 +35,13 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        """
+        Handle command execution.
+        
+        Args:
+            *args: Additional arguments
+            **options: Command options
+        """
         self.stdout.write(self.style.SUCCESS('🚀 Начинаем установку проекта...'))
         
         # 1. Создаем необходимые папки
@@ -50,7 +66,9 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('🌐 Запустите сервер: python manage.py runserver'))
 
     def create_required_folders(self):
-        """Создает необходимые папки для работы проекта"""
+        """
+        Create required folders for project operation.
+        """
         self.stdout.write('📁 Создаем необходимые папки...')
         
         required_folders = [
@@ -65,7 +83,9 @@ class Command(BaseCommand):
             self.stdout.write(f'  ✓ Папка {folder} создана/проверена')
 
     def create_migrations_folders(self):
-        """Создает папки migrations и __init__.py файлы"""
+        """
+        Create migrations folders and __init__.py files.
+        """
         self.stdout.write('📁 Проверяем папки migrations...')
         
         apps = [
@@ -88,7 +108,9 @@ class Command(BaseCommand):
                 self.stdout.write(f'  ✓ {init_file} уже существует')
 
     def apply_migrations(self):
-        """Применяет миграции"""
+        """
+        Apply database migrations.
+        """
         self.stdout.write('🔄 Применяем миграции...')
         
         # Сначала создаем недостающие миграции
@@ -102,7 +124,9 @@ class Command(BaseCommand):
             raise
 
     def create_missing_migrations(self):
-        """Создает недостающие миграции для всех приложений"""
+        """
+        Create missing migrations for all applications.
+        """
         self.stdout.write('📝 Создаем недостающие миграции...')
         
         apps = [
@@ -129,7 +153,9 @@ class Command(BaseCommand):
                 continue
 
     def load_initial_data(self):
-        """Загружает начальные данные"""
+        """
+        Load initial data for the project.
+        """
         self.stdout.write('📊 Загружаем начальные данные...')
         
         # Проверяем наличие резервной копии БД
@@ -151,7 +177,9 @@ class Command(BaseCommand):
         self.add_city_coordinates()
 
     def load_from_fixtures(self):
-        """Загружает данные из фикстур"""
+        """
+        Load data from fixtures.
+        """
         try:
             call_command('load_all_initial_data', verbosity=0)
             self.stdout.write(self.style.SUCCESS('  ✓ Данные загружены из фикстур'))
@@ -159,7 +187,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING(f'  ⚠ Ошибка при загрузке фикстур: {e}'))
 
     def add_city_coordinates(self):
-        """Добавляет координаты для основных городов"""
+        """
+        Add coordinates for major cities.
+        """
         self.stdout.write('📍 Добавляем координаты городов...')
         
         try:
@@ -169,7 +199,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING(f'  ⚠ Ошибка при добавлении координат городов: {e}'))
 
     def create_superuser(self):
-        """Создает суперпользователя по умолчанию"""
+        """
+        Create default superuser.
+        """
         self.stdout.write('👤 Создаем суперпользователя...')
         
         try:

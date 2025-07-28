@@ -9,7 +9,14 @@ from .models import AdminActionLog, AccessLevel, UserAccess
 
 def get_changed_fields(instance, old_instance=None):
     """
-    Получение измененных полей между текущим и старым экземпляром
+    Get changed fields between current and old instance.
+    
+    Args:
+        instance: Current model instance
+        old_instance: Previous model instance
+        
+    Returns:
+        dict: Dictionary of changed fields with old and new values
     """
     if not old_instance:
         return {}
@@ -48,7 +55,12 @@ def get_changed_fields(instance, old_instance=None):
 @receiver(pre_save)
 def log_pre_save(sender, instance, **kwargs):
     """
-    Логирование изменений перед сохранением
+    Log changes before saving.
+    
+    Args:
+        sender: Model class
+        instance: Model instance
+        **kwargs: Additional keyword arguments
     """
     if not settings.ADMIN_LOGS['ENABLE_LOGGING']:
         return
@@ -68,7 +80,13 @@ def log_pre_save(sender, instance, **kwargs):
 @receiver(post_save)
 def log_post_save(sender, instance, created, **kwargs):
     """
-    Логирование действий после сохранения
+    Log actions after saving.
+    
+    Args:
+        sender: Model class
+        instance: Model instance
+        created: Whether this is a new instance
+        **kwargs: Additional keyword arguments
     """
     if not settings.ADMIN_LOGS['ENABLE_LOGGING']:
         return
@@ -100,7 +118,12 @@ def log_post_save(sender, instance, created, **kwargs):
 @receiver(post_delete)
 def log_post_delete(sender, instance, **kwargs):
     """
-    Логирование действий после удаления
+    Log actions after deletion.
+    
+    Args:
+        sender: Model class
+        instance: Model instance
+        **kwargs: Additional keyword arguments
     """
     if not settings.ADMIN_LOGS['ENABLE_LOGGING']:
         return

@@ -5,15 +5,21 @@ register = template.Library()
 @register.filter
 def year_plural(value):
     """
-    Возвращает правильное склонение слова "год" в зависимости от числа.
+    Return correct Russian plural form for "год" (year) based on number.
     
-    Примеры:
+    Examples:
     1 -> "1 год"
     2 -> "2 года" 
     5 -> "5 лет"
     21 -> "21 год"
     22 -> "22 года"
     25 -> "25 лет"
+    
+    Args:
+        value: Number to format
+        
+    Returns:
+        str: Formatted string with correct plural form
     """
     try:
         num = int(value)
@@ -30,16 +36,19 @@ def year_plural(value):
 @register.filter
 def russian_plural(value, forms):
     """
-    Возвращает правильное склонение слова в зависимости от числа.
+    Return correct Russian plural form based on number.
     
     Args:
-        value: число
-        forms: строка с тремя формами слова через запятую (ед.ч., род.п. ед.ч., род.п. мн.ч.)
+        value: Number to format
+        forms: String with three word forms separated by comma (singular, genitive singular, genitive plural)
     
-    Примеры:
+    Examples:
     {{ 1|russian_plural:"учреждение,учреждения,учреждений" }} -> "1 учреждение"
     {{ 2|russian_plural:"учреждение,учреждения,учреждений" }} -> "2 учреждения"
     {{ 5|russian_plural:"учреждение,учреждения,учреждений" }} -> "5 учреждений"
+    
+    Returns:
+        str: Formatted string with correct plural form
     """
     try:
         num = int(value)

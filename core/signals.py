@@ -97,7 +97,15 @@ def log_model_delete(sender, instance, **kwargs):
 
 @receiver(user_logged_in)
 def log_user_login(sender, user, request, **kwargs):
-    """Логирование успешного входа пользователя."""
+    """
+    Log successful user login.
+    
+    Args:
+        sender: User model class
+        user: User instance
+        request: HTTP request object
+        **kwargs: Additional keyword arguments
+    """
     security_logger.log_login_attempt(
         username=user.username,
         success=True,
@@ -115,7 +123,15 @@ def log_user_login(sender, user, request, **kwargs):
 
 @receiver(user_logged_out)
 def log_user_logout(sender, user, request, **kwargs):
-    """Логирование выхода пользователя."""
+    """
+    Log user logout.
+    
+    Args:
+        sender: User model class
+        user: User instance
+        request: HTTP request object
+        **kwargs: Additional keyword arguments
+    """
     if user:  # Проверяем, что user не None
         business_logger.log_user_action(
             user=user,
@@ -126,7 +142,15 @@ def log_user_logout(sender, user, request, **kwargs):
 
 @receiver(user_login_failed)
 def log_user_login_failed(sender, credentials, request=None, **kwargs):
-    """Логирование неудачной попытки входа."""
+    """
+    Log failed login attempt.
+    
+    Args:
+        sender: User model class
+        credentials: Login credentials
+        request: HTTP request object (optional)
+        **kwargs: Additional keyword arguments
+    """
     username = credentials.get('username', 'unknown')
     security_logger.log_login_attempt(
         username=username,
@@ -137,7 +161,15 @@ def log_user_login_failed(sender, credentials, request=None, **kwargs):
 
 
 def _get_client_ip(request):
-    """Получение IP адреса клиента."""
+    """
+    Get client IP address.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        str: Client IP address or None if request is None
+    """
     if not request:
         return None
     
