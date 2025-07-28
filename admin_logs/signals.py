@@ -3,6 +3,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.conf import settings
 import datetime
+from django.core.files.base import File
+from django.core.files.uploadedfile import UploadedFile
 from .models import AdminActionLog, AccessLevel, UserAccess
 
 def get_changed_fields(instance, old_instance=None):
@@ -23,6 +25,12 @@ def get_changed_fields(instance, old_instance=None):
             old_value = old_value.isoformat()
         if isinstance(new_value, (datetime.datetime, datetime.date)):
             new_value = new_value.isoformat()
+        
+        # Обрабатываем файловые объекты
+        if isinstance(old_value, (File, UploadedFile)):
+            old_value = old_value.name if hasattr(old_value, 'name') and old_value.name else str(old_value)
+        if isinstance(new_value, (File, UploadedFile)):
+            new_value = new_value.name if hasattr(new_value, 'name') and new_value.name else str(new_value)
         
         # Обрабатываем объекты моделей
         if hasattr(old_value, 'pk'):
@@ -77,16 +85,17 @@ def log_post_save(sender, instance, created, **kwargs):
     if not created and hasattr(instance, '_old_instance'):
         changes = get_changed_fields(instance, instance._old_instance)
     
-    AdminActionLog.objects.create(
+    log_entry = AdminActionLog(
         user=instance._current_user if hasattr(instance, '_current_user') else None,
         action=action,
         app_label=sender._meta.app_label,
         model_name=sender._meta.model_name,
         object_id=instance.pk,
-        changes=changes,
         access_level=None,
         ip_address=instance._current_ip if hasattr(instance, '_current_ip') else None
     )
+    log_entry.save_changes(changes)
+    log_entry.save()
 
 @receiver(post_delete)
 def log_post_delete(sender, instance, **kwargs):
@@ -102,7 +111,7 @@ def log_post_delete(sender, instance, **kwargs):
     if not any(f"{sender._meta.app_label}.*" in pattern for pattern in settings.ADMIN_LOGS['INCLUDE_MODELS']):
         return
     
-    AdminActionLog.objects.create(
+    log_entry = AdminActionLog(
         user=instance._current_user if hasattr(instance, '_current_user') else None,
         action='delete',
         app_label=sender._meta.app_label,
@@ -110,4 +119,6 @@ def log_post_delete(sender, instance, **kwargs):
         object_id=instance.pk,
         access_level=None,
         ip_address=instance._current_ip if hasattr(instance, '_current_ip') else None
-    ) 
+    )
+    log_entry.save_changes({})
+    log_entry.save() 

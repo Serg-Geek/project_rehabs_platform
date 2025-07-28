@@ -1,7 +1,11 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
-from users.models import User
+from django.core.files.base import File
+from django.core.files.uploadedfile import UploadedFile
+import json
+
+User = get_user_model()
 
 class AccessLevel(models.Model):
     class LevelType(models.TextChoices):
@@ -134,3 +138,23 @@ class AdminActionLog(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.action} - {self.created_at}"
+
+    def save_changes(self, changes_dict):
+        """
+        Безопасно сохраняет изменения, обрабатывая файловые объекты
+        """
+        def serialize_value(value):
+            if isinstance(value, (File, UploadedFile)):
+                return value.name if hasattr(value, 'name') and value.name else str(value)
+            elif hasattr(value, 'pk'):
+                return str(value)
+            elif isinstance(value, dict):
+                return {k: serialize_value(v) for k, v in value.items()}
+            elif isinstance(value, (list, tuple)):
+                return [serialize_value(v) for v in value]
+            else:
+                return value
+        
+        # Сериализуем изменения
+        serialized_changes = serialize_value(changes_dict)
+        self.changes = serialized_changes

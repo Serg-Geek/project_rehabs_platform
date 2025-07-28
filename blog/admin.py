@@ -1,10 +1,28 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import BlogCategory, BlogPost, Tag, BlogPostTag, ContentCategory, Article, ArticleImage, ArticleTag
+from django.contrib.contenttypes.admin import GenericTabularInline
+from django.contrib.contenttypes.models import ContentType
+from facilities.utils import CustomJSONEncoder
+from .models import (
+    BlogPost,
+    BlogCategory,
+    Tag,
+    BlogPostTag,
+    BlogImage,
+    Article,
+    ArticleImage,
+    ContentCategory,
+    ArticleTag
+)
 
 
 class BlogPostTagInline(admin.TabularInline):
     model = BlogPostTag
+    extra = 1
+
+
+class ArticleTagInline(admin.TabularInline):
+    model = ArticleTag
     extra = 1
 
 
@@ -52,6 +70,8 @@ class BlogPostAdmin(admin.ModelAdmin):
             'fields': (
                 'meta_title',
                 'meta_description',
+                'meta_keywords',
+                'meta_image',
             ),
             'classes': ('collapse',)
         }),
@@ -66,6 +86,9 @@ class BlogPostAdmin(admin.ModelAdmin):
             )
         }),
     )
+
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 
 @admin.register(BlogCategory)
@@ -105,6 +128,45 @@ class ArticleAdmin(admin.ModelAdmin):
     list_filter = ['is_published', 'category', 'publish_date']
     search_fields = ['title', 'content']
     prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ['created_at', 'updated_at', 'views_count']
+    inlines = [ArticleTagInline]
+    fieldsets = (
+        ('Основная информация', {
+            'fields': (
+                'title',
+                'slug',
+                'category',
+                'preview_text',
+                'content',
+            )
+        }),
+        ('Медиа', {
+            'fields': (
+                'image',
+            )
+        }),
+        ('SEO', {
+            'fields': (
+                'meta_title',
+                'meta_description',
+                'meta_keywords',
+                'meta_image',
+            ),
+            'classes': ('collapse',)
+        }),
+        ('Публикация', {
+            'fields': (
+                'is_published',
+                'publish_date',
+                'views_count',
+                'created_at',
+                'updated_at',
+            )
+        }),
+    )
+
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 
 @admin.register(ArticleTag)

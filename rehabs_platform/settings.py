@@ -194,8 +194,10 @@ ACCESS_CONTROL = {
     'DEFAULT_ACCESS_DURATION': 30,  # дней
 }
 
-# JSON сериализация
-DEFAULT_JSON_ENCODER = 'facilities.utils.CustomJSONEncoder'
+# JSON сериализация - используем кастомный энкодер
+import json
+from facilities.utils import CustomJSONEncoder
+json._default_encoder = CustomJSONEncoder()
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

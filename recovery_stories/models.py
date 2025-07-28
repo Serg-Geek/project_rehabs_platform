@@ -122,6 +122,18 @@ class RecoveryStory(TimeStampedModel):
         null=True,
         verbose_name=_('Meta Description')
     )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='recovery_stories/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
+    )
     views = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Просмотры')

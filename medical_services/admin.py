@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib.contenttypes.models import ContentType
+from facilities.utils import CustomJSONEncoder
 from .models import (
     ServiceCategory,
     TherapyMethod,
@@ -21,10 +22,13 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'description', 'parent', 'order', 'is_active')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
+
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 @admin.register(TherapyMethod)
 class TherapyMethodAdmin(admin.ModelAdmin):
@@ -37,10 +41,13 @@ class TherapyMethodAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'description', 'is_active')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
+
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -55,7 +62,7 @@ class ServiceAdmin(admin.ModelAdmin):
             'fields': ('name', 'slug', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_priority')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
             'classes': ('collapse',),
         }),
     )
@@ -63,6 +70,9 @@ class ServiceAdmin(admin.ModelAdmin):
     def get_categories(self, obj):
         return ", ".join([category.name for category in obj.categories.all()])
     get_categories.short_description = _('Категории')
+
+    def get_json_encoder(self):
+        return CustomJSONEncoder
 
 @admin.register(FacilityService)
 class FacilityServiceAdmin(admin.ModelAdmin):

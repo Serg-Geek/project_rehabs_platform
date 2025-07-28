@@ -70,6 +70,9 @@ class BaseFacilityAdmin(admin.ModelAdmin):
         }),
     )
 
+    def get_json_encoder(self):
+        return CustomJSONEncoder
+
 @admin.register(Clinic)
 class ClinicAdmin(BaseFacilityAdmin):
     list_display = BaseFacilityAdmin.list_display + ['emergency_support', 'has_hospital']

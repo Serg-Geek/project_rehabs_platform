@@ -109,6 +109,18 @@ class BlogPost(TimeStampedModel):
         null=True,
         verbose_name=_('Meta Description')
     )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='blog/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
+    )
     views_count = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Количество просмотров')
@@ -480,6 +492,18 @@ class Article(TimeStampedModel):
         blank=True,
         null=True,
         verbose_name=_('Meta Description')
+    )
+    meta_keywords = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Keywords')
+    )
+    meta_image = models.ImageField(
+        upload_to='articles/meta_images/',
+        blank=True,
+        null=True,
+        verbose_name=_('Meta Image (OG/Twitter)')
     )
     views_count = models.PositiveIntegerField(
         default=0,
