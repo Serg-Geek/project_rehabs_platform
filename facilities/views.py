@@ -371,7 +371,7 @@ def load_more_doctors(request):
         cards_html = ''
         for doctor in doctors:
             cards_html += render_to_string(
-                'includes/cards/doctor_card.html',
+                'includes/cards/private_doctor_card.html',
                 {'doctor': doctor},
                 request=request
             )
