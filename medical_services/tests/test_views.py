@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from medical_services.models import ServiceCategory, Service
 
+
 class HomePageServicesTest(TestCase):
     """Тесты для проверки отображения категорий услуг на главной странице"""
     
@@ -169,6 +170,7 @@ class HomePageServicesTest(TestCase):
         
         self.assertNotIn(self.alcoholism_category, service_categories)
 
+
 class ServicePriorityOrderTest(TestCase):
     """Тест сортировки услуг по приоритету отображения"""
     def setUp(self):
@@ -208,4 +210,4 @@ class ServicePriorityOrderTest(TestCase):
         category = next((cat for cat in service_categories if cat.slug == 'lechenie-alkogolizma'), None)
         services = category.services.filter(is_active=True).order_by('-display_priority')
         # Проверяем порядок: высокий, средний, низкий
-        self.assertEqual(list(services), [self.service_high, self.service_medium, self.service_low])
+        self.assertEqual(list(services), [self.service_high, self.service_medium, self.service_low]) 

@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from .models import User, UserProfile
+from users.models import User, UserProfile
+
 
 class UserModelTests(TestCase):
     def setUp(self):
@@ -125,6 +126,7 @@ class UserModelTests(TestCase):
         )
         self.assertEqual(str(user), 'testuser2')
 
+
 class UserProfileTests(TestCase):
     def setUp(self):
         """Создаем пользователя для тестов"""
@@ -153,4 +155,4 @@ class UserProfileTests(TestCase):
         # Проверяем, что изменения сохранились
         updated_profile = UserProfile.objects.get(user=self.user)
         self.assertEqual(updated_profile.bio, 'Updated Bio')
-        self.assertEqual(updated_profile.gender, 'male')
+        self.assertEqual(updated_profile.gender, 'male') 
