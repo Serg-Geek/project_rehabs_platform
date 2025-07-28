@@ -50,10 +50,19 @@ class AnonymousRequestAdminForm(forms.ModelForm):
         return choices
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
+        # Сохраняем organization_choice отдельно
         org_choice = self.cleaned_data.get('organization_choice')
+        
+        # Удаляем organization_choice из cleaned_data чтобы Django не пытался его сохранить
+        if 'organization_choice' in self.cleaned_data:
+            del self.cleaned_data['organization_choice']
+        
+        instance = super().save(commit=False)
+        
+        # Устанавливаем assigned_organization только если выбрана организация
         if org_choice:
             instance.assigned_organization = org_choice
+        
         if commit:
             instance.save()
         return instance
@@ -105,15 +114,19 @@ class DependentRequestAdminForm(forms.ModelForm):
         return choices
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
+        # Сохраняем organization_choice отдельно
         org_choice = self.cleaned_data.get('organization_choice')
-        print(f"DEBUG: DependentRequestAdminForm.save() вызван")
-        print(f"DEBUG: org_choice = {org_choice}")
-        print(f"DEBUG: instance.assigned_organization до = {instance.assigned_organization}")
+        
+        # Удаляем organization_choice из cleaned_data чтобы Django не пытался его сохранить
+        if 'organization_choice' in self.cleaned_data:
+            del self.cleaned_data['organization_choice']
+        
+        instance = super().save(commit=False)
+        
+        # Устанавливаем assigned_organization только если выбрана организация
         if org_choice:
             instance.assigned_organization = org_choice
-            print(f"DEBUG: instance.assigned_organization после = {instance.assigned_organization}")
+        
         if commit:
             instance.save()
-            print(f"DEBUG: instance сохранён")
         return instance 
