@@ -41,6 +41,7 @@ class RequestStatusHistoryInline(admin.TabularInline):
     """
     model = RequestStatusHistory
     extra = 0
+    fields = ('old_status', 'new_status', 'comment', 'changed_at', 'changed_by')
     readonly_fields = ('old_status', 'new_status', 'comment', 'changed_at', 'changed_by')
     verbose_name_plural = _('История статусов')
     can_delete = False
@@ -330,7 +331,7 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """
-        Save model with automatic user assignment.
+        Save model with automatic user assignment and status history tracking.
         
         Args:
             request: HTTP request object
@@ -342,6 +343,34 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
             obj.created_by = request.user
         else:
             obj.updated_by = request.user
+            # Проверяем, изменился ли статус
+            if 'status' in form.changed_data:
+                old_status = form.initial.get('status')
+                new_status = obj.status
+                if old_status != new_status:
+                    # Создаем запись в истории статусов
+                    from .models import RequestStatusHistory
+                    
+                    # Получаем человекочитаемые названия статусов
+                    old_status_display = dict(AnonymousRequest.Status.choices).get(old_status, old_status)
+                    new_status_display = dict(AnonymousRequest.Status.choices).get(new_status, new_status)
+                    
+                    RequestStatusHistory.objects.create(
+                        request=obj,
+                        old_status=old_status,
+                        new_status=new_status,
+                        comment=f"Статус изменен с '{old_status_display}' на '{new_status_display}'",
+                        changed_by=request.user
+                    )
+                    
+                    # Создаем запись в логе действий
+                    from .models import RequestActionLog
+                    RequestActionLog.objects.create(
+                        request=obj,
+                        user=request.user,
+                        action=RequestActionLog.Action.STATUS_CHANGE,
+                        details=f"Статус изменен с '{old_status_display}' на '{new_status_display}' через админку"
+                    )
         
         super().save_model(request, obj, form, change)
 
@@ -359,8 +388,10 @@ class AnonymousRequestAdmin(admin.ModelAdmin):
         """
         form = super().get_form(request, obj, **kwargs)
         if obj and obj.organization_type:
+            # Создаем временный экземпляр формы для вызова метода
+            temp_form = form(instance=obj)
             form.base_fields['organization_choice'].widget.choices = \
-                form._get_organization_choices(obj.organization_type)
+                temp_form._get_organization_choices(obj.organization_type)
         return form
 
 @admin.register(RequestTemplate)
@@ -499,13 +530,15 @@ class DependentRequestAdmin(admin.ModelAdmin):
         """
         form = super().get_form(request, obj, **kwargs)
         if obj and obj.organization_type:
+            # Создаем временный экземпляр формы для вызова метода
+            temp_form = form(instance=obj)
             form.base_fields['organization_choice'].widget.choices = \
-                form._get_organization_choices(obj.organization_type)
+                temp_form._get_organization_choices(obj.organization_type)
         return form
 
     def save_model(self, request, obj, form, change):
         """
-        Save model with automatic user assignment.
+        Save model with automatic user assignment and status history tracking.
         
         Args:
             request: HTTP request object
@@ -517,6 +550,25 @@ class DependentRequestAdmin(admin.ModelAdmin):
             obj.created_by = request.user
         else:
             obj.updated_by = request.user
+            # Проверяем, изменился ли статус
+            if 'status' in form.changed_data:
+                old_status = form.initial.get('status')
+                new_status = obj.status
+                if old_status != new_status:
+                    # Создаем запись в истории статусов
+                    from .models import DependentRequestStatusHistory
+                    
+                    # Получаем человекочитаемые названия статусов
+                    old_status_display = dict(DependentRequest.Status.choices).get(old_status, old_status)
+                    new_status_display = dict(DependentRequest.Status.choices).get(new_status, new_status)
+                    
+                    DependentRequestStatusHistory.objects.create(
+                        request=obj,
+                        old_status=old_status,
+                        new_status=new_status,
+                        comment=f"Статус изменен с '{old_status_display}' на '{new_status_display}'",
+                        changed_by=request.user
+                    )
         
         super().save_model(request, obj, form, change)
 

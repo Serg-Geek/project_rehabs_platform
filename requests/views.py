@@ -357,19 +357,49 @@ def print_request_report(request, request_id):
         try:
             request_obj = AnonymousRequest.objects.get(id=request_id)
             request_type = 'anonymous'
+            
+            # Получаем связанные данные для анонимной заявки
+            from .models import RequestNote, RequestStatusHistory, RequestActionLog
+            notes = RequestNote.objects.filter(request=request_obj).order_by('-created_at')
+            status_history = RequestStatusHistory.objects.filter(request=request_obj).order_by('-changed_at')
+            action_logs = RequestActionLog.objects.filter(request=request_obj).order_by('-created_at')
+            
         except AnonymousRequest.DoesNotExist:
             # Если не найдена, ищем среди заявок на зависимых
             try:
                 request_obj = DependentRequest.objects.get(id=request_id)
                 request_type = 'dependent'
+                
+                # Получаем связанные данные для заявки зависимого
+                from .models import DependentRequestNote, DependentRequestStatusHistory
+                notes = DependentRequestNote.objects.filter(request=request_obj).order_by('-created_at')
+                status_history = DependentRequestStatusHistory.objects.filter(request=request_obj).order_by('-changed_at')
+                action_logs = []  # Для DependentRequest нет action_logs
+                
             except DependentRequest.DoesNotExist:
                 messages.error(request, 'Заявка не найдена')
                 return redirect('requests:error')
 
+        # Вычисляем время обработки
+        processing_time = None
+        if status_history.count() > 1:
+            first_change = status_history.last()
+            last_change = status_history.first()
+            if first_change and last_change:
+                processing_time = last_change.changed_at - first_change.changed_at
+
         context = {
-            'request_obj': request_obj,
+            'request': request_obj,  # Используем 'request' для совместимости с шаблоном
             'request_type': request_type,
             'print_date': timezone.now(),
+            'generation_time': timezone.now(),
+            'user': request.user,
+            'notes': notes,
+            'status_history': status_history,
+            'action_logs': action_logs,
+            'processing_time': processing_time,
+            'title': f'Отчет по заявке #{request_obj.id}',
+            'report_type': 'enhanced' if request.user.is_superuser else 'standard'
         }
         
         return render(request, 'requests/print_report.html', context)

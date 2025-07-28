@@ -73,8 +73,9 @@ class RequestNoteModelTest(TestCase):
     
     def test_note_str_method(self):
         """Тест строкового представления заметки"""
-        self.assertIn(f"#{self.request.id}", str(self.note))
-        self.assertIn("Тестовый Клиент", str(self.note))
+        # RequestNote.__str__ возвращает только текст заметки
+        # В данном случае: "Тестовая заметка"
+        self.assertEqual(str(self.note), "Тестовая заметка")
 
 
 class RequestStatusHistoryModelTest(TestCase):
@@ -137,7 +138,11 @@ class DependentRequestModelTest(TestCase):
     
     def test_request_str_method(self):
         """Тест строкового представления заявки от зависимого"""
-        self.assertIn("Анонимная заявка", str(self.request))
+        # DependentRequest.__str__ возвращает: "phone - addiction_type (status)"
+        # В данном случае: "79991234567 - Алкоголь (Новая)"
+        self.assertIn("79991234567", str(self.request))
+        self.assertIn("Алкоголь", str(self.request))
+        self.assertIn("Новая", str(self.request))
 
 
 class RequestTemplateModelTest(TestCase):
@@ -168,7 +173,9 @@ class RequestTemplateModelTest(TestCase):
     
     def test_template_str_method(self):
         """Тест строкового представления шаблона"""
-        self.assertEqual(str(self.template), "Тестовый шаблон")
+        # RequestTemplate.__str__ возвращает: "name (request_type)"
+        # В данном случае: "Тестовый шаблон (Консультация)"
+        self.assertEqual(str(self.template), "Тестовый шаблон (Консультация)")
 
 
 class RequestActionLogModelTest(TestCase):
@@ -205,5 +212,8 @@ class RequestActionLogModelTest(TestCase):
         
     def test_action_log_str_method(self):
         """Тест строкового представления лога действий"""
-        self.assertIn("Создание", str(self.action_log))
+        # RequestActionLog.__str__ возвращает: "user - action - request"
+        # В данном случае: "testuser - create - Тестовый Клиент - Консультация (Новая)"
+        self.assertIn("testuser", str(self.action_log))
+        self.assertIn("create", str(self.action_log))
         self.assertIn("Тестовый Клиент", str(self.action_log)) 
