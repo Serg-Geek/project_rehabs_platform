@@ -27,11 +27,21 @@ class SearchMixin:
     search_lookup = 'icontains'
     
     def get_search_query(self):
-        """Get search query from request."""
+        """
+        Get search query from request.
+        
+        Returns:
+            str: Search query from GET parameters, stripped of whitespace
+        """
         return self.request.GET.get(self.search_param, '').strip()
     
     def get_queryset(self):
-        """Add search filtering to queryset."""
+        """
+        Add search filtering to queryset.
+        
+        Returns:
+            QuerySet: Filtered queryset based on search query
+        """
         queryset = super().get_queryset()
         search_query = self.get_search_query()
         
@@ -45,7 +55,15 @@ class SearchMixin:
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Add search query to context."""
+        """
+        Add search query to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with search query added
+        """
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.get_search_query()
         return context
@@ -64,7 +82,12 @@ class FilterMixin:
     filter_lookup = 'exact'
     
     def get_filter_params(self):
-        """Get filter parameters from request."""
+        """
+        Get filter parameters from request.
+        
+        Returns:
+            dict: Dictionary of field-value pairs for filtering
+        """
         filters = {}
         for param, field in self.filter_fields.items():
             value = self.request.GET.get(param)
@@ -73,7 +96,12 @@ class FilterMixin:
         return filters
     
     def get_queryset(self):
-        """Add filtering to queryset."""
+        """
+        Add filtering to queryset.
+        
+        Returns:
+            QuerySet: Filtered queryset based on GET parameters
+        """
         queryset = super().get_queryset()
         filters = self.get_filter_params()
         
@@ -83,7 +111,15 @@ class FilterMixin:
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Add filter parameters to context."""
+        """
+        Add filter parameters to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with filter parameters added
+        """
         context = super().get_context_data(**kwargs)
         context['filter_params'] = self.get_filter_params()
         return context
@@ -104,7 +140,12 @@ class OrderingMixin:
     ordering_param = 'ordering'
     
     def get_ordering(self):
-        """Get ordering from request or use default."""
+        """
+        Get ordering from request or use default.
+        
+        Returns:
+            str: Ordering field name or default ordering
+        """
         ordering = self.request.GET.get(self.ordering_param, self.default_ordering)
         
         if ordering and ordering in self.ordering_fields:
@@ -113,7 +154,12 @@ class OrderingMixin:
         return self.default_ordering
     
     def get_queryset(self):
-        """Add ordering to queryset."""
+        """
+        Add ordering to queryset.
+        
+        Returns:
+            QuerySet: Ordered queryset
+        """
         queryset = super().get_queryset()
         ordering = self.get_ordering()
         
@@ -123,7 +169,15 @@ class OrderingMixin:
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Add ordering to context."""
+        """
+        Add ordering to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with ordering information added
+        """
         context = super().get_context_data(**kwargs)
         context['current_ordering'] = self.get_ordering()
         context['ordering_fields'] = self.ordering_fields
@@ -145,19 +199,46 @@ class PaginationMixin:
     allow_empty = True
     
     def get_paginate_by(self, queryset):
-        """Get the number of items to paginate by."""
+        """
+        Get the number of items to paginate by.
+        
+        Args:
+            queryset: The queryset to be paginated
+            
+        Returns:
+            int: Number of items per page
+        """
         return self.paginate_by
     
     def get_page_kwarg(self):
-        """Get the URL parameter name for page number."""
+        """
+        Get the URL parameter name for page number.
+        
+        Returns:
+            str: URL parameter name for page number
+        """
         return self.page_kwarg
     
     def get_allow_empty(self):
-        """Get whether to allow empty pages."""
+        """
+        Get whether to allow empty pages.
+        
+        Returns:
+            bool: True if empty pages are allowed
+        """
         return self.allow_empty
     
     def paginate_queryset(self, queryset, page_size):
-        """Paginate the queryset."""
+        """
+        Paginate the queryset.
+        
+        Args:
+            queryset: The queryset to paginate
+            page_size: Number of items per page
+            
+        Returns:
+            tuple: (paginator, page_obj, object_list, is_paginated)
+        """
         from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
         
         paginator = Paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
@@ -178,7 +259,15 @@ class PaginationMixin:
         return paginator, page_obj, page_obj.object_list, page_obj.has_other_pages()
     
     def get_context_data(self, **kwargs):
-        """Add pagination data to context."""
+        """
+        Add pagination data to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with pagination information added
+        """
         context = super().get_context_data(**kwargs)
         
         if hasattr(self, 'object_list'):
@@ -211,7 +300,12 @@ class CacheMixin:
     cache_key_prefix = 'view_cache'
     
     def get_cache_key(self):
-        """Generate cache key for this view."""
+        """
+        Generate cache key for this view.
+        
+        Returns:
+            str: Unique cache key for this view instance
+        """
         # Include user ID if authenticated
         user_id = self.request.user.id if self.request.user.is_authenticated else 'anonymous'
         
@@ -221,19 +315,37 @@ class CacheMixin:
         return f"{self.cache_key_prefix}:{self.__class__.__name__}:{user_id}:{query_params}"
     
     def get_cached_data(self):
-        """Get data from cache."""
+        """
+        Get data from cache.
+        
+        Returns:
+            Any: Cached data or None if not found
+        """
         from django.core.cache import cache
         cache_key = self.get_cache_key()
         return cache.get(cache_key)
     
     def set_cached_data(self, data):
-        """Set data in cache."""
+        """
+        Set data in cache.
+        
+        Args:
+            data: Data to cache
+        """
         from django.core.cache import cache
         cache_key = self.get_cache_key()
         cache.set(cache_key, data, self.cache_timeout)
     
     def get_context_data(self, **kwargs):
-        """Add cache information to context."""
+        """
+        Add cache information to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with cache key added
+        """
         context = super().get_context_data(**kwargs)
         context['cache_key'] = self.get_cache_key()
         return context
@@ -252,7 +364,12 @@ class PermissionMixin:
     permission_denied_message = _("У вас нет прав для выполнения этого действия.")
     
     def has_permissions(self):
-        """Check if user has required permissions."""
+        """
+        Check if user has required permissions.
+        
+        Returns:
+            bool: True if user has all required permissions
+        """
         if not self.required_permissions:
             return True
             
@@ -265,7 +382,17 @@ class PermissionMixin:
         )
     
     def dispatch(self, request, *args, **kwargs):
-        """Check permissions before processing request."""
+        """
+        Check permissions before processing request.
+        
+        Args:
+            request: HTTP request object
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+            
+        Returns:
+            HttpResponse: Response object or redirect if permission denied
+        """
         if not self.has_permissions():
             from django.contrib import messages
             from django.shortcuts import redirect
@@ -278,19 +405,19 @@ class PermissionMixin:
 
 class GeoDataMixin:
     """
-    Миксин для добавления географических данных в контекст представления
-    Используется для учреждений и персонала
+    Mixin for adding geographical data to view context.
+    Used for facilities and staff.
     """
     
     def get_geo_data(self, facility=None):
         """
-        Получает географические данные для учреждения или специалиста
+        Get geographical data for facility or specialist.
         
         Args:
-            facility: Объект учреждения или специалиста
+            facility: Facility or specialist object
             
         Returns:
-            dict: Словарь с географическими данными
+            dict: Dictionary with geographical data
         """
         # Если передан специалист, получаем учреждение через связь
         if facility and hasattr(facility, 'facility') and facility.facility:
@@ -331,7 +458,13 @@ class GeoDataMixin:
     
     def _get_coordinates_for_city(self, city_name):
         """
-        Возвращает координаты для основных городов (хардкод как fallback)
+        Return coordinates for major cities (hardcoded as fallback).
+        
+        Args:
+            city_name: Name of the city
+            
+        Returns:
+            dict: Dictionary with geographical data for the city
         """
         coordinates = {
             'Москва': (55.7558, 37.6176),
@@ -414,7 +547,13 @@ class GeoDataMixin:
     
     def get_context_data(self, **kwargs):
         """
-        Добавляет географические данные в контекст представления
+        Add geographical data to view context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with geographical data added
         """
         context = super().get_context_data(**kwargs)
         

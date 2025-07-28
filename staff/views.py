@@ -7,12 +7,21 @@ from core.mixins import GeoDataMixin
 # Create your views here.
 
 class SpecialistsListView(ListView):
+    """
+    List view for facility specialists with search functionality.
+    """
     model = FacilitySpecialist
     template_name = 'staff/specialists_list.html'
     context_object_name = 'specialists'
     paginate_by = 12
     
     def get_queryset(self):
+        """
+        Get filtered queryset with search functionality.
+        
+        Returns:
+            QuerySet: Filtered specialists queryset
+        """
         queryset = FacilitySpecialist.objects.filter(is_active=True)
         
         # Поиск по имени или должности
@@ -27,16 +36,37 @@ class SpecialistsListView(ListView):
         return queryset.order_by('last_name', 'first_name')
     
     def get_context_data(self, **kwargs):
+        """
+        Add search query to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with search query
+        """
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.request.GET.get('search', '')
         return context
 
 class SpecialistDetailView(GeoDataMixin, DetailView):
+    """
+    Detail view for facility specialist with geographical data.
+    """
     model = FacilitySpecialist
     template_name = 'staff/specialist_detail.html'
     context_object_name = 'specialist'
 
     def get_context_data(self, **kwargs):
+        """
+        Add specialist documents and SEO data to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with documents, SEO data and geographical information
+        """
         context = super().get_context_data(**kwargs)
         # Добавляем документы специалиста в контекст
         context['documents'] = self.object.documents.filter(is_active=True)

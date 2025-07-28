@@ -114,7 +114,7 @@ class RequestService(BaseService):
                              request_data: Dict[str, Any], 
                              user: Optional[User] = None) -> ServiceResult:
         """
-        Create a partner request.
+        Create a partnership request.
         
         Args:
             form_data: Cleaned form data
@@ -139,23 +139,28 @@ class RequestService(BaseService):
                 message=form_data['message'],
                 status=AnonymousRequest.Status.NEW,
                 source=AnonymousRequest.Source.WEBSITE_FORM,
-                request_type=AnonymousRequest.RequestType.PARTNER,
-                priority=AnonymousRequest.Priority.MEDIUM
+                request_type=AnonymousRequest.RequestType.PARTNER
             )
             
             # Save the request
             request_obj.save()
             
-            # Отправляем email-уведомление администратору о партнерской заявке
+            # Логируем создание заявки
+            business_logger.log_request_created(
+                request_obj=request_obj,
+                user=user,
+                ip_address=getattr(self, 'request_ip', None)
+            )
+            
+            # Отправляем email-уведомление администратору
             try:
-                self.email_service.send_partner_request_notification(request_obj)
+                self.email_service.send_new_request_notification(request_obj)
             except Exception as email_error:
                 # Логируем ошибку отправки email, но не прерываем основной процесс
-                self.log_error(f"Failed to send partner email notification for request #{request_obj.id}", email_error)
+                self.log_error(f"Failed to send email notification for request #{request_obj.id}", email_error)
             
-            self.log_info("Partner request created", 
-                         request_id=request_obj.id,
-                         name=form_data['name'])
+            self.log_info("Partnership request created", 
+                         request_id=request_obj.id)
             
             return ServiceResult.success_result(
                 data=request_obj,
@@ -163,16 +168,22 @@ class RequestService(BaseService):
             )
             
         except Exception as e:
-            self.log_error("Error creating partner request", e)
-            return ServiceResult.error_result(
-                error="Ошибка создания заявки на партнерство"
+            # Логируем ошибку
+            error_logger.log_exception(
+                exception=e,
+                context="create_partner_request",
+                user=user
             )
-    
+            
+            return ServiceResult.error_result(
+                error="Произошла ошибка при создании заявки на партнерство"
+            )
+
     def create_dependent_request(self, form_data: Dict[str, Any], 
                                request_data: Dict[str, Any], 
                                user: Optional[User] = None) -> ServiceResult:
         """
-        Create a dependent request.
+        Create a dependent treatment request.
         
         Args:
             form_data: Cleaned form data
@@ -189,7 +200,7 @@ class RequestService(BaseService):
             if not validation_result:
                 return validation_result
             
-            # Create dependent request object
+            # Create request object
             request_obj = DependentRequest(
                 phone=form_data['phone'],
                 addiction_type=form_data['addiction_type'],
@@ -198,12 +209,30 @@ class RequestService(BaseService):
             )
             
             # Set additional fields from request data
-            request_obj.first_name = self.safe_get(request_data, 'name', '')
-            request_obj.current_condition = self.safe_get(request_data, 'problem_description', '')
-            request_obj.preferred_treatment = self._map_service_type(self.safe_get(request_data, 'service-type'))
+            request_obj.first_name = self.safe_get(request_data, 'first_name')
+            request_obj.last_name = self.safe_get(request_data, 'last_name')
+            request_obj.email = self.safe_get(request_data, 'email')
+            request_obj.age = self.safe_get_int(request_data, 'age')
+            request_obj.addiction_duration = self.safe_get(request_data, 'addiction_duration')
+            request_obj.current_condition = self.safe_get(request_data, 'current_condition')
+            request_obj.preferred_treatment = self.safe_get(request_data, 'preferred_treatment')
             
             # Save the request
             request_obj.save()
+            
+            # Логируем создание заявки
+            business_logger.log_request_created(
+                request_obj=request_obj,
+                user=user,
+                ip_address=getattr(self, 'request_ip', None)
+            )
+            
+            # Отправляем email-уведомление администратору
+            try:
+                self.email_service.send_new_dependent_request_notification(request_obj)
+            except Exception as email_error:
+                # Логируем ошибку отправки email, но не прерываем основной процесс
+                self.log_error(f"Failed to send email notification for dependent request #{request_obj.id}", email_error)
             
             self.log_info("Dependent request created", 
                          request_id=request_obj.id,
@@ -215,84 +244,126 @@ class RequestService(BaseService):
             )
             
         except Exception as e:
-            self.log_error("Error creating dependent request", e)
-            return ServiceResult.error_result(
-                error="Ошибка создания заявки на лечение зависимого"
+            # Логируем ошибку
+            error_logger.log_exception(
+                exception=e,
+                context="create_dependent_request",
+                user=user
             )
-    
+            
+            return ServiceResult.error_result(
+                error="Произошла ошибка при создании заявки на лечение зависимого"
+            )
+
     def get_organizations_by_type(self, org_type: str) -> ServiceResult:
         """
         Get organizations by type for AJAX requests.
         
         Args:
-            org_type: Type of organization ('clinic', 'rehab', 'doctor')
+            org_type: Type of organization to retrieve
             
         Returns:
-            ServiceResult: List of organizations
+            ServiceResult: Result with organizations data
         """
         try:
-            organizations = []
-            
             if org_type == 'clinic':
-                organizations = Clinic.objects.filter(is_active=True).values('id', 'name')
+                organizations = Clinic.objects.filter(is_active=True).values('id', 'name', 'city__name')
             elif org_type == 'rehab':
-                organizations = RehabCenter.objects.filter(is_active=True).values('id', 'name')
+                organizations = RehabCenter.objects.filter(is_active=True).values('id', 'name', 'city__name')
             elif org_type == 'doctor':
-                organizations = PrivateDoctor.objects.filter(is_active=True).values('id', 'name')
+                organizations = PrivateDoctor.objects.filter(is_active=True).values('id', 'name', 'city__name')
             else:
                 return ServiceResult.error_result(
-                    error="Неверный тип организации",
-                    code="INVALID_ORG_TYPE"
+                    error="Неизвестный тип организации"
                 )
             
+            # Convert to list for JSON serialization
+            org_list = list(organizations)
+            
+            self.log_info("Organizations retrieved by type", 
+                         org_type=org_type,
+                         count=len(org_list))
+            
             return ServiceResult.success_result(
-                data=list(organizations),
-                message=f"Найдено {len(organizations)} организаций"
+                data=org_list,
+                message="Организации успешно получены"
             )
             
         except Exception as e:
-            self.log_error("Error getting organizations by type", e, org_type=org_type)
-            return ServiceResult.error_result(
-                error="Ошибка получения списка организаций"
+            # Логируем ошибку
+            error_logger.log_exception(
+                exception=e,
+                context="get_organizations_by_type",
+                org_type=org_type
             )
-    
+            
+            return ServiceResult.error_result(
+                error="Произошла ошибка при получении организаций"
+            )
+
     def _get_user_name(self, request_data: Dict[str, Any], user: Optional[User]) -> str:
-        """Get user name from request data or user object."""
-        name = self.safe_get(request_data, 'name', '').strip()
-        if name:
-            return name
-        elif user and user.is_authenticated:
+        """
+        Get user name from request data or user object.
+        
+        Args:
+            request_data: Raw request data
+            user: Optional authenticated user
+            
+        Returns:
+            str: User name
+        """
+        if user and user.is_authenticated:
             return user.get_full_name() or user.username
-        else:
-            return 'Анонимный пользователь'
-    
+        return self.safe_get(request_data, 'name', '')
+
     def _get_default_message(self, request_type: str) -> str:
-        """Get default message for request type."""
+        """
+        Get default message for request type.
+        
+        Args:
+            request_type: Type of request
+            
+        Returns:
+            str: Default message
+        """
         messages = {
-            'consultation': 'Заявка с формы консультации',
+            'consultation': 'Заявка на консультацию',
             'treatment': 'Заявка на лечение',
             'rehabilitation': 'Заявка на реабилитацию',
-            'partner': 'Заявка на партнерство',
-            'other': 'Заявка с сайта'
+            'partner': 'Заявка на партнерство'
         }
-        return messages.get(request_type, 'Заявка с сайта')
-    
+        return messages.get(request_type, 'Заявка')
+
     def _map_service_type(self, service_type: Optional[str]) -> str:
-        """Map service type to preferred service."""
-        mapping = {
-            'consultation': 'Консультация',
-            'therapy': 'Терапия',
-            'support': 'Поддержка',
-            'alcoholism': 'Лечение алкоголизма',
-            'drug_addiction': 'Лечение наркомании',
-            'gambling': 'Лечение игровой зависимости',
-            'other': 'Другие услуги'
+        """
+        Map service type to preferred service name.
+        
+        Args:
+            service_type: Service type from form
+            
+        Returns:
+            str: Mapped service name
+        """
+        service_mapping = {
+            'alcohol': 'Лечение алкоголизма',
+            'drugs': 'Лечение наркомании',
+            'gambling': 'Лечение игромании',
+            'rehabilitation': 'Реабилитация',
+            'consultation': 'Консультация'
         }
-        return mapping.get(service_type, 'Консультация')
-    
+        return service_mapping.get(service_type, 'Консультация')
+
     def _determine_priority(self, service_type: Optional[str]) -> str:
-        """Determine priority based on service type."""
-        high_priority_types = ['alcoholism', 'drug_addiction']
+        """
+        Determine request priority based on service type.
+        
+        Args:
+            service_type: Service type from form
+            
+        Returns:
+            str: Priority level
+        """
+        high_priority_types = ['alcohol', 'drugs']
         if service_type in high_priority_types:
             return AnonymousRequest.Priority.HIGH
         return AnonymousRequest.Priority.MEDIUM 

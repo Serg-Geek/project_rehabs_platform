@@ -13,9 +13,9 @@ from services.request_service import RequestService
 
 class ConsultationRequestView(CreateView):
     """
-    Представление для создания заявки на консультацию.
+    View for creating consultation requests.
     
-    Использует RequestService для обработки бизнес-логики.
+    Uses RequestService for business logic processing.
     """
     model = AnonymousRequest
     fields = ['phone']  # Только телефон, остальное заполним в form_valid
@@ -23,11 +23,26 @@ class ConsultationRequestView(CreateView):
     success_url = reverse_lazy('requests:success')
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the view with RequestService.
+        
+        Args:
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(*args, **kwargs)
         self.request_service = RequestService()
 
     def form_valid(self, form):
-        """Обработка валидной формы."""
+        """
+        Process valid form submission.
+        
+        Args:
+            form: Valid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         try:
             # Делегируем логику сервису
             result = self.request_service.create_consultation_request(
@@ -72,7 +87,15 @@ class ConsultationRequestView(CreateView):
                 return redirect('requests:error')
 
     def form_invalid(self, form):
-        """Обработка невалидной формы."""
+        """
+        Process invalid form submission.
+        
+        Args:
+            form: Invalid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
@@ -91,9 +114,9 @@ class ConsultationRequestView(CreateView):
 
 class PartnerRequestView(CreateView):
     """
-    Представление для создания заявки на партнерство.
+    View for creating partnership requests.
     
-    Использует RequestService для обработки бизнес-логики.
+    Uses RequestService for business logic processing.
     """
     model = AnonymousRequest
     fields = ['name', 'phone', 'email', 'message']  # Используем существующие поля
@@ -101,11 +124,26 @@ class PartnerRequestView(CreateView):
     success_url = reverse_lazy('requests:success')
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the view with RequestService.
+        
+        Args:
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(*args, **kwargs)
         self.request_service = RequestService()
 
     def form_valid(self, form):
-        """Обработка валидной формы."""
+        """
+        Process valid form submission.
+        
+        Args:
+            form: Valid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         try:
             # Делегируем логику сервису
             result = self.request_service.create_partner_request(
@@ -150,7 +188,15 @@ class PartnerRequestView(CreateView):
                 return redirect('requests:error')
 
     def form_invalid(self, form):
-        """Обработка невалидной формы."""
+        """
+        Process invalid form submission.
+        
+        Args:
+            form: Invalid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
@@ -169,9 +215,9 @@ class PartnerRequestView(CreateView):
 
 class DependentRequestView(CreateView):
     """
-    Представление для создания заявки на лечение зависимого.
+    View for creating dependent treatment requests.
     
-    Использует RequestService для обработки бизнес-логики.
+    Uses RequestService for business logic processing.
     """
     model = DependentRequest
     template_name = 'facilities/includes/consultation.html'
@@ -179,11 +225,26 @@ class DependentRequestView(CreateView):
     success_url = reverse_lazy('requests:success')
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the view with RequestService.
+        
+        Args:
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(*args, **kwargs)
         self.request_service = RequestService()
 
     def form_valid(self, form):
-        """Обработка валидной формы."""
+        """
+        Process valid form submission.
+        
+        Args:
+            form: Valid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         try:
             # Делегируем логику сервису
             result = self.request_service.create_dependent_request(
@@ -228,7 +289,15 @@ class DependentRequestView(CreateView):
                 return redirect('requests:error')
 
     def form_invalid(self, form):
-        """Обработка невалидной формы."""
+        """
+        Process invalid form submission.
+        
+        Args:
+            form: Invalid form instance
+            
+        Returns:
+            HttpResponse: JSON response for AJAX or redirect for regular requests
+        """
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
@@ -246,18 +315,43 @@ class DependentRequestView(CreateView):
 
 
 def success_view(request):
-    """Представление для страницы успешной отправки заявки."""
+    """
+    View for successful request submission page.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        HttpResponse: Rendered success page
+    """
     return render(request, 'requests/success.html')
 
 
 def error_view(request):
-    """Представление для страницы ошибки при отправке заявки."""
+    """
+    View for request submission error page.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        HttpResponse: Rendered error page with error message
+    """
     error_message = request.GET.get('error_message', 'Произошла неизвестная ошибка')
     return render(request, 'requests/error.html', {'error_message': error_message})
 
 
 def print_request_report(request, request_id):
-    """Представление для печати отчета по заявке."""
+    """
+    View for printing request report.
+    
+    Args:
+        request: HTTP request object
+        request_id: ID of the request to print
+        
+    Returns:
+        HttpResponse: Rendered print report page or redirect on error
+    """
     try:
         # Пытаемся найти заявку среди анонимных заявок
         try:
@@ -286,7 +380,15 @@ def print_request_report(request, request_id):
 
 
 def get_organizations_by_type(request):
-    """AJAX представление для получения организаций по типу."""
+    """
+    AJAX view for getting organizations by type.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        JsonResponse: JSON response with organizations or error
+    """
     try:
         org_type = request.GET.get('type')
         
@@ -314,5 +416,5 @@ def get_organizations_by_type(request):
     except Exception as e:
         return JsonResponse({
             'success': False,
-            'error': f'Ошибка получения организаций: {str(e)}'
+            'error': f'Произошла ошибка: {str(e)}'
         })

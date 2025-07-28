@@ -7,7 +7,26 @@ from django.contrib.auth.hashers import make_password
 from datetime import timedelta
 
 class UserManager(BaseUserManager):
+    """
+    Custom user manager for creating users and superusers.
+    """
+    
     def create_user(self, username, email, password=None, **extra_fields):
+        """
+        Create and save a regular user.
+        
+        Args:
+            username: Username for the user
+            email: Email address (required)
+            password: Password for the user
+            **extra_fields: Additional fields for the user
+            
+        Returns:
+            User: Created user instance
+            
+        Raises:
+            ValueError: If email or username is not provided
+        """
         if not email:
             raise ValueError(_('The Email field must be set'))
         if not username:
@@ -20,6 +39,21 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password=None, **extra_fields):
+        """
+        Create and save a superuser.
+        
+        Args:
+            username: Username for the superuser
+            email: Email address (required)
+            password: Password for the superuser
+            **extra_fields: Additional fields for the superuser
+            
+        Returns:
+            User: Created superuser instance
+            
+        Raises:
+            ValueError: If required superuser fields are not set correctly
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'superuser')
@@ -77,23 +111,49 @@ class User(AbstractUser):
         verbose_name_plural = _('Пользователи')
 
     def __str__(self):
+        """
+        String representation of the user.
+        
+        Returns:
+            str: Full name or username
+        """
         return self.get_full_name() or self.username
 
     def has_role(self, role):
-        """Проверка роли пользователя"""
+        """
+        Check if user has a specific role.
+        
+        Args:
+            role: Role to check
+            
+        Returns:
+            bool: True if user has the specified role
+        """
         return self.role == role
 
     def is_content_admin(self):
-        """Проверка является ли пользователь администратором контента"""
+        """
+        Check if user is a content administrator.
+        
+        Returns:
+            bool: True if user is superuser or content admin
+        """
         return self.role in [self.Role.SUPERUSER, self.Role.CONTENT_ADMIN]
 
     def is_requests_admin(self):
-        """Проверка является ли пользователь администратором заявок"""
+        """
+        Check if user is a requests administrator.
+        
+        Returns:
+            bool: True if user is superuser or requests admin
+        """
         return self.role in [self.Role.SUPERUSER, self.Role.REQUESTS_ADMIN]
 
     def save(self, *args, **kwargs):
         """
-        Переопределение метода save для хеширования пароля
+        Override save method to hash password if needed.
+        
+        Automatically hashes plain text passwords when creating new users.
         """
         if self._state.adding and self.password and not self.password.startswith(('pbkdf2_sha256$', 'bcrypt$')):
             self.password = make_password(self.password)
@@ -141,11 +201,17 @@ class UserProfile(TimeStampedModel):
         verbose_name_plural = _('Профили пользователей')
 
     def __str__(self):
+        """
+        String representation of the user profile.
+        
+        Returns:
+            str: Profile description with user email
+        """
         return f"Профиль {self.user.email}"
 
 class UserActionLog(TimeStampedModel):
     """
-    Модель для логирования действий пользователей
+    Model for logging user actions.
     """
     user = models.ForeignKey(
         User,
@@ -179,4 +245,10 @@ class UserActionLog(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.user.username} - {self.action} - {self.model_name} #{self.object_id}"
+        """
+        String representation of the user action log.
+        
+        Returns:
+            str: Action description with user and model
+        """
+        return f"{self.user} - {self.action} - {self.model_name}"

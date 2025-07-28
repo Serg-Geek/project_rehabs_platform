@@ -6,7 +6,7 @@ from .models import AnonymousRequest, DependentRequest
 
 class AnonymousRequestAdminForm(forms.ModelForm):
     """
-    Форма для админки AnonymousRequest с выбором учреждения
+    Admin form for AnonymousRequest with organization selection.
     """
     organization_choice = forms.CharField(
         required=False,
@@ -20,6 +20,13 @@ class AnonymousRequestAdminForm(forms.ModelForm):
         fields = '__all__'
     
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form with organization choices.
+        
+        Args:
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(*args, **kwargs)
         
         # Загружаем организации для выбранного типа
@@ -30,7 +37,15 @@ class AnonymousRequestAdminForm(forms.ModelForm):
             self.fields['organization_choice'].initial = self.instance.assigned_organization
     
     def _get_organization_choices(self, organization_type):
-        """Получить список организаций для выбранного типа"""
+        """
+        Get list of organizations for selected type.
+        
+        Args:
+            organization_type: OrganizationType instance
+            
+        Returns:
+            list: List of tuples (value, label) for select widget
+        """
         choices = [('', '---------')]
         
         if organization_type:
@@ -50,6 +65,15 @@ class AnonymousRequestAdminForm(forms.ModelForm):
         return choices
 
     def save(self, commit=True):
+        """
+        Save the form with organization choice handling.
+        
+        Args:
+            commit: Whether to save to database
+            
+        Returns:
+            AnonymousRequest: Saved instance
+        """
         # Сохраняем organization_choice отдельно
         org_choice = self.cleaned_data.get('organization_choice')
         
@@ -70,7 +94,7 @@ class AnonymousRequestAdminForm(forms.ModelForm):
 
 class DependentRequestAdminForm(forms.ModelForm):
     """
-    Форма для админки DependentRequest с выбором учреждения
+    Admin form for DependentRequest with organization selection.
     """
     organization_choice = forms.CharField(
         required=False,
@@ -84,6 +108,13 @@ class DependentRequestAdminForm(forms.ModelForm):
         fields = '__all__'
     
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form with organization choices.
+        
+        Args:
+            *args: Additional arguments
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(*args, **kwargs)
         
         # Загружаем организации для выбранного типа
@@ -94,7 +125,15 @@ class DependentRequestAdminForm(forms.ModelForm):
             self.fields['organization_choice'].initial = self.instance.assigned_organization
     
     def _get_organization_choices(self, organization_type):
-        """Получить список организаций для выбранного типа"""
+        """
+        Get list of organizations for selected type.
+        
+        Args:
+            organization_type: OrganizationType instance
+            
+        Returns:
+            list: List of tuples (value, label) for select widget
+        """
         choices = [('', '---------')]
         
         if organization_type:
@@ -114,6 +153,15 @@ class DependentRequestAdminForm(forms.ModelForm):
         return choices
 
     def save(self, commit=True):
+        """
+        Save the form with organization choice handling.
+        
+        Args:
+            commit: Whether to save to database
+            
+        Returns:
+            DependentRequest: Saved instance
+        """
         # Сохраняем organization_choice отдельно
         org_choice = self.cleaned_data.get('organization_choice')
         

@@ -6,9 +6,21 @@ from django.utils import timezone
 # Create your views here.
 
 class HomeView(TemplateView):
+    """
+    Home page view with active banners.
+    """
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
+        """
+        Add active banners to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with active banners
+        """
         context = super().get_context_data(**kwargs)
         today = timezone.now().date()
         banners = Banner.objects.filter(
@@ -20,9 +32,21 @@ class HomeView(TemplateView):
         return context
 
 class BannerView(TemplateView):
+    """
+    Banner display view for homepage.
+    """
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
+        """
+        Add active banners to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with active banners
+        """
         context = super().get_context_data(**kwargs)
         today = timezone.now().date()
         

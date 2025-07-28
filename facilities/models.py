@@ -33,6 +33,12 @@ class OrganizationType(TimeStampedModel):
         ordering = ['name']
 
     def __str__(self):
+        """
+        String representation of the organization type.
+        
+        Returns:
+            str: Organization type name
+        """
         return self.name
 
 class AbstractMedicalFacility(TimeStampedModel):
@@ -102,7 +108,12 @@ class AbstractMedicalFacility(TimeStampedModel):
         ordering = ['name']
 
     def get_absolute_url(self):
-        """Получить абсолютный URL учреждения"""
+        """
+        Get the absolute URL for the facility.
+        
+        Returns:
+            str: URL for the facility's detail page
+        """
         if isinstance(self, RehabCenter):
             return reverse('facilities:rehab_detail', kwargs={'slug': self.slug})
         elif isinstance(self, Clinic):
@@ -112,9 +123,21 @@ class AbstractMedicalFacility(TimeStampedModel):
         return '#'  # Fallback URL
 
     def __str__(self):
+        """
+        String representation of the medical facility.
+        
+        Returns:
+            str: Facility name with organization type and ID
+        """
         return f"{self.name} ({self.organization_type.name}) [ID: {self.id}]"
 
     def save(self, *args, **kwargs):
+        """
+        Save the facility with automatic slug generation.
+        
+        If slug is not provided, generates it from the facility name.
+        Handles slug duplication by adding numeric suffix.
+        """
         if not self.slug:
             # Формируем базовый слаг из названия
             base_slug = slugify(self.name)
@@ -308,7 +331,13 @@ class Review(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Отзыв о {self.facility} ({self.rating} звезд)"
+        """
+        String representation of the review.
+        
+        Returns:
+            str: Review content with truncation
+        """
+        return self.content[:100] + '...' if len(self.content) > 100 else self.content
 
 class FacilityImage(TimeStampedModel):
     """
@@ -364,9 +393,21 @@ class FacilityImage(TimeStampedModel):
         ordering = ['order', 'created_at']
 
     def __str__(self):
-        return f"{self.title} ({self.image_type})"
+        """
+        String representation of the image.
+        
+        Returns:
+            str: Image title or image type
+        """
+        return self.title or f"Изображение {self.get_image_type_display()}"
 
     def to_dict(self):
+        """
+        Convert the image to a dictionary for API responses.
+        
+        Returns:
+            dict: Dictionary with image data
+        """
         return {
             'id': self.id,
             'image': self.image.url if self.image else None,
@@ -376,7 +417,6 @@ class FacilityImage(TimeStampedModel):
             'is_main': self.is_main,
             'order': self.order,
             'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
 
 class FacilityDocument(TimeStampedModel):
@@ -438,7 +478,13 @@ class FacilityDocument(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.facility} - {self.get_document_type_display()}"
+        """
+        String representation of the facility document.
+        
+        Returns:
+            str: Document title with document type
+        """
+        return f"{self.title} ({self.get_document_type_display()})"
 
 class PrivateDoctor(AbstractMedicalFacility):
     """
@@ -623,19 +669,42 @@ class PrivateDoctor(AbstractMedicalFacility):
         ordering = ['last_name', 'first_name']
 
     def __str__(self):
+        """
+        String representation of the private doctor.
+        
+        Returns:
+            str: Full name with organization type
+        """
         return f"{self.get_full_name()} ({self.organization_type.name})"
 
     def get_full_name(self):
-        """Получить полное имя врача"""
+        """
+        Get the full name of the doctor.
+        
+        Returns:
+            str: Full name including middle name if available
+        """
         if self.middle_name:
             return f"{self.last_name} {self.first_name} {self.middle_name}"
         return f"{self.last_name} {self.first_name}"
 
     def get_absolute_url(self):
-        """Получить абсолютный URL врача"""
+        """
+        Get the absolute URL for the doctor's detail page.
+        
+        Returns:
+            str: URL for the doctor's detail page
+        """
         return reverse('facilities:private_doctor_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
+        """
+        Save the doctor with automatic name and slug generation.
+        
+        If name is not provided, generates it from first and last name.
+        If slug is not provided, generates it from last and first name.
+        Handles slug duplication by adding numeric suffix.
+        """
         # Формируем название из имени и фамилии
         if not self.name:
             self.name = self.get_full_name()
@@ -657,7 +726,12 @@ class PrivateDoctor(AbstractMedicalFacility):
 
     @property
     def average_rating(self):
-        """Средний рейтинг врача"""
+        """
+        Calculate the average rating from all reviews.
+        
+        Returns:
+            float: Average rating (0.0 if no reviews)
+        """
         reviews = self.reviews.all()
         if reviews:
             return sum(review.rating for review in reviews) / len(reviews)
@@ -665,10 +739,20 @@ class PrivateDoctor(AbstractMedicalFacility):
 
     @property
     def reviews_count(self):
-        """Количество отзывов"""
+        """
+        Get the total number of reviews.
+        
+        Returns:
+            int: Number of reviews
+        """
         return self.reviews.count()
 
     @property
     def main_image(self):
-        """Главное изображение врача (is_main=True), либо первое, либо None"""
+        """
+        Get the main image of the doctor.
+        
+        Returns:
+            FacilityImage or None: Main image (is_main=True) or first image or None
+        """
         return self.images.filter(is_main=True).first() or self.images.first()

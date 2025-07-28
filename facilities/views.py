@@ -13,15 +13,21 @@ from core.mixins import SearchMixin, FilterMixin, PaginationMixin, CacheMixin, G
 
 class FacilityListView(ListView):
     """
-    Общий список всех учреждений.
+    General list of all facilities.
     
-    TODO: Рефакторить для использования кастомных managers.
+    TODO: Refactor to use custom managers.
     """
     template_name = 'facilities/facility_list.html'
     context_object_name = 'facilities'
     paginate_by = 12
 
     def get_queryset(self):
+        """
+        Get combined queryset of clinics and rehabilitation centers.
+        
+        Returns:
+            list: Combined list of clinics and rehabilitation centers
+        """
         # Объединяем клиники и реабилитационные центры
         clinics = Clinic.objects.all()
         rehab_centers = RehabCenter.objects.all()
@@ -29,9 +35,9 @@ class FacilityListView(ListView):
 
 class ClinicListView(SearchMixin, PaginationMixin, ListView):
     """
-    Список клиник с поиском и пагинацией.
+    List of clinics with search and pagination.
     
-    Использует кастомный ClinicManager для оптимизации запросов.
+    Uses custom ClinicManager for query optimization.
     """
     model = Clinic
     template_name = 'facilities/clinic_list.html'
@@ -43,13 +49,27 @@ class ClinicListView(SearchMixin, PaginationMixin, ListView):
     search_param = 'search'
 
     def get_queryset(self):
-        """Используем кастомный manager для оптимизации."""
+        """
+        Use custom manager for optimization.
+        
+        Returns:
+            QuerySet: Optimized queryset with related data
+        """
         queryset = Clinic.objects.with_related_data()
         
         # Применяем поиск из миксина
         return super().get_queryset()
 
     def get_context_data(self, **kwargs):
+        """
+        Add SEO context to the view.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with SEO metadata added
+        """
         context = super().get_context_data(**kwargs)
         
         # SEO контекст
@@ -60,9 +80,9 @@ class ClinicListView(SearchMixin, PaginationMixin, ListView):
 
 class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
     """
-    Список реабилитационных центров с поиском и пагинацией.
+    List of rehabilitation centers with search and pagination.
     
-    Использует кастомный RehabCenterManager для оптимизации запросов.
+    Uses custom RehabCenterManager for query optimization.
     """
     model = RehabCenter
     template_name = 'facilities/rehabilitation_list.html'
@@ -74,7 +94,12 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
     search_param = 'search'
 
     def get_queryset(self):
-        """Используем кастомный manager для оптимизации."""
+        """
+        Use custom manager for optimization with program sorting.
+        
+        Returns:
+            QuerySet: Optimized queryset with related data and optional sorting
+        """
         queryset = RehabCenter.objects.with_related_data()
         sort = self.request.GET.get('sort')
         if sort == 'programs':
@@ -90,6 +115,15 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
         return super().get_queryset() if not sort else queryset
 
     def get_context_data(self, **kwargs):
+        """
+        Add SEO context to the view.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with SEO metadata added
+        """
         context = super().get_context_data(**kwargs)
         
         # SEO контекст
@@ -100,13 +134,22 @@ class RehabilitationCenterListView(SearchMixin, PaginationMixin, ListView):
 
 class FacilityDetailView(GeoDataMixin, DetailView):
     """
-    Детальное представление учреждения.
+    Detailed view of a facility.
     
-    Поддерживает разные типы учреждений (клиники, реабилитационные центры).
+    Supports different facility types (clinics, rehabilitation centers).
     """
     context_object_name = 'facility'
 
     def get_model(self):
+        """
+        Get the model class based on facility type.
+        
+        Returns:
+            Model: Clinic or RehabCenter model class
+            
+        Raises:
+            ValueError: If facility type is invalid
+        """
         facility_type = self.kwargs.get('facility_type')
         if facility_type == 'clinic':
             return Clinic
@@ -115,6 +158,15 @@ class FacilityDetailView(GeoDataMixin, DetailView):
         raise ValueError("Invalid facility type")
 
     def get_template_name(self):
+        """
+        Get template name based on facility type.
+        
+        Returns:
+            str: Template name for the facility type
+            
+        Raises:
+            ValueError: If facility type is invalid
+        """
         facility_type = self.kwargs.get('facility_type')
         if facility_type == 'clinic':
             return 'facilities/clinic_detail.html'
@@ -123,7 +175,12 @@ class FacilityDetailView(GeoDataMixin, DetailView):
         raise ValueError("Invalid facility type")
 
     def get_queryset(self):
-        """Используем кастомный manager для оптимизации."""
+        """
+        Use custom manager for optimization.
+        
+        Returns:
+            QuerySet: Optimized queryset with full data
+        """
         model = self.get_model()
         if model == Clinic:
             return Clinic.objects.with_full_data()
@@ -132,6 +189,15 @@ class FacilityDetailView(GeoDataMixin, DetailView):
         return model.objects.all()
 
     def get_context_data(self, **kwargs):
+        """
+        Add facility-specific context data.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with facility data, services, and related facilities
+        """
         context = super().get_context_data(**kwargs)
         model = self.get_model()
         
@@ -163,38 +229,48 @@ class FacilityDetailView(GeoDataMixin, DetailView):
             except Service.DoesNotExist:
                 pass
         
-        # SEO
-        context['meta_title'] = self.object.meta_title or self.object.name
-        context['meta_description'] = self.object.meta_description or (self.object.description[:160] if self.object.description else '')
-        context['meta_keywords'] = self.object.meta_keywords
-        context['meta_image'] = self.object.meta_image.url if self.object.meta_image else None
         return context
-    
+
     def _get_related_facilities(self, model):
-        """Получение связанных учреждений."""
-        related_facilities = model.objects.all()
+        """
+        Get related facilities of the same type.
         
-        if self.object.city and self.object.city.region:
-            related_facilities = related_facilities.filter(
-                city__region=self.object.city.region
-            ).exclude(pk=self.object.pk)
-        
-        return related_facilities[:4]
-    
+        Args:
+            model: Model class (Clinic or RehabCenter)
+            
+        Returns:
+            QuerySet: Related facilities
+        """
+        if model == Clinic:
+            return Clinic.objects.filter(city=self.object.city).exclude(pk=self.object.pk)[:3]
+        elif model == RehabCenter:
+            return RehabCenter.objects.filter(city=self.object.city).exclude(pk=self.object.pk)[:3]
+        return model.objects.none()
+
     def _get_facility_services(self):
-        """Получение услуг учреждения."""
-        content_type = ContentType.objects.get_for_model(self.object)
+        """
+        Get services provided by the facility.
+        
+        Returns:
+            list: List of facility services
+        """
+        ct = ContentType.objects.get_for_model(self.object)
         return FacilityService.objects.filter(
-            content_type=content_type,
-            object_id=self.object.pk,
-            is_active=True
-        ).select_related('service').order_by('-service__display_priority', 'service__name')
+            content_type=ct,
+            object_id=self.object.pk
+        ).select_related('service')
 
 def load_more_rehabs(request):
     """
-    AJAX-загрузка дополнительных реабилитационных центров.
+    AJAX loading of additional rehabilitation centers.
     
-    TODO: Рефакторить для использования кастомного manager.
+    TODO: Refactor to use custom manager.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        JsonResponse: JSON response with cards HTML and has_more flag
     """
     try:
         offset = int(request.GET.get('offset', 0))
@@ -221,9 +297,15 @@ def load_more_rehabs(request):
 
 def load_more_clinics(request):
     """
-    AJAX-загрузка дополнительных клиник.
+    AJAX loading of additional clinics.
     
-    TODO: Рефакторить для использования кастомного manager.
+    TODO: Refactor to use custom manager.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        JsonResponse: JSON response with cards HTML and has_more flag
     """
     try:
         offset = int(request.GET.get('offset', 0))
@@ -237,7 +319,7 @@ def load_more_clinics(request):
         for clinic in clinics:
             cards_html += render_to_string(
                 'includes/cards/clinic_card.html',
-                {'clinic': clinic},
+                {'facility': clinic},
                 request=request
             )
         
@@ -250,9 +332,9 @@ def load_more_clinics(request):
 
 class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView):
     """
-    Список частных врачей с поиском, фильтрацией и пагинацией.
+    List of private doctors with search, filtering and pagination.
     
-    Использует кастомный PrivateDoctorManager для оптимизации запросов.
+    Uses custom PrivateDoctorManager for query optimization.
     """
     model = PrivateDoctor
     template_name = 'facilities/private_doctors_list.html'
@@ -271,13 +353,27 @@ class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView)
     }
 
     def get_queryset(self):
-        """Используем кастомный manager для оптимизации."""
+        """
+        Use custom manager for optimization.
+        
+        Returns:
+            QuerySet: Optimized queryset with related data
+        """
         queryset = PrivateDoctor.objects.with_related_data()
         
         # Применяем фильтры из миксинов
         return super().get_queryset()
 
     def get_context_data(self, **kwargs):
+        """
+        Add filter context and SEO data to the view.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with filters, specializations and SEO metadata
+        """
         context = super().get_context_data(**kwargs)
         
         # Добавляем фильтры в контекст
@@ -298,19 +394,33 @@ class PrivateDoctorListView(SearchMixin, FilterMixin, PaginationMixin, ListView)
 
 class PrivateDoctorDetailView(GeoDataMixin, DetailView):
     """
-    Детальное представление частного врача.
+    Detailed view of a private doctor.
     
-    Использует кастомный manager для оптимизации запросов.
+    Uses custom manager for query optimization.
     """
     model = PrivateDoctor
     template_name = 'facilities/private_doctor_detail.html'
     context_object_name = 'doctor'
 
     def get_queryset(self):
-        """Используем кастомный manager для оптимизации."""
+        """
+        Use custom manager for optimization.
+        
+        Returns:
+            QuerySet: Optimized queryset with full data
+        """
         return PrivateDoctor.objects.with_full_data()
 
     def get_context_data(self, **kwargs):
+        """
+        Add doctor-specific context data.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with related doctors, services and SEO metadata
+        """
         context = super().get_context_data(**kwargs)
         
         # Получаем связанных врачей
@@ -330,7 +440,12 @@ class PrivateDoctorDetailView(GeoDataMixin, DetailView):
         return context
     
     def _get_related_doctors(self):
-        """Получение связанных врачей."""
+        """
+        Get related doctors with similar specializations or location.
+        
+        Returns:
+            QuerySet: Related doctors
+        """
         related_doctors = PrivateDoctor.objects.filter(is_active=True)
         
         # Фильтруем по специализации
@@ -346,7 +461,12 @@ class PrivateDoctorDetailView(GeoDataMixin, DetailView):
         return related_doctors.exclude(pk=self.object.pk)[:4]
     
     def _get_doctor_services(self):
-        """Получение услуг врача."""
+        """
+        Get services provided by the doctor.
+        
+        Returns:
+            QuerySet: Doctor's services
+        """
         content_type = ContentType.objects.get_for_model(self.object)
         return FacilityService.objects.filter(
             content_type=content_type,
@@ -356,9 +476,15 @@ class PrivateDoctorDetailView(GeoDataMixin, DetailView):
 
 def load_more_doctors(request):
     """
-    AJAX-загрузка дополнительных врачей.
+    AJAX loading of additional doctors.
     
-    TODO: Рефакторить для использования кастомного manager.
+    TODO: Refactor to use custom manager.
+    
+    Args:
+        request: HTTP request object
+        
+    Returns:
+        JsonResponse: JSON response with cards HTML and has_more flag
     """
     try:
         offset = int(request.GET.get('offset', 0))
@@ -371,7 +497,7 @@ def load_more_doctors(request):
         cards_html = ''
         for doctor in doctors:
             cards_html += render_to_string(
-                'includes/cards/private_doctor_card.html',
+                'includes/cards/doctor_card.html',
                 {'doctor': doctor},
                 request=request
             )

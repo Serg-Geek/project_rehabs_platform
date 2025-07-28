@@ -9,22 +9,25 @@ logger = logging.getLogger('business')
 
 class EmailService:
     """
-    Сервис для отправки email-уведомлений администратору
+    Service for sending email notifications to administrators.
     """
     
     def __init__(self):
+        """
+        Initialize the email service with configuration.
+        """
         self.from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@rehabs-platform.com')
         self.admin_emails = getattr(settings, 'ADMIN_EMAILS', ['admin@rehabs-platform.com'])
     
     def send_new_request_notification(self, request_obj: AnonymousRequest) -> bool:
         """
-        Отправка уведомления администратору о новой заявке
+        Send notification to administrator about new request.
         
         Args:
-            request_obj: Объект заявки
+            request_obj: Request object
             
         Returns:
-            bool: True если email отправлен успешно
+            bool: True if email sent successfully
         """
         try:
             subject = f'Новая заявка #{request_obj.id} - {request_obj.get_request_type_display()}'
@@ -77,13 +80,13 @@ class EmailService:
     
     def send_partner_request_notification(self, request_obj: AnonymousRequest) -> bool:
         """
-        Отправка уведомления о заявке на партнерство
+        Send notification about partnership request.
         
         Args:
-            request_obj: Объект заявки на партнерство
+            request_obj: Partnership request object
             
         Returns:
-            bool: True если email отправлен успешно
+            bool: True if email sent successfully
         """
         try:
             subject = f'Новая заявка на партнерство #{request_obj.id}'
@@ -116,7 +119,6 @@ class EmailService:
                 f"Partner request notification sent for request #{request_obj.id}",
                 extra={
                     'request_id': request_obj.id,
-                    'organization': request_obj.organization,
                     'recipients': self.admin_emails
                 }
             )

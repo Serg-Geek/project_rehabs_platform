@@ -8,9 +8,9 @@ from core.mixins import SearchMixin, FilterMixin, PaginationMixin, CacheMixin
 
 class PostListView(SearchMixin, FilterMixin, PaginationMixin, ListView):
     """
-    Представление для списка постов блога с поиском, фильтрацией и пагинацией.
+    View for blog post list with search, filtering and pagination.
     
-    Использует миксины для переиспользуемой функциональности.
+    Uses mixins for reusable functionality.
     """
     model = BlogPost
     template_name = 'blog/post_list.html'
@@ -28,7 +28,12 @@ class PostListView(SearchMixin, FilterMixin, PaginationMixin, ListView):
     }
     
     def get_queryset(self):
-        """Получение базового queryset с оптимизацией."""
+        """
+        Get optimized queryset with related data.
+        
+        Returns:
+            QuerySet: Optimized queryset with category and tag filtering
+        """
         queryset = BlogPost.objects.filter(is_published=True)\
                                    .select_related('category')\
                                    .prefetch_related('tags', 'images')
@@ -50,7 +55,15 @@ class PostListView(SearchMixin, FilterMixin, PaginationMixin, ListView):
         return queryset.order_by('-publish_date')
 
     def get_context_data(self, **kwargs):
-        """Добавление дополнительных данных в контекст."""
+        """
+        Add additional data to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with categories, tags and current category
+        """
         context = super().get_context_data(**kwargs)
         
         # Добавляем категории
@@ -74,9 +87,9 @@ class PostListView(SearchMixin, FilterMixin, PaginationMixin, ListView):
 
 class PostDetailView(DetailView):
     """
-    Представление для детального просмотра поста.
+    View for detailed blog post display.
     
-    Оптимизировано для производительности с prefetch_related.
+    Optimized for performance with prefetch_related.
     """
     model = BlogPost
     template_name = 'blog/post_detail.html'
@@ -85,13 +98,26 @@ class PostDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_queryset(self):
-        """Оптимизированный queryset с prefetch_related."""
+        """
+        Get optimized queryset with prefetch_related.
+        
+        Returns:
+            QuerySet: Optimized queryset with related data
+        """
         return BlogPost.objects.filter(is_published=True)\
                                .select_related('category')\
                                .prefetch_related('images', 'post_tags__tag')
 
     def get_context_data(self, **kwargs):
-        """Добавление дополнительных данных в контекст."""
+        """
+        Add additional data to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with categories, related posts and SEO data
+        """
         context = super().get_context_data(**kwargs)
         context['categories'] = BlogCategory.objects.filter(parent=None)
         
@@ -108,7 +134,15 @@ class PostDetailView(DetailView):
         return context
 
     def get_object(self, queryset=None):
-        """Увеличение счетчика просмотров при получении объекта."""
+        """
+        Get the post object and increment view count.
+        
+        Args:
+            queryset: Optional queryset to use
+            
+        Returns:
+            BlogPost: Post object with incremented view count
+        """
         obj = super().get_object(queryset)
         # Увеличиваем счетчик просмотров
         obj.views_count += 1
@@ -116,7 +150,16 @@ class PostDetailView(DetailView):
         return obj
     
     def _get_related_posts(self, post, limit=3):
-        """Получение связанных постов."""
+        """
+        Get related posts based on category.
+        
+        Args:
+            post: Current post instance
+            limit: Maximum number of related posts
+            
+        Returns:
+            QuerySet: Related posts or empty list on error
+        """
         try:
             return BlogPost.objects.filter(
                 is_published=True,
@@ -130,9 +173,9 @@ class PostDetailView(DetailView):
 
 class BlogPostListByCategoryView(SearchMixin, PaginationMixin, ListView):
     """
-    Представление для списка постов по категории.
+    View for blog post list by category.
     
-    Использует миксины для поиска и пагинации.
+    Uses mixins for search and pagination.
     """
     model = BlogPost
     template_name = 'blog/post_list.html'
@@ -144,7 +187,12 @@ class BlogPostListByCategoryView(SearchMixin, PaginationMixin, ListView):
     search_param = 'search'
 
     def get_queryset(self):
-        """Получение постов по категории с оптимизацией."""
+        """
+        Get posts by category with optimization.
+        
+        Returns:
+            QuerySet: Optimized queryset filtered by category
+        """
         category_slug = self.kwargs.get('slug')
         queryset = BlogPost.objects.filter(
             is_published=True,
@@ -156,7 +204,15 @@ class BlogPostListByCategoryView(SearchMixin, PaginationMixin, ListView):
         return super().get_queryset()
 
     def get_context_data(self, **kwargs):
-        """Добавление данных категории в контекст."""
+        """
+        Add category data to context.
+        
+        Args:
+            **kwargs: Additional context data
+            
+        Returns:
+            dict: Context with categories and current category
+        """
         context = super().get_context_data(**kwargs)
         context['categories'] = BlogCategory.objects.all()
         context['current_category'] = BlogCategory.objects.get(
@@ -167,30 +223,12 @@ class BlogPostListByCategoryView(SearchMixin, PaginationMixin, ListView):
 
 class BlogPostDetailView(DetailView):
     """
-    Дублирующее представление для детального просмотра поста.
+    Duplicate view for detailed blog post display.
     
-    TODO: Удалить после рефакторинга URL-ов.
+    TODO: Remove after URL refactoring.
     """
     model = BlogPost
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
-
-    def get_queryset(self):
-        """Оптимизированный queryset."""
-        return BlogPost.objects.filter(is_published=True)\
-                               .select_related('category')\
-                               .prefetch_related('images', 'post_tags__tag')
-
-    def get_context_data(self, **kwargs):
-        """Добавление категорий в контекст."""
-        context = super().get_context_data(**kwargs)
-        post = self.get_object()
-        # SEO
-        context['meta_title'] = post.meta_title or post.title
-        context['meta_description'] = post.meta_description or (post.preview_text[:160] if post.preview_text else '')
-        context['meta_keywords'] = post.meta_keywords
-        context['meta_image'] = post.meta_image.url if post.meta_image else None
-        context['categories'] = BlogCategory.objects.all()
-        return context

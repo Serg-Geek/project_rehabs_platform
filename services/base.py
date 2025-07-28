@@ -20,22 +20,43 @@ class BaseService:
     """
     
     def __init__(self):
-        """Initialize the service with a logger."""
+        """
+        Initialize the service with a logger.
+        """
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def log_info(self, message: str, **kwargs):
-        """Log info message with additional context."""
+        """
+        Log info message with additional context.
+        
+        Args:
+            message: Message to log
+            **kwargs: Additional context data
+        """
         self.logger.info(f"{message} | {kwargs}")
 
     def log_error(self, message: str, error: Exception = None, **kwargs):
-        """Log error message with exception and context."""
+        """
+        Log error message with exception and context.
+        
+        Args:
+            message: Message to log
+            error: Exception that occurred
+            **kwargs: Additional context data
+        """
         if error:
             self.logger.error(f"{message} | Error: {error} | {kwargs}", exc_info=True)
         else:
             self.logger.error(f"{message} | {kwargs}")
 
     def log_warning(self, message: str, **kwargs):
-        """Log warning message with additional context."""
+        """
+        Log warning message with additional context.
+        
+        Args:
+            message: Message to log
+            **kwargs: Additional context data
+        """
         self.logger.warning(f"{message} | {kwargs}")
 
     @transaction.atomic
@@ -101,24 +122,44 @@ class BaseService:
         """
         return data.get(key, default)
 
+    def safe_get_int(self, data: Dict[str, Any], key: str, default: int = None) -> Optional[int]:
+        """
+        Safely get integer value from dictionary.
+        
+        Args:
+            data: Dictionary to get value from
+            key: Key to look for
+            default: Default value if key not found or conversion fails
+            
+        Returns:
+            Integer value or default
+        """
+        try:
+            value = data.get(key)
+            if value is not None:
+                return int(value)
+            return default
+        except (ValueError, TypeError):
+            return default
+
     def format_error_message(self, error: Exception) -> str:
         """
-        Format error message for user consumption.
+        Format error message for user display.
         
         Args:
             error: Exception to format
             
         Returns:
-            Formatted error message
+            str: Formatted error message
         """
         if hasattr(error, 'message_dict'):
             # Django validation error
             messages = []
             for field, errors in error.message_dict.items():
                 if isinstance(errors, list):
-                    messages.extend(errors)
+                    messages.extend([f"{field}: {error}" for error in errors])
                 else:
-                    messages.append(str(errors))
+                    messages.append(f"{field}: {errors}")
             return "; ".join(messages)
-        
-        return str(error) 
+        else:
+            return str(error) 

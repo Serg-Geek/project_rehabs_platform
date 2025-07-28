@@ -10,7 +10,7 @@ from django.utils.encoding import force_bytes
 
 class CustomAuthenticationForm(AuthenticationForm):
     """
-    Кастомная форма аутентификации
+    Custom authentication form with styled fields.
     """
     username = forms.CharField(
         label=_('Email'),
@@ -23,7 +23,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 class CustomPasswordResetForm(PasswordResetForm):
     """
-    Форма для запроса сброса пароля
+    Custom password reset form with styled email field.
     """
     email = forms.EmailField(
         label=_('Email'),
@@ -38,7 +38,21 @@ class CustomPasswordResetForm(PasswordResetForm):
              from_email=None, request=None, html_email_template_name=None,
              extra_email_context=None):
         """
-        Отправляет email с инструкциями по сбросу пароля
+        Send password reset email with instructions.
+        
+        Args:
+            domain_override: Override domain for email links
+            subject_template_name: Template for email subject
+            email_template_name: Template for email body
+            use_https: Whether to use HTTPS in links
+            token_generator: Token generator instance
+            from_email: Sender email address
+            request: HTTP request object
+            html_email_template_name: HTML template for email
+            extra_email_context: Additional context for templates
+            
+        Returns:
+            User: User instance or None if user not found
         """
         email = self.cleaned_data["email"]
         if not token_generator:
@@ -74,7 +88,7 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 class CustomSetPasswordForm(SetPasswordForm):
     """
-    Форма для установки нового пароля
+    Custom password set form with styled password fields.
     """
     new_password1 = forms.CharField(
         label=_('Новый пароль'),

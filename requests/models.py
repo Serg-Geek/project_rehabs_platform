@@ -195,20 +195,23 @@ class AnonymousRequest(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'Заявка #{self.id} - {self.name} - {self.get_request_type_display()} ({self.get_status_display()})'
+        """
+        String representation of the anonymous request.
+        
+        Returns:
+            str: Request description with name and type
+        """
+        return f"{self.name} - {self.get_request_type_display()} ({self.get_status_display()})"
 
     def save(self, *args, **kwargs):
-        is_new = self._state.adding
+        """
+        Save the request with automatic field updates.
         
-        if self.status == self.Status.COMMISSION_RECEIVED and not self.commission_received_date:
-            self.commission_received_date = timezone.now().date()
-        
-        # Проверка на пустые поля name и phone
-        if not self.name:
-            self.name = "Анонимный пользователь"
-        
-        if not self.message:
-            self.message = "Заявка без содержания"
+        Updates the updated_by field if a user is provided in the request.
+        """
+        # Обновляем поле updated_by если есть пользователь в запросе
+        if hasattr(self, '_current_user') and self._current_user:
+            self.updated_by = self._current_user
             
         super().save(*args, **kwargs)
 
@@ -243,11 +246,17 @@ class RequestNote(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Заметка к заявке #{self.request.id} - {self.request.name}"
+        """
+        String representation of the request note.
+        
+        Returns:
+            str: Note text with truncation
+        """
+        return self.text[:100] + '...' if len(self.text) > 100 else self.text
 
 class RequestStatusHistory(models.Model):
     """
-    История изменений статуса заявки
+    History of request status changes.
     """
     request = models.ForeignKey(
         AnonymousRequest,
@@ -263,7 +272,6 @@ class RequestStatusHistory(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='status_changes',
         verbose_name='Изменено пользователем'
     )
 
@@ -273,9 +281,18 @@ class RequestStatusHistory(models.Model):
         ordering = ['-changed_at']
 
     def __str__(self):
-        return f'{self.request.name} - {self.old_status} -> {self.new_status}'
+        """
+        String representation of the status history entry.
+        
+        Returns:
+            str: Status change description
+        """
+        return f"{self.request} - {self.old_status} → {self.new_status}"
 
 class RequestActionLog(TimeStampedModel):
+    """
+    Log of actions performed on requests.
+    """
     class Action(models.TextChoices):
         CREATE = 'create', _('Создание')
         UPDATE = 'update', _('Обновление')
@@ -311,11 +328,17 @@ class RequestActionLog(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.get_action_display()} - {self.request.name}"
+        """
+        String representation of the action log entry.
+        
+        Returns:
+            str: Action description with user and request
+        """
+        return f"{self.user} - {self.action} - {self.request}"
 
 class RequestTemplate(models.Model):
     """
-    Шаблоны для типовых заявок
+    Templates for standard request types.
     """
     name = models.CharField(_('Название шаблона'), max_length=100)
     request_type = models.CharField(
@@ -329,11 +352,9 @@ class RequestTemplate(models.Model):
     updated_at = models.DateTimeField(_('Обновлено'), auto_now=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name=_('Создано пользователем'),
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
-        related_name='created_templates'
+        verbose_name=_('Создано пользователем')
     )
     
     class Meta:
@@ -342,11 +363,17 @@ class RequestTemplate(models.Model):
         ordering = ['name']
         
     def __str__(self):
-        return self.name
+        """
+        String representation of the request template.
+        
+        Returns:
+            str: Template name with type
+        """
+        return f"{self.name} ({self.get_request_type_display()})"
 
 class DependentRequest(TimeStampedModel):
     """
-    Заявки от зависимых
+    Requests from dependent individuals.
     """
     class AddictionType(models.TextChoices):
         ALCOHOL = 'alcohol', _('Алкоголь')
@@ -475,11 +502,10 @@ class DependentRequest(TimeStampedModel):
         verbose_name=_('Тип организации')
     )
     assigned_organization = models.CharField(
-        _('Назначенная организация'),
         max_length=200,
         blank=True,
         null=True,
-        help_text=_('Сначала выберите тип организации, сохраните заявку, затем выберите организацию из списка')
+        verbose_name=_('Назначенная организация')
     )
 
     class Meta:
@@ -488,33 +514,41 @@ class DependentRequest(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        if self.contact_type == self.ContactType.ANONYMOUS:
-            return f"Анонимная заявка #{self.id}"
-        elif self.contact_type == self.ContactType.PSEUDONYM and self.pseudonym:
-            return f"{self.pseudonym} (псевдоним)"
-        elif self.first_name and self.last_name:
-            return f"{self.last_name} {self.first_name}"
-        return f"Заявка #{self.id}"
+        """
+        String representation of the dependent request.
+        
+        Returns:
+            str: Request description with contact info and addiction type
+        """
+        contact_info = self.get_full_name() or self.pseudonym or self.phone
+        return f"{contact_info} - {self.get_addiction_type_display()} ({self.get_status_display()})"
 
     def get_full_name(self):
+        """
+        Get the full name of the dependent person.
+        
+        Returns:
+            str: Full name or None if not provided
+        """
         if self.first_name and self.last_name:
             return f"{self.last_name} {self.first_name}"
-        return "-"
+        return None
         
     def save(self, *args, **kwargs):
+        """
+        Save the dependent request with validation.
+        
+        Validates that phone number is provided.
+        """
         # Проверка на обязательный телефон
         if not self.phone:
-            raise ValueError(_('Телефон обязателен для заявки'))
+            raise ValueError("Phone number is required for dependent requests")
             
-        # Если контакт анонимный и нет имени, устанавливаем псевдоним
-        if self.contact_type == self.ContactType.ANONYMOUS and not self.pseudonym:
-            self.pseudonym = "Аноним"
-        
         super().save(*args, **kwargs)
 
 class DependentRequestNote(TimeStampedModel):
     """
-    Заметки к заявкам от зависимых
+    Notes for dependent requests.
     """
     request = models.ForeignKey(
         'DependentRequest',
@@ -533,7 +567,6 @@ class DependentRequestNote(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='dependent_request_notes',
         verbose_name=_('Создано пользователем')
     )
 
@@ -543,11 +576,17 @@ class DependentRequestNote(TimeStampedModel):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Заметка к заявке #{self.request.id} - {self.request.get_full_name()}"
+        """
+        String representation of the dependent request note.
+        
+        Returns:
+            str: Note text with truncation
+        """
+        return self.text[:100] + '...' if len(self.text) > 100 else self.text
 
 class DependentRequestStatusHistory(models.Model):
     """
-    История изменений статуса заявки от зависимого
+    History of status changes for dependent requests.
     """
     request = models.ForeignKey(
         'DependentRequest',
@@ -563,7 +602,6 @@ class DependentRequestStatusHistory(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='dependent_status_changes',
         verbose_name=_('Изменено пользователем')
     )
 
@@ -573,4 +611,10 @@ class DependentRequestStatusHistory(models.Model):
         ordering = ['-changed_at']
 
     def __str__(self):
-        return f'{self.request.get_full_name()} - {self.old_status} -> {self.new_status}'
+        """
+        String representation of the dependent request status history entry.
+        
+        Returns:
+            str: Status change description
+        """
+        return f"{self.request} - {self.old_status} → {self.new_status}"
