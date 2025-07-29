@@ -119,13 +119,13 @@
 </section>
 {% endif %}
 
-{% if center.specialists.all %}
+{% if center.active_specialists %}
 <section class="detail__specialists rehab-detail-specialists specialists">
     <div class="container">
-        <h3 class="title__h3 detail__title">Специалисты центра</h3>
+        <h3 class="title__h3 detail__title">Специалисты учреждения</h3>
         <div class="section__content">
             <div class="specialists__cards">
-                {% for specialist in center.specialists.all %}
+                {% for specialist in center.active_specialists %}
                 {% include "includes/cards/specialist_card.html" with specialist=specialist %}
                 {% endfor %}
             </div>

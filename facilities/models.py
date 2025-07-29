@@ -220,6 +220,23 @@ class Clinic(AbstractMedicalFacility):
     # Используем кастомный manager
     objects = ClinicManager()
 
+    def active_specialists(self):
+        """
+        Получить только активных специалистов учреждения.
+        
+        Returns:
+            QuerySet: Активные специалисты учреждения
+        """
+        from staff.models import FacilitySpecialist
+        from django.contrib.contenttypes.models import ContentType
+        
+        ct = ContentType.objects.get_for_model(self)
+        return FacilitySpecialist.objects.filter(
+            content_type=ct,
+            object_id=self.pk,
+            is_active=True
+        ).order_by('last_name', 'first_name')
+
     class Meta:
         verbose_name = _('Клиника')
         verbose_name_plural = _('Клиники')
@@ -298,6 +315,23 @@ class RehabCenter(AbstractMedicalFacility):
 
     # Используем кастомный manager
     objects = RehabCenterManager()
+
+    def active_specialists(self):
+        """
+        Получить только активных специалистов учреждения.
+        
+        Returns:
+            QuerySet: Активные специалисты учреждения
+        """
+        from staff.models import FacilitySpecialist
+        from django.contrib.contenttypes.models import ContentType
+        
+        ct = ContentType.objects.get_for_model(self)
+        return FacilitySpecialist.objects.filter(
+            content_type=ct,
+            object_id=self.pk,
+            is_active=True
+        ).order_by('last_name', 'first_name')
 
     class Meta:
         verbose_name = _('Реабилитационный центр')
