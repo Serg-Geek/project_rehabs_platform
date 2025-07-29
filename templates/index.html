@@ -313,7 +313,64 @@
   </div>
 </section>
 
-<section class="specialists">
+<section class="private-doctors specialists">
+  <div class="container">
+    <h2 class="title__h2 specialists__title">Частные врачи</h2>
+    <div class="section__content">
+      <div class="section__content-text specialists__content-text">
+        <p>
+          Частнопрактикующие врачи - специалисты с многолетним опытом лечения
+          зависимостей. Индивидуальный подход и гибкий график работы.
+        </p>
+      </div>
+
+      <div id="privateDoctorsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% with first_slide=private_doctors|slice:":4" %} {% if first_slide %}
+          <div class="carousel-item active">
+            <div class="specialists__cards">
+              {% for doctor in first_slide %}
+              {% include "includes/cards/private_doctor_card.html" with doctor=doctor %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %} {% endwith %} {% with second_slide=private_doctors|slice:"4:8" %} {% if second_slide %}
+          <div class="carousel-item">
+            <div class="specialists__cards">
+              {% for doctor in second_slide %}
+              {% include "includes/cards/private_doctor_card.html" with doctor=doctor %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %} {% endwith %} {% with third_slide=private_doctors|slice:"8:12" %} {% if third_slide %}
+          <div class="carousel-item">
+            <div class="specialists__cards">
+              {% for doctor in third_slide %}
+              {% include "includes/cards/private_doctor_card.html" with doctor=doctor %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %} {% endwith %}
+        </div>
+        <!-- {% if private_doctors|length > 4 %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#privateDoctorsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#privateDoctorsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        {% endif %} -->
+      </div>
+      <div class="specialists__button-wrapper">
+        <a href="{% url 'facilities:private_doctors_list' %}" class="rehab-btn specialists__button">Посмотреть всех</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="medical-specialists specialists">
   <div class="container">
     <h2 class="title__h2 specialists__title">Наши специалисты</h2>
     <div class="section__content">

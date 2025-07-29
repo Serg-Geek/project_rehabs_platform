@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from facilities.models import RehabCenter, Clinic
+from facilities.models import RehabCenter, Clinic, PrivateDoctor
 from staff.models import MedicalSpecialist
 from medical_services.models import ServiceCategory, Service
 from recovery_stories.models import RecoveryStory
@@ -21,6 +21,7 @@ class HomeView(TemplateView):
         # Получаем данные для главной страницы
         context['rehab_centers'] = RehabCenter.objects.filter(is_active=True).order_by('-created_at')[:12]
         context['clinics'] = Clinic.objects.filter(is_active=True).order_by('-created_at')[:12]
+        context['private_doctors'] = PrivateDoctor.objects.filter(is_active=True).order_by('-created_at')[:12]
         context['specialists'] = MedicalSpecialist.objects.filter(is_active=True).order_by('-created_at')[:12]
         context['recovery_stories'] = RecoveryStory.objects.filter(is_published=True).order_by('-created_at')[:6]
         context['useful_info_cards'] = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]
