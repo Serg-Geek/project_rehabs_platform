@@ -97,8 +97,8 @@ class HomePageServicesTest(TestCase):
         self.assertIn('service_categories', response.context)
         
         service_categories = response.context['service_categories']
-        # Проверяем, что это QuerySet и содержит наши категории
-        self.assertTrue(hasattr(service_categories, 'filter'))
+        # Проверяем, что это список и содержит наши категории
+        self.assertIsInstance(service_categories, list)
         self.assertIn(self.alcoholism_category, service_categories)
         self.assertIn(self.drug_addiction_category, service_categories)
         self.assertIn(self.other_category, service_categories)

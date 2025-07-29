@@ -27,19 +27,7 @@ class HomeView(TemplateView):
         context['recovery_stories'] = RecoveryStory.objects.filter(is_published=True).order_by('-created_at')[:6]
         context['useful_info_cards'] = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]
         
-        # Получаем услуги для футера
-        context['service_categories'] = self.get_service_categories()
-        context['footer_services'] = self.get_footer_services()
-        
         return context
-    
-    def get_service_categories(self):
-        """Получает категории услуг для главной страницы"""
-        return ServiceCategory.objects.filter(is_active=True).order_by('name')[:6]
-    
-    def get_footer_services(self):
-        """Получает услуги для футера"""
-        return Service.objects.filter(is_active=True).order_by('name')[:8]
 
 class ContactsView(TemplateView):
     template_name = 'contacts.html'
