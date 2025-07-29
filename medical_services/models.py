@@ -70,6 +70,15 @@ class ServiceCategory(TimeStampedModel):
             self.slug = generate_slug(self.name, ServiceCategory, self)
         super().save(*args, **kwargs)
 
+    def active_services(self):
+        """
+        Получить только активные услуги категории.
+        
+        Returns:
+            QuerySet: Активные услуги категории
+        """
+        return self.services.filter(is_active=True).order_by('-display_priority', 'name')
+
 class TherapyMethod(TimeStampedModel):
     """
     Методы терапии

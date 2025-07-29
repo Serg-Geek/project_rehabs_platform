@@ -252,12 +252,13 @@ class FacilityDetailView(GeoDataMixin, DetailView):
         Get services provided by the facility.
         
         Returns:
-            list: List of facility services
+            list: List of active facility services
         """
         ct = ContentType.objects.get_for_model(self.object)
         return FacilityService.objects.filter(
             content_type=ct,
-            object_id=self.object.pk
+            object_id=self.object.pk,
+            is_active=True
         ).select_related('service')
 
 def load_more_rehabs(request):

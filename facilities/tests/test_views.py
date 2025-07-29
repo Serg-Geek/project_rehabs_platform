@@ -14,6 +14,12 @@ from staff.models import Specialization
 from core.models import Region, City
 from django.contrib.auth import get_user_model
 import json
+from django.contrib.contenttypes.models import ContentType
+from facilities.models import Clinic, RehabCenter
+from medical_services.models import Service, FacilityService
+from core.models import City, Region
+from staff.models import MedicalSpecialist
+
 
 User = get_user_model()
 
@@ -366,3 +372,200 @@ class PrivateDoctorViewsTest(TestCase):
         self.assertEqual(response.status_code, 400)
         data = json.loads(response.content)
         self.assertIn('error', data) 
+
+
+class FacilityViewsTest(TestCase):
+    def setUp(self):
+        """Подготовка тестовых данных"""
+        # Создаем регион и город
+        self.region = Region.objects.create(
+            name='Тестовый регион',
+            slug='test-region'
+        )
+        self.city = City.objects.create(
+            name='Тестовый город',
+            slug='test-city',
+            region=self.region
+        )
+        
+        # Создаем тип организации
+        self.organization_type = OrganizationType.objects.create(
+            name='Клиника',
+            slug='clinic',
+        )
+        
+        # Создаем клинику
+        self.clinic = Clinic.objects.create(
+            name='Тестовая клиника',
+            slug='test-clinic',
+            description='Описание тестовой клиники',
+            address='Тестовый адрес',
+            city=self.city,
+            organization_type=self.organization_type,
+            is_active=True
+        )
+        
+        # Создаем реабилитационный центр
+        self.rehab_center = RehabCenter.objects.create(
+            name='Тестовый центр',
+            slug='test-center',
+            description='Описание тестового центра',
+            address='Тестовый адрес',
+            city=self.city,
+            organization_type=self.organization_type,
+            is_active=True
+        )
+        
+        # Создаем услуги
+        self.active_service = Service.objects.create(
+            name='Активная услуга',
+            slug='active-service',
+            description='Описание активной услуги',
+            is_active=True
+        )
+        
+        self.inactive_service = Service.objects.create(
+            name='Неактивная услуга',
+            slug='inactive-service',
+            description='Описание неактивной услуги',
+            is_active=False
+        )
+        
+        # Создаем FacilityService для клиники
+        clinic_ct = ContentType.objects.get_for_model(Clinic)
+        self.clinic_active_fs = FacilityService.objects.create(
+            content_type=clinic_ct,
+            object_id=self.clinic.pk,
+            service=self.active_service,
+            is_active=True
+        )
+        
+        self.clinic_inactive_fs = FacilityService.objects.create(
+            content_type=clinic_ct,
+            object_id=self.clinic.pk,
+            service=self.inactive_service,
+            is_active=False
+        )
+        
+        # Создаем FacilityService для реабилитационного центра
+        rehab_ct = ContentType.objects.get_for_model(RehabCenter)
+        self.rehab_active_fs = FacilityService.objects.create(
+            content_type=rehab_ct,
+            object_id=self.rehab_center.pk,
+            service=self.active_service,
+            is_active=True
+        )
+        
+        self.rehab_inactive_fs = FacilityService.objects.create(
+            content_type=rehab_ct,
+            object_id=self.rehab_center.pk,
+            service=self.inactive_service,
+            is_active=False
+        )
+        
+        # Создаем частного врача
+        self.private_doctor = PrivateDoctor.objects.create(
+            name='Тестовый врач',
+            slug='test-doctor',
+            first_name='Тест',
+            last_name='Врач',
+            city=self.city,
+            organization_type=self.organization_type,
+            experience_years=5,
+            is_active=True
+        )
+        
+        # Создаем FacilityService для частного врача
+        doctor_ct = ContentType.objects.get_for_model(PrivateDoctor)
+        self.doctor_active_fs = FacilityService.objects.create(
+            content_type=doctor_ct,
+            object_id=self.private_doctor.pk,
+            service=self.active_service,
+            is_active=True
+        )
+        
+        self.doctor_inactive_fs = FacilityService.objects.create(
+            content_type=doctor_ct,
+            object_id=self.private_doctor.pk,
+            service=self.inactive_service,
+            is_active=False
+        )
+        
+        self.client = Client()
+
+    def test_clinic_detail_view_shows_only_active_services(self):
+        """Тест: детальная страница клиники показывает только активные услуги"""
+        url = reverse('facilities:clinic_detail', kwargs={
+            'slug': self.clinic.slug
+        })
+        
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Проверяем, что в контексте есть услуги
+        self.assertIn('services', response.context)
+        services = response.context['services']
+        
+        # Проверяем, что только активные услуги отображаются
+        service_names = [fs.service.name for fs in services]
+        self.assertIn('Активная услуга', service_names)
+        self.assertNotIn('Неактивная услуга', service_names)
+        
+        # Проверяем количество услуг
+        self.assertEqual(len(services), 1)
+
+    def test_rehab_center_detail_view_shows_only_active_services(self):
+        """Тест: детальная страница реабилитационного центра показывает только активные услуги"""
+        url = reverse('facilities:rehab_detail', kwargs={
+            'slug': self.rehab_center.slug
+        })
+        
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Проверяем, что в контексте есть услуги
+        self.assertIn('services', response.context)
+        services = response.context['services']
+        
+        # Проверяем, что только активные услуги отображаются
+        service_names = [fs.service.name for fs in services]
+        self.assertIn('Активная услуга', service_names)
+        self.assertNotIn('Неактивная услуга', service_names)
+        
+        # Проверяем количество услуг
+        self.assertEqual(len(services), 1)
+
+    def test_facility_services_filtering_in_template(self):
+        """Тест: в шаблоне отображаются только активные услуги"""
+        url = reverse('facilities:clinic_detail', kwargs={
+            'slug': self.clinic.slug
+        })
+        
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Проверяем содержимое ответа
+        content = response.content.decode('utf-8')
+        self.assertIn('Активная услуга', content)
+        self.assertNotIn('Неактивная услуга', content)
+
+    def test_private_doctor_detail_view_shows_only_active_services(self):
+        """Тест: детальная страница частного врача показывает только активные услуги"""
+        url = reverse('facilities:private_doctor_detail', kwargs={
+            'slug': self.private_doctor.slug
+        })
+        
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Проверяем, что в контексте есть услуги
+        self.assertIn('services', response.context)
+        services = response.context['services']
+        
+        # Проверяем, что только активные услуги отображаются
+        service_names = [fs.service.name for fs in services]
+        self.assertIn('Активная услуга', service_names)
+        self.assertNotIn('Неактивная услуга', service_names)
+        
+        # Проверяем количество услуг
+        self.assertEqual(len(services), 1) 

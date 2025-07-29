@@ -132,7 +132,7 @@
             {{ category.name }}
           </h3>
           <ul>
-            {% for service in category.services.all|slice:":5" %}
+            {% for service in category.active_services|slice:":5" %}
             <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
             {% endfor %}
           </ul>

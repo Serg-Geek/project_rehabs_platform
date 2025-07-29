@@ -194,3 +194,111 @@ class TherapyMethodTests(TestCase):
         active_methods = TherapyMethod.objects.filter(is_active=True)
         self.assertIn(active_method, active_methods)
         self.assertNotIn(inactive_method, active_methods) 
+
+
+class ServiceCategoryModelsTest(TestCase):
+    def setUp(self):
+        """Подготовка тестовых данных"""
+        # Создаем категорию
+        self.category = ServiceCategory.objects.create(
+            name='Тестовая категория',
+            slug='test-category',
+            description='Описание тестовой категории'
+        )
+        
+        # Создаем активную услугу
+        self.active_service = Service.objects.create(
+            name='Активная услуга',
+            slug='active-service',
+            description='Описание активной услуги',
+            is_active=True
+        )
+        self.active_service.categories.add(self.category)
+        
+        # Создаем неактивную услугу
+        self.inactive_service = Service.objects.create(
+            name='Неактивная услуга',
+            slug='inactive-service',
+            description='Описание неактивной услуги',
+            is_active=False
+        )
+        self.inactive_service.categories.add(self.category)
+
+    def test_service_category_str_representation(self):
+        """Тест строкового представления категории"""
+        self.assertEqual(str(self.category), 'Тестовая категория')
+
+    def test_service_category_active_services_method(self):
+        """Тест метода active_services для получения только активных услуг"""
+        # Проверяем, что метод возвращает только активные услуги
+        active_services = self.category.active_services()
+        self.assertIn(self.active_service, active_services)
+        self.assertNotIn(self.inactive_service, active_services)
+        self.assertEqual(active_services.count(), 1)
+        
+        # Проверяем сортировку по приоритету и названию
+        self.assertEqual(active_services.first(), self.active_service)
+
+    def test_active_services_empty_result(self):
+        """Тест метода active_services когда нет активных услуг"""
+        # Делаем все услуги неактивными
+        self.active_service.is_active = False
+        self.active_service.save()
+        
+        # Проверяем, что метод возвращает пустой QuerySet
+        active_services = self.category.active_services()
+        self.assertEqual(active_services.count(), 0)
+        self.assertNotIn(self.active_service, active_services)
+        self.assertNotIn(self.inactive_service, active_services)
+
+    def test_active_services_sorting(self):
+        """Тест сортировки услуг по приоритету и названию"""
+        # Создаем услуги с разными приоритетами
+        high_priority_service = Service.objects.create(
+            name='Высокий приоритет',
+            slug='high-priority',
+            display_priority=Service.PRIORITY_HIGH,
+            is_active=True
+        )
+        high_priority_service.categories.add(self.category)
+        
+        low_priority_service = Service.objects.create(
+            name='Низкий приоритет',
+            slug='low-priority',
+            display_priority=Service.PRIORITY_LOW,
+            is_active=True
+        )
+        low_priority_service.categories.add(self.category)
+        
+        # Проверяем сортировку (высокий приоритет должен быть первым)
+        active_services = list(self.category.active_services())
+        self.assertEqual(active_services[0], high_priority_service)  # Высокий приоритет
+        self.assertEqual(active_services[1], self.active_service)    # Средний приоритет
+        self.assertEqual(active_services[2], low_priority_service)   # Низкий приоритет
+
+    def test_active_services_cross_category_isolation(self):
+        """Тест изоляции услуг между разными категориями"""
+        # Создаем вторую категорию
+        second_category = ServiceCategory.objects.create(
+            name='Вторая категория',
+            slug='second-category',
+            description='Описание второй категории'
+        )
+        
+        # Создаем услугу для второй категории
+        second_category_service = Service.objects.create(
+            name='Услуга второй категории',
+            slug='second-category-service',
+            is_active=True
+        )
+        second_category_service.categories.add(second_category)
+        
+        # Проверяем, что каждый метод возвращает только свои услуги
+        first_category_services = self.category.active_services()
+        second_category_services = second_category.active_services()
+        
+        self.assertIn(self.active_service, first_category_services)
+        self.assertNotIn(second_category_service, first_category_services)
+        
+        self.assertIn(second_category_service, second_category_services)
+        self.assertNotIn(self.active_service, second_category_services) 
