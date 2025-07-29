@@ -30,24 +30,24 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     def get_json_encoder(self):
         return CustomJSONEncoder
 
-@admin.register(TherapyMethod)
-class TherapyMethodAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'is_active']
-    list_filter = ['is_active']
-    search_fields = ['name', 'description']
-    prepopulated_fields = {'slug': ('name',)}
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'slug', 'description', 'is_active')
-        }),
-        ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
-            'classes': ('collapse',),
-        }),
-    )
+# @admin.register(TherapyMethod)
+# class TherapyMethodAdmin(admin.ModelAdmin):
+#     list_display = ['name', 'slug', 'is_active']
+#     list_filter = ['is_active']
+#     search_fields = ['name', 'description']
+#     prepopulated_fields = {'slug': ('name',)}
+#     fieldsets = (
+#         (None, {
+#             'fields': ('name', 'slug', 'description', 'is_active')
+#         }),
+#         ('SEO', {
+#             'fields': ('meta_title', 'meta_description'),
+#             'classes': ('collapse',),
+#         }),
+#     )
 
-    def get_json_encoder(self):
-        return CustomJSONEncoder
+#     def get_json_encoder(self):
+#         return CustomJSONEncoder
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
