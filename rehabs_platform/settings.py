@@ -293,7 +293,6 @@ ADMIN_REORDER = (
     # Django стандартные приложения
     {'app': 'auth', 'label': 'Аутентификация', 'models': (
         {'model': 'auth.Group', 'label': 'Группы'},
-        {'model': 'auth.Permission', 'label': 'Разрешения'},
     )},
 )
 

@@ -23,11 +23,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404
 from core.views import page_not_found
+from .admin import admin_site
 
 handler404 = page_not_found
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin_site.urls),
     path('', include('core.urls')),  # Добавляем URL-маршруты для главной страницы
     path('facilities/', include('facilities.urls')),  # Добавляем URL-маршруты для учреждений
     path('staff/', include('staff.urls')),  # Добавляем URL-маршруты для специалистов

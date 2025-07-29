@@ -70,10 +70,12 @@ class MedicalSpecialist(TimeStampedModel):
         verbose_name=_('Стаж (лет)')
     )
     education = models.TextField(
-        verbose_name=_('Образование')
+        verbose_name=_('Образование'),
+        blank=True,
+        null=True
     )
     biography = models.TextField(
-        verbose_name=_('Биография'),
+        verbose_name=_('О специалисте'),
         blank=True,
         null=True
     )
