@@ -75,10 +75,10 @@ class ReviewAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        """Ограничиваем выбор типов контента только для объектов клиник и реабилитационных центров"""
+        """Ограничиваем выбор типов контента только для объектов клиник, реабилитационных центров и частных врачей"""
         if db_field.name == "content_type":
             kwargs["queryset"] = ContentType.objects.filter(
-                model__in=['clinic', 'rehabcenter'],
+                model__in=['clinic', 'rehabcenter', 'privatedoctor'],
                 app_label='facilities'
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

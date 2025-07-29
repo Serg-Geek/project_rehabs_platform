@@ -429,8 +429,12 @@ class PrivateDoctorDetailView(GeoDataMixin, DetailView):
         # Получаем услуги врача
         services = self._get_doctor_services()
         
+        # Получаем отзывы врача
+        reviews = self._get_doctor_reviews()
+        
         context['related_doctors'] = related_doctors
         context['services'] = services
+        context['reviews'] = reviews
         
         # SEO
         context['meta_title'] = self.object.meta_title or self.object.get_full_name()
@@ -473,6 +477,21 @@ class PrivateDoctorDetailView(GeoDataMixin, DetailView):
             object_id=self.object.pk,
             is_active=True
         ).select_related('service')
+
+    def _get_doctor_reviews(self):
+        """
+        Get reviews for the doctor.
+        
+        Returns:
+            QuerySet: Doctor's reviews
+        """
+        from reviews.models import Review
+        content_type = ContentType.objects.get_for_model(self.object)
+        return Review.objects.filter(
+            content_type=content_type,
+            object_id=self.object.pk,
+            is_published=True
+        ).order_by('-created_at')
 
 def load_more_doctors(request):
     """
