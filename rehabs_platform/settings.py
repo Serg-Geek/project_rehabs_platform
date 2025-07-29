@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     # Third party apps
     'django_cleanup.apps.CleanupConfig',
-    'admin_reorder',
     
     # Local apps
     'core.apps.CoreConfig',
@@ -70,9 +69,6 @@ MIDDLEWARE = [
     'core.middleware.RequestLoggingMiddleware',
     'core.middleware.SecurityMiddleware',
     'core.middleware.DatabaseLoggingMiddleware',
-    
-    # Admin reorder middleware (должен быть последним)
-    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'rehabs_platform.urls'
@@ -199,102 +195,6 @@ ACCESS_CONTROL = {
     'ENABLE_TEMPORARY_ACCESS': True,
     'DEFAULT_ACCESS_DURATION': 30,  # дней
 }
-
-# Настройки для изменения порядка приложений в админке
-ADMIN_REORDER = (
-    # Заявки
-    {'app': 'requests', 'label': 'Заявки', 'models': (
-        {'model': 'requests.AnonymousRequest', 'label': 'Анонимные заявки'},
-        {'model': 'requests.DependentRequest', 'label': 'Заявки от зависимых'},
-        {'model': 'requests.RequestTemplate', 'label': 'Шаблоны заявок'},
-        {'model': 'requests.RequestNote', 'label': 'Заметки к заявкам'},
-        {'model': 'requests.DependentRequestNote', 'label': 'Заметки к заявкам от зависимых'},
-        {'model': 'requests.RequestStatusHistory', 'label': 'История статусов'},
-        {'model': 'requests.DependentRequestStatusHistory', 'label': 'История статусов заявок от зависимых'},
-        {'model': 'requests.RequestActionLog', 'label': 'Логи действий заявок'},
-    )},
-    
-    # Учреждения
-    {'app': 'facilities', 'label': 'Учреждения', 'models': (
-        {'model': 'facilities.RehabCenter', 'label': 'Реабилитационные центры'},
-        {'model': 'facilities.Clinic', 'label': 'Клиники'},
-        {'model': 'facilities.PrivateDoctor', 'label': 'Частные врачи'},
-        {'model': 'facilities.OrganizationType', 'label': 'Типы организаций'},
-        {'model': 'facilities.FacilityDocument', 'label': 'Документы учреждений'},
-        {'model': 'facilities.FacilityImage', 'label': 'Изображения учреждений'},
-    )},
-    
-    # Медицинские услуги
-    {'app': 'medical_services', 'label': 'Медицинские услуги', 'models': (
-        {'model': 'medical_services.ServiceCategory', 'label': 'Категории услуг'},
-        {'model': 'medical_services.Service', 'label': 'Услуги'},
-        {'model': 'medical_services.FacilityService', 'label': 'Услуги учреждений'},
-    )},
-    
-    # Персонал
-    {'app': 'staff', 'label': 'Персонал', 'models': (
-        {'model': 'staff.FacilitySpecialist', 'label': 'Специалисты учреждений'},
-        {'model': 'staff.Specialization', 'label': 'Специализации'},
-        {'model': 'staff.SpecialistDocument', 'label': 'Документы специалистов'},
-    )},
-    
-    # Истории выздоровления
-    {'app': 'recovery_stories', 'label': 'Истории выздоровления', 'models': (
-        {'model': 'recovery_stories.RecoveryStory', 'label': 'Истории выздоровления'},
-        {'model': 'recovery_stories.RecoveryCategory', 'label': 'Категории историй'},
-        {'model': 'recovery_stories.RecoveryTag', 'label': 'Теги историй'},
-        {'model': 'recovery_stories.RecoveryStoryImage', 'label': 'Изображения историй'},
-    )},
-    
-    # Контент
-    {'app': 'content', 'label': 'Контент', 'models': (
-        {'model': 'content.Banner', 'label': 'Баннеры'},
-        {'model': 'content.SiteSettings', 'label': 'Настройки сайта'},
-    )},
-    
-    # Блог и статьи
-    {'app': 'blog', 'label': 'Блог', 'models': (
-        {'model': 'blog.BlogCategory', 'label': 'Категории блога'},
-        {'model': 'blog.BlogPost', 'label': 'Посты блога'},
-        {'model': 'blog.Tag', 'label': 'Теги'},
-        {'model': 'blog.BlogPostTag', 'label': 'Теги постов'},
-        {'model': 'blog.ContentCategory', 'label': 'Категории контента'},
-        {'model': 'blog.Article', 'label': 'Статьи'},
-        {'model': 'blog.ArticleTag', 'label': 'Теги статей'},
-    )},
-    
-    # Отзывы
-    {'app': 'reviews', 'label': 'Отзывы', 'models': (
-        {'model': 'reviews.Review', 'label': 'Отзывы'},
-    )},
-    
-    # Пользователи
-    {'app': 'users', 'label': 'Пользователи', 'models': (
-        {'model': 'users.User', 'label': 'Пользователи'},
-        {'model': 'users.UserProfile', 'label': 'Профили пользователей'},
-        {'model': 'users.UserActionLog', 'label': 'Логи действий пользователей'},
-    )},
-    
-    # Система
-    {'app': 'admin_logs', 'label': 'Система', 'models': (
-        {'model': 'admin_logs.AdminActionLog', 'label': 'Логи действий администраторов'},
-        {'model': 'admin_logs.UserAccess', 'label': 'Доступы пользователей'},
-        {'model': 'admin_logs.AccessLevel', 'label': 'Уровни доступа'},
-        {'model': 'admin_logs.AppPermission', 'label': 'Разрешения приложений'},
-    )},
-    
-    # Ядро
-    {'app': 'core', 'label': 'Ядро', 'models': (
-        {'model': 'core.City', 'label': 'Города'},
-        {'model': 'core.Region', 'label': 'Регионы'},
-        {'model': 'core.CityCoordinates', 'label': 'Координаты городов'},
-    )},
-    
-    # Django стандартные приложения
-    {'app': 'auth', 'label': 'Аутентификация', 'models': (
-        {'model': 'auth.Group', 'label': 'Группы'},
-    )},
-)
 
 # JSON сериализация - используем кастомный энкодер
 import json
