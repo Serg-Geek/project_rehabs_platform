@@ -673,9 +673,9 @@ class PrivateDoctor(AbstractMedicalFacility):
         String representation of the private doctor.
         
         Returns:
-            str: Full name with organization type
+            str: Full name with organization type and ID
         """
-        return f"{self.get_full_name()} ({self.organization_type.name})"
+        return f"{self.get_full_name()} ({self.organization_type.name}) [ID: {self.id}]"
 
     def get_full_name(self):
         """

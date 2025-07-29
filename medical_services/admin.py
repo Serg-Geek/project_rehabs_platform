@@ -89,6 +89,6 @@ class FacilityServiceAdmin(admin.ModelAdmin):
         if db_field.name == "content_type":
             # Ограничиваем выбор только моделями учреждений
             kwargs["queryset"] = ContentType.objects.filter(
-                model__in=['clinic', 'rehabcenter']
+                model__in=['clinic', 'rehabcenter', 'privatedoctor']
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
