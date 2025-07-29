@@ -5,6 +5,7 @@ from staff.models import MedicalSpecialist
 from medical_services.models import ServiceCategory, Service
 from recovery_stories.models import RecoveryStory
 from blog.models import Tag, BlogPost
+from django.db import models
 
 # Create your views here.
 

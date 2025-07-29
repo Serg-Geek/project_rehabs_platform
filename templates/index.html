@@ -117,45 +117,27 @@
         </p>
       </div>
       <div class="our-services__list">
+        {% for category in service_categories %}
         <div class="our-services__item">
           <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}" alt="Лечение алкоголизма" />
+            {% if category.slug == 'lechenie-alkogolizma' %}
+              <img src="{% static 'deps/icons/our_services_icons/alcohol-icon.svg' %}" alt="Лечение алкоголизма" />
+            {% elif category.slug == 'lechenie-narkomanii' %}
+              <img src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}" alt="Лечение наркомании" />
+            {% else %}
+              <img src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}" alt="Другие услуги" />
+            {% endif %}
           </div>
           <h3 class="title__h3">
-            {{ service_categories.alcoholism.category.name }}
+            {{ category.name }}
           </h3>
           <ul>
-            {% for service in service_categories.alcoholism.services %}
+            {% for service in category.services.all|slice:":5" %}
             <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
             {% endfor %}
           </ul>
         </div>
-        <div class="our-services__item">
-          <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/medicine-icon.svg' %}" alt="Лечение наркомании" />
-          </div>
-          <h3 class="title__h3">
-            {{ service_categories.drug_addiction.category.name }}
-          </h3>
-          <ul>
-            {% for service in service_categories.drug_addiction.services %}
-            <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="our-services__item">
-          <div class="our-services__icon">
-            <img src="{% static 'deps/icons/our_services_icons/hand-help-icon.svg' %}" alt="Другие услуги" />
-          </div>
-          <h3 class="title__h3">
-            {{ service_categories.other.category.name }}
-          </h3>
-          <ul>
-            {% for service in service_categories.other.services %}
-            <li><a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>

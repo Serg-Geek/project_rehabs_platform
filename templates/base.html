@@ -317,16 +317,11 @@
                 <li class="footer__navigation-item">
                   <a href="{% url 'core:contacts' %}" class="footer__navigation-link">Контакты</a>
                 </li>
-                {% if footer_services.alcoholism %}
+                {% for category in service_categories %}
                 <li class="footer__navigation-item">
-                  <a href="{% url 'medical_services:category_detail' footer_services.alcoholism.category.slug %}" class="footer__navigation-link">{{ footer_services.alcoholism.category.name }}</a>
+                  <a href="{% url 'medical_services:category_detail' category.slug %}" class="footer__navigation-link">{{ category.name }}</a>
                 </li>
-                {% endif %}
-                {% if footer_services.drug_addiction %}
-                <li class="footer__navigation-item">
-                  <a href="{% url 'medical_services:category_detail' footer_services.drug_addiction.category.slug %}" class="footer__navigation-link">{{ footer_services.drug_addiction.category.name }}</a>
-                </li>
-                {% endif %}
+                {% endfor %}
                 <li class="footer__navigation-item">
                   <a href="{% url 'blog:post_list' %}" class="footer__navigation-link">Полезная информация</a>
                 </li>
@@ -387,44 +382,50 @@
           <div class="footer__services">
             <h4 class="title__h4 footer__title">Услуги:</h4>
             <div class="footer__columns">
-              {% if footer_services.alcoholism %}
-              <div class="footer__column">
-                <h4 class="title__h4 footer__column-title">{{ footer_services.alcoholism.category.name }}:</h4>
-                <ul class="footer__list">
-                  {% for service in footer_services.alcoholism.services %}
-                  <li class="footer__item">
-                    <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-              {% endif %}
+              {% for category in service_categories %}
+                {% if category.slug == 'lechenie-alkogolizma' %}
+                <div class="footer__column">
+                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                  <ul class="footer__list">
+                    {% for service in category.services.all|slice:":5" %}
+                    <li class="footer__item">
+                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+              {% endfor %}
               
-              {% if footer_services.drug_addiction %}
-              <div class="footer__column">
-                <h4 class="title__h4 footer__column-title">{{ footer_services.drug_addiction.category.name }}:</h4>
-                <ul class="footer__list">
-                  {% for service in footer_services.drug_addiction.services %}
-                  <li class="footer__item">
-                    <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-              {% endif %}
+              {% for category in service_categories %}
+                {% if category.slug == 'lechenie-narkomanii' %}
+                <div class="footer__column">
+                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                  <ul class="footer__list">
+                    {% for service in category.services.all|slice:":5" %}
+                    <li class="footer__item">
+                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+              {% endfor %}
               
-              {% if footer_services.other %}
-              <div class="footer__column">
-                <h4 class="title__h4 footer__column-title">{{ footer_services.other.category.name }}:</h4>
-                <ul class="footer__list">
-                  {% for service in footer_services.other.services %}
-                  <li class="footer__item">
-                    <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-              {% endif %}
+              {% for category in service_categories %}
+                {% if category.slug == 'drugie-uslugi' %}
+                <div class="footer__column">
+                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                  <ul class="footer__list">
+                    {% for service in category.services.all|slice:":5" %}
+                    <li class="footer__item">
+                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
         </div>
