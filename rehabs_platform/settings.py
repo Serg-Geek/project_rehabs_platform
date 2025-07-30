@@ -377,3 +377,11 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+# Django Admin настройки
+ADMIN_SITE_HEADER = "Центр помощи зависимым - Админ-панель"
+ADMIN_SITE_TITLE = "Центр помощи зависимым"
+ADMIN_INDEX_TITLE = "Управление платформой помощи зависимым"
+
+# Включение боковой панели в Django admin
+ADMIN_NAV_SIDEBAR = True

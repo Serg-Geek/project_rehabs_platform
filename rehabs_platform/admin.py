@@ -5,17 +5,24 @@ from django.utils.translation import gettext_lazy as _
 
 class CustomAdminSite(AdminSite):
     """
-    Кастомный AdminSite с правильным порядком приложений
+    Кастомный AdminSite с правильным порядком приложений и брендингом
     """
-    site_header = _('Администрирование сайта')
-    site_title = _('Админ-панель')
-    index_title = _('Управление сайтом')
+    site_header = _('Центр помощи зависимым - Админ-панель')
+    site_title = _('Центр помощи зависимым')
+    index_title = _('Управление платформой помощи зависимым')
     
-    def get_app_list(self, request):
+    # Включаем боковую панель
+    enable_nav_sidebar = True
+    
+    def get_app_list(self, request, app_label=None):
         """
         Возвращает список приложений в нужном порядке
         """
-        app_list = super().get_app_list(request)
+        app_list = super().get_app_list(request, app_label)
+        
+        # Если указан конкретный app_label, возвращаем как есть
+        if app_label:
+            return app_list
         
         # Определяем правильный порядок приложений
         app_order = [
