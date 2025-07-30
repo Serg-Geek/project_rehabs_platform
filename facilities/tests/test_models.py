@@ -147,7 +147,7 @@ class FacilityModelsTest(TestCase):
         self.assertNotIn(inactive_specialist, active_specialists)
 
     def test_active_specialists_sorting(self):
-        """Тест сортировки специалистов по фамилии и имени"""
+        """Тест сортировки специалистов по order и id"""
         # Создаем специалистов в разном порядке
         specialist_b = FacilitySpecialist.objects.create(
             first_name='Борис',
@@ -157,7 +157,8 @@ class FacilityModelsTest(TestCase):
             position='Врач',
             experience_years=5,
             education='Высшее медицинское',
-            is_active=True
+            is_active=True,
+            order=3  # Высокий порядок
         )
         
         specialist_a = FacilitySpecialist.objects.create(
@@ -168,7 +169,8 @@ class FacilityModelsTest(TestCase):
             position='Врач',
             experience_years=3,
             education='Высшее медицинское',
-            is_active=True
+            is_active=True,
+            order=1  # Низкий порядок - должен быть первым
         )
         
         specialist_c = FacilitySpecialist.objects.create(
@@ -180,13 +182,14 @@ class FacilityModelsTest(TestCase):
             experience_years=7,
             education='Высшее медицинское',
             is_active=True
+            # Без order - должен быть после тех, у кого есть order
         )
         
         # Проверяем сортировку
         active_specialists = list(self.clinic.active_specialists())
-        self.assertEqual(active_specialists[0], specialist_a)  # Алексеев
-        self.assertEqual(active_specialists[1], specialist_b)  # Борисов
-        self.assertEqual(active_specialists[2], specialist_c)  # Васильев
+        self.assertEqual(active_specialists[0], specialist_a)  # Алексеев (order=1)
+        self.assertEqual(active_specialists[1], specialist_b)  # Борисов (order=3)
+        self.assertEqual(active_specialists[2], specialist_c)  # Васильев (без order)
 
     def test_active_specialists_cross_facility_isolation(self):
         """Тест изоляции специалистов между разными учреждениями"""

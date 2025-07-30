@@ -45,7 +45,7 @@ class FacilitySpecialistInline(GenericTabularInline):
     ct_field = 'content_type'
     ct_fk_field = 'object_id'
     extra = 1
-    fields = ['first_name', 'last_name', 'middle_name', 'position', 'schedule', 'specializations', 'experience_years', 'is_active']
+    fields = ['first_name', 'last_name', 'middle_name', 'position', 'schedule', 'specializations', 'experience_years', 'is_active', 'order']
     verbose_name = _('Специалист')
     verbose_name_plural = _('Специалисты')
 

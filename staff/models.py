@@ -164,6 +164,14 @@ class FacilitySpecialist(MedicalSpecialist):
         null=True
     )
     
+    order = models.PositiveIntegerField(
+        verbose_name=_('Порядок отображения'),
+        null=True,
+        blank=True,
+        default=None,
+        help_text=_('Меньшее значение — выше в списке. Если не указано, специалист отображается после приоритетных.')
+    )
+
     # SEO поля
     meta_title = models.CharField(
         max_length=200, 

@@ -88,12 +88,14 @@ class SpecializationAdmin(admin.ModelAdmin):
 class FacilitySpecialistAdmin(admin.ModelAdmin):
     form = FacilitySpecialistForm
     list_display = [
-        'get_full_name',
+        'get_full_name_with_id',
         'position',
         'get_facility_name',
         'is_active',
+        'order',
         'photo_display'
     ]
+    ordering = ['order', 'id']
     list_filter = [
         'is_active',
         'position',
@@ -263,6 +265,14 @@ class FacilitySpecialistAdmin(admin.ModelAdmin):
     def get_facility_name(self, obj):
         return str(obj.facility) if obj.facility else '-'
     get_facility_name.short_description = _('Учреждение')
+    
+    def get_full_name(self, obj):
+        return obj.get_full_name()
+    get_full_name.short_description = _('ФИО')
+    
+    def get_full_name_with_id(self, obj):
+        return f"{obj.get_full_name()} [ID: {obj.id}]"
+    get_full_name_with_id.short_description = _('ФИО')
     
     def save_model(self, request, obj, form, change):
         if not obj.slug:

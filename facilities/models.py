@@ -240,7 +240,14 @@ class Clinic(AbstractMedicalFacility):
             content_type=ct,
             object_id=self.pk,
             is_active=True
-        ).order_by('last_name', 'first_name')
+        ).order_by(
+            models.Case(
+                models.When(order__isnull=False, then=0),
+                models.When(order__isnull=True, then=1),
+                output_field=models.IntegerField(),
+            ),
+            'order', 'id'
+        )
 
     class Meta:
         verbose_name = _('Клиника')
