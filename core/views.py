@@ -19,10 +19,22 @@ class HomeView(TemplateView):
         context['meta_title'] = 'Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании по всей России'
         context['meta_description'] = 'Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7. Бесплатная консультация.'
         
-        # Получаем данные для главной страницы
-        context['rehab_centers'] = RehabCenter.objects.filter(is_active=True).order_by('-created_at')[:12]
-        context['clinics'] = Clinic.objects.filter(is_active=True).order_by('-created_at')[:12]
-        context['private_doctors'] = PrivateDoctor.objects.filter(is_active=True).order_by('-created_at')[:12]
+        # Получаем данные для главной страницы с приоритетом featured учреждений
+        # Реабилитационные центры
+        featured_rehabs = RehabCenter.objects.filter(is_active=True, is_featured=True).order_by('-created_at')
+        regular_rehabs = RehabCenter.objects.filter(is_active=True, is_featured=False).order_by('-created_at')[:12-len(featured_rehabs)]
+        context['rehab_centers'] = list(featured_rehabs) + list(regular_rehabs)
+        
+        # Клиники
+        featured_clinics = Clinic.objects.filter(is_active=True, is_featured=True).order_by('-created_at')
+        regular_clinics = Clinic.objects.filter(is_active=True, is_featured=False).order_by('-created_at')[:12-len(featured_clinics)]
+        context['clinics'] = list(featured_clinics) + list(regular_clinics)
+        
+        # Частные врачи
+        featured_doctors = PrivateDoctor.objects.filter(is_active=True, is_featured=True).order_by('-created_at')
+        regular_doctors = PrivateDoctor.objects.filter(is_active=True, is_featured=False).order_by('-created_at')[:12-len(featured_doctors)]
+        context['private_doctors'] = list(featured_doctors) + list(regular_doctors)
+        
         context['specialists'] = MedicalSpecialist.objects.filter(is_active=True).order_by('-created_at')[:12]
         context['recovery_stories'] = RecoveryStory.objects.filter(is_published=True).order_by('-created_at')[:6]
         context['useful_info_cards'] = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]

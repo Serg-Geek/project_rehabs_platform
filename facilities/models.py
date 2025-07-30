@@ -93,6 +93,11 @@ class AbstractMedicalFacility(TimeStampedModel):
         default=True,
         verbose_name=_('Активно')
     )
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name=_('Показать на главной странице'),
+        help_text=_('Отметьте, чтобы показать учреждение на главной странице в приоритетном порядке')
+    )
     city = models.ForeignKey(
         City,
         on_delete=models.PROTECT,

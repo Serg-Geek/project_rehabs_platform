@@ -69,15 +69,16 @@ class BaseFacilityAdmin(admin.ModelAdmin):
         'city',
         'phone',
         'email',
-        'is_active'
+        'is_active',
+        'is_featured'
     ]
-    list_filter = ['organization_type', 'city__region', 'city', 'is_active']
+    list_filter = ['organization_type', 'city__region', 'city', 'is_active', 'is_featured']
     search_fields = ['name', 'description', 'address']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [FacilityImageInline, FacilityDocumentInline, FacilitySpecialistInline]
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
+            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'is_featured')
         }),
         ('SEO', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
@@ -112,7 +113,7 @@ class RehabCenterAdmin(BaseFacilityAdmin):
     readonly_fields = ['rehabilitation_programs_list']
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'rehabilitation_programs_list')
+            'fields': ('name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'is_featured', 'rehabilitation_programs_list')
         }),
         ('SEO', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords', 'meta_image'),
@@ -246,13 +247,15 @@ class PrivateDoctorAdmin(BaseFacilityAdmin):
         'city',
         'phone',
         'consultation_price',
-        'is_active'
+        'is_active',
+        'is_featured'
     ]
     list_filter = [
         'organization_type',
         'city__region',
         'city',
         'is_active',
+        'is_featured',
         'home_visits',
         'emergency_available',
         'weekend_work',
@@ -275,7 +278,7 @@ class PrivateDoctorAdmin(BaseFacilityAdmin):
     
     fieldsets = (
         (None, {
-            'fields': ('first_name', 'last_name', 'middle_name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active')
+            'fields': ('first_name', 'last_name', 'middle_name', 'slug', 'organization_type', 'city', 'address', 'phone', 'email', 'website', 'description', 'is_active', 'is_featured')
         }),
         (_('Специализация'), {
             'fields': ('specializations', 'experience_years', 'consultation_price', 'home_visits', 'emergency_available')
