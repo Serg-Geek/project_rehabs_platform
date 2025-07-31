@@ -1,12 +1,18 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from core.models import TimeStampedModel, City
+from django.core.validators import MinValueValidator
+from django.utils.text import slugify
+from django.db.models import Q
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.utils.text import slugify
-from django.db.models import Q
 from .managers import FacilityManager, ClinicManager, RehabCenterManager, PrivateDoctorManager
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+from django.utils import timezone
+from core.models import TimeStampedModel
+from core.utils import generate_slug
+from staff.models import MedicalSpecialist
 
 class OrganizationType(TimeStampedModel):
     """
@@ -99,7 +105,7 @@ class AbstractMedicalFacility(TimeStampedModel):
         help_text=_('Отметьте, чтобы показать учреждение на главной странице в приоритетном порядке')
     )
     city = models.ForeignKey(
-        City,
+        'core.City',
         on_delete=models.PROTECT,
         verbose_name=_('Город'),
         null=True,
@@ -140,11 +146,11 @@ class AbstractMedicalFacility(TimeStampedModel):
         """
         Save the facility with automatic slug generation.
         
-        If slug is not provided, generates it from the facility name.
+        If slug is not provided, generates it from name.
         Handles slug duplication by adding numeric suffix.
         """
+        # Формируем слаг из названия
         if not self.slug:
-            # Формируем базовый слаг из названия
             base_slug = slugify(self.name)
             slug = base_slug
             
@@ -157,6 +163,16 @@ class AbstractMedicalFacility(TimeStampedModel):
             self.slug = slug
             
         super().save(*args, **kwargs)
+
+    @property
+    def main_image(self):
+        """
+        Get the main image of the facility.
+        
+        Returns:
+            FacilityImage or None: Main image (is_main=True) or first image or None
+        """
+        return self.images.filter(is_active=True, is_main=True).first() or self.images.filter(is_active=True).first()
 
 class Clinic(AbstractMedicalFacility):
     """
@@ -428,6 +444,10 @@ class FacilityImage(TimeStampedModel):
         default=False,
         verbose_name=_('Главное фото')
     )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Активно')
+    )
     order = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Порядок')
@@ -464,6 +484,22 @@ class FacilityImage(TimeStampedModel):
             'order': self.order,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
+
+
+@receiver(pre_save, sender='facilities.FacilityImage')
+def ensure_single_main_image(sender, instance, **kwargs):
+    """
+    Сигнал для обеспечения того, что только одно изображение может быть главным
+    для каждого учреждения.
+    """
+    if instance.is_main and instance.is_active:
+        # Если это изображение помечается как главное и активно, убираем флаг у всех остальных
+        FacilityImage.objects.filter(
+            content_type=instance.content_type,
+            object_id=instance.object_id,
+            is_main=True,
+            is_active=True
+        ).exclude(pk=instance.pk).update(is_main=False)
 
 class FacilityDocument(TimeStampedModel):
     """
@@ -792,13 +828,3 @@ class PrivateDoctor(AbstractMedicalFacility):
             int: Number of reviews
         """
         return self.reviews.count()
-
-    @property
-    def main_image(self):
-        """
-        Get the main image of the doctor.
-        
-        Returns:
-            FacilityImage or None: Main image (is_main=True) or first image or None
-        """
-        return self.images.filter(is_main=True).first() or self.images.first()

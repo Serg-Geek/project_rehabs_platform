@@ -79,7 +79,7 @@ def footer_services(request):
                 'services': Service.objects.filter(
                     categories=alcoholism_category,
                     is_active=True
-                ).order_by('-display_priority', 'name')[:10]
+                ).order_by('display_order', 'name')[:10]
             }
         
         if drug_addiction_category:
@@ -88,7 +88,7 @@ def footer_services(request):
                 'services': Service.objects.filter(
                     categories=drug_addiction_category,
                     is_active=True
-                ).order_by('-display_priority', 'name')[:10]
+                ).order_by('display_order', 'name')[:10]
             }
         
         if other_category:
@@ -97,7 +97,7 @@ def footer_services(request):
                 'services': Service.objects.filter(
                     categories=other_category,
                     is_active=True
-                ).order_by('-display_priority', 'name')[:10]
+                ).order_by('display_order', 'name')[:10]
             }
         
         return {'footer_services': footer_services}

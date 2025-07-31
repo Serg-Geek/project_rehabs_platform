@@ -3,13 +3,11 @@
 <div class="card">
     <a href="{% url 'facilities:rehab_detail' facility.slug %}{% if from_service %}?from_service={{ from_service }}{% endif %}">
         <div class="card__image">
-            {% with main_image=facility.images.first %}
-            {% if main_image %}
-            <img src="{{ main_image.image.url }}" alt="Фото реабилитационного центра {{ facility.name }} - {{ facility.city.name }}" />
+            {% if facility.main_image %}
+            <img src="{{ facility.main_image.image.url }}" alt="Фото реабилитационного центра {{ facility.name }} - {{ facility.city.name }}" />
             {% else %}
             <img src="{% static 'deps/img/notImage.svg' %}" alt="Фото реабилитационного центра {{ facility.name }} - изображение отсутствует" />
             {% endif %}
-            {% endwith %}
         </div>
         <div class="card__content">
             

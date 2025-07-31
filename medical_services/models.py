@@ -77,7 +77,7 @@ class ServiceCategory(TimeStampedModel):
         Returns:
             QuerySet: Активные услуги категории
         """
-        return self.services.filter(is_active=True).order_by('-display_priority', 'name')
+        return self.services.filter(is_active=True).order_by('display_order', 'name')
 
 class TherapyMethod(TimeStampedModel):
     """
@@ -167,25 +167,20 @@ class Service(TimeStampedModel):
         verbose_name='Реабилитационная программа',
         help_text='Отметьте, если услуга является реабилитационной программой'
     )
-    PRIORITY_HIGH = 3
-    PRIORITY_MEDIUM = 2
-    PRIORITY_LOW = 1
-    PRIORITY_CHOICES = [
-        (PRIORITY_HIGH, 'Высокий'),
-        (PRIORITY_MEDIUM, 'Средний'),
-        (PRIORITY_LOW, 'Низкий'),
-    ]
-    display_priority = models.IntegerField(
-        choices=PRIORITY_CHOICES,
-        default=PRIORITY_MEDIUM,
-        verbose_name='Приоритет отображения',
-        help_text='Высокий — 3, Средний — 2, Низкий — 1'
+    display_order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Порядок отображения',
+        help_text='Чем меньше число, тем выше услуга в списке. 0 - в конце списка.'
     )
 
     class Meta:
         verbose_name = _('Услуга')
         verbose_name_plural = _('Услуги')
-        ordering = ['name']
+        ordering = ['display_order', 'name']
+        indexes = [
+            models.Index(fields=['display_order', 'is_active']),
+            models.Index(fields=['is_active', 'display_order']),
+        ]
 
     def __str__(self):
         return self.name

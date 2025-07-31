@@ -51,15 +51,16 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_categories', 'is_active', 'display_priority', 'is_rehabilitation_program']
-    list_filter = ['categories', 'is_active', 'display_priority', 'is_rehabilitation_program']
+    list_display = ['name', 'get_categories', 'is_active', 'display_order', 'is_rehabilitation_program']
+    list_filter = ['categories', 'is_active', 'is_rehabilitation_program']
     search_fields = ['name', 'description']
     filter_horizontal = ['categories']
     exclude = ['slug']
-    ordering = ['-display_priority', 'name']
+    ordering = ['display_order', 'name']
+    list_editable = ['display_order']
     fieldsets = (
         (None, {
-            'fields': ('name', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_priority')
+            'fields': ('name', 'categories', 'description', 'is_active', 'is_rehabilitation_program', 'display_order')
         }),
         ('SEO', {
             'fields': ('meta_title', 'meta_description'),

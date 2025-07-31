@@ -36,3 +36,62 @@
     color: #FFFFFF !important;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
+
+/* ========================================
+   СТИЛИ ДЛЯ ПОЛЯ ОПИСАНИЯ В АДМИНКЕ ИЗОБРАЖЕНИЙ
+   ======================================== */
+
+/* Уменьшение ширины поля описания в inline админке */
+.inline-group .field-description textarea {
+    width: 200px !important;
+    height: 60px !important;
+    resize: vertical !important;
+    font-size: 12px !important;
+}
+
+/* Уменьшение ширины поля описания в основной админке */
+.field-description textarea {
+    width: 300px !important;
+    height: 80px !important;
+    resize: vertical !important;
+    font-size: 13px !important;
+}
+
+/* Стили для предпросмотра изображений */
+.field-image_preview img {
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Улучшение отображения inline форм */
+.inline-related {
+    margin-bottom: 20px !important;
+}
+
+.inline-related h3 {
+    background: #f8f9fa !important;
+    padding: 8px 12px !important;
+    border-left: 4px solid #143A44 !important;
+    margin-bottom: 15px !important;
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ ПОЛЯ ГРАФИК РАБОТЫ В РАЗДЕЛЕ СПЕЦИАЛИСТЫ
+   ======================================== */
+
+/* Уменьшение ширины поля графика работы в inline админке */
+.inline-group .field-schedule textarea {
+    width: 200px !important;
+    height: 60px !important;
+    resize: vertical !important;
+    font-size: 12px !important;
+}
+
+/* Уменьшение ширины поля графика работы в основной админке */
+.field-schedule textarea {
+    width: 300px !important;
+    height: 80px !important;
+    resize: vertical !important;
+    font-size: 13px !important;
+}

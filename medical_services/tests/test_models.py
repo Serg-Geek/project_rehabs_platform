@@ -101,25 +101,35 @@ class ServiceTests(TestCase):
         self.assertIn(service, self.category.services.all())
 
     def test_service_priority_ordering(self):
-        """Тест сортировки услуг по приоритету"""
-        service1 = Service.objects.create(
-            name='Услуга 1',
-            display_priority=1,
+        """Тест сортировки услуг по порядку отображения"""
+        # Создаем услуги с разными порядками отображения
+        first_service = Service.objects.create(
+            name='Первая услуга',
+            slug='first-service',
+            display_order=1,
             is_active=True
         )
-        service2 = Service.objects.create(
-            name='Услуга 2',
-            display_priority=3,
-            is_active=True
-        )
-        service3 = Service.objects.create(
-            name='Услуга 3',
-            display_priority=2,
-            is_active=True
-        )
+        first_service.categories.add(self.category)
         
-        services = Service.objects.order_by('-display_priority')
-        self.assertEqual(list(services), [service2, service3, service1])
+        second_service = Service.objects.create(
+            name='Вторая услуга',
+            slug='second-service',
+            display_order=2,
+            is_active=True
+        )
+        second_service.categories.add(self.category)
+        
+        third_service = Service.objects.create(
+            name='Третья услуга',
+            slug='third-service',
+            display_order=3,
+            is_active=True
+        )
+        third_service.categories.add(self.category)
+        
+        # Проверяем сортировку по порядку отображения
+        services = Service.objects.filter(categories=self.category).order_by('display_order')
+        self.assertEqual(list(services), [first_service, second_service, third_service])
 
     def test_active_services_filter(self):
         """Тест фильтрации активных услуг"""
@@ -252,29 +262,37 @@ class ServiceCategoryModelsTest(TestCase):
         self.assertNotIn(self.inactive_service, active_services)
 
     def test_active_services_sorting(self):
-        """Тест сортировки услуг по приоритету и названию"""
-        # Создаем услуги с разными приоритетами
-        high_priority_service = Service.objects.create(
-            name='Высокий приоритет',
-            slug='high-priority',
-            display_priority=Service.PRIORITY_HIGH,
+        """Тест сортировки услуг по порядку отображения и названию"""
+        # Создаем услуги с разными порядками отображения
+        first_service = Service.objects.create(
+            name='Первая услуга',
+            slug='first-service',
+            display_order=1,
             is_active=True
         )
-        high_priority_service.categories.add(self.category)
+        first_service.categories.add(self.category)
         
-        low_priority_service = Service.objects.create(
-            name='Низкий приоритет',
-            slug='low-priority',
-            display_priority=Service.PRIORITY_LOW,
+        second_service = Service.objects.create(
+            name='Вторая услуга',
+            slug='second-service',
+            display_order=2,
             is_active=True
         )
-        low_priority_service.categories.add(self.category)
+        second_service.categories.add(self.category)
         
-        # Проверяем сортировку (высокий приоритет должен быть первым)
+        third_service = Service.objects.create(
+            name='Третья услуга',
+            slug='third-service',
+            display_order=3,
+            is_active=True
+        )
+        third_service.categories.add(self.category)
+        
+        # Проверяем сортировку (первый порядок должен быть первым)
         active_services = list(self.category.active_services())
-        self.assertEqual(active_services[0], high_priority_service)  # Высокий приоритет
-        self.assertEqual(active_services[1], self.active_service)    # Средний приоритет
-        self.assertEqual(active_services[2], low_priority_service)   # Низкий приоритет
+        self.assertEqual(active_services[0], first_service)   # Первый порядок
+        self.assertEqual(active_services[1], second_service)  # Второй порядок
+        self.assertEqual(active_services[2], third_service)   # Третий порядок
 
     def test_active_services_cross_category_isolation(self):
         """Тест изоляции услуг между разными категориями"""

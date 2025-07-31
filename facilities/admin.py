@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.utils.html import mark_safe
 from .models import (
     OrganizationType,
     Clinic,
@@ -21,9 +22,41 @@ class FacilityImageInline(GenericTabularInline):
     ct_field = 'content_type'
     ct_fk_field = 'object_id'
     extra = 1
-    fields = ['image', 'image_type', 'title', 'description', 'is_main', 'order']
+    fields = ['image', 'image_preview', 'image_type', 'title', 'description', 'is_main', 'is_active', 'order']
+    readonly_fields = ['image_preview']
     verbose_name = _('Фото')
     verbose_name_plural = _('Фотографии')
+    
+    class Media:
+        css = {
+            'all': ('deps/css/admin-custom.css',)
+        }
+    
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        form = formset.form
+        
+        # Добавляем help_text для полей
+        form.base_fields['is_main'].help_text = 'Отметьте, чтобы сделать это фото главным. Только одно активное фото может быть главным.'
+        form.base_fields['is_active'].help_text = 'Снимите отметку, чтобы скрыть это изображение.'
+        
+        # Настраиваем виджет для поля description
+        if 'description' in form.base_fields:
+            form.base_fields['description'].widget.attrs.update({
+                'style': 'width: 200px; height: 60px;',
+                'placeholder': 'Краткое описание изображения'
+            })
+        
+        return formset
+    
+    def image_preview(self, obj):
+        """
+        Показывает предпросмотр изображения в админке.
+        """
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" style="max-width: 100px; max-height: 100px;" />')
+        return 'Нет изображения'
+    image_preview.short_description = _('Предпросмотр')
 
 class FacilityDocumentInline(GenericTabularInline):
     """
@@ -146,20 +179,40 @@ class FacilityImageAdmin(admin.ModelAdmin):
     """
     Admin for facility images.
     """
-    list_display = ['get_facility_name', 'image_type', 'title', 'is_main', 'order']
-    list_filter = ['image_type', 'content_type']
+    list_display = ['get_facility_name', 'image_preview', 'image_type', 'title', 'is_main', 'is_active', 'order']
+    list_filter = ['image_type', 'is_main', 'is_active', 'content_type']
     search_fields = ['title', 'description']
     ordering = ['order', 'created_at']
+    readonly_fields = ['image_preview']
     fields = [
         'content_type',
         'object_id',
         'image',
+        'image_preview',
         'image_type',
         'title',
         'description',
         'is_main',
+        'is_active',
         'order'
     ]
+    
+    class Media:
+        css = {
+            'all': ('deps/css/admin-custom.css',)
+        }
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        
+        # Настраиваем виджет для поля description
+        if 'description' in form.base_fields:
+            form.base_fields['description'].widget.attrs.update({
+                'style': 'width: 300px; height: 80px;',
+                'placeholder': 'Подробное описание изображения'
+            })
+        
+        return form
     
     def get_facility_name(self, obj):
         """
@@ -173,6 +226,15 @@ class FacilityImageAdmin(admin.ModelAdmin):
         """
         return str(obj.content_object) if obj.content_object else 'Unknown'
     get_facility_name.short_description = _('Учреждение')
+    
+    def image_preview(self, obj):
+        """
+        Показывает предпросмотр изображения в админке.
+        """
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" style="max-width: 150px; max-height: 150px;" />')
+        return 'Нет изображения'
+    image_preview.short_description = _('Предпросмотр')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """
