@@ -3,9 +3,13 @@
         "model": "medical_services.servicecategory",
         "pk": 1,
         "fields": {
-            "name": "Консультации",
-            "slug": "konsultacii",
-            "description": "Консультации специалистов различного профиля",
+            "name": "Лечение наркомании",
+            "slug": "lechenie-narkomanii",
+            "description": "Специализированные услуги по лечению наркотической зависимости",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 1,
             "is_active": true,
             "created_at": "2024-04-07T21:00:00Z",
             "updated_at": "2024-04-07T21:00:00Z"
@@ -15,9 +19,13 @@
         "model": "medical_services.servicecategory",
         "pk": 2,
         "fields": {
-            "name": "Физическая реабилитация",
-            "slug": "fizicheskaya-reabilitaciya",
-            "description": "Услуги по восстановлению физических функций организма",
+            "name": "Лечение алкоголизма",
+            "slug": "lechenie-alkogolizma",
+            "description": "Комплексные услуги по лечению алкогольной зависимости",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 2,
             "is_active": true,
             "created_at": "2024-04-07T21:00:00Z",
             "updated_at": "2024-04-07T21:00:00Z"
@@ -27,9 +35,13 @@
         "model": "medical_services.servicecategory",
         "pk": 3,
         "fields": {
-            "name": "Мануальные практики",
-            "slug": "manualnye-praktiki",
-            "description": "Различные виды массажа и мануальной терапии",
+            "name": "Другие услуги",
+            "slug": "drugie-uslugi",
+            "description": "Дополнительные медицинские услуги и консультации",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 3,
             "is_active": true,
             "created_at": "2024-04-07T21:00:00Z",
             "updated_at": "2024-04-07T21:00:00Z"
@@ -39,9 +51,13 @@
         "model": "medical_services.servicecategory",
         "pk": 4,
         "fields": {
-            "name": "Аппаратная терапия",
-            "slug": "apparatnaya-terapiya",
-            "description": "Лечение с использованием медицинского оборудования",
+            "name": "Консультации",
+            "slug": "konsultacii",
+            "description": "Консультации специалистов различного профиля",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 4,
             "is_active": true,
             "created_at": "2024-04-07T21:00:00Z",
             "updated_at": "2024-04-07T21:00:00Z"
@@ -51,9 +67,61 @@
         "model": "medical_services.servicecategory",
         "pk": 5,
         "fields": {
+            "name": "Физическая реабилитация",
+            "slug": "fizicheskaya-reabilitaciya",
+            "description": "Услуги по восстановлению физических функций организма",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 5,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 6,
+        "fields": {
+            "name": "Мануальные практики",
+            "slug": "manualnye-praktiki",
+            "description": "Различные виды массажа и мануальной терапии",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 6,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 7,
+        "fields": {
+            "name": "Аппаратная терапия",
+            "slug": "apparatnaya-terapiya",
+            "description": "Лечение с использованием медицинского оборудования",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 7,
+            "is_active": true,
+            "created_at": "2024-04-07T21:00:00Z",
+            "updated_at": "2024-04-07T21:00:00Z"
+        }
+    },
+    {
+        "model": "medical_services.servicecategory",
+        "pk": 8,
+        "fields": {
             "name": "Психологическая реабилитация",
             "slug": "psihologicheskaya-reabilitaciya",
             "description": "Услуги по восстановлению психологического здоровья",
+            "meta_title": null,
+            "meta_description": null,
+            "parent": null,
+            "order": 8,
             "is_active": true,
             "created_at": "2024-04-07T21:00:00Z",
             "updated_at": "2024-04-07T21:00:00Z"

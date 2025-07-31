@@ -41,7 +41,7 @@ class ServiceCategoryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         
         # Получаем услуги в этой категории
-        services = self.object.services.filter(is_active=True).order_by('-display_priority', 'name')
+        services = self.object.services.filter(is_active=True).order_by('display_order', 'name')
         
         # SEO
         context['meta_title'] = self.object.meta_title or self.object.name
