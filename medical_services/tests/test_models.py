@@ -73,7 +73,7 @@ class ServiceTests(TestCase):
             'name': 'Тестовая услуга',
             'description': 'Описание тестовой услуги',
             'is_active': True,
-            'display_priority': 1
+            'display_order': 1
         }
 
     def test_create_service(self):
@@ -85,7 +85,7 @@ class ServiceTests(TestCase):
         self.assertGreater(len(service.slug), 0)
         self.assertEqual(service.description, self.service_data['description'])
         self.assertTrue(service.is_active)
-        self.assertEqual(service.display_priority, self.service_data['display_priority'])
+        self.assertEqual(service.display_order, self.service_data['display_order'])
 
     def test_service_str_representation(self):
         """Тест строкового представления услуги"""
@@ -290,9 +290,13 @@ class ServiceCategoryModelsTest(TestCase):
         
         # Проверяем сортировку (первый порядок должен быть первым)
         active_services = list(self.category.active_services())
-        self.assertEqual(active_services[0], first_service)   # Первый порядок
-        self.assertEqual(active_services[1], second_service)  # Второй порядок
-        self.assertEqual(active_services[2], third_service)   # Третий порядок
+        
+        # active_service создается без display_order, поэтому он будет первым (по умолчанию 0)
+        # Затем идут услуги с display_order 1, 2, 3
+        self.assertEqual(active_services[0], self.active_service)  # display_order=0 (по умолчанию)
+        self.assertEqual(active_services[1], first_service)        # display_order=1
+        self.assertEqual(active_services[2], second_service)       # display_order=2
+        self.assertEqual(active_services[3], third_service)        # display_order=3
 
     def test_active_services_cross_category_isolation(self):
         """Тест изоляции услуг между разными категориями"""

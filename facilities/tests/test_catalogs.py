@@ -13,8 +13,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
-from facilities.models import Clinic, RehabCenter, OrganizationType, City, Review, FacilityImage
-from core.models import Region
+from facilities.models import Clinic, RehabCenter, OrganizationType, Review, FacilityImage
+from core.models import Region, City
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

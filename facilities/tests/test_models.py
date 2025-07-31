@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
 from facilities.models import Clinic, RehabCenter, PrivateDoctor, FacilityImage, OrganizationType
-from staff.models import Specialization
+from staff.models import Specialization, FacilitySpecialist
 from core.models import Region, City
 
 
