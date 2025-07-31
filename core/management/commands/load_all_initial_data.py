@@ -32,7 +32,7 @@ class Command(BaseCommand):
             'facilities/fixtures/rehab_centers.json',
             
             # Медицинские услуги (из medical_services)
-            'medical_services/fixtures/categories.json',
+            'medical_services/fixtures/initial_service_categories.json',
             'medical_services/fixtures/services.json',
             'medical_services/fixtures/facility_services.json',
             
