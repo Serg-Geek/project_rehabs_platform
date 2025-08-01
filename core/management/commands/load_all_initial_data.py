@@ -46,6 +46,7 @@ class Command(BaseCommand):
             'recovery_stories/fixtures/recovery_stories.json',
         ]
 
+        errors_count = 0
         for fixture in fixtures:
             try:
                 self.stdout.write(f'Загрузка данных из {fixture}...')
@@ -53,9 +54,10 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f'✓ Данные из {fixture} успешно загружены'))
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'✗ Ошибка при загрузке {fixture}: {str(e)}')
+                    self.style.WARNING(f'⚠ Ошибка при загрузке {fixture}: {str(e)}')
                 )
-                return
+                errors_count += 1
+                # Продолжаем загрузку остальных фикстур
 
         # Создаем системные теги для блога
         try:
@@ -73,7 +75,13 @@ class Command(BaseCommand):
             
         except Exception as e:
             self.stdout.write(
-                self.style.ERROR(f'✗ Ошибка при создании системных тегов: {str(e)}')
+                self.style.WARNING(f'⚠ Ошибка при создании системных тегов: {str(e)}')
             )
+            errors_count += 1
 
-        self.stdout.write(self.style.SUCCESS('✓ Все начальные данные успешно загружены')) 
+        if errors_count == 0:
+            self.stdout.write(self.style.SUCCESS('✓ Все начальные данные успешно загружены'))
+        else:
+            self.stdout.write(
+                self.style.WARNING(f'⚠ Загрузка завершена с {errors_count} ошибками. Проверьте логи выше.')
+            ) 
