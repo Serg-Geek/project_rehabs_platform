@@ -432,6 +432,8 @@ python manage.py load_all_initial_data
 
 #### Быстрое использование
 
+**Linux/Mac:**
+
 ```bash
 # Создание дампа
 ./scripts/create_dump.sh
@@ -441,6 +443,19 @@ python manage.py load_all_initial_data
 
 # Дамп конкретного приложения
 ./scripts/dump_app.sh medical_services
+```
+
+**Windows:**
+
+```cmd
+# Создание дампа
+scripts\create_dump.bat
+
+# Восстановление из дампа
+scripts\restore_dump.bat
+
+# Дамп конкретного приложения
+scripts\dump_app.bat medical_services
 ```
 
 #### Ручное создание дампа
