@@ -276,6 +276,9 @@ project_rehabs_platform/
 │   └── includes/cards/     # Карточки: service_card.html
 ├── static/                 # Статические файлы
 ├── media/                  # Загружаемые файлы
+├── fixtures/               # Дампы базы данных
+├── scripts/                # Скрипты автоматизации
+├── project_docs/           # Документация проекта
 └── docs/                   # Документация
 ```
 
@@ -425,6 +428,46 @@ python manage.py setup_project --skip-superuser  # без создания ад�
 python manage.py load_all_initial_data
 ```
 
+### Работа с дампами базы данных
+
+#### Быстрое использование
+
+```bash
+# Создание дампа
+./scripts/create_dump.sh
+
+# Восстановление из дампа
+./scripts/restore_dump.sh
+
+# Дамп конкретного приложения
+./scripts/dump_app.sh medical_services
+```
+
+#### Ручное создание дампа
+
+```bash
+# Полный дамп (рекомендуется)
+PYTHONIOENCODING=utf-8 python manage.py dumpdata \
+  --exclude auth.permission \
+  --exclude contenttypes.contenttype \
+  --exclude admin.logentry \
+  --exclude sessions.session \
+  --indent 2 > fixtures/full_database_dump.json
+```
+
+#### Восстановление из дампа
+
+```bash
+# Полная переустановка БД
+rm db.sqlite3
+python manage.py migrate
+python manage.py loaddata fixtures/full_database_dump.json
+```
+
+**Важно:** Все дампы создаются в кодировке UTF-8 для корректного отображения русского текста.
+
+**Подробная документация:** [project_docs/database/dump_instructions.md](project_docs/database/dump_instructions.md)
+
 ### Тестирование
 
 ```bash
@@ -482,6 +525,7 @@ python manage.py check --deploy
 
 - **[Техническое задание](docs/Техническое_задание.txt)** - исходное ТЗ проекта
 - **[Структура документации](docs/README.md)** - полный обзор всех документов
+- **[Работа с дампами](project_docs/database/dump_instructions.md)** - создание и восстановление дампов БД
 
 ## Лицензия
 

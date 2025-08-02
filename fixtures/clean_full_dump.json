@@ -1,0 +1,3280 @@
+[
+{
+  "model": "core.region",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Московская область",
+    "slug": "moskovskaya-oblast",
+    "is_active": true
+  }
+},
+{
+  "model": "core.region",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Ленинградская область",
+    "slug": "leningradskaya-oblast",
+    "is_active": true
+  }
+},
+{
+  "model": "core.region",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Новосибирская область",
+    "slug": "novosibirskaya-oblast",
+    "is_active": true
+  }
+},
+{
+  "model": "core.region",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Свердловская область",
+    "slug": "sverdlovskaya-oblast",
+    "is_active": true
+  }
+},
+{
+  "model": "core.region",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Краснодарский край",
+    "slug": "krasnodarskiy-kray",
+    "is_active": true
+  }
+},
+{
+  "model": "core.region",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Республика Татарстан",
+    "slug": "respublika-tatarstan",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 1,
+    "name": "Химки",
+    "slug": "himki",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 1,
+    "name": "Подольск",
+    "slug": "podolsk",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 2,
+    "name": "Пушкин",
+    "slug": "pushkin",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 2,
+    "name": "Петергоф",
+    "slug": "peterhof",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 3,
+    "name": "Новосибирск",
+    "slug": "novosibirsk",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 3,
+    "name": "Бердск",
+    "slug": "berdsk",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 4,
+    "name": "Екатеринбург",
+    "slug": "ekaterinburg",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 4,
+    "name": "Нижний Тагил",
+    "slug": "nizhniy-tagil",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 5,
+    "name": "Сочи",
+    "slug": "sochi",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 5,
+    "name": "Анапа",
+    "slug": "anapa",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 11,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 6,
+    "name": "Казань",
+    "slug": "kazan",
+    "is_active": true
+  }
+},
+{
+  "model": "core.city",
+  "pk": 12,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "region": 6,
+    "name": "Набережные Челны",
+    "slug": "naberezhnye-chelny",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.853Z",
+    "updated_at": "2025-08-01T12:43:47.990Z",
+    "city": 5,
+    "latitude": "55.008400",
+    "longitude": "82.935700",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.855Z",
+    "updated_at": "2025-08-01T12:43:47.992Z",
+    "city": 7,
+    "latitude": "56.851900",
+    "longitude": "60.612200",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.856Z",
+    "updated_at": "2025-08-01T12:43:47.993Z",
+    "city": 11,
+    "latitude": "55.830400",
+    "longitude": "49.066100",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.859Z",
+    "updated_at": "2025-08-01T12:43:47.996Z",
+    "city": 10,
+    "latitude": "44.894700",
+    "longitude": "37.316600",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.860Z",
+    "updated_at": "2025-08-01T12:43:47.997Z",
+    "city": 9,
+    "latitude": "43.602800",
+    "longitude": "39.734200",
+    "is_active": true
+  }
+},
+{
+  "model": "core.citycoordinates",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-01T12:42:51.867Z",
+    "updated_at": "2025-08-01T12:43:48.006Z",
+    "city": 12,
+    "latitude": "55.743600",
+    "longitude": "52.395800",
+    "is_active": true
+  }
+},
+{
+  "model": "facilities.organizationtype",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-07-31T14:40:45.057Z",
+    "updated_at": "2025-07-31T14:40:45.057Z",
+    "name": "Реабилитационный центр",
+    "slug": "rehabilitation-center",
+    "description": "Специализированные центры реабилитации",
+    "competencies": ""
+  }
+},
+{
+  "model": "facilities.organizationtype",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-07-31T14:40:45.057Z",
+    "updated_at": "2025-07-31T14:40:45.057Z",
+    "name": "Клиника",
+    "slug": "clinic",
+    "description": "Медицинские клиники",
+    "competencies": ""
+  }
+},
+{
+  "model": "facilities.organizationtype",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-07-31T14:40:45.057Z",
+    "updated_at": "2025-07-31T14:40:45.057Z",
+    "name": "Частный врач",
+    "slug": "private-doctor",
+    "description": "Частнопрактикующие врачи",
+    "competencies": ""
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Здоровье'",
+    "slug": "medicinskiy-centr-zdorove",
+    "organization_type": 1,
+    "description": "Современный медицинский центр с широким спектром услуг",
+    "address": "ул. Ленина, 10",
+    "phone": "+7 (495) 123-45-67",
+    "email": "info@zdorovie.ru",
+    "website": "https://zdorovie.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 1,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Медикал'",
+    "slug": "klinika-medikal",
+    "organization_type": 1,
+    "description": "Многопрофильная клиника с опытными специалистами",
+    "address": "пр. Мира, 25",
+    "phone": "+7 (495) 234-56-78",
+    "email": "info@medikal.ru",
+    "website": "https://medikal.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 1,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": false
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Доктор'",
+    "slug": "medicinskiy-centr-doktor",
+    "organization_type": 1,
+    "description": "Семейная клиника с индивидуальным подходом",
+    "address": "ул. Пушкина, 15",
+    "phone": "+7 (812) 345-67-89",
+    "email": "info@doktor.ru",
+    "website": "https://doktor.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 3,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": false,
+    "has_hospital": false
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Семейная'",
+    "slug": "klinika-semeynaya",
+    "organization_type": 1,
+    "description": "Клиника для всей семьи с современным оборудованием",
+    "address": "пр. Невский, 100",
+    "phone": "+7 (812) 456-78-90",
+    "email": "info@semeynaya.ru",
+    "website": "https://semeynaya.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 3,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Урал'",
+    "slug": "medicinskiy-centr-ural",
+    "organization_type": 1,
+    "description": "Крупнейший медицинский центр Урала",
+    "address": "ул. Малышева, 50",
+    "phone": "+7 (343) 567-89-01",
+    "email": "info@ural-med.ru",
+    "website": "https://ural-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 5,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Сибирь'",
+    "slug": "klinika-sibir",
+    "organization_type": 1,
+    "description": "Многопрофильная клиника с передовыми технологиями",
+    "address": "пр. Карла Маркса, 30",
+    "phone": "+7 (383) 678-90-12",
+    "email": "info@sibir-med.ru",
+    "website": "https://sibir-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 7,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Юг'",
+    "slug": "medicinskiy-centr-yug",
+    "organization_type": 1,
+    "description": "Современная клиника с европейскими стандартами",
+    "address": "ул. Красная, 150",
+    "phone": "+7 (861) 789-01-23",
+    "email": "info@yug-med.ru",
+    "website": "https://yug-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 9,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Приморье'",
+    "slug": "klinika-primorie",
+    "organization_type": 1,
+    "description": "Медицинский центр с focus на профилактику",
+    "address": "ул. Приморская, 20",
+    "phone": "+7 (861) 890-12-34",
+    "email": "info@primorie-med.ru",
+    "website": "https://primorie-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 9,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": false,
+    "has_hospital": false
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Север'",
+    "slug": "medicinskiy-centr-sever",
+    "organization_type": 1,
+    "description": "Специализированная клиника с уникальными методиками",
+    "address": "пр. Ленина, 75",
+    "phone": "+7 (343) 901-23-45",
+    "email": "info@sever-med.ru",
+    "website": "https://sever-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 5,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Восток'",
+    "slug": "klinika-vostok",
+    "organization_type": 1,
+    "description": "Инновационный медицинский центр",
+    "address": "ул. Советская, 40",
+    "phone": "+7 (383) 012-34-56",
+    "email": "info@vostok-med.ru",
+    "website": "https://vostok-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 7,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": false
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 11,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Запад'",
+    "slug": "medicinskiy-centr-zapad",
+    "organization_type": 1,
+    "description": "Клиника с европейским подходом к лечению",
+    "address": "пр. Победы, 60",
+    "phone": "+7 (812) 123-45-67",
+    "email": "info@zapad-med.ru",
+    "website": "https://zapad-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 3,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 12,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Центр'",
+    "slug": "klinika-centr",
+    "organization_type": 1,
+    "description": "Центральная клиника с широким спектром услуг",
+    "address": "ул. Центральная, 1",
+    "phone": "+7 (495) 234-56-78",
+    "email": "info@centr-med.ru",
+    "website": "https://centr-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 1,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 13,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Плюс'",
+    "slug": "medicinskiy-centr-plus",
+    "organization_type": 1,
+    "description": "Клиника с акцентом на профилактическую медицину",
+    "address": "ул. Медицинская, 15",
+    "phone": "+7 (861) 345-67-89",
+    "email": "info@plus-med.ru",
+    "website": "https://plus-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 9,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": false,
+    "has_hospital": false
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 14,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Клиника 'Профи'",
+    "slug": "klinika-profi",
+    "organization_type": 1,
+    "description": "Профессиональная клиника с опытными специалистами",
+    "address": "пр. Профессиональный, 30",
+    "phone": "+7 (343) 456-78-90",
+    "email": "info@profi-med.ru",
+    "website": "https://profi-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 5,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.clinic",
+  "pk": 15,
+  "fields": {
+    "created_at": "2024-04-07T21:00:00Z",
+    "updated_at": "2024-04-07T21:00:00Z",
+    "name": "Медицинский центр 'Эксперт'",
+    "slug": "medicinskiy-centr-ekspert",
+    "organization_type": 1,
+    "description": "Экспертная клиника с современным оборудованием",
+    "address": "ул. Экспертная, 25",
+    "phone": "+7 (383) 567-89-01",
+    "email": "info@ekspert-med.ru",
+    "website": "https://ekspert-med.ru",
+    "license_number": "",
+    "is_active": true,
+    "is_featured": false,
+    "city": 7,
+    "meta_title": null,
+    "meta_description": null,
+    "meta_keywords": null,
+    "meta_image": "",
+    "emergency_support": true,
+    "has_hospital": true
+  }
+},
+{
+  "model": "facilities.rehabcenter",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-01T12:43:30.907Z",
+    "updated_at": "2025-08-01T12:45:04.441Z",
+    "name": "Тестовый центр",
+    "slug": "test-center",
+    "organization_type": 1,
+    "description": "Тестовое описание",
+    "website": null,
+    "is_active": true,
+    "is_featured": true,
+    "city": 10,
+    "meta_title": null,
+    "meta_description": "",
+    "meta_keywords": null,
+    "meta_image": "",
+    "address": "Тестовый адрес",
+    "phone": "+7 123 456 7890",
+    "email": "test@example.com"
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "content_type": 2,
+    "object_id": 1,
+    "rating": 5,
+    "content": "Отличный центр реабилитации! Персонал внимательный, условия проживания комфортные. Программа восстановления эффективная. Особенно понравилось отношение врачей и психологов."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-01-02T00:00:00Z",
+    "updated_at": "2024-01-02T00:00:00Z",
+    "content_type": 2,
+    "object_id": 1,
+    "rating": 4,
+    "content": "Хороший центр, но цены немного высокие. В целом остался доволен результатами. Особенно понравилась программа реабилитации и питание."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-01-03T00:00:00Z",
+    "updated_at": "2024-01-03T00:00:00Z",
+    "content_type": 2,
+    "object_id": 1,
+    "rating": 5,
+    "content": "Прекрасный центр! Очень доволен результатами реабилитации. Персонал профессиональный, условия проживания отличные. Рекомендую всем, кто ищет качественную реабилитацию."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-01-04T00:00:00Z",
+    "updated_at": "2024-01-04T00:00:00Z",
+    "content_type": 2,
+    "object_id": 1,
+    "rating": 4,
+    "content": "Центр очень хороший. Особенно понравилась работа психологов и индивидуальный подход к каждому пациенту. Единственное, что можно улучшить - это организацию досуга."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-01-05T00:00:00Z",
+    "updated_at": "2024-01-05T00:00:00Z",
+    "content_type": 2,
+    "object_id": 1,
+    "rating": 5,
+    "content": "Отличный центр! Современное оборудование, квалифицированный персонал, комфортные условия проживания. Результаты реабилитации превзошли все ожидания. Спасибо всему коллективу!"
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-01-06T00:00:00Z",
+    "updated_at": "2024-01-06T00:00:00Z",
+    "content_type": 2,
+    "object_id": 5,
+    "rating": 5,
+    "content": "Отличный центр! Современное оборудование, квалифицированный персонал."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-01-07T00:00:00Z",
+    "updated_at": "2024-01-07T00:00:00Z",
+    "content_type": 2,
+    "object_id": 6,
+    "rating": 2,
+    "content": "Не понравилось отношение персонала. Условия проживания оставляют желать лучшего."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-01-08T00:00:00Z",
+    "updated_at": "2024-01-08T00:00:00Z",
+    "content_type": 2,
+    "object_id": 7,
+    "rating": 4,
+    "content": "Хороший центр реабилитации. Программа восстановления эффективная."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-01-09T00:00:00Z",
+    "updated_at": "2024-01-09T00:00:00Z",
+    "content_type": 2,
+    "object_id": 8,
+    "rating": 5,
+    "content": "Отличный центр! Персонал внимательный, условия проживания комфортные."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-01-10T00:00:00Z",
+    "updated_at": "2024-01-10T00:00:00Z",
+    "content_type": 2,
+    "object_id": 9,
+    "rating": 4,
+    "content": "Хороший центр реабилитации. Программа восстановления эффективная."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 11,
+  "fields": {
+    "created_at": "2024-01-11T00:00:00Z",
+    "updated_at": "2024-01-11T00:00:00Z",
+    "content_type": 2,
+    "object_id": 10,
+    "rating": 3,
+    "content": "Центр неплохой, но есть проблемы с организацией питания. Персонал вежливый."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 12,
+  "fields": {
+    "created_at": "2024-01-12T00:00:00Z",
+    "updated_at": "2024-01-12T00:00:00Z",
+    "content_type": 2,
+    "object_id": 11,
+    "rating": 5,
+    "content": "Отличный центр! Современное оборудование, квалифицированный персонал."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 13,
+  "fields": {
+    "created_at": "2024-01-13T00:00:00Z",
+    "updated_at": "2024-01-13T00:00:00Z",
+    "content_type": 2,
+    "object_id": 12,
+    "rating": 4,
+    "content": "Хороший центр реабилитации. Программа восстановления эффективная."
+  }
+},
+{
+  "model": "facilities.review",
+  "pk": 14,
+  "fields": {
+    "created_at": "2024-01-14T00:00:00Z",
+    "updated_at": "2024-01-14T00:00:00Z",
+    "content_type": 2,
+    "object_id": 12,
+    "rating": 2,
+    "content": "Не понравилось отношение персонала. Условия проживания оставляют желать лучшего."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Аддиктолог",
+    "slug": "addiktolog",
+    "description": "Специалист, занимающийся диагностикой, лечением и профилактикой зависимостей, включая химические и поведенческие."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Инструктор по физической реабилитации",
+    "slug": "instructor-po-fizicheskoy-reabilitacii",
+    "description": "Профессионал, который разрабатывает и проводит физические упражнения и процедуры для восстановления двигательных функций и улучшения общего состояния здоровья пациентов."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Консультант по химической зависимости",
+    "slug": "konsultant-po-himicheskoy-zavisimosti",
+    "description": "Специалист, помогающий пациентам справляться с химической зависимостью, предоставляющий консультации, мотивационную поддержку и помощь в процессе реабилитации."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Медсестра",
+    "slug": "medsestra",
+    "description": "Медицинский работник, обеспечивающий уход за пациентами, контроль за приёмом лекарств и помощь врачам в проведении процедур."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Психиатр-нарколог",
+    "slug": "psihiatr-narkolog",
+    "description": "Врач, специализирующийся на диагностике и лечении психических расстройств и зависимостей, включая назначение медикаментозной терапии."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Психолог",
+    "slug": "psiholog",
+    "description": "Специалист по психологии, работающий с пациентами над решением эмоциональных, поведенческих и межличностных проблем."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Психотерапевт",
+    "slug": "psihoterapevt",
+    "description": "Профессионал, проводящий длительную терапевтическую работу с пациентами для решения глубоких психологических проблем и травм."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Реабилитолог",
+    "slug": "reabilitolog",
+    "description": "Специалист, занимающийся восстановлением физических и психических функций пациентов после болезней, травм или зависимостей."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Семейный психолог",
+    "slug": "semeynyy-psiholog",
+    "description": "Психолог, работающий с семейными парами и членами семьи для улучшения коммуникации, разрешения конфликтов и укрепления отношений."
+  }
+},
+{
+  "model": "staff.specialization",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-04-24T00:00:00Z",
+    "updated_at": "2024-04-24T00:00:00Z",
+    "name": "Социальный работник",
+    "slug": "socialnyy-rabotnik",
+    "description": "Профессионал, оказывающий помощь в социальной адаптации, юридической поддержке и взаимодействии пациентов с учреждениями социальной защиты."
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$zrTO2wFW6rUX5seouveU3h$xheWrmyyoc6sipwXv686PuLezfO9A1ivYxRqMXgmAOU=",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "role": "superuser",
+    "email": "admin@admin.com",
+    "is_active": true,
+    "last_login": "2025-08-01T12:44:17.925Z",
+    "date_joined": "2025-08-01T12:42:52.078Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.userprofile",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-02T11:55:13.688Z",
+    "updated_at": "2025-08-02T11:55:13.688Z",
+    "user": 1,
+    "birth_date": null,
+    "gender": null,
+    "address": null,
+    "bio": null
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Алкоголизм",
+    "slug": "alkogolizm",
+    "description": "Статьи о лечении алкоголизма и реабилитации",
+    "parent": null,
+    "order": 1
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Наркомания",
+    "slug": "narkomaniya",
+    "description": "Статьи о лечении наркомании и реабилитации",
+    "parent": null,
+    "order": 2
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Созависимость",
+    "slug": "sozavisimost",
+    "description": "Статьи о созависимости и её лечении",
+    "parent": null,
+    "order": 3
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Психология",
+    "slug": "psihologiya",
+    "description": "Статьи по психологии и психотерапии",
+    "parent": null,
+    "order": 4
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Реабилитация",
+    "slug": "reabilitaciya",
+    "description": "Статьи о процессе реабилитации",
+    "parent": null,
+    "order": 5
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Семейная терапия",
+    "slug": "semeynaya-terapiya",
+    "description": "Статьи о семейной терапии",
+    "parent": null,
+    "order": 6
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Профилактика",
+    "slug": "profilaktika",
+    "description": "Статьи о профилактике зависимостей",
+    "parent": null,
+    "order": 7
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Истории выздоровления",
+    "slug": "istorii-vyzdorovleniya",
+    "description": "Реальные истории выздоровления",
+    "parent": null,
+    "order": 8
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Медикаментозное лечение",
+    "slug": "medikamentoznoe-lechenie",
+    "description": "Статьи о медикаментозном лечении",
+    "parent": null,
+    "order": 9
+  }
+},
+{
+  "model": "blog.blogcategory",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-03-01T00:00:00Z",
+    "updated_at": "2024-03-01T00:00:00Z",
+    "name": "Социальная адаптация",
+    "slug": "socialnaya-adaptaciya",
+    "description": "Статьи о социальной адаптации после лечения",
+    "parent": null,
+    "order": 10
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Профилактика и предупреждение",
+    "slug": "profilaktika-i-preduprezhdenie",
+    "icon": "deps/icons/articles_tags_icons/hand-stop-icon.svg",
+    "description": "Материалы по профилактике зависимостей и предупреждению рецидивов",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.868Z",
+    "updated_at": "2025-08-01T12:41:25.868Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Юридическая консультация",
+    "slug": "yuridicheskaya-konsultatsiya",
+    "icon": "deps/icons/articles_tags_icons/justice-hammer-icon.svg",
+    "description": "Правовые вопросы, связанные с зависимостями и реабилитацией",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.872Z",
+    "updated_at": "2025-08-01T12:41:25.872Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Психиатрия",
+    "slug": "psihiatriya",
+    "icon": "deps/icons/articles_tags_icons/psychiatrist-icon.svg",
+    "description": "Психиатрические аспекты лечения зависимостей",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.875Z",
+    "updated_at": "2025-08-01T12:41:25.875Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 4,
+  "fields": {
+    "name": "Психология",
+    "slug": "psihologiya",
+    "icon": "deps/icons/articles_tags_icons/psychologist-icon.svg",
+    "description": "Психологические методы лечения и поддержки",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.878Z",
+    "updated_at": "2025-08-01T12:41:25.878Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 5,
+  "fields": {
+    "name": "Родственникам",
+    "slug": "rodstvennikam",
+    "icon": "deps/icons/articles_tags_icons/heart-icon.svg",
+    "description": "Информация для родственников зависимых людей",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.881Z",
+    "updated_at": "2025-08-01T12:41:25.881Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 6,
+  "fields": {
+    "name": "Наркомания",
+    "slug": "narkomaniya",
+    "icon": "deps/icons/articles_tags_icons/medicine-icon.svg",
+    "description": "Материалы по лечению наркотической зависимости",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.883Z",
+    "updated_at": "2025-08-01T12:41:25.883Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 7,
+  "fields": {
+    "name": "Алкоголизм",
+    "slug": "alkogolizm",
+    "icon": "deps/icons/articles_tags_icons/alcohol-icon.svg",
+    "description": "Материалы по лечению алкогольной зависимости",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.886Z",
+    "updated_at": "2025-08-01T12:41:25.886Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 8,
+  "fields": {
+    "name": "Зависимости",
+    "slug": "zavisimosti",
+    "icon": "deps/icons/articles_tags_icons/broken-heart-icon.svg",
+    "description": "Общие материалы по различным видам зависимостей",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.889Z",
+    "updated_at": "2025-08-01T12:41:25.889Z"
+  }
+},
+{
+  "model": "blog.tag",
+  "pk": 9,
+  "fields": {
+    "name": "Ресоциализация",
+    "slug": "resotsializatsiya",
+    "icon": "deps/icons/articles_tags_icons/clients-icon.svg",
+    "description": "Материалы по возвращению к нормальной жизни после лечения",
+    "is_active": true,
+    "is_system": true,
+    "created_at": "2025-08-01T12:41:25.892Z",
+    "updated_at": "2025-08-01T12:41:25.892Z"
+  }
+},
+{
+  "model": "medical_services.servicecategory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Лечение алкоголизма",
+    "slug": "lechenie-alkogolizma",
+    "description": "Комплексное лечение алкогольной зависимости",
+    "meta_title": null,
+    "meta_description": null,
+    "parent": null,
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "medical_services.servicecategory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Лечение наркомании",
+    "slug": "lechenie-narkomanii",
+    "description": "Комплексное лечение наркотической зависимости",
+    "meta_title": null,
+    "meta_description": null,
+    "parent": null,
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "medical_services.servicecategory",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "name": "Другие услуги",
+    "slug": "drugie-uslugi",
+    "description": "Дополнительные услуги по лечению зависимостей",
+    "meta_title": null,
+    "meta_description": null,
+    "parent": null,
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-01T16:33:32.269Z",
+    "updated_at": "2025-08-01T16:35:30.344Z",
+    "name": "Консультация врача-реабилитолога",
+    "slug": "konsultatsiya-vracha-reabilitologa",
+    "description": "Первичная консультация с составлением индивидуального плана реабилитации",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 6,
+    "categories": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-08-01T16:33:32.279Z",
+    "updated_at": "2025-08-01T16:33:32.279Z",
+    "name": "Лечебная физкультура",
+    "slug": "lechebnaya-fizkultura",
+    "description": "Индивидуальные занятия ЛФК под руководством опытного инструктора",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 2,
+    "categories": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-08-01T16:33:32.284Z",
+    "updated_at": "2025-08-01T16:33:32.284Z",
+    "name": "Психологическая реабилитация",
+    "slug": "psihologicheskaya-reabilitatsiya",
+    "description": "Индивидуальные консультации психолога для восстановления психологического здоровья",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 3,
+    "categories": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-01T16:34:17.709Z",
+    "updated_at": "2025-08-01T16:34:17.709Z",
+    "name": "Массаж",
+    "slug": "massazh",
+    "description": "Лечебный массаж различных отделов позвоночника и конечностей",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 4,
+    "categories": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-01T16:34:17.719Z",
+    "updated_at": "2025-08-01T16:34:17.719Z",
+    "name": "Физиотерапия",
+    "slug": "fizioterapiya",
+    "description": "Комплекс физиотерапевтических процедур для восстановления и укрепления здоровья",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 5,
+    "categories": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "medical_services.service",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-01T16:34:17.723Z",
+    "updated_at": "2025-08-01T16:35:30.346Z",
+    "name": "Мануальная терапия",
+    "slug": "manualnaya-terapiya",
+    "description": "Комплексное воздействие на опорно-двигательный аппарат для устранения болевых синдромов",
+    "meta_title": null,
+    "meta_description": null,
+    "is_active": true,
+    "is_rehabilitation_program": false,
+    "display_order": 1,
+    "categories": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.868Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 2,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.872Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 3,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.875Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 4,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.878Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 5,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.881Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 6,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.884Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 7,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.886Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 8,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.889Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 9,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:41:25.892Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 10,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.737Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 11,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.738Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 12,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.739Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 13,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.745Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 14,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.746Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 15,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.746Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 16,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.747Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 17,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.747Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 18,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.748Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 19,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.749Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 20,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.749Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 21,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.750Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 22,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "staff",
+    "model_name": "specialization",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.750Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 23,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.758Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 24,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.759Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 25,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.761Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 26,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.762Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 27,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.763Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 28,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.765Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 29,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.766Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 30,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.767Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 31,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.768Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 32,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.769Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 33,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 11,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.769Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 34,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 12,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.770Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 35,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 13,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.771Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 36,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 14,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.772Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 37,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 15,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.774Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 38,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.816Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 39,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.817Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 40,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.818Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 41,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.819Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 42,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.819Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 43,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.821Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 44,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.822Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 45,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.823Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 46,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.824Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 47,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.825Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 48,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 11,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.826Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 49,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 12,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.827Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 50,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 13,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.828Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 51,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 14,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:42:51.830Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 52,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "facilities",
+    "model_name": "rehabcenter",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:30.911Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 53,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.848Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 54,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.849Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 55,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "organizationtype",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.850Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 56,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.862Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 57,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.865Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 58,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.868Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 59,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.870Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 60,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.873Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 61,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.876Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 62,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.879Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 63,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.881Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 64,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.884Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 65,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.887Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 66,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 11,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.890Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 67,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 12,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.893Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 68,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 13,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.896Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 69,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 14,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.899Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 70,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "clinic",
+    "object_id": 15,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.902Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 71,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.948Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 72,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.949Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 73,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.950Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 74,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.952Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 75,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.953Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 76,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.954Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 77,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.955Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 78,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.957Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 79,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.958Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 80,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.959Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 81,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 11,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.960Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 82,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 12,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.961Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 83,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 13,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.962Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 84,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "review",
+    "object_id": 14,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:43:47.964Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 85,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "rehabcenter",
+    "object_id": 1,
+    "changes": {
+      "updated_at": {
+        "old": "2025-08-01T12:43:30.908001+00:00",
+        "new": "2025-08-01T12:44:46.080577+00:00"
+      },
+      "organization_type": {
+        "old": "Клиника",
+        "new": "Реабилитационный центр"
+      },
+      "meta_description": {
+        "old": null,
+        "new": ""
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:44:46.082Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 86,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "facilities",
+    "model_name": "rehabcenter",
+    "object_id": 1,
+    "changes": {
+      "updated_at": {
+        "old": "2025-08-01T12:44:46.080577+00:00",
+        "new": "2025-08-01T12:45:04.441737+00:00"
+      },
+      "is_featured": {
+        "old": false,
+        "new": true
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T12:45:04.443Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 87,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 1,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.868162+00:00",
+        "new": "2025-08-01T12:41:25.868000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.868192+00:00",
+        "new": "2025-08-01T12:41:25.868000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.358Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 88,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 2,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.872183+00:00",
+        "new": "2025-08-01T12:41:25.872000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.872198+00:00",
+        "new": "2025-08-01T12:41:25.872000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.359Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 89,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 3,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.875337+00:00",
+        "new": "2025-08-01T12:41:25.875000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.875352+00:00",
+        "new": "2025-08-01T12:41:25.875000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.360Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 90,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 4,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.878374+00:00",
+        "new": "2025-08-01T12:41:25.878000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.878387+00:00",
+        "new": "2025-08-01T12:41:25.878000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.361Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 91,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 5,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.881191+00:00",
+        "new": "2025-08-01T12:41:25.881000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.881203+00:00",
+        "new": "2025-08-01T12:41:25.881000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.362Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 92,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 6,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.883731+00:00",
+        "new": "2025-08-01T12:41:25.883000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.883740+00:00",
+        "new": "2025-08-01T12:41:25.883000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.362Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 93,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 7,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.886372+00:00",
+        "new": "2025-08-01T12:41:25.886000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.886382+00:00",
+        "new": "2025-08-01T12:41:25.886000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.363Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 94,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 8,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.889160+00:00",
+        "new": "2025-08-01T12:41:25.889000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.889170+00:00",
+        "new": "2025-08-01T12:41:25.889000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.364Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 95,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 9,
+    "changes": {
+      "created_at": {
+        "old": "2025-08-01T12:41:25.892033+00:00",
+        "new": "2025-08-01T12:41:25.892000+00:00"
+      },
+      "updated_at": {
+        "old": "2025-08-01T12:41:25.892049+00:00",
+        "new": "2025-08-01T12:41:25.892000+00:00"
+      }
+    },
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:04:32.365Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 96,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.482Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 97,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.483Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 98,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.484Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 99,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.484Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 100,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.485Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 101,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.486Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 102,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.486Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 103,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.487Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 104,
+  "fields": {
+    "user": null,
+    "action": "update",
+    "app_label": "blog",
+    "model_name": "tag",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:05:10.488Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 105,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 1,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.789Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 106,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 2,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.791Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 107,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 3,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.791Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 108,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 4,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.792Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 109,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 5,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.793Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 110,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 6,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.794Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 111,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 7,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.795Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 112,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 8,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.795Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 113,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 9,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.796Z"
+  }
+},
+{
+  "model": "admin_logs.adminactionlog",
+  "pk": 114,
+  "fields": {
+    "user": null,
+    "action": "create",
+    "app_label": "blog",
+    "model_name": "blogcategory",
+    "object_id": 10,
+    "changes": {},
+    "access_level": null,
+    "ip_address": null,
+    "created_at": "2025-08-01T15:14:46.797Z"
+  }
+}
+]
