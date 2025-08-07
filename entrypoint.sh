@@ -6,7 +6,7 @@ then
 
     while ! nc -z "db" $POSTGRES_PORT; do
         sleep 0.5
-    deployment
+    done
 
     echo "PostgresSQL запущен"
 fi

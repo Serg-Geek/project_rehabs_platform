@@ -17,7 +17,7 @@ services:
     image: postgres:16-bookworm
     container_name: db
     volumes:
-      - ../data/lib/postgresql/data/
+      - ./postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=password

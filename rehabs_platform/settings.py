@@ -102,8 +102,12 @@ WSGI_APPLICATION = 'rehabs_platform.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': environ.get('POSTGRES_DB'),
+        'USER': environ.get('POSTGRES_USER'),
+        'PASSWORD':  environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -143,12 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Указываем только папку static
+# STATIC_ROOT комментируем, так как он нужен только для продакшена
+# STATIC_ROOT = BASE_DIR / 'staticfiles'  # Раскомментируйте перед деплоем
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

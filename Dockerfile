@@ -16,4 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["./entrypoint.sh"]
+RUN chmod +x /usr/src/project_rehabs_platform/entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
