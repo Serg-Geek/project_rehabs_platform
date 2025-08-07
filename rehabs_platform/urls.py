@@ -39,4 +39,8 @@ urlpatterns = [
     path('recovery-stories/', include('recovery_stories.urls')),  # Добавляем URL-маршруты для историй выздоровления
     path('reviews/', include('reviews.urls')),
     path('content/', include('content.urls')),  # Добавляем URL-маршруты для контента
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
