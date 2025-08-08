@@ -1,55 +1,108 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% if meta_title %}
+        {{ meta_title }}
+      {% else %}
+        {% block title %}
+          Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании
+        {% endblock %}
+      {% endif %}
+    </title>
+    <meta name="description"
+      content="{% if meta_description %}
+        {{ meta_description }}
+      {% else %}
+        {% block meta_description %}
+          Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.
+        {% endblock %}
+      {% endif %}" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% if meta_title %}{{ meta_title }}{% else %}{% block title %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endblock %}{% endif %}</title>
-  <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}{% block meta_description %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.{% endblock %}{% endif %}">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:title" content="{% if meta_title %}{{ meta_title }}{% else %}Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании{% endif %}" />
-  <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.{% endif %}" />
-  <meta property="og:image" content="{% if meta_image %}{{ meta_image }}{% else %}{% static 'deps/img/og-image.jpg' %}{% endif %}" />
-  <meta property="og:site_name" content="Центр помощи зависимым" />
-  <meta property="og:locale" content="ru_RU" />
-  
-  <!-- Дополнительные SEO мета-теги -->
-  <meta name="keywords" content="{% if meta_keywords %}{{ meta_keywords }}{% else %}лечение алкоголизма, лечение наркомании, реабилитационные центры, наркологическая клиника, анонимное лечение зависимостей{% endif %}" />
-  <meta name="author" content="Центр помощи зависимым" />
-  <meta name="robots" content="index, follow" />
-  <meta name="language" content="ru" />
-  <meta name="geo.region" content="{% if geo_region %}{{ geo_region }}{% else %}RU{% endif %}" />
-  <meta name="geo.placename" content="{% if geo_placename %}{{ geo_placename }}{% else %}Россия{% endif %}" />
-  <meta name="geo.position" content="{% if geo_position %}{{ geo_position }}{% else %}65.0000;105.0000{% endif %}" />
-  <meta name="ICBM" content="{% if icbm %}{{ icbm }}{% else %}65.0000, 105.0000{% endif %}" />
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="{{ request.build_absolute_uri }}" />
-  
-  <!-- Предзагрузка критических ресурсов -->
-  <link rel="preload" href="{% static 'deps/css/style.css' %}" as="style" />
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style" />
-  
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:title"
+      content="{% if meta_title %}
+        {{ meta_title }}
+      {% else %}
+        Центр помощи зависимым - Лечение алкоголизма, наркомании, игромании
+      {% endif %}" />
+    <meta property="og:description"
+      content="{% if meta_description %}
+        {{ meta_description }}
+      {% else %}
+        Профессиональная помощь в лечении зависимостей. Реабилитационные центры, клиники, частные врачи по всей России. Анонимно, 24/7.
+      {% endif %}" />
+    <meta property="og:image"
+      content="{% if meta_image %}
+        {{ meta_image }}
+      {% else %}
+        {% static 'deps/img/og-image.jpg' %}
+      {% endif %}" />
+    <meta property="og:site_name" content="Центр помощи зависимым" />
+    <meta property="og:locale" content="ru_RU" />
 
-  <link rel="stylesheet" href="{% static 'deps/css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'deps/lightbox/lightbox.min.css' %}" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'deps/favicon_io/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'deps/favicon_io/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'deps/favicon_io/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'deps/favicon_io/site.webmanifest' %}">
-  <link rel="shortcut icon" href="{% static 'deps/favicon_io/favicon.ico' %}">
-  
-  <!-- Структурированные данные -->
-  <script type="application/ld+json">
+    <!-- Дополнительные SEO мета-теги -->
+    <meta name="keywords"
+      content="{% if meta_keywords %}
+        {{ meta_keywords }}
+      {% else %}
+        лечение алкоголизма, лечение наркомании, реабилитационные центры, наркологическая клиника, анонимное лечение зависимостей
+      {% endif %}" />
+    <meta name="author" content="Центр помощи зависимым" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="ru" />
+    <meta name="geo.region"
+      content="{% if geo_region %}
+        {{ geo_region }}
+      {% else %}
+        RU
+      {% endif %}" />
+    <meta name="geo.placename"
+      content="{% if geo_placename %}
+        {{ geo_placename }}
+      {% else %}
+        Россия
+      {% endif %}" />
+    <meta name="geo.position"
+      content="{% if geo_position %}
+        {{ geo_position }}
+      {% else %}
+        65.0000;105.0000
+      {% endif %}" />
+    <meta name="ICBM"
+      content="{% if icbm %}
+        {{ icbm }}
+      {% else %}
+        65.0000, 105.0000
+      {% endif %}" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Предзагрузка критических ресурсов -->
+    <link rel="preload" href="{% static 'deps/css/style.css' %}" as="style" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'deps/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'deps/lightbox/lightbox.min.css' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'deps/favicon_io/apple-touch-icon.png' %}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'deps/favicon_io/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'deps/favicon_io/favicon-16x16.png' %}" />
+    <link rel="manifest" href="{% static 'deps/favicon_io/site.webmanifest' %}" />
+    <link rel="shortcut icon" href="{% static 'deps/favicon_io/favicon.ico' %}" />
+
+    <!-- Структурированные данные -->
+    <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "MedicalOrganization",
@@ -89,378 +142,367 @@
     }
   }
   </script>
-</head>
+  </head>
 
-<body>
-  {% csrf_token %}
-  <header class="header" id="top">
-    <div class="header__full-width">
-      <div class="container">
-        <nav class="navbar">
-          <a href="{% url 'core:home' %}">
+  <body>
+    {% csrf_token %}
+    <header class="header" id="top">
+      <div class="header__full-width">
+        <div class="container">
+          <nav class="navbar">
+            <a href="{% url 'core:home' %}">
+              <div class="navbar__brand">
+                <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="navbar__logo" />
+                <span class="navbar__brand-text">Центр помощи зависимым</span>
+              </div>
+            </a>
+
+            {% comment %} <div class="navbar__location">
+              <i class="fas fa-map-marker-alt navbar__icon"></i>
+              <span class="navbar__location-text">Анапа</span>
+            </div> {% endcomment %}
+
+            <div class="navbar__phone">
+              <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
+              <a href="tel:+78001013228" class="navbar__phone-link">8 800 101-32-28</a>
+            </div>
+
+            <div class="navbar__social">
+              <a href="https://t.me/moemoreanapa" class="navbar__social-link navbar__social-link--telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+              <a href="https://vk.com/moe_more_anapa" class="navbar__social-link navbar__social-link--vk" target="_blank" rel="noopener noreferrer"><i class="fab fa-vk"></i></a>
+              <a href="https://wa.me/79180542585" class="navbar__social-link navbar__social-link--whatsapp" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="header__full-width">
+        <div class="container">
+          <nav class="menu">
+            <a href="/" class="menu__logo-link"><img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="menu__logo" /></a>
+            <ul class="menu__list">
+              <li class="menu__item">
+                <a href="{% url 'core:home' %}" class="menu__link">Алкоголизм</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'core:home' %}" class="menu__link">Наркомания</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'core:home' %}" class="menu__link">Игромания</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'facilities:rehabilitation_list' %}" class="menu__link">Центры</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'facilities:clinic_list' %}" class="menu__link">Клиники</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'facilities:private_doctors_list' %}" class="menu__link">Частные врачи</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'core:contacts' %}" class="menu__link">Контакты</a>
+              </li>
+              <li class="menu__item">
+                <a href="{% url 'blog:post_list' %}" class="menu__link">Полезная информация</a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Мобильная версия хедера -->
+          <div class="navbar__mobile">
             <div class="navbar__brand">
               <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="navbar__logo" />
               <span class="navbar__brand-text">Центр помощи зависимым</span>
             </div>
-          </a>
 
-          <div class="navbar__location">
-            <i class="fas fa-map-marker-alt navbar__icon"></i>
-            <span class="navbar__location-text">Анапа</span>
+            <!-- Бургер-меню -->
+            <button class="burger-menu" id="burgerMenu">
+              <span class="burger-menu__line"></span>
+              <span class="burger-menu__line"></span>
+              <span class="burger-menu__line"></span>
+            </button>
           </div>
 
-          <div class="navbar__phone">
-            <span class="navbar__phone-text">Анонимная помощь 24/7:</span>
-            <a href="tel:+78000000000" class="navbar__phone-link">
-              8 800 000-00-00
-            </a>
-          </div>
-
-          <div class="navbar__social">
-            <a href="#" class="navbar__social-link navbar__social-link--telegram">
-              <i class="fab fa-telegram"></i>
-            </a>
-            <a href="#" class="navbar__social-link navbar__social-link--vk">
-              <i class="fab fa-vk"></i>
-            </a>
-            <a href="#" class="navbar__social-link navbar__social-link--whatsapp">
-              <i class="fab fa-whatsapp"></i>
-            </a>
-          </div>
-        </nav>
-      </div>
-    </div>
-    <div class="header__full-width">
-      <div class="container">
-        <nav class="menu">
-          <a href="/" class="menu__logo-link">
-            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="menu__logo" />
-          </a>
-          <ul class="menu__list">
-            <li class="menu__item">
-              <a href="{% url 'core:home' %}" class="menu__link">Алкоголизм</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'core:home' %}" class="menu__link">Наркомания</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'core:home' %}" class="menu__link">Игромания</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'facilities:rehabilitation_list' %}" class="menu__link">Центры</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'facilities:clinic_list' %}" class="menu__link">Клиники</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'facilities:private_doctors_list' %}" class="menu__link">Частные врачи</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'core:contacts' %}" class="menu__link">Контакты</a>
-            </li>
-            <li class="menu__item">
-              <a href="{% url 'blog:post_list' %}" class="menu__link">Полезная информация</a>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Мобильная версия хедера -->
-        <div class="navbar__mobile">
-          <div class="navbar__brand">
-            <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="navbar__logo" />
-            <span class="navbar__brand-text">Центр помощи зависимым</span>
-          </div>
-
-          <!-- Бургер-меню -->
-          <button class="burger-menu" id="burgerMenu">
-            <span class="burger-menu__line"></span>
-            <span class="burger-menu__line"></span>
-            <span class="burger-menu__line"></span>
-          </button>
-        </div>
-
-        <!-- Мобильное меню -->
-        <nav class="dropdown-menu" id="dropdownMenu">
-          <ul>
-            <li>
-              <a href="{% url 'core:home' %}">Алкоголизм</a>
-            </li>
-            <li><a href="{% url 'core:home' %}">Наркомания</a></li>
-            <li><a href="{% url 'core:home' %}">Игромания</a></li>
-            <li><a href="{% url 'facilities:rehabilitation_list' %}">Центры</a></li>
-            <li><a href="{% url 'facilities:clinic_list' %}">Клиники</a></li>
-            <li><a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a></li>
-            <li><a href="{% url 'core:contacts' %}">Контакты</a></li>
-            <li>
-              <a href="{% url 'blog:post_list' %}">Полезная информация</a>
-            </li>
-          </ul>
-          <div class="footer__contacts-address-phone">
-            <div class="footer__contacts-address-phone-description">
-              Анонимная помощь 24/7:
-            </div>
-            <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800
-              000-00-00</a>
-          </div>
-
-          <div class="footer__contacts-social">
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
-              <i class="fab fa-telegram"></i>
-              <span>@moemorerehab </span>
-            </a>
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--vk">
-              <i class="fab fa-vk"></i>
-              <span>@moemorerehab</span>
-            </a>
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram-channel">
-              <i class="fab fa-telegram"></i>
-              <span>Канал</span>
-            </a>
-            <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
-              <i class="fab fa-whatsapp"></i>
-              <span>+7 918 0542585 </span>
-            </a>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  {% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
-
-  <footer>
-    <div class="footer">
-      <div class="container">
-        <div class="footer__grid-wrapper">
-          <div class="footer__contacts">
-            <div class="footer__logo footer__contacts-logo">
-              <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="footer__logo-img" />
-              <span class="footer__logo-text">Центр помощи зависимым</span>
-              <span class="footer__logo-text">«Мое море»</span>
-            </div>
-
-            <address class="footer__contacts-address">
-              <div class="footer__contacts-address-phone">
-                <div class="footer__contacts-address-phone-description">
-                  Анонимная помощь 24/7:
-                </div>
-                <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
-              </div>
-              <div class="footer__contacts-address-phone">
-                <h4 class="title__h4">Телефон:</h4>
-                <a href="tel:+78000000000" class="footer__contacts-address-phone-number">8 800 000-00-00</a>
-              </div>
-              <div class="footer__contacts-location">
-                <h4 class="title__h4">Адрес:</h4>
-                <div class="footer__contacts-location-text">
-                  353440, Краснодарский край, <br />
-                  г. Анапа, ул. Ленина, д. 1
-                </div>
-              </div>
-            </address>
-
-            <div class="footer__worktime">
-              <h4 class="title__h4 footer__worktime-description">
-                Режим работы:
-              </h4>
-              <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
-              <div class="footer__worktime-text">Сб-Вс: выходной</div>
+          <!-- Мобильное меню -->
+          <nav class="dropdown-menu" id="dropdownMenu">
+            <ul>
+              <li>
+                <a href="{% url 'core:home' %}">Алкоголизм</a>
+              </li>
+              <li>
+                <a href="{% url 'core:home' %}">Наркомания</a>
+              </li>
+              <li>
+                <a href="{% url 'core:home' %}">Игромания</a>
+              </li>
+              <li>
+                <a href="{% url 'facilities:rehabilitation_list' %}">Центры</a>
+              </li>
+              <li>
+                <a href="{% url 'facilities:clinic_list' %}">Клиники</a>
+              </li>
+              <li>
+                <a href="{% url 'facilities:private_doctors_list' %}">Частные врачи</a>
+              </li>
+              <li>
+                <a href="{% url 'core:contacts' %}">Контакты</a>
+              </li>
+              <li>
+                <a href="{% url 'blog:post_list' %}">Полезная информация</a>
+              </li>
+            </ul>
+            <div class="footer__contacts-address-phone">
+              <div class="footer__contacts-address-phone-description">Анонимная помощь 24/7:</div>
+              <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
             </div>
 
             <div class="footer__contacts-social">
-              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram">
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-telegram"></i>
-                <span>@moemorerehab </span>
+                <span>@moemorerehab</span>
               </a>
-              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--vk">
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--vk" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-vk"></i>
                 <span>@moemorerehab</span>
               </a>
-              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram-channel">
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram-channel" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-telegram"></i>
                 <span>Канал</span>
               </a>
-              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp">
+              <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-whatsapp"></i>
-                <span>+7 918 0542585 </span>
+                <span>+7 918 0542585</span>
               </a>
             </div>
+          </nav>
+        </div>
+      </div>
+    </header>
 
-            <div class="footer__info">
-              <div class="footer__info-description">
-                Информация на сайте носит
-                <br />ознакомительный характер.<br />
-                Перед принятием медицинских<br />
-                решений рекомендуется<br />
-                консультация со специалистом.
-              </div>
-              <a href="#" class="footer__info-link">Политика конфиденциальности</a>
-            </div>
+    {% if messages %}
+      <div class="container mt-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-          <div class="footer__nav">
-            <div class="footer__navigation">
-              <h4 class="title__h4 footer__title footer__navigation-title">
-                Навигация:
-              </h4>
-              <ul class="footer__column footer__navigation-list">
-                <li class="footer__navigation-item">
-                  <a href="{% url 'facilities:rehabilitation_list' %}" class="footer__navigation-link">Центры</a>
-                </li>
-                <li class="footer__navigation-item">
-                  <a href="{% url 'facilities:clinic_list' %}" class="footer__navigation-link">Клиники</a>
-                </li>
-                <li class="footer__navigation-item">
-                  <a href="{% url 'facilities:private_doctors_list' %}" class="footer__navigation-link">Частные врачи</a>
-                </li>
-                <!-- <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Специалисты</a>
-                </li> -->
-                <!-- <li class="footer__navigation-item">
-                  <a href="#" class="footer__navigation-link">Тесты</a>
-                </li> -->
-                <li class="footer__navigation-item">
-                  <a href="{% url 'core:contacts' %}" class="footer__navigation-link">Контакты</a>
-                </li>
-                {% for category in service_categories %}
-                <li class="footer__navigation-item">
-                  <a href="{% url 'medical_services:category_detail' category.slug %}" class="footer__navigation-link">{{ category.name }}</a>
-                </li>
-                {% endfor %}
-                <li class="footer__navigation-item">
-                  <a href="{% url 'blog:post_list' %}" class="footer__navigation-link">Полезная информация</a>
-                </li>
-                <li class="footer__navigation-item">
-                  <a href="{% url 'requests:partner_request' %}" class="footer__navigation-link">Для партнеров</a>
-                </li>
-              </ul>
-            </div>
+    <main>
+      {% block content %}
 
-            <div class="footer__info-nav">
-              <h4 class="title__h4 footer__title footer__info-nav-title">
-                Это нужно знать:
-              </h4>
-              <ul class="footer__column footer__info-nav-list">
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=alkogolizm" class="footer__info-nav-link">Алкоголизм</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=narkomaniya" class="footer__info-nav-link">Наркомания</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=zavisimosti" class="footer__info-nav-link">Зависимости</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=lechenie" class="footer__info-nav-link">Лечение</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=rodstvennikam" class="footer__info-nav-link">Родственникам</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=resotsializatsiya" class="footer__info-nav-link">Ресоциализация</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=psikhologiya" class="footer__info-nav-link">Психология</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=psikhiatriya" class="footer__info-nav-link">Психиатрия</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=yuridicheskaya-konsultatsiya" class="footer__info-nav-link">Юридическая консультация</a>
-                </li>
-                <li class="footer__info-nav-item">
-                  <a href="{% url 'blog:post_list' %}?category=profilaktika" class="footer__info-nav-link">Профилактика и предупреждение</a>
-                </li>
-              </ul>
-            </div>
-            <div class="return-up">
-              <div class="return-up__wrapper">
-                <a href="#top" class="return-up__link">
-                  <i class="fas fa-arrow-up return-up__icon"></i>
+      {% endblock %}
+    </main>
+
+    <footer>
+      <div class="footer">
+        <div class="container">
+          <div class="footer__grid-wrapper">
+            <div class="footer__contacts">
+              <div class="footer__logo footer__contacts-logo">
+                <img src="{% static 'deps/icons/main/logo.svg' %}" alt="Логотип Центр помощи зависимым - Мое море" class="footer__logo-img" />
+                <span class="footer__logo-text">Центр помощи зависимым</span>
+                <span class="footer__logo-text">«Мое море»</span>
+              </div>
+
+              <address class="footer__contacts-address">
+                <div class="footer__contacts-address-phone">
+                  <div class="footer__contacts-address-phone-description">Анонимная помощь 24/7:</div>
+                  <a href="tel:+78000000000" class="footer__contacts-address-phone-number-main">8 800 000-00-00</a>
+                </div>
+                <div class="footer__contacts-address-phone">
+                  <h4 class="title__h4">Телефон:</h4>
+                  <a href="tel:+78000000000" class="footer__contacts-address-phone-number">8 800 000-00-00</a>
+                </div>
+                <div class="footer__contacts-location">
+                  <h4 class="title__h4">Адрес:</h4>
+                  <div class="footer__contacts-location-text">
+                    353440, Краснодарский край, <br />
+                    г. Анапа, ул. Ленина, д. 1
+                  </div>
+                </div>
+              </address>
+
+              <div class="footer__worktime">
+                <h4 class="title__h4 footer__worktime-description">Режим работы:</h4>
+                <div class="footer__worktime-text">Пн-Пт: 09:00 - 18:00</div>
+                <div class="footer__worktime-text">Сб-Вс: выходной</div>
+              </div>
+
+              <div class="footer__contacts-social">
+                <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-telegram"></i>
+                  <span>@moemorerehab</span>
+                </a>
+                <a href="#" class="footer__contacts-social-link footer__contacts-social-link--vk" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-vk"></i>
+                  <span>@moemorerehab</span>
+                </a>
+                <a href="#" class="footer__contacts-social-link footer__contacts-social-link--telegram-channel" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-telegram"></i>
+                  <span>Канал</span>
+                </a>
+                <a href="#" class="footer__contacts-social-link footer__contacts-social-link--whatsapp" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-whatsapp"></i>
+                  <span>+7 918 0542585</span>
                 </a>
               </div>
 
-              <a href="#top" class="return-up__link-text">Вернуться вверх</a>
+              <div class="footer__info">
+                <div class="footer__info-description">
+                  Информация на сайте носит
+                  <br />ознакомительный характер.<br />
+                  Перед принятием медицинских<br />
+                  решений рекомендуется<br />
+                  консультация со специалистом.
+                </div>
+                <a href="#" class="footer__info-link">Политика конфиденциальности</a>
+              </div>
             </div>
-          </div>
 
-          <div class="footer__services">
-            <h4 class="title__h4 footer__title">Услуги:</h4>
-            <div class="footer__columns">
-              {% for category in service_categories %}
-                {% if category.slug == 'lechenie-alkogolizma' %}
-                <div class="footer__column">
-                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
-                  <ul class="footer__list">
-                    {% for service in category.active_services %}
-                    <li class="footer__item">
-                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+            <div class="footer__nav">
+              <div class="footer__navigation">
+                <h4 class="title__h4 footer__title footer__navigation-title">Навигация:</h4>
+                <ul class="footer__column footer__navigation-list">
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'facilities:rehabilitation_list' %}" class="footer__navigation-link">Центры</a>
+                  </li>
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'facilities:clinic_list' %}" class="footer__navigation-link">Клиники</a>
+                  </li>
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'facilities:private_doctors_list' %}" class="footer__navigation-link">Частные врачи</a>
+                  </li>
+                  <!--  <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Специалисты</a>
+                </li>  -->
+                  <!--  <li class="footer__navigation-item">
+                  <a href="#" class="footer__navigation-link">Тесты</a>
+                </li>  -->
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'core:contacts' %}" class="footer__navigation-link">Контакты</a>
+                  </li>
+                  {% for category in service_categories %}
+                    <li class="footer__navigation-item">
+                      <a href="{% url 'medical_services:category_detail' category.slug %}" class="footer__navigation-link">{{ category.name }}</a>
                     </li>
-                    {% endfor %}
-                  </ul>
+                  {% endfor %}
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'blog:post_list' %}" class="footer__navigation-link">Полезная информация</a>
+                  </li>
+                  <li class="footer__navigation-item">
+                    <a href="{% url 'core:home' %}#for-partners" class="footer__navigation-link">Для партнеров</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="footer__info-nav">
+                <h4 class="title__h4 footer__title footer__info-nav-title">Это нужно знать:</h4>
+                <ul class="footer__column footer__info-nav-list">
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=alkogolizm" class="footer__info-nav-link">Алкоголизм</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=narkomaniya" class="footer__info-nav-link">Наркомания</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=zavisimosti" class="footer__info-nav-link">Зависимости</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=lechenie" class="footer__info-nav-link">Лечение</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=rodstvennikam" class="footer__info-nav-link">Родственникам</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=resotsializatsiya" class="footer__info-nav-link">Ресоциализация</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=psikhologiya" class="footer__info-nav-link">Психология</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=psikhiatriya" class="footer__info-nav-link">Психиатрия</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=yuridicheskaya-konsultatsiya" class="footer__info-nav-link">Юридическая консультация</a>
+                  </li>
+                  <li class="footer__info-nav-item">
+                    <a href="{% url 'blog:post_list' %}?category=profilaktika" class="footer__info-nav-link">Профилактика и предупреждение</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="return-up">
+                <div class="return-up__wrapper">
+                  <a href="#top" class="return-up__link"><i class="fas fa-arrow-up return-up__icon"></i></a>
                 </div>
-                {% endif %}
-              {% endfor %}
-              
-              {% for category in service_categories %}
-                {% if category.slug == 'lechenie-narkomanii' %}
-                <div class="footer__column">
-                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
-                  <ul class="footer__list">
-                    {% for service in category.active_services %}
-                    <li class="footer__item">
-                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                {% endif %}
-              {% endfor %}
-              
-              {% for category in service_categories %}
-                {% if category.slug == 'drugie-uslugi' %}
-                <div class="footer__column">
-                  <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
-                  <ul class="footer__list">
-                    {% for service in category.active_services %}
-                    <li class="footer__item">
-                      <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                {% endif %}
-              {% endfor %}
+
+                <a href="#top" class="return-up__link-text">Вернуться вверх</a>
+              </div>
+            </div>
+
+            <div class="footer__services">
+              <h4 class="title__h4 footer__title">Услуги:</h4>
+              <div class="footer__columns">
+                {% for category in service_categories %}
+                  {% if category.slug == 'lechenie-alkogolizma' %}
+                    <div class="footer__column">
+                      <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                      <ul class="footer__list">
+                        {% for service in category.active_services %}
+                          <li class="footer__item">
+                            <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% for category in service_categories %}
+                  {% if category.slug == 'lechenie-narkomanii' %}
+                    <div class="footer__column">
+                      <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                      <ul class="footer__list">
+                        {% for service in category.active_services %}
+                          <li class="footer__item">
+                            <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% for category in service_categories %}
+                  {% if category.slug == 'drugie-uslugi' %}
+                    <div class="footer__column">
+                      <h4 class="title__h4 footer__column-title">{{ category.name }}:</h4>
+                      <ul class="footer__list">
+                        {% for service in category.active_services %}
+                          <li class="footer__item">
+                            <a href="{% url 'medical_services:service_detail' service.slug %}">{{ service.name }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  {% include "rehab_help_modal.html" %}
+    {% include 'rehab_help_modal.html' %}
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
-  <script src="{% static 'deps/lightbox/lightbox.min.js' %}"></script>
-  <script src="{% static 'deps/js/script.js' %}"></script>
-  <script src="{% static 'deps/js/forms.js' %}"></script>
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
+    <script src="{% static 'deps/lightbox/lightbox.min.js' %}"></script>
+    <script src="{% static 'deps/js/script.js' %}"></script>
+    <script src="{% static 'deps/js/forms.js' %}"></script>
+  </body>
 </html>
