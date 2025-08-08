@@ -8,6 +8,7 @@ services:
       - 127.0.0.1:8000:8000
     volumes:
       - .:/usr/src/project_rehabs_platform
+    restart: unless-stopped
     env_file:
       - .env.dev
     depends_on:
@@ -17,11 +18,14 @@ services:
     image: postgres:16-bookworm
     container_name: db
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=platform
+
+
   dbbrowser:
     image: adminer
     container_name: adminer
@@ -29,3 +33,5 @@ services:
       - 8080:8080
     depends_on:
       - db
+volumes:
+  postgres_data:

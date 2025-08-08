@@ -16,7 +16,7 @@ python manage.py makemigrations
 python manage.py migrate
 
 
-# python manage.py loaddata fixtures/clean_full_dump.json
+python manage.py loaddata fixtures/dump_.json
 
 exec "$@"
 
