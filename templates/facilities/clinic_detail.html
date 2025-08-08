@@ -86,7 +86,7 @@
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">Условия поступления</h3>
             <div class="clinic-detail__text">
-                {{ clinic.admission_conditions|safe }}
+                {{ clinic.admission_conditions|linebreaks }}
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@
         <div class="detail-content__wrapper detail-content__wrapper-second">
             <h3 class="title__h3 detail__title">Курс лечения</h3>
             <div class="clinic-detail__text">
-                {{ clinic.treatment_course|safe }}
+                {{ clinic.treatment_course|linebreaks }}
             </div>
         </div>
     </div>
