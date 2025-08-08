@@ -4,6 +4,23 @@
 {% block title %}{{ story.title }} - История выздоровления{% endblock %}
 
 {% block content %}
+<nav aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'recovery_stories:list' %}">Истории выздоровления</a>
+            </li>
+            {% if story.category %}
+                <li class="breadcrumb-item">
+                    <a href="{% url 'recovery_stories:category_stories' story.category.slug %}">{{ story.category.name }}</a>
+                </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">{{ story.title }}</li>
+        </ol>
+    </div>
+</nav>
+
 <section class="detail spec-detail rehab-help">
     <div class="container">
         <div class="detail__content rehab-help__content">
@@ -65,7 +82,7 @@
         <div class="detail-content__wrapper">
             <h3 class="title__h3 detail__title">История выздоровления</h3>
             <div class="rehab-detail__text detail__text--width-limiter">
-                {{ story.content|safe }}
+                {{ story.content|linebreaks }}
             </div>
         </div>
     </div>

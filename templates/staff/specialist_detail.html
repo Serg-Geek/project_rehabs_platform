@@ -78,17 +78,17 @@
             <h3 class="title__h3 detail__title">Образование</h3>
             <div class="spec-detail__wrapper">
                 <div class="spec-detail__text">
-                    <p>{{ specialist.education }}</p>
+                    <p>{{ specialist.education|linebreaks }}</p>
                 </div>
             </div>
         </div>
         {% endif %}
         {% if specialist.biography %}
         <div class="detail-content__wrapper detail-content__wrapper-second">
-            <h3 class="title__h3 detail__title">Биография</h3>
+            <h3 class="title__h3 detail__title">О специалисте</h3>
             <div class="spec-detail__wrapper">
                 <div class="spec-detail__text">
-                    <p>{{ specialist.biography }}</p>
+                    <p>{{ specialist.biography|linebreaks }}</p>
                 </div>
             </div>
         </div>

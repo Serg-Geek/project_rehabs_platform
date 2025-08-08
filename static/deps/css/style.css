@@ -762,8 +762,10 @@ template {
   color: #143a44;
   text-decoration: none;
 }
+
 .navbar__brand-text:hover {
-  text-decoration: none; /* Убирает подчёркивание при наведении */
+  text-decoration: none;
+  /* Убирает подчёркивание при наведении */
 }
 
 
@@ -828,11 +830,23 @@ template {
 }
 
 .navbar__social-link--telegram:hover {
-  color: #08c
+  text-decoration: none !important;
+  color: #08c !important;
+}
+
+.navbar__social-link--vk:hover {
+  text-decoration: none !important;
+  color: #4a76a8 !important;
+}
+
+.navbar__social-link--telegram-channel:hover {
+  text-decoration: none !important;
+  color: #08c !important;
 }
 
 .navbar__social-link--whatsapp:hover {
-  color: #25d366
+  text-decoration: none !important;
+  color: #25d366 !important;
 }
 
 .menu {
@@ -1127,13 +1141,23 @@ template {
 }
 
 .footer__contacts-social-link--telegram:hover {
-  text-decoration: none;
-  color: #08c
+  text-decoration: none !important;
+  color: #08c !important;
+}
+
+.footer__contacts-social-link--vk:hover {
+  text-decoration: none !important;
+  color: #4a76a8 !important;
+}
+
+.footer__contacts-social-link--telegram-channel:hover {
+  text-decoration: none !important;
+  color: #08c !important;
 }
 
 .footer__contacts-social-link--whatsapp:hover {
-  text-decoration: none;
-  color: #25d366
+  text-decoration: none !important;
+  color: #25d366 !important;
 }
 
 .footer__nav {
@@ -1664,7 +1688,8 @@ template {
   background: #9bdff6;
   color: #256472
 }
-.useful-info__tag.serveses__tag{
+
+.useful-info__tag.serveses__tag {
   margin-right: 10px;
 }
 
@@ -3568,6 +3593,6 @@ template {
 .detail__services-list a:hover,
 .detail__services-list a:focus,
 .detail__services-list a:active {
-    color: #4d5974;
-    text-decoration: none;
+  color: #4d5974;
+  text-decoration: none;
 }

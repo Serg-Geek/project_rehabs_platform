@@ -26,7 +26,7 @@
                 <h2 class="title__h2 detail__title">{{ post.title }}</h2>
                 <div class="detail__text spec-detail__text">
                     {% if post.preview_text %}
-                    <p>{{ post.preview_text }}</p>
+                    <p>{{ post.preview_text|linebreaks }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <div class="rehab-detail__text detail__text--width-limiter">
                 {% if post.content %}
                 <p class="useful-info-detail__stages-text">
-                    {{ post.content }}
+                    {{ post.content|linebreaks }}
                 </p>
                 {% endif %}
                 {% if post.stages %}
@@ -70,7 +70,7 @@
                 {% endif %}
                 {% if post.conclusion_text %}
                 <p class="useful-info-detail__stages-text">
-                    <strong>{{ post.conclusion_text }}</strong>
+                    <strong>{{ post.conclusion_text|linebreaks }}</strong>
                 </p>
                 {% endif %}
             </div>

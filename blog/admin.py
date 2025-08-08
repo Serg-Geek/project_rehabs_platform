@@ -114,63 +114,63 @@ class BlogPostTagAdmin(admin.ModelAdmin):
     search_fields = ['post__title', 'tag__name']
 
 
-@admin.register(ContentCategory)
-class ContentCategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'parent', 'order']
-    list_filter = ['parent']
-    search_fields = ['name', 'description']
-    prepopulated_fields = {'slug': ('name',)}
+# @admin.register(ContentCategory)
+# class ContentCategoryAdmin(admin.ModelAdmin):
+#     list_display = ['name', 'parent', 'order']
+#     list_filter = ['parent']
+#     search_fields = ['name', 'description']
+#     prepopulated_fields = {'slug': ('name',)}
 
 
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'is_published', 'publish_date']
-    list_filter = ['is_published', 'category', 'publish_date']
-    search_fields = ['title', 'content']
-    prepopulated_fields = {'slug': ('title',)}
-    readonly_fields = ['created_at', 'updated_at', 'views_count']
-    inlines = [ArticleTagInline]
-    fieldsets = (
-        ('Основная информация', {
-            'fields': (
-                'title',
-                'slug',
-                'category',
-                'preview_text',
-                'content',
-            )
-        }),
-        ('Медиа', {
-            'fields': (
-                'image',
-            )
-        }),
-        ('SEO', {
-            'fields': (
-                'meta_title',
-                'meta_description',
-                'meta_keywords',
-                'meta_image',
-            ),
-            'classes': ('collapse',)
-        }),
-        ('Публикация', {
-            'fields': (
-                'is_published',
-                'publish_date',
-                'views_count',
-                'created_at',
-                'updated_at',
-            )
-        }),
-    )
+# @admin.register(Article)
+# class ArticleAdmin(admin.ModelAdmin):
+#     list_display = ['title', 'category', 'is_published', 'publish_date']
+#     list_filter = ['is_published', 'category', 'publish_date']
+#     search_fields = ['title', 'content']
+#     prepopulated_fields = {'slug': ('title',)}
+#     readonly_fields = ['created_at', 'updated_at', 'views_count']
+#     inlines = [ArticleTagInline]
+#     fieldsets = (
+#         ('Основная информация', {
+#             'fields': (
+#                 'title',
+#                 'slug',
+#                 'category',
+#                 'preview_text',
+#                 'content',
+#             )
+#         }),
+#         ('Медиа', {
+#             'fields': (
+#                 'image',
+#             )
+#         }),
+#         ('SEO', {
+#             'fields': (
+#                 'meta_title',
+#                 'meta_description',
+#                 'meta_keywords',
+#                 'meta_image',
+#             ),
+#             'classes': ('collapse',)
+#         }),
+#         ('Публикация', {
+#             'fields': (
+#                 'is_published',
+#                 'publish_date',
+#                 'views_count',
+#                 'created_at',
+#                 'updated_at',
+#             )
+#         }),
+#     )
 
-    def get_json_encoder(self):
-        return CustomJSONEncoder
+#     def get_json_encoder(self):
+#         return CustomJSONEncoder
 
 
-@admin.register(ArticleTag)
-class ArticleTagAdmin(admin.ModelAdmin):
-    list_display = ['article', 'tag']
-    list_filter = ['tag']
-    search_fields = ['article__title', 'tag__name']
+# @admin.register(ArticleTag)
+# class ArticleTagAdmin(admin.ModelAdmin):
+#     list_display = ['article', 'tag']
+#     list_filter = ['tag']
+#     search_fields = ['article__title', 'tag__name']
