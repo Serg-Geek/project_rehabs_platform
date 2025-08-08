@@ -59,5 +59,14 @@ class ConsultationView(TemplateView):
         context['meta_description'] = 'Получите бесплатную анонимную консультацию по лечению зависимостей. Профессиональные специалисты готовы помочь.'
         return context
 
+class PrivacyPolicyView(TemplateView):
+    template_name = 'privacy_policy.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meta_title'] = 'Политика конфиденциальности - Центр помощи зависимым'
+        context['meta_description'] = 'Политика конфиденциальности Центра помощи зависимым. Узнайте, как мы обрабатываем и защищаем ваши персональные данные.'
+        return context
+
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
